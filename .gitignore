@@ -1,0 +1,19 @@
+# Ignore build artifacts and temporary files
+
+# Object files and assembly
+src/*.o
+src/*.s
+util/*.o
+
+# Build directories and executables
+src/st
+src/cg
+src/op
+util/*
+
+# Symlink to system libraries
+src/sys.s
+
+# Misc temporary files
+*~
+*.tmp
