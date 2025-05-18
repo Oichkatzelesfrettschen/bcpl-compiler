@@ -1,0 +1,9 @@
+name: Custom CodeQL Configuration
+
+queries:
+  - uses: security-extended
+  - uses: codeql-suites/analysis-optimizations
+
+paths-ignore:
+  - '**/tests/**'
+  - '**/examples/**'
