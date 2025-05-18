@@ -28,6 +28,27 @@ command line arguments and error reporting. Some documentation
 that formed part of the original BCPL distribution tape is also
 included, as are a few utility programs.
 
+Building
+========
+
+To build the compiler from the top-level directory, run::
+
+    ./makeall
+    ./makeall install
+
+Alternatively, you can build directly within ``src/``::
+
+    make -C src
+    make -C src install
+
+After installation, verify the compiler by running::
+
+    bcplc util/cmpltest.bcpl
+
+This should print::
+
+    119 TESTS COMPLETED, 0 FAILURE(S)
+
 Martin Richards, the originator of BCPL, has a home page at
 
     http://www.cl.cam.ac.uk/~mr10/
