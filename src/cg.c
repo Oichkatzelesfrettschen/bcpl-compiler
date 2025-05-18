@@ -395,16 +395,16 @@ static int gencode(void)
                 emit(".global G%d", x);
                 emit(".equ G%d,%s", x, label(rdn()));
             }
+            /* end of code stream: return for next phase */
+            return op;
         }
-        break; // FIXME: here was "return;", did he mean that exactly?
+        /* not reached */
         case S_FINISH:
             emit("jmp finish");
             break;
         default:
             error("Unknown op %d", op);
         }
-        if (op == S_GLOBAL)
-            break;
         /* adjust stack pointer */
         sp = s2 & 2 ? sn : sp - s1;
         if (s2 & 1)
