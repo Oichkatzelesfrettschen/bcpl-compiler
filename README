@@ -40,6 +40,25 @@ The web page for this distribution is
 
     http://www.nordier.com/software/obcpl.html
 
+Build
+
+See INSTALL for detailed build instructions. Build the compiler with
+
+    ./makeall
+
+and then install it, optionally overriding `PREFIX` to choose an
+installation directory:
+
+    ./makeall install
+
+Ensure the resulting `bcplc` driver is on your `PATH` (or supply a
+`BC` variable pointing to it). Once the compiler is available, enter
+the "util" directory and run
+
+    make test
+
+to compile and execute the "cmpltest" suite.
+
 
 Robert Nordier
 www.nordier.com
