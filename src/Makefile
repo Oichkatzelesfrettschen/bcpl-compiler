@@ -2,7 +2,7 @@
 
 PREFIX?=/usr/local
 
-AFLAGS=--32
+AFLAGS=--64
 
 all: cg op st
 
@@ -25,7 +25,7 @@ pt.o: pt.c
 	$(CC) $(CFLAGS) -c pt.c
 
 st: su.o st.o blib.o global.o rt.o sys.o
-	ld -m elf_i386 -o st su.o st.o blib.o global.o rt.o sys.o
+	ld -m elf_x86_64 -o st su.o st.o blib.o global.o rt.o sys.o
 
 su.o: su.s
 	$(AS) $(AFLAGS) -o su.o su.s

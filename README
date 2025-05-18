@@ -45,6 +45,9 @@ After installation, verify the compiler by running::
 
     bcplc util/cmpltest.bcpl
 
+The runtime components now build as native 64-bit executables.
+Support for ``qemu-i386`` is therefore no longer required.
+
 This should print::
 
     119 TESTS COMPLETED, 0 FAILURE(S)
@@ -78,7 +81,8 @@ the "util" directory and run
 
     make test
 
-to compile and execute the "cmpltest" suite.
+to compile and execute the "cmpltest" suite using the new 64-bit
+runtime system.
 
 
 Robert Nordier
