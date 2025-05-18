@@ -12,6 +12,8 @@ error()
 d=/usr/local/lib/bcplc
 ohead="$d/su.o"
 otail="$d/blib.o $d/global.o $d/rt.o $d/sys.o"
+
+stcmd="$d/st"
 Oflag=0
 cflag=4
 args=`getopt COSco: $*`
@@ -68,13 +70,13 @@ do
             ofile=/tmp/$$_tmp.$x
         fi
         case $i in
-        1) $d/st < $ifile > $ofile ;;
+        1) $stcmd < $ifile > $ofile ;;
         2) if test $Oflag -eq 0; then
                $d/cg < $ifile > $ofile
            else
                $d/cg < $ifile | $d/op > $ofile
            fi ;;
-        3) as --32 -o $ofile $ifile ;;
+        3) as --64 -o $ofile $ifile ;;
         esac
         ifile=$ofile
         i=$(($i+1))
@@ -83,5 +85,5 @@ do
     rm -f /tmp/$$_tmp.*
 done
 if test $cflag -eq 4; then
-    ld -m elf_i386 -o $oname $ohead $olist $otail
+    ld -m elf_x86_64 -o $oname $ohead $olist $otail
 fi
