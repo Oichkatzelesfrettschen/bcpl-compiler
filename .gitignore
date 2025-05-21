@@ -10,6 +10,7 @@ src/st
 src/cg
 src/op
 util/*
+build/
 
 # Symlink to system libraries
 src/sys.s
