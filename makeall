@@ -39,3 +39,8 @@ do
     echo "===== ${dir} ====="
     (cd ${dir} && ${MAKE} ${target})
 done
+
+if [ "$target" = "all" ]; then
+    echo "===== util tests ====="
+    (cd util && ${MAKE} test)
+fi
