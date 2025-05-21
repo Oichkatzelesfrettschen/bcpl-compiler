@@ -1,55 +1,66 @@
 # Makefile for bcplc/src
 
 PREFIX?=/usr/local
+# Set BITS=32 to build a 32-bit runtime or BITS=64 for a native x86-64
+# build.  Additional cross-compilation prefixes may be supplied via
+# CROSS_PREFIX (e.g. ``CROSS_PREFIX=i686-linux-gnu-``).
+BITS?=64
+CROSS_PREFIX?=
 
-AFLAGS=--64
+ifeq ($(BITS),64)
+  AFLAGS=--64
+  LDMODE=elf_x86_64
+else
+  AFLAGS=--32
+  LDMODE=elf_i386
+endif
 
 all: cg op st
 
 cg: cg.o oc.o
-	$(CC) $(CFLAGS) -o cg cg.o oc.o
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -o cg cg.o oc.o
 
 cg.o: cg.c
-	$(CC) $(CFLAGS) -c cg.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c cg.c
 
 oc.o: oc.c
-	$(CC) $(CFLAGS) -c oc.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c oc.c
 
 op: op.o pt.o
-	$(CC) $(CFLAGS) -o op op.o pt.o
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -o op op.o pt.o
 
 op.o: op.c
-	$(CC) $(CFLAGS) -c op.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c op.c
 
 pt.o: pt.c
-	$(CC) $(CFLAGS) -c pt.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c pt.c
 
 st: su.o st.o blib.o global.o rt.o sys.o
-	ld -m elf_x86_64 -o st su.o st.o blib.o global.o rt.o sys.o
+	$(CROSS_PREFIX)ld -m $(LDMODE) -o st su.o st.o blib.o global.o rt.o sys.o
 
 su.o: su.s
-	$(AS) $(AFLAGS) -o su.o su.s
+	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o su.o su.s
 
 st.o: st.s
-	$(AS) $(AFLAGS) -o st.o st.s
+	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o st.o st.s
 
 st.s: cg op st.O
 	./cg < st.O | ./op > st.s
 
 blib.o: blib.s
-	$(AS) $(AFLAGS) -o blib.o blib.s
+	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o blib.o blib.s
 
 blib.s: cg op blib.O
 	./cg < blib.O | ./op > blib.s
 
 global.o: global.s
-	$(AS) $(AFLAGS) -o global.o global.s
+	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o global.o global.s
 
 rt.o: rt.s
-	$(AS) $(AFLAGS) -o rt.o rt.s
+	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o rt.o rt.s
 
 sys.o: sys.s
-	$(AS) $(AFLAGS) -o sys.o sys.s
+	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o sys.o sys.s
 
 check:	blib.O blib.chk st.O st.chk
 	cmp blib.O blib.chk

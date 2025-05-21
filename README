@@ -31,6 +31,14 @@ included, as are a few utility programs.
 Building
 ========
 
+Before building you may install a comprehensive cross‑compilation
+environment by running ``./setup.sh`` as root.  The script configures
+package repositories for multiple architectures and installs toolchains
+and emulators such as ``qemu`` to enable execution of foreign binaries,
+including 16‑bit and 32‑bit x86 programs.  This is optional for a
+straightforward native build but recommended when targeting older or
+non‑native platforms.
+
 To build the compiler from the top-level directory, run::
 
     ./makeall

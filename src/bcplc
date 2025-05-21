@@ -9,7 +9,12 @@ error()
     exit 2
 }
 
-d=/usr/local/lib/bcplc
+prefix=${PREFIX:-/usr/local}
+d=$prefix/lib/bcplc
+# Allow callers to override assembler/linker prefix and runtime bitness
+BITS="${BITS:-64}"
+AS="${CROSS_PREFIX:-}as"
+LD="${CROSS_PREFIX:-}ld"
 ohead="$d/su.o"
 otail="$d/blib.o $d/global.o $d/rt.o $d/sys.o"
 
@@ -76,7 +81,7 @@ do
            else
                $d/cg < $ifile | $d/op > $ofile
            fi ;;
-        3) as --64 -o $ofile $ifile ;;
+        3) $AS --$BITS -o $ofile $ifile ;;
         esac
         ifile=$ofile
         i=$(($i+1))
@@ -85,5 +90,10 @@ do
     rm -f /tmp/$$_tmp.*
 done
 if test $cflag -eq 4; then
-    ld -m elf_x86_64 -o $oname $ohead $olist $otail
+    if [ "$BITS" = "64" ]; then
+        EM=elf_x86_64
+    else
+        EM=elf_i386
+    fi
+    $LD -m $EM -o $oname $ohead $olist $otail
 fi
