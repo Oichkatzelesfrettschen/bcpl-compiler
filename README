@@ -75,6 +75,17 @@ installation directory:
 
     ./makeall install
 
+The project also provides CMake files.  A typical out-of-tree build
+looks like::
+
+    cmake -S . -B build -DCMAKE_INSTALL_PREFIX=/usr/local
+    cmake --build build
+    cmake --install build
+
+Pass ``-DBOOTSTRAP=ON`` to regenerate ``st.s`` using the freshly built
+code generator and optimizer.  The ``util`` and ``doc`` targets may be
+built from the same build directory.
+
 Ensure the resulting `bcplc` driver is on your `PATH` (or supply a
 `BC` variable pointing to it). Once the compiler is available, enter
 the "util" directory and run
