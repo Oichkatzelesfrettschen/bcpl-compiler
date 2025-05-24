@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Build backend programs cg and op
 add_executable(cg cg.c oc.c)
