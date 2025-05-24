@@ -10,6 +10,7 @@ src/st
 src/cg
 src/op
 util/*
+!util/CMakeLists.txt
 build/
 
 # Symlink to system libraries
