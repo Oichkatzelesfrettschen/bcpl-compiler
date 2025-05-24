@@ -10,9 +10,28 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        bits: [64, 32]
     steps:
     - uses: actions/checkout@v4
+    - name: Install 32-bit deps
+      if: ${{ matrix.bits == '32' }}
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y gcc-i686-linux-gnu
     - name: Build
-      run: sh makeall all
+      run: |
+        if [ "${{ matrix.bits }}" = "32" ]; then
+          sh makeall all BITS=32 CROSS_PREFIX=i686-linux-gnu-
+        else
+          sh makeall all
+        fi
     - name: Test utilities
-      run: make -C util test
+      run: |
+        if [ "${{ matrix.bits }}" = "32" ]; then
+          make -C util BC=../src/bcplc test
+        else
+          make -C util test
+        fi
