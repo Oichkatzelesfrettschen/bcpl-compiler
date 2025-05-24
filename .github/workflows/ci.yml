@@ -28,6 +28,11 @@ jobs:
         else
           sh makeall all
         fi
+    - name: Build Chicken Scheme port
+      run: |
+        if command -v csc >/dev/null 2>&1; then
+          csc -o chicken/bcplc-chicken chicken/main.scm
+        fi
     - name: Test utilities
       run: |
         if [ "${{ matrix.bits }}" = "32" ]; then

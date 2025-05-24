@@ -49,7 +49,8 @@ done
 pip3 install --no-cache-dir \
   tensorflow-cpu jax jaxlib \
   tensorflow-model-optimization mlflow onnxruntime-tools \
-  atheris
+  atheris \
+  black ruff pylint mypy pytest pytest-cov hypothesis
 
 # QEMU emulation for foreign binaries
 for pkg in \
