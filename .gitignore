@@ -2,7 +2,8 @@
 
 # Object files and assembly
 src/*.o
-src/*.s
+src/st.s
+src/blib.s
 util/*.o
 
 # Build directories and executables
@@ -11,9 +12,6 @@ src/cg
 src/op
 util/*
 build/
-
-# Symlink to system libraries
-src/sys.s
 
 # Misc temporary files
 *~
