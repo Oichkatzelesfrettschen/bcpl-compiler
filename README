@@ -117,3 +117,15 @@ will also compile and execute the "cmpltest" suite using the
 
 Robert Nordier
 www.nordier.com
+
+Experimental Go Port
+====================
+
+The `experimental/bcpl-go` directory contains an in-progress rewrite of
+selected components in Go.  The module targets Go 1.24 and currently
+implements a basic version of the `bcplc` driver.  Tests can be run with
+
+    go test ./experimental/bcpl-go
+
+The port is incomplete but provides a starting point for further
+translation and refactoring in Go.
