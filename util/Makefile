@@ -1,6 +1,7 @@
 # Makefile for bcplc/util
 
 BC ?= $(shell command -v bcplc 2>/dev/null || echo ../src/bcplc)
+PREFIX?=/usr/local
 BFLAGS ?= -O
 
 all: cmpltest xref gpm
@@ -17,7 +18,11 @@ gpm: gpm.bcpl
 test: cmpltest
 	./cmpltest
 
-install:
+install: cmpltest xref gpm
+	mkdir -p $(PREFIX)/bin
+	install -c -m 755 cmpltest $(PREFIX)/bin
+	install -c -m 755 xref $(PREFIX)/bin
+	install -c -m 755 gpm $(PREFIX)/bin
 
 clean:
 	rm -f cmpltest cmpltest.o
