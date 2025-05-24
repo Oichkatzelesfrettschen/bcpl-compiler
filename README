@@ -114,6 +114,12 @@ After installation the shorter
 will also compile and execute the "cmpltest" suite using the
 64-bit runtime system.
 
+Experimental Chicken Scheme Port
+-------------------------------
+An early experiment using [Chicken Scheme](https://call-cc.org/) lives in
+the `chicken/` directory.  It is not built by default and currently
+contains only stubs.  Consult `chicken/README.md` for more information.
+
 
 Robert Nordier
 www.nordier.com
