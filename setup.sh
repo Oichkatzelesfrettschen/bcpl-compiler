@@ -25,6 +25,7 @@ apt-get update -y
 for pkg in \
   build-essential gcc g++ clang lld llvm \
   clang-format uncrustify astyle editorconfig pre-commit \
+  flake8 python3-pytest \
   make bmake ninja-build cmake meson \
   autoconf automake libtool m4 gawk flex bison byacc \
   pkg-config file ca-certificates curl git unzip \
@@ -47,7 +48,8 @@ done
 
 pip3 install --no-cache-dir \
   tensorflow-cpu jax jaxlib \
-  tensorflow-model-optimization mlflow onnxruntime-tools
+  tensorflow-model-optimization mlflow onnxruntime-tools \
+  atheris
 
 # QEMU emulation for foreign binaries
 for pkg in \
@@ -96,6 +98,8 @@ for pkg in \
   apt_pin_install "$pkg"
 done
 
+npm install -g eslint
+
 # GUI & desktop-dev frameworks
 for pkg in \
   libqt5-dev qtcreator libqt6-dev \
@@ -113,7 +117,7 @@ done
 # containers, virtualization, HPC, debug
 for pkg in \
   docker.io podman buildah virt-manager libvirt-daemon-system qemu-kvm \
-  gdb lldb perf gcovr lcov bcc-tools bpftrace \
+  gdb lldb perf gcovr lcov bcc-tools bpftrace afl++ \
   openmpi-bin libopenmpi-dev mpich; do
   apt_pin_install "$pkg"
 done
