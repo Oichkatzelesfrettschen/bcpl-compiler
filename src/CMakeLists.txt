@@ -5,19 +5,28 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 # Build backend programs cg and op
 add_executable(cg cg.c oc.c)
-target_compile_definitions(cg PRIVATE BITS=64)
+target_compile_definitions(cg PRIVATE BITS=${BITS})
 add_executable(op op.c pt.c)
-target_compile_definitions(op PRIVATE BITS=64)
+target_compile_definitions(op PRIVATE BITS=${BITS})
 
-# Assemble the runtime in 64-bit mode
-set(AS_FLAGS "--64" "--defsym" "BITS=64")
+# Assemble the runtime
+if(BITS STREQUAL "64")
+    set(AS_FLAGS "--64" "--defsym" "BITS=64")
+    set(LD_MODE "elf_x86_64")
+else()
+    set(AS_FLAGS "--32" "--defsym" "BITS=32")
+    set(LD_MODE "elf_i386")
+endif()
+
+set(AS "${CROSS_PREFIX}as")
+set(LD "${CROSS_PREFIX}ld")
 set(BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 function(add_asm_object out src)
     add_custom_command(
         OUTPUT ${out}
-        COMMAND as ${AS_FLAGS} -o ${out} ${src}
+        COMMAND ${AS} ${AS_FLAGS} -o ${out} ${src}
         DEPENDS ${src}
         WORKING_DIRECTORY ${BUILD_DIR}
         VERBATIM)
@@ -52,7 +61,7 @@ endif()
 
 add_custom_command(
     OUTPUT ${BUILD_DIR}/st.o
-    COMMAND as ${AS_FLAGS} -o st.o ${ST_SRC}
+    COMMAND ${AS} ${AS_FLAGS} -o st.o ${ST_SRC}
     DEPENDS ${ST_SRC}
     WORKING_DIRECTORY ${BUILD_DIR}
     VERBATIM)
@@ -67,7 +76,7 @@ set(RUNTIME_OBJS
 
 add_custom_command(
     OUTPUT ${BUILD_DIR}/st
-    COMMAND ld -m elf_x86_64 -o st ${RUNTIME_OBJS}
+    COMMAND ${LD} -m ${LD_MODE} -o st ${RUNTIME_OBJS}
     DEPENDS ${RUNTIME_OBJS}
     WORKING_DIRECTORY ${BUILD_DIR}
     VERBATIM)

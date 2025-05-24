@@ -49,17 +49,21 @@ Alternatively, you can build directly within ``src/``::
     make -C src
     make -C src install
 
-The Makefiles build a native 64-bit runtime by default.  Specify
-``BITS=32`` when invoking ``makeall`` or ``make`` in ``src`` to create
-32-bit binaries.  Cross builds may also set ``CROSS_PREFIX``
-(for example ``CROSS_PREFIX=i686-linux-gnu-``).
+The Makefiles and CMake build files default to a 32-bit runtime
+for historical compatibility.  Specify ``BITS=64`` (or ``-DBITS=64``
+when using CMake) to build 64-bit binaries.  Cross builds may also
+set ``CROSS_PREFIX`` (for example ``CROSS_PREFIX=x86_64-linux-gnu-``)
+to select alternate assembler and linker commands.
 
 After installation, verify the compiler by running::
 
     bcplc util/cmpltest.bcpl
 
-The runtime components now build as native 64-bit executables.
-Support for ``qemu-i386`` is therefore no longer required.
+The distribution expects a 32-bit environment by default, so running
+on a 64-bit host typically requires ``qemu-i386`` or similar
+multi-arch support.  Building with ``BITS=64`` removes this
+requirement but is still experimental and may not work on all
+platforms.
 
 This should print::
 
@@ -95,9 +99,10 @@ looks like::
     cmake --build build
     cmake --install build
 
-Pass ``-DBOOTSTRAP=ON`` to regenerate ``st.s`` using the freshly built
-code generator and optimizer.  The ``util`` and ``doc`` targets may be
-built from the same build directory.
+The CMake build regenerates ``st.s`` using the freshly built code
+generator by default.  Set ``-DBOOTSTRAP=OFF`` to skip this step.  The
+``util`` and ``doc`` targets may be built from the same build
+directory.
 
 Ensure the resulting `bcplc` driver is on your `PATH` (or supply a
 `BC` variable pointing to it).  If the driver has not yet been
