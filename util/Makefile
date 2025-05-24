@@ -1,6 +1,6 @@
 # Makefile for bcplc/util
 
-BC ?= bcplc
+BC ?= $(shell command -v bcplc 2>/dev/null || echo ../src/bcplc)
 BFLAGS ?= -O
 
 all: cmpltest xref gpm

@@ -23,6 +23,10 @@ followed by (as root)
 
     ./makeall install
 
+The build defaults to a 64-bit runtime.  Use ``BITS=32`` with
+``makeall`` or ``make`` in ``src`` to create 32-bit binaries and set
+``CROSS_PREFIX`` as needed for cross builds.
+
 Otherwise, change to the "src" directory. Check that the "sys.s"
 symbolic link points to either "sys_linux.s" or "sys_freebsd.s",
 as appropriate for your system. Enter
@@ -45,9 +49,15 @@ Should you wish to install the compiler somewhere other than
 "/usr/local/lib/bcplc", be sure to change occurrences of this path
 in the compiler sources.
 
-Once the compiler is built and installed, it is possible to build
-and run the "cmpltest" utility in the "util" directory, to verify
-that all is in order. The test should conclude:
+Once the compiler is built you can run the "cmpltest" utility from the
+"util" directory to verify the build.  If ``bcplc`` is not yet installed,
+use the driver in ``src/``.  It automatically finds the runtime files in
+that directory:
+
+    make -C util BC=../src/bcplc test
+
+After installation simply run ``make test`` in ``util``.  The test
+should conclude:
 
     119 TESTS COMPLETED, 0 FAILURE(S)
 

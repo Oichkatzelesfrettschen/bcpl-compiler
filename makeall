@@ -42,5 +42,10 @@ done
 
 if [ "$target" = "all" ]; then
     echo "===== util tests ====="
-    (cd util && ${MAKE} test)
+    if command -v bcplc >/dev/null 2>&1; then
+        BC=bcplc
+    else
+        BC=../src/bcplc
+    fi
+    (cd util && ${MAKE} BC=${BC} test)
 fi
