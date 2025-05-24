@@ -29,6 +29,15 @@ add_bcpl_program(cmpltest)
 add_bcpl_program(xref)
 add_bcpl_program(gpm)
 
+# Install the built utilities alongside the compiler runtime
+install(
+    PROGRAMS
+        ${CMAKE_CURRENT_BINARY_DIR}/cmpltest
+        ${CMAKE_CURRENT_BINARY_DIR}/xref
+        ${CMAKE_CURRENT_BINARY_DIR}/gpm
+    DESTINATION bin
+)
+
 # Optional test target equivalent to "make test" in util
 add_custom_target(test
     COMMAND ./cmpltest
