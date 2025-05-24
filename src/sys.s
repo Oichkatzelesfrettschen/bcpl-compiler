@@ -3,6 +3,108 @@
 // BCPL compiler x86 runtime
 // System interface: Linux
 
+.ifndef BITS
+.set BITS,32
+.endif
+
+.if BITS==64
+
+        .set    RESULT2,91              # BCPL RESULT2
+
+        .global _exit
+_exit:  mov     8(%rsp),%edi
+        mov     $60,%eax
+        syscall
+
+        .global read
+read:   mov     8(%rsp),%edi
+        mov     16(%rsp),%rsi
+        mov     24(%rsp),%edx
+        mov     $0,%eax
+        jmp     syscall
+
+        .global write
+write:  mov     8(%rsp),%edi
+        mov     16(%rsp),%rsi
+        mov     24(%rsp),%edx
+        mov     $1,%eax
+        jmp     syscall
+
+        .global open
+open:   mov     8(%rsp),%rdi
+        mov     16(%rsp),%rsi
+        mov     24(%rsp),%edx
+        mov     $2,%eax
+        jmp     syscall
+
+        .global close
+close:  mov     8(%rsp),%edi
+        mov     $3,%eax
+        jmp     syscall
+
+        .global olseek
+olseek: mov     8(%rsp),%edi
+        mov     16(%rsp),%rsi
+        mov     24(%rsp),%edx
+        mov     $8,%eax
+        jmp     syscall
+
+        .global sbrk
+sbrk:   mov     curbrk(%rip),%rax
+        test    %rax,%rax
+        jnz     1f
+        mov     %rax,%rdi
+        call    brk
+1:      mov     %rax,%r10               # old break
+        mov     8(%rsp),%rcx
+        mov     %r10,%rdi
+        add     %rcx,%rdi
+        call    brk
+        mov     %r10,%rax
+        ret
+
+brk:    mov     $12,%eax
+        jmp     syscall
+
+        .global ioctl
+ioctl:  mov     8(%rsp),%rdi
+        mov     16(%rsp),%rsi
+        mov     24(%rsp),%rdx
+        mov     $16,%eax
+
+syscall:
+        syscall
+        cmp     $0,%rax
+        jge     1f
+        neg     %rax
+        mov     %eax,G+RESULT2*4
+        mov     $-1,%eax
+        stc
+1:      ret
+
+        .set    TERMIOSZ,0x40
+        .set    TCGETS,0x5401
+
+        .global isatty
+isatty: sub     $TERMIOSZ,%rsp
+        mov     TERMIOSZ+8(%rsp),%rdi
+        mov     $TCGETS,%esi
+        mov     %rsp,%rdx
+        call    ioctl
+        mov     $0,%eax
+        jc      1f
+        inc     %eax
+1:      add     $TERMIOSZ,%rsp
+        ret
+
+        .global oflags
+oflags: .long   01101
+
+        .data
+curbrk: .quad   0
+
+.else
+
         .set    RESULT2,91              # BCPL RESULT2
 
         .global _exit
@@ -89,3 +191,5 @@ oflags: .long   01101
 
         .data
 curbrk: .long   0
+
+.endif

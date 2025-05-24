@@ -45,7 +45,11 @@
 
 static const char *const xistr[] =
 {
+#if BITS==64
+    "movl", "leal", "jmp", "call", "imull", "idivl", "subl",
+#else
     "movl", "leal", "jmpl", "calll", "imull", "idivl", "subl",
+#endif
     "cmpl", "addl", "negl", "notl", "andl", "orl", "xorl"
 };
 
@@ -203,9 +207,15 @@ static int gencode(void)
             }
             putchar('\n');
             codelab(l);
+#if BITS==64
+            emit("pop (%%rcx)");
+            emit("mov %%rbp,4(%%rcx)");
+            emit("mov %%rcx,%%rbp");
+#else
             emit("pop (%%ecx)");
             emit("mov %%ebp,4(%%ecx)");
             emit("mov %%ecx,%%ebp");
+#endif
         }
         break;
         case S_ENDPROC:
@@ -218,7 +228,11 @@ static int gencode(void)
         case S_STORE:
             break;
         case S_RV:
+#if BITS==64
+            emit("mov (,%%rax,4),%%eax");
+#else
             emit("mov (,%%eax,4),%%eax");
+#endif
             break;
         case S_ABS:
             emit("test %%eax,%%eax");
@@ -284,15 +298,27 @@ static int gencode(void)
             emit("shl $2,%%eax");
             codex(X_ADD);
             if (op == S_GETBYTE) {
+#if BITS==64
+                emit("movzb (%%rax),%%eax");
+#else
                 emit("movzb (%%eax),%%eax");
+#endif
             } else {
                 code(X_MOV, X_R, 1, X_P, sp - 3);
+#if BITS==64
+                emit("mov %%cl,(%%rax)");
+#else
                 emit("mov %%cl,(%%eax)");
+#endif
                 sp--;
             }
             break;
         case S_STIND:
+#if BITS==64
+            emit("mov %%eax,(,%%rcx,4)");
+#else
             emit("mov %%eax,(,%%ecx,4)");
+#endif
             break;
         case S_GOTO:
             codex(X_JMP);
@@ -352,9 +378,17 @@ static int gencode(void)
             break;
         case S_FNRN:
         case S_RTRN:
+#if BITS==64
+            emit("mov %%rbp,%%rcx");
+            emit("mov 4(%%rcx),%%eax");
+            emit("mov %%eax,%%ebp");
+            emit("mov (%%rcx),%%eax");
+            emit("jmp *%%rax");
+#else
             emit("mov %%ebp,%%ecx");
             emit("mov 4(%%ecx),%%ebp");
             emit("jmp *(%%ecx)");
+#endif
             break;
         case S_ENDFOR:
             codex(X_CMP);
