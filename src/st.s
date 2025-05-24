@@ -3,296 +3,300 @@
 	jmp L2
 //	START
 L1:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 12(%ebp),%ecx
-	calll *64(%edi)
-	movl %eax,12(%ebp)
-	leal 16(%ebp),%ecx
-	calll *68(%edi)
-	movl %eax,16(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 12(%rbp),%ecx
+	call *64(%rdi)
+	movl %eax,12(%rbp)
+	leal 16(%rbp),%ecx
+	call *68(%rdi)
+	movl %eax,16(%rbp)
 	movl $L999,%eax
 	shr $2,%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *164(%edi)
-	movl %eax,776(%edi)
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *48(%edi)
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *164(%rdi)
+	movl %eax,776(%rdi)
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *48(%rdi)
 	movl $L998,%eax
 	shr $2,%eax
-	movl %eax,28(%ebp)
-	leal 4(%edi),%eax
+	movl %eax,28(%rbp)
+	leal 4(%rdi),%eax
 	shr $2,%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *304(%edi)
-	leal 28(%ebp),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *304(%rdi)
+	leal 28(%rbp),%eax
 	shr $2,%eax
-	movl %eax,20(%ebp)
-	movl $55000,24(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,512(%edi)
-	movl $2,1128(%edi)
-	movl $0,508(%edi)
-	movl $0,440(%edi)
-	movl $1,532(%edi)
-	movl $0,444(%edi)
-	movl $0,112(%ebp)
+	movl %eax,20(%rbp)
+	movl $55000,24(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,512(%rdi)
+	movl $2,1128(%rdi)
+	movl $0,508(%rdi)
+	movl $0,440(%rdi)
+	movl $1,532(%rdi)
+	movl $0,444(%rdi)
+	movl $0,112(%rbp)
 	jmp L3
 L4:
-	movl $0,116(%ebp)
-	movl 112(%ebp),%eax
-	addl 20(%ebp),%eax
+	movl $0,116(%rbp)
+	movl 112(%rbp),%eax
+	addl 20(%rbp),%eax
 	mov %eax,%ecx
-	movl 116(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	incl 112(%ebp)
+	movl 116(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	incl 112(%rbp)
 L3:
-	cmpl $20,112(%ebp)
+	cmpl $20,112(%rbp)
 	jle L4
 	movl $L997,%eax
 	shr $2,%eax
-	movl %eax,120(%ebp)
-	leal 112(%ebp),%ecx
-	calll *168(%edi)
-	movl %eax,772(%edi)
-	movl %eax,120(%ebp)
-	leal 112(%ebp),%ecx
-	calll *788(%edi)
+	movl %eax,120(%rbp)
+	leal 112(%rbp),%ecx
+	call *168(%rdi)
+	movl %eax,772(%rdi)
+	movl %eax,120(%rbp)
+	leal 112(%rbp),%ecx
+	call *788(%rdi)
 	orl %eax,%eax
 	jnz L5
-	movl $0,112(%ebp)
-	movl $0,116(%ebp)
-	movl 772(%edi),%eax
-	movl %eax,128(%ebp)
-	leal 120(%ebp),%ecx
-	calll *44(%edi)
+	movl $0,112(%rbp)
+	movl $0,116(%rbp)
+	movl 772(%rdi),%eax
+	movl %eax,128(%rbp)
+	leal 120(%rbp),%ecx
+	call *44(%rdi)
 	movl $L996,%eax
 	shr $2,%eax
-	movl %eax,128(%ebp)
-	leal 120(%ebp),%ecx
-	calll *240(%edi)
+	movl %eax,128(%rbp)
+	leal 120(%rbp),%ecx
+	call *240(%rdi)
 L8:
-	leal 120(%ebp),%ecx
-	calll *52(%edi)
-	movl %eax,112(%ebp)
+	leal 120(%rbp),%ecx
+	call *52(%rdi)
+	movl %eax,112(%rbp)
 L6:
-	cmpl $10,112(%ebp)
+	cmpl $10,112(%rbp)
 	je L10
-	cmpl $-1,112(%ebp)
+	cmpl $-1,112(%rbp)
 	jne L9
 L10:
 	jmp L11
 L9:
-	movl 112(%ebp),%eax
-	movl %eax,128(%ebp)
-	leal 120(%ebp),%ecx
-	calll *56(%edi)
-	cmpl $80,112(%ebp)
+	movl 112(%rbp),%eax
+	movl %eax,128(%rbp)
+	leal 120(%rbp),%ecx
+	call *56(%rdi)
+	cmpl $80,112(%rbp)
 	jne L12
-	movl $1,116(%ebp)
+	movl $1,116(%rbp)
 L12:
-	cmpl $84,112(%ebp)
+	cmpl $84,112(%rbp)
 	jne L13
-	movl $2,116(%ebp)
+	movl $2,116(%rbp)
 L13:
-	cmpl $67,112(%ebp)
+	cmpl $67,112(%rbp)
 	jne L14
-	movl $3,116(%ebp)
+	movl $3,116(%rbp)
 L14:
-	cmpl $77,112(%ebp)
+	cmpl $77,112(%rbp)
 	jne L15
-	movl $4,116(%ebp)
+	movl $4,116(%rbp)
 L15:
-	cmpl $78,112(%ebp)
+	cmpl $78,112(%rbp)
 	jne L16
-	movl $5,116(%ebp)
+	movl $5,116(%rbp)
 L16:
-	cmpl $83,112(%ebp)
+	cmpl $83,112(%rbp)
 	jne L17
-	movl $-1,440(%edi)
+	movl $-1,440(%rdi)
 L17:
-	cmpl $69,112(%ebp)
+	cmpl $69,112(%rbp)
 	jne L18
-	movl $-1,508(%edi)
+	movl $-1,508(%rdi)
 L18:
-	cmpl $76,112(%ebp)
+	cmpl $76,112(%rbp)
 	jne L19
-	leal 120(%ebp),%ecx
-	calll *280(%edi)
-	movl %eax,24(%ebp)
-	movl %eax,128(%ebp)
-	leal 120(%ebp),%ecx
-	calll *248(%edi)
+	leal 120(%rbp),%ecx
+	call *280(%rdi)
+	movl %eax,24(%rbp)
+	movl %eax,128(%rbp)
+	leal 120(%rbp),%ecx
+	call *248(%rdi)
 L19:
-	cmpl $51,112(%ebp)
+	cmpl $51,112(%rbp)
 	jne L20
-	movl $3,1128(%edi)
+	movl $3,1128(%rdi)
 L20:
-	movl $-1,120(%ebp)
-	movl 116(%ebp),%eax
-	addl 512(%edi),%eax
+	movl $-1,120(%rbp)
+	movl 116(%rbp),%eax
+	addl 512(%rdi),%eax
 	mov %eax,%ecx
-	movl 120(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 120(%rbp),%eax
+	mov %eax,(,%rcx,4)
 	jmp L8
 L11:
-	leal 120(%ebp),%ecx
-	calll *252(%edi)
-	leal 120(%ebp),%ecx
-	calll *184(%edi)
+	leal 120(%rbp),%ecx
+	call *252(%rdi)
+	leal 120(%rbp),%ecx
+	call *184(%rdi)
 L5:
 	movl $3,%eax
-	addl 512(%edi),%eax
-	mov (,%eax,4),%eax
+	addl 512(%rdi),%eax
+	mov (,%rax,4),%eax
 	notl %eax
-	movl %eax,456(%edi)
-	movl $20,768(%edi)
-	movl $0,764(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,772(%edi)
-	movl %eax,120(%ebp)
-	leal 112(%ebp),%ecx
-	calll *44(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,780(%edi)
-	movl %eax,120(%ebp)
-	leal 112(%ebp),%ecx
-	calll *788(%edi)
+	movl %eax,456(%rdi)
+	movl $20,768(%rdi)
+	movl $0,764(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,772(%rdi)
+	movl %eax,120(%rbp)
+	leal 112(%rbp),%ecx
+	call *44(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,780(%rdi)
+	movl %eax,120(%rbp)
+	leal 112(%rbp),%ecx
+	call *788(%rdi)
 	orl %eax,%eax
 	jz L21
-	movl 776(%edi),%eax
-	movl %eax,780(%edi)
+	movl 776(%rdi),%eax
+	movl %eax,780(%rdi)
 L21:
 	jmp L24
 //	COMP
 L22:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 20(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 20(%rbp),%eax
 	shr $2,%eax
-	movl %eax,16(%ebp)
-	movl %eax,400(%edi)
+	movl %eax,16(%rbp)
+	movl %eax,400(%rdi)
 L25:
-	movl 12(%ebp),%eax
-	addl 8(%ebp),%eax
-	movl %eax,672(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,676(%edi)
-	movl 440(%edi),%eax
+	movl 12(%rbp),%eax
+	addl 8(%rbp),%eax
+	movl %eax,672(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,676(%rdi)
+	movl 440(%rdi),%eax
 	orl %eax,%eax
 	jz L26
 	movl $L995,%eax
 	shr $2,%eax
-	movl %eax,284(%ebp)
-	leal 276(%ebp),%ecx
-	calll *164(%edi)
-	movl %eax,784(%edi)
-	movl %eax,284(%ebp)
-	leal 276(%ebp),%ecx
-	calll *788(%edi)
+	movl %eax,284(%rbp)
+	leal 276(%rbp),%ecx
+	call *164(%rdi)
+	movl %eax,784(%rdi)
+	movl %eax,284(%rbp)
+	leal 276(%rbp),%ecx
+	call *788(%rdi)
 	orl %eax,%eax
 	jz L28
-	movl 776(%edi),%eax
-	movl %eax,784(%edi)
+	movl 776(%rdi),%eax
+	movl %eax,784(%rdi)
 L28:
 	jmp L27
 L26:
-	movl 776(%edi),%eax
-	movl %eax,784(%edi)
+	movl 776(%rdi),%eax
+	movl %eax,784(%rdi)
 L27:
-	leal 276(%ebp),%ecx
-	calll *600(%edi)
-	movl %eax,276(%ebp)
-	cmpl $0,276(%ebp)
+	leal 276(%rbp),%ecx
+	call *600(%rdi)
+	movl %eax,276(%rbp)
+	cmpl $0,276(%rbp)
 	jne L29
 	jmp L30
 L29:
 	movl $L994,%eax
 	shr $2,%eax
-	movl %eax,288(%ebp)
-	movl 676(%edi),%eax
-	addl 12(%ebp),%eax
-	subl 672(%edi),%eax
-	movl %eax,292(%ebp)
-	leal 280(%ebp),%ecx
-	calll *304(%edi)
+	movl %eax,288(%rbp)
+	movl 676(%rdi),%eax
+	addl 12(%rbp),%eax
+	subl 672(%rdi),%eax
+	movl %eax,292(%rbp)
+	leal 280(%rbp),%ecx
+	call *304(%rdi)
 	movl $2,%eax
-	addl 512(%edi),%eax
-	mov (,%eax,4),%eax
+	addl 512(%rdi),%eax
+	mov (,%rax,4),%eax
 	orl %eax,%eax
 	jz L31
 	movl $L993,%eax
 	shr $2,%eax
-	movl %eax,288(%ebp)
-	leal 280(%ebp),%ecx
-	calll *240(%edi)
-	movl 276(%ebp),%eax
-	movl %eax,288(%ebp)
-	movl $0,292(%ebp)
-	movl $20,296(%ebp)
-	leal 280(%ebp),%ecx
-	calll *608(%edi)
-	leal 280(%ebp),%ecx
-	calll *252(%edi)
+	movl %eax,288(%rbp)
+	leal 280(%rbp),%ecx
+	call *240(%rdi)
+	movl 276(%rbp),%eax
+	movl %eax,288(%rbp)
+	movl $0,292(%rbp)
+	movl $20,296(%rbp)
+	leal 280(%rbp),%ecx
+	call *608(%rdi)
+	leal 280(%rbp),%ecx
+	call *252(%rdi)
 L31:
-	cmpl $0,764(%edi)
+	cmpl $0,764(%rdi)
 	je L32
-	movl $8,288(%ebp)
-	leal 280(%ebp),%ecx
-	calll *120(%edi)
+	movl $8,288(%rbp)
+	leal 280(%rbp),%ecx
+	call *120(%rdi)
 L32:
 	movl $3,%eax
-	addl 512(%edi),%eax
-	mov (,%eax,4),%eax
+	addl 512(%rdi),%eax
+	mov (,%rax,4),%eax
 	orl %eax,%eax
 	jnz L33
-	movl 780(%edi),%eax
-	movl %eax,288(%ebp)
-	leal 280(%ebp),%ecx
-	calll *48(%edi)
-	movl 276(%ebp),%eax
-	movl %eax,288(%ebp)
-	leal 280(%ebp),%ecx
-	calll *980(%edi)
-	movl 776(%edi),%eax
-	movl %eax,288(%ebp)
-	leal 280(%ebp),%ecx
-	calll *48(%edi)
+	movl 780(%rdi),%eax
+	movl %eax,288(%rbp)
+	leal 280(%rbp),%ecx
+	call *48(%rdi)
+	movl 276(%rbp),%eax
+	movl %eax,288(%rbp)
+	leal 280(%rbp),%ecx
+	call *980(%rdi)
+	movl 776(%rdi),%eax
+	movl %eax,288(%rbp)
+	leal 280(%rbp),%ecx
+	call *48(%rdi)
 L33:
 	jmp L25
 L30:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L24:
 	movl L23,%eax
-	movl %eax,120(%ebp)
-	movl 24(%ebp),%eax
-	movl %eax,124(%ebp)
-	leal 112(%ebp),%ecx
-	calll *160(%edi)
-	leal 112(%ebp),%ecx
-	calll *184(%edi)
+	movl %eax,120(%rbp)
+	movl 24(%rbp),%eax
+	movl %eax,124(%rbp)
+	leal 112(%rbp),%ecx
+	call *160(%rdi)
+	leal 112(%rbp),%ecx
+	call *184(%rdi)
 	movl $L992,%eax
 	shr $2,%eax
-	movl %eax,120(%ebp)
-	leal 112(%ebp),%ecx
-	calll *240(%edi)
-	cmpl $0,764(%edi)
+	movl %eax,120(%rbp)
+	leal 112(%rbp),%ecx
+	call *240(%rdi)
+	cmpl $0,764(%rdi)
 	je L34
-	movl $8,120(%ebp)
-	leal 112(%ebp),%ecx
-	calll *120(%edi)
+	movl $8,120(%rbp)
+	leal 112(%rbp),%ecx
+	call *120(%rdi)
 L34:
 	jmp finish
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L2:
 	ret
 	.data
@@ -409,30 +413,30 @@ L992:
 	jmp L1002
 //	NEXTSYMB
 L1001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,488(%edi)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,488(%rdi)
 L1003:
-	movl 508(%edi),%eax
+	movl 508(%rdi),%eax
 	orl %eax,%eax
 	jz L1004
-	movl 468(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *56(%edi)
+	movl 468(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *56(%rdi)
 L1004:
 	jmp L1005
 L1007:
 L1008:
-	incl 532(%edi)
-	movl $-1,488(%edi)
+	incl 532(%rdi)
+	movl $-1,488(%rdi)
 L1009:
 L1010:
 L1011:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $32,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $32,468(%rdi)
 	je L1009
 	jmp L1003
 L1012:
@@ -445,13 +449,15 @@ L1018:
 L1019:
 L1020:
 L1021:
-	movl $1,460(%edi)
-	movl $10,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *448(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $1,460(%rdi)
+	movl $10,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *448(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1022:
 L1023:
 L1024:
@@ -504,401 +510,431 @@ L1070:
 L1071:
 L1072:
 L1073:
-	movl 468(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *472(%edi)
-	leal 8(%ebp),%ecx
-	calll *500(%edi)
-	movl %eax,460(%edi)
-	cmpl $93,460(%edi)
+	movl 468(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *472(%rdi)
+	leal 8(%rbp),%ecx
+	call *500(%rdi)
+	movl %eax,460(%rdi)
+	cmpl $93,460(%rdi)
 	jne L1074
-	leal 8(%ebp),%ecx
-	calll *476(%edi)
+	leal 8(%rbp),%ecx
+	call *476(%rdi)
 	jmp L1003
 L1074:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1075:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $40,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $40,468(%rdi)
 	je L1076
-	cmpl $41,468(%edi)
+	cmpl $41,468(%rdi)
 	je L1076
-	movl $91,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *604(%edi)
+	movl $91,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *604(%rdi)
 L1076:
-	cmpl $40,468(%edi)
+	cmpl $40,468(%rdi)
 	jne L1078
 	movl $91,%eax
 	jmp L1077
 L1078:
 	movl $92,%eax
 L1077:
-	movl %eax,460(%edi)
-	movl $36,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *472(%edi)
-	leal 8(%ebp),%ecx
-	calll *500(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,460(%rdi)
+	movl $36,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *472(%rdi)
+	leal 8(%rbp),%ecx
+	call *500(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1079:
 L1080:
-	movl $105,460(%edi)
+	movl $105,460(%rdi)
 	jmp L1081
 L1082:
 L1083:
-	movl $106,460(%edi)
+	movl $106,460(%rdi)
 	jmp L1081
 L1084:
-	movl $1,460(%edi)
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	movl 468(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *368(%edi)
-	movl %eax,468(%edi)
-	cmpl $48,468(%edi)
+	movl $1,460(%rdi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	movl 468(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *368(%rdi)
+	movl %eax,468(%rdi)
+	cmpl $48,468(%rdi)
 	jl L1085
-	cmpl $55,468(%edi)
+	cmpl $55,468(%rdi)
 	jg L1085
-	movl $8,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *448(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $8,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *448(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1085:
-	cmpl $66,468(%edi)
+	cmpl $66,468(%rdi)
 	jne L1086
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	movl $2,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *448(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	movl $2,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *448(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1086:
-	cmpl $79,468(%edi)
+	cmpl $79,468(%rdi)
 	jne L1087
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	movl $8,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *448(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	movl $8,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *448(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1087:
-	cmpl $88,468(%edi)
+	cmpl $88,468(%rdi)
 	jne L1088
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	movl $16,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *448(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	movl $16,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *448(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1088:
-	movl $33,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *604(%edi)
+	movl $33,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *604(%rdi)
 L1089:
-	movl $16,460(%edi)
+	movl $16,460(%rdi)
 	jmp L1081
 L1090:
-	movl $14,460(%edi)
+	movl $14,460(%rdi)
 	jmp L1081
 L1091:
-	movl $38,460(%edi)
+	movl $38,460(%rdi)
 	jmp L1081
 L1092:
-	movl $97,460(%edi)
+	movl $97,460(%rdi)
 	jmp L1081
 L1093:
-	movl $7,460(%edi)
+	movl $7,460(%rdi)
 	jmp L1081
 L1094:
-	movl $33,460(%edi)
+	movl $33,460(%rdi)
 	jmp L1081
 L1095:
-	movl $34,460(%edi)
+	movl $34,460(%rdi)
 	jmp L1081
 L1096:
-	movl $20,460(%edi)
+	movl $20,460(%rdi)
 	jmp L1081
 L1097:
-	movl $9,460(%edi)
+	movl $9,460(%rdi)
 	jmp L1081
 L1098:
-	movl $28,460(%edi)
+	movl $28,460(%rdi)
 	jmp L1081
 L1099:
-	movl $11,460(%edi)
+	movl $11,460(%rdi)
 	jmp L1081
 L1100:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $92,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $92,468(%rdi)
 	jne L1101
-	movl $33,460(%edi)
+	movl $33,460(%rdi)
 	jmp L1081
 L1101:
-	cmpl $47,468(%edi)
+	cmpl $47,468(%rdi)
 	jne L1102
 L1103:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $10,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $10,468(%rdi)
 	je L1104
-	cmpl $-1,468(%edi)
+	cmpl $-1,468(%rdi)
 	jne L1103
 L1104:
 	jmp L1003
 L1102:
-	cmpl $42,468(%edi)
+	cmpl $42,468(%rdi)
 	je L1105
-	movl $12,460(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $12,460(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1105:
 L1106:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $42,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $42,468(%rdi)
 	jne L1107
 L1108:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $42,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $42,468(%rdi)
 	je L1108
-	cmpl $47,468(%edi)
+	cmpl $47,468(%rdi)
 	jne L1109
 	jmp L1110
 L1109:
 L1107:
-	cmpl $10,468(%edi)
+	cmpl $10,468(%rdi)
 	jne L1111
-	incl 532(%edi)
+	incl 532(%rdi)
 L1111:
-	cmpl $-1,468(%edi)
+	cmpl $-1,468(%rdi)
 	jne L1112
-	movl $63,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *604(%edi)
+	movl $63,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *604(%rdi)
 L1112:
 	jmp L1106
 L1110:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
 	jmp L1003
 L1113:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $61,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $61,468(%rdi)
 	jne L1114
-	movl $21,460(%edi)
+	movl $21,460(%rdi)
 	jmp L1081
 L1114:
-	movl $30,460(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $30,460(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1115:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $47,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $47,468(%rdi)
 	jne L1116
-	movl $34,460(%edi)
+	movl $34,460(%rdi)
 	jmp L1081
 L1116:
-	cmpl $61,468(%edi)
+	cmpl $61,468(%rdi)
 	jne L1117
-	movl $21,460(%edi)
+	movl $21,460(%rdi)
 	jmp L1081
 L1117:
-	movl $30,460(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $30,460(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1118:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $61,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $61,468(%rdi)
 	jne L1119
-	movl $24,460(%edi)
+	movl $24,460(%rdi)
 	jmp L1081
 L1119:
-	cmpl $60,468(%edi)
+	cmpl $60,468(%rdi)
 	jne L1120
-	movl $31,460(%edi)
+	movl $31,460(%rdi)
 	jmp L1081
 L1120:
-	movl $22,460(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $22,460(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1121:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $61,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $61,468(%rdi)
 	jne L1122
-	movl $25,460(%edi)
+	movl $25,460(%rdi)
 	jmp L1081
 L1122:
-	cmpl $62,468(%edi)
+	cmpl $62,468(%rdi)
 	jne L1123
-	movl $32,460(%edi)
+	movl $32,460(%rdi)
 	jmp L1081
 L1123:
-	movl $23,460(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $23,460(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1124:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $62,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $62,468(%rdi)
 	jne L1125
-	movl $37,460(%edi)
+	movl $37,460(%rdi)
 	jmp L1081
 L1125:
-	movl $15,460(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $15,460(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1126:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $61,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $61,468(%rdi)
 	jne L1127
-	movl $50,460(%edi)
+	movl $50,460(%rdi)
 	jmp L1081
 L1127:
-	movl $54,460(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $54,460(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1128:
-	movl $0,436(%edi)
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
+	movl $0,436(%rdi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
 	jmp L1130
 L1129:
-	cmpl $255,436(%edi)
+	cmpl $255,436(%rdi)
 	jne L1131
-	movl $34,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *604(%edi)
+	movl $34,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *604(%rdi)
 L1131:
-	incl 436(%edi)
-	leal 8(%ebp),%ecx
-	calll *452(%edi)
-	movl %eax,8(%ebp)
-	movl 436(%edi),%eax
-	addl 432(%edi),%eax
+	incl 436(%rdi)
+	leal 8(%rbp),%ecx
+	call *452(%rdi)
+	movl %eax,8(%rbp)
+	movl 436(%rdi),%eax
+	addl 432(%rdi),%eax
 	mov %eax,%ecx
-	movl 8(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 8(%rbp),%eax
+	mov %eax,(,%rcx,4)
 L1130:
-	cmpl $34,468(%edi)
+	cmpl $34,468(%rdi)
 	jne L1129
-	movl 436(%edi),%eax
-	movl %eax,8(%ebp)
+	movl 436(%rdi),%eax
+	movl %eax,8(%rbp)
 	movl $0,%eax
-	addl 432(%edi),%eax
+	addl 432(%rdi),%eax
 	mov %eax,%ecx
-	movl 8(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 432(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 424(%edi),%eax
-	movl %eax,20(%ebp)
-	leal 8(%ebp),%ecx
-	calll *264(%edi)
-	movl %eax,428(%edi)
-	movl $3,460(%edi)
+	movl 8(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 432(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 424(%rdi),%eax
+	movl %eax,20(%rbp)
+	leal 8(%rbp),%ecx
+	call *264(%rdi)
+	movl %eax,428(%rdi)
+	movl $3,460(%rdi)
 	jmp L1081
 L1132:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	leal 8(%ebp),%ecx
-	calll *452(%edi)
-	movl %eax,404(%edi)
-	movl $1,460(%edi)
-	cmpl $39,468(%edi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	leal 8(%rbp),%ecx
+	call *452(%rdi)
+	movl %eax,404(%rdi)
+	movl $1,460(%rdi)
+	cmpl $39,468(%rdi)
 	je L1133
-	movl $34,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *604(%edi)
+	movl $34,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *604(%rdi)
 L1133:
 	jmp L1081
 L1134:
-	cmpl $-1,468(%edi)
+	cmpl $-1,468(%rdi)
 	je L1135
-	movl $32,468(%edi)
-	movl $94,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *604(%edi)
+	movl $32,468(%rdi)
+	movl $94,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *604(%rdi)
 L1135:
 L1136:
-	cmpl $0,416(%edi)
+	cmpl $0,416(%rdi)
 	jne L1137
-	movl $90,460(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $90,460(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1137:
-	leal 8(%ebp),%ecx
-	calll *184(%edi)
-	movl 416(%edi),%eax
+	leal 8(%rbp),%ecx
+	call *184(%rdi)
+	movl 416(%rdi),%eax
 	subl $3,%eax
-	movl %eax,416(%edi)
-	addl 412(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,772(%edi)
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *44(%edi)
-	movl 416(%edi),%eax
+	movl %eax,416(%rdi)
+	addl 412(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,772(%rdi)
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *44(%rdi)
+	movl 416(%rdi),%eax
 	incl %eax
-	addl 412(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,532(%edi)
+	addl 412(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,532(%rdi)
 	movl $2,%eax
-	addl 416(%edi),%eax
-	addl 412(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,468(%edi)
+	addl 416(%rdi),%eax
+	addl 412(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,468(%rdi)
 	jmp L1003
 	jmp L1006
 L1005:
-	movl 468(%edi),%eax
-	mov $L1999,%edx
-	mov $93,%ecx
-1:	cmp (%edx),%eax
+	movl 468(%rdi),%eax
+	mov $L1999,%rdx
+	mov $93,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L1134
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L1006:
 	jmp L1003
 L1081:
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L1002:
 	ret
 	.data
@@ -1097,203 +1133,211 @@ L1999:
 	jmp L2005
 //	LOOKUPWORD
 L2001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	movl $0,%eax
-	addl 424(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,8(%ebp)
-	movl 428(%edi),%eax
-	addl 424(%edi),%eax
-	mov (,%eax,4),%eax
+	addl 424(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,8(%rbp)
+	movl 428(%rdi),%eax
+	addl 424(%rdi),%eax
+	mov (,%rax,4),%eax
 	mov %eax,%ecx
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl %ecx,%eax
 	shrl $1,%eax
 	movl $100,%ecx
-	cltd
+	cqto
 	idivl %ecx
 	mov %edx,%eax
-	movl %eax,8(%ebp)
-	movl $0,12(%ebp)
-	movl 8(%ebp),%eax
-	addl 592(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,464(%edi)
+	movl %eax,8(%rbp)
+	movl $0,12(%rbp)
+	movl 8(%rbp),%eax
+	addl 592(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,464(%rdi)
 	jmp L2008
 L2007:
 	movl $2,%eax
-	addl 12(%ebp),%eax
-	addl 464(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,16(%ebp)
-	movl 12(%ebp),%eax
-	addl 424(%edi),%eax
-	mov (,%eax,4),%eax
+	addl 12(%rbp),%eax
+	addl 464(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,16(%rbp)
+	movl 12(%rbp),%eax
+	addl 424(%rdi),%eax
+	mov (,%rax,4),%eax
 	mov %eax,%ecx
-	cmpl %ecx,16(%ebp)
+	cmpl %ecx,16(%rbp)
 	jne L2009
-	incl 12(%ebp)
+	incl 12(%rbp)
 	jmp L2010
 L2009:
-	movl 464(%edi),%eax
+	movl 464(%rdi),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,464(%edi)
-	movl $0,12(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,464(%rdi)
+	movl $0,12(%rbp)
 L2010:
 L2008:
-	cmpl $0,464(%edi)
+	cmpl $0,464(%rdi)
 	je L2011
-	movl 12(%ebp),%eax
-	cmpl 428(%edi),%eax
+	movl 12(%rbp),%eax
+	cmpl 428(%rdi),%eax
 	jle L2007
 L2011:
-	cmpl $0,464(%edi)
+	cmpl $0,464(%rdi)
 	jne L2012
 	movl $2,%eax
-	addl 428(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *668(%edi)
-	movl %eax,464(%edi)
-	movl $2,16(%ebp)
+	addl 428(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *668(%rdi)
+	movl %eax,464(%rdi)
+	movl $2,16(%rbp)
 	movl $0,%eax
-	addl 464(%edi),%eax
+	addl 464(%rdi),%eax
 	mov %eax,%ecx
-	movl 16(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 8(%ebp),%eax
-	addl 592(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,16(%ebp)
-	movl 464(%edi),%eax
+	movl 16(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 8(%rbp),%eax
+	addl 592(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,16(%rbp)
+	movl 464(%rdi),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 16(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl $0,16(%ebp)
-	movl 428(%edi),%eax
-	movl %eax,20(%ebp)
+	movl 16(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl $0,16(%rbp)
+	movl 428(%rdi),%eax
+	movl %eax,20(%rbp)
 	jmp L2013
 L2014:
-	movl 16(%ebp),%eax
-	addl 424(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
+	movl 16(%rbp),%eax
+	addl 424(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
 	movl $2,%eax
-	addl 16(%ebp),%eax
-	addl 464(%edi),%eax
+	addl 16(%rbp),%eax
+	addl 464(%rdi),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	incl 16(%ebp)
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	incl 16(%rbp)
 L2013:
-	movl 16(%ebp),%eax
-	cmpl 20(%ebp),%eax
+	movl 16(%rbp),%eax
+	cmpl 20(%rbp),%eax
 	jle L2014
-	movl 464(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 8(%ebp),%eax
-	addl 592(%edi),%eax
+	movl 464(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 8(%rbp),%eax
+	addl 592(%rdi),%eax
 	mov %eax,%ecx
-	movl 16(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 16(%rbp),%eax
+	mov %eax,(,%rcx,4)
 L2012:
-	movl 464(%edi),%eax
-	mov (,%eax,4),%eax
+	movl 464(%rdi),%eax
+	mov (,%rax,4),%eax
 L2006:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	DECLSYSWORDS
 L2002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	movl $L2015,%eax
 	shr $2,%eax
-	movl %eax,492(%edi)
+	movl %eax,492(%rdi)
 	movl $L2999,%eax
 	shr $2,%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *L2004
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *L2004
 	movl $L2998,%eax
 	shr $2,%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *L2004
-	movl 464(%edi),%eax
-	movl %eax,536(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *L2004
+	movl 464(%rdi),%eax
+	movl %eax,536(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	D
 L2003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $1,12(%ebp)
-	movl $0,16(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $1,12(%rbp)
+	movl $0,16(%rbp)
 L2016:
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *340(%edi)
-	movl %eax,20(%ebp)
-	cmpl $47,20(%ebp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *340(%rdi)
+	movl %eax,20(%rbp)
+	cmpl $47,20(%rbp)
 	jne L2017
-	cmpl $0,16(%ebp)
+	cmpl $0,16(%rbp)
 	jne L2019
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L2019:
-	movl 16(%ebp),%eax
-	movl %eax,24(%ebp)
+	movl 16(%rbp),%eax
+	movl %eax,24(%rbp)
 	movl $0,%eax
-	addl 432(%edi),%eax
+	addl 432(%rdi),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 432(%edi),%eax
-	movl %eax,32(%ebp)
-	movl 424(%edi),%eax
-	movl %eax,36(%ebp)
-	leal 24(%ebp),%ecx
-	calll *264(%edi)
-	movl %eax,428(%edi)
-	leal 24(%ebp),%ecx
-	calll *500(%edi)
-	movl 492(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	movl 464(%edi),%eax
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 432(%rdi),%eax
+	movl %eax,32(%rbp)
+	movl 424(%rdi),%eax
+	movl %eax,36(%rbp)
+	leal 24(%rbp),%ecx
+	call *264(%rdi)
+	movl %eax,428(%rdi)
+	leal 24(%rbp),%ecx
+	call *500(%rdi)
+	movl 492(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	movl 464(%rdi),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	incl 492(%edi)
-	movl $0,16(%ebp)
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	incl 492(%rdi)
+	movl $0,16(%rbp)
 	jmp L2018
 L2017:
-	incl 16(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 16(%ebp),%eax
-	addl 432(%edi),%eax
+	incl 16(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 16(%rbp),%eax
+	addl 432(%rdi),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
 L2018:
-	incl 12(%ebp)
+	incl 12(%rbp)
 	jmp L2016
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L2005:
 	ret
 	.data
@@ -1688,417 +1732,433 @@ L2998:
 	jmp L3012
 //	RCH
 L3001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 8(%ebp),%ecx
-	calll *52(%edi)
-	movl %eax,468(%edi)
-	movl 440(%edi),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 8(%rbp),%ecx
+	call *52(%rdi)
+	movl %eax,468(%rdi)
+	movl 440(%rdi),%eax
 	orl %eax,%eax
 	jz L3013
-	cmpl $0,416(%edi)
+	cmpl $0,416(%rdi)
 	jne L3013
-	cmpl $-1,468(%edi)
+	cmpl $-1,468(%rdi)
 	je L3013
-	movl 784(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *48(%edi)
-	movl 444(%edi),%eax
-	cmpl 532(%edi),%eax
+	movl 784(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *48(%rdi)
+	movl 444(%rdi),%eax
+	cmpl 532(%rdi),%eax
 	je L3014
 	movl $L3999,%eax
 	shr $2,%eax
-	movl %eax,16(%ebp)
-	movl 532(%edi),%eax
-	movl %eax,20(%ebp)
-	leal 8(%ebp),%ecx
-	calll *304(%edi)
-	movl 532(%edi),%eax
-	movl %eax,444(%edi)
+	movl %eax,16(%rbp)
+	movl 532(%rdi),%eax
+	movl %eax,20(%rbp)
+	leal 8(%rbp),%ecx
+	call *304(%rdi)
+	movl 532(%rdi),%eax
+	movl %eax,444(%rdi)
 L3014:
-	movl 468(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *56(%edi)
-	movl 776(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *48(%edi)
+	movl 468(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *56(%rdi)
+	movl 776(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *48(%rdi)
 L3013:
-	incl 528(%edi)
-	movl 468(%edi),%eax
-	movl %eax,8(%ebp)
+	incl 528(%rdi)
+	movl 468(%rdi),%eax
+	movl %eax,8(%rbp)
 	movl $63,%eax
-	andl 528(%edi),%eax
-	addl 400(%edi),%eax
+	andl 528(%rdi),%eax
+	addl 400(%rdi),%eax
 	mov %eax,%ecx
-	movl 8(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	WRCHBUF
 L3002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	movl $L3998,%eax
 	shr $2,%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *240(%edi)
-	movl 528(%edi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *240(%rdi)
+	movl 528(%rdi),%eax
 	subl $63,%eax
-	movl %eax,8(%ebp)
-	movl 528(%edi),%eax
-	movl %eax,12(%ebp)
+	movl %eax,8(%rbp)
+	movl 528(%rdi),%eax
+	movl %eax,12(%rbp)
 	jmp L3015
 L3016:
 	movl $63,%eax
-	andl 8(%ebp),%eax
-	addl 400(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,16(%ebp)
-	cmpl $0,16(%ebp)
+	andl 8(%rbp),%eax
+	addl 400(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,16(%rbp)
+	cmpl $0,16(%rbp)
 	je L3017
-	movl 16(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *56(%edi)
+	movl 16(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *56(%rdi)
 L3017:
-	incl 8(%ebp)
+	incl 8(%rbp)
 L3015:
-	movl 8(%ebp),%eax
-	cmpl 12(%ebp),%eax
+	movl 8(%rbp),%eax
+	cmpl 12(%rbp),%eax
 	jle L3016
-	leal 8(%ebp),%ecx
-	calll *252(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	leal 8(%rbp),%ecx
+	call *252(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	RDTAG
 L3003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $1,436(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *368(%edi)
-	movl %eax,12(%ebp)
-	movl 432(%edi),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $1,436(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *368(%rdi)
+	movl %eax,12(%rbp)
+	movl 432(%rdi),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 12(%rbp),%eax
+	mov %eax,(,%rcx,4)
 L3018:
-	leal 12(%ebp),%ecx
-	calll *504(%edi)
-	movl 468(%edi),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *368(%edi)
-	movl %eax,468(%edi)
-	cmpl $65,468(%edi)
+	leal 12(%rbp),%ecx
+	call *504(%rdi)
+	movl 468(%rdi),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *368(%rdi)
+	movl %eax,468(%rdi)
+	cmpl $65,468(%rdi)
 	jl L3020
-	cmpl $90,468(%edi)
+	cmpl $90,468(%rdi)
 	jle L3019
 L3020:
-	cmpl $48,468(%edi)
+	cmpl $48,468(%rdi)
 	jl L3021
-	cmpl $57,468(%edi)
+	cmpl $57,468(%rdi)
 	jle L3019
 L3021:
-	cmpl $46,468(%edi)
+	cmpl $46,468(%rdi)
 	je L3019
-	cmpl $95,468(%edi)
+	cmpl $95,468(%rdi)
 	je L3019
 	jmp L3022
 L3019:
-	incl 436(%edi)
-	movl 468(%edi),%eax
-	movl %eax,12(%ebp)
-	movl 436(%edi),%eax
-	addl 432(%edi),%eax
+	incl 436(%rdi)
+	movl 468(%rdi),%eax
+	movl %eax,12(%rbp)
+	movl 436(%rdi),%eax
+	addl 432(%rdi),%eax
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 12(%rbp),%eax
+	mov %eax,(,%rcx,4)
 	jmp L3018
 L3022:
-	movl 436(%edi),%eax
-	movl %eax,12(%ebp)
+	movl 436(%rdi),%eax
+	movl %eax,12(%rbp)
 	movl $0,%eax
-	addl 432(%edi),%eax
+	addl 432(%rdi),%eax
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 432(%edi),%eax
-	movl %eax,20(%ebp)
-	movl 424(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *264(%edi)
-	movl %eax,428(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 12(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 432(%rdi),%eax
+	movl %eax,20(%rbp)
+	movl 424(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *264(%rdi)
+	movl %eax,428(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	PERFORMGET
 L3004:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,456(%edi)
-	leal 8(%ebp),%ecx
-	calll *480(%edi)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,456(%rdi)
+	leal 8(%rbp),%ecx
+	call *480(%rdi)
 	movl $3,%eax
-	addl 512(%edi),%eax
-	mov (,%eax,4),%eax
+	addl 512(%rdi),%eax
+	mov (,%rax,4),%eax
 	notl %eax
-	movl %eax,456(%edi)
-	cmpl $3,460(%edi)
+	movl %eax,456(%rdi)
+	cmpl $3,460(%rdi)
 	je L3023
-	movl $97,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *604(%edi)
+	movl $97,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *604(%rdi)
 L3023:
-	movl 772(%edi),%eax
-	movl %eax,8(%ebp)
-	movl 416(%edi),%eax
-	addl 412(%edi),%eax
+	movl 772(%rdi),%eax
+	movl %eax,8(%rbp)
+	movl 416(%rdi),%eax
+	addl 412(%rdi),%eax
 	mov %eax,%ecx
-	movl 8(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 532(%edi),%eax
-	movl %eax,8(%ebp)
-	movl 416(%edi),%eax
+	movl 8(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 532(%rdi),%eax
+	movl %eax,8(%rbp)
+	movl 416(%rdi),%eax
 	incl %eax
-	addl 412(%edi),%eax
+	addl 412(%rdi),%eax
 	mov %eax,%ecx
-	movl 8(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 468(%edi),%eax
-	movl %eax,8(%ebp)
+	movl 8(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 468(%rdi),%eax
+	movl %eax,8(%rbp)
 	movl $2,%eax
-	addl 416(%edi),%eax
-	addl 412(%edi),%eax
+	addl 416(%rdi),%eax
+	addl 412(%rdi),%eax
 	mov %eax,%ecx
-	movl 8(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 8(%rbp),%eax
+	mov %eax,(,%rcx,4)
 	movl $3,%eax
-	addl 416(%edi),%eax
-	movl %eax,416(%edi)
-	movl $1,532(%edi)
-	movl 424(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *168(%edi)
-	movl %eax,772(%edi)
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *788(%edi)
+	addl 416(%rdi),%eax
+	movl %eax,416(%rdi)
+	movl $1,532(%rdi)
+	movl 424(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *168(%rdi)
+	movl %eax,772(%rdi)
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *788(%rdi)
 	orl %eax,%eax
 	jz L3024
-	leal 16(%ebp),%eax
+	leal 16(%rbp),%eax
 	shr $2,%eax
-	movl %eax,8(%ebp)
+	movl %eax,8(%rbp)
 	movl $L3997,%eax
 	shr $2,%eax
-	movl %eax,12(%ebp)
+	movl %eax,12(%rbp)
 	jmp L3027
 //	APPEND
 L3025:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
 	shl $2,%eax
-	movzb (%eax),%eax
-	movl %eax,16(%ebp)
-	movl $1,20(%ebp)
-	movl 12(%ebp),%eax
+	movzb (%rax),%eax
+	movl %eax,16(%rbp)
+	movl $1,20(%rbp)
+	movl 12(%rbp),%eax
 	shl $2,%eax
-	movzb (%eax),%eax
-	movl %eax,24(%ebp)
+	movzb (%rax),%eax
+	movl %eax,24(%rbp)
 	jmp L3028
 L3029:
-	incl 16(%ebp)
-	movl 12(%ebp),%eax
+	incl 16(%rbp)
+	movl 12(%rbp),%eax
 	shl $2,%eax
-	addl 20(%ebp),%eax
-	movzb (%eax),%eax
-	movl %eax,28(%ebp)
-	movl 8(%ebp),%eax
+	addl 20(%rbp),%eax
+	movzb (%rax),%eax
+	movl %eax,28(%rbp)
+	movl 8(%rbp),%eax
 	shl $2,%eax
-	addl 16(%ebp),%eax
-	movl 28(%ebp),%ecx
-	mov %cl,(%eax)
-	incl 20(%ebp)
+	addl 16(%rbp),%eax
+	movl 28(%rbp),%ecx
+	mov %cl,(%rax)
+	incl 20(%rbp)
 L3028:
-	movl 20(%ebp),%eax
-	cmpl 24(%ebp),%eax
+	movl 20(%rbp),%eax
+	cmpl 24(%rbp),%eax
 	jle L3029
-	movl 16(%ebp),%eax
-	movl %eax,20(%ebp)
-	movl 8(%ebp),%eax
+	movl 16(%rbp),%eax
+	movl %eax,20(%rbp)
+	movl 8(%rbp),%eax
 	shl $2,%eax
-	movl 20(%ebp),%ecx
-	mov %cl,(%eax)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 20(%rbp),%ecx
+	mov %cl,(%rax)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L3027:
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	shl $2,%eax
-	movzb (%eax),%eax
-	movl %eax,272(%ebp)
-	movl 424(%edi),%eax
+	movzb (%rax),%eax
+	movl %eax,272(%rbp)
+	movl 424(%rdi),%eax
 	shl $2,%eax
-	movzb (%eax),%eax
+	movzb (%rax),%eax
 	mov %eax,%ecx
-	movl 272(%ebp),%eax
+	movl 272(%rbp),%eax
 	addl %ecx,%eax
 	cmpl $255,%eax
 	jg L3030
-	movl $0,272(%ebp)
-	movl 8(%ebp),%eax
+	movl $0,272(%rbp)
+	movl 8(%rbp),%eax
 	shl $2,%eax
-	movl 272(%ebp),%ecx
-	mov %cl,(%eax)
-	movl 8(%ebp),%eax
-	movl %eax,280(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,284(%ebp)
-	leal 272(%ebp),%ecx
-	calll *L3026
-	movl 8(%ebp),%eax
-	movl %eax,280(%ebp)
-	movl 424(%edi),%eax
-	movl %eax,284(%ebp)
-	leal 272(%ebp),%ecx
-	calll *L3026
-	movl 8(%ebp),%eax
-	movl %eax,280(%ebp)
-	leal 272(%ebp),%ecx
-	calll *168(%edi)
-	movl %eax,772(%edi)
+	movl 272(%rbp),%ecx
+	mov %cl,(%rax)
+	movl 8(%rbp),%eax
+	movl %eax,280(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,284(%rbp)
+	leal 272(%rbp),%ecx
+	call *L3026
+	movl 8(%rbp),%eax
+	movl %eax,280(%rbp)
+	movl 424(%rdi),%eax
+	movl %eax,284(%rbp)
+	leal 272(%rbp),%ecx
+	call *L3026
+	movl 8(%rbp),%eax
+	movl %eax,280(%rbp)
+	leal 272(%rbp),%ecx
+	call *168(%rdi)
+	movl %eax,772(%rdi)
 L3030:
 L3024:
-	movl 772(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *788(%edi)
+	movl 772(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *788(%rdi)
 	orl %eax,%eax
 	jz L3031
-	movl 416(%edi),%eax
+	movl 416(%rdi),%eax
 	subl $3,%eax
-	movl %eax,416(%edi)
-	addl 412(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,772(%edi)
-	movl 416(%edi),%eax
+	movl %eax,416(%rdi)
+	addl 412(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,772(%rdi)
+	movl 416(%rdi),%eax
 	incl %eax
-	addl 412(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,532(%edi)
-	movl $96,16(%ebp)
-	movl 424(%edi),%eax
-	movl %eax,20(%ebp)
-	leal 8(%ebp),%ecx
-	calll *604(%edi)
+	addl 412(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,532(%rdi)
+	movl $96,16(%rbp)
+	movl 424(%rdi),%eax
+	movl %eax,20(%rbp)
+	leal 8(%rbp),%ecx
+	call *604(%rdi)
 	jmp L3032
 L3031:
-	movl 772(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *44(%edi)
-	leal 8(%ebp),%ecx
-	calll *504(%edi)
+	movl 772(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *44(%rdi)
+	leal 8(%rbp),%ecx
+	call *504(%rdi)
 L3032:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	FINDFAIL
 L3005:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	sete %al
 	movzx %al,%eax
 	neg %eax
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	READNUMBER
 L3006:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 468(%edi),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L3008
-	movl %eax,12(%ebp)
-	movl %eax,404(%edi)
-	movl 12(%ebp),%eax
-	cmpl 8(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 468(%rdi),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L3008
+	movl %eax,12(%rbp)
+	movl %eax,404(%rdi)
+	movl 12(%rbp),%eax
+	cmpl 8(%rbp),%eax
 	jl L3033
-	movl $33,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *604(%edi)
+	movl $33,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *604(%rdi)
 L3033:
 L3034:
-	leal 16(%ebp),%ecx
-	calll *504(%edi)
-	movl 468(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *L3008
-	movl %eax,12(%ebp)
-	cmpl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *504(%rdi)
+	movl 468(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *L3008
+	movl %eax,12(%rbp)
+	cmpl 8(%rbp),%eax
 	jl L3035
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L3035:
-	movl 404(%edi),%eax
-	imull 8(%ebp)
-	addl 12(%ebp),%eax
-	movl %eax,404(%edi)
+	movl 404(%rdi),%eax
+	imull 8(%rbp)
+	addl 12(%rbp),%eax
+	movl %eax,404(%rdi)
 	jmp L3034
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	VALUE
 L3007:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $48,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $48,8(%rbp)
 	jl L3037
-	cmpl $57,8(%ebp)
+	cmpl $57,8(%rbp)
 	jg L3037
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	subl $48,%eax
 	jmp L3036
 L3037:
-	cmpl $65,8(%ebp)
+	cmpl $65,8(%rbp)
 	jl L3039
-	cmpl $70,8(%ebp)
+	cmpl $70,8(%rbp)
 	jg L3039
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	subl $65,%eax
 	addl $10,%eax
 	jmp L3038
 L3039:
-	cmpl $97,8(%ebp)
+	cmpl $97,8(%rbp)
 	jl L3041
-	cmpl $102,8(%ebp)
+	cmpl $102,8(%rbp)
 	jg L3041
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	subl $97,%eax
 	addl $10,%eax
 	jmp L3040
@@ -2107,179 +2167,185 @@ L3041:
 L3040:
 L3038:
 L3036:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	RDSTRCH
 L3009:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 L3042:
-	movl 468(%edi),%eax
-	movl %eax,8(%ebp)
-	leal 12(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $10,8(%ebp)
+	movl 468(%rdi),%eax
+	movl %eax,8(%rbp)
+	leal 12(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $10,8(%rbp)
 	jne L3045
-	movl $34,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *604(%edi)
+	movl $34,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *604(%rdi)
 L3045:
-	cmpl $42,8(%ebp)
+	cmpl $42,8(%rbp)
 	jne L3046
-	cmpl $10,468(%edi)
+	cmpl $10,468(%rdi)
 	je L3049
-	cmpl $32,468(%edi)
+	cmpl $32,468(%rdi)
 	je L3049
-	cmpl $9,468(%edi)
+	cmpl $9,468(%rdi)
 	jne L3048
 L3049:
 L3050:
-	cmpl $10,468(%edi)
+	cmpl $10,468(%rdi)
 	jne L3051
-	incl 532(%edi)
+	incl 532(%rdi)
 L3051:
-	leal 12(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $10,468(%edi)
+	leal 12(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $10,468(%rdi)
 	je L3050
-	cmpl $32,468(%edi)
+	cmpl $32,468(%rdi)
 	je L3050
-	cmpl $9,468(%edi)
+	cmpl $9,468(%rdi)
 	je L3050
-	cmpl $42,468(%edi)
+	cmpl $42,468(%rdi)
 	je L3052
-	movl $34,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *604(%edi)
+	movl $34,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *604(%rdi)
 L3052:
-	leal 12(%ebp),%ecx
-	calll *504(%edi)
-	jmpl *L3043
+	leal 12(%rbp),%ecx
+	call *504(%rdi)
+	jmp *L3043
 L3048:
-	movl 468(%edi),%eax
-	movl %eax,8(%ebp)
-	movl 468(%edi),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *368(%edi)
-	movl %eax,468(%edi)
-	cmpl $84,468(%edi)
+	movl 468(%rdi),%eax
+	movl %eax,8(%rbp)
+	movl 468(%rdi),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *368(%rdi)
+	movl %eax,468(%rdi)
+	cmpl $84,468(%rdi)
 	jne L3053
-	movl $9,8(%ebp)
+	movl $9,8(%rbp)
 L3053:
-	cmpl $83,468(%edi)
+	cmpl $83,468(%rdi)
 	jne L3054
-	movl $32,8(%ebp)
+	movl $32,8(%rbp)
 L3054:
-	cmpl $78,468(%edi)
+	cmpl $78,468(%rdi)
 	jne L3055
-	movl $10,8(%ebp)
+	movl $10,8(%rbp)
 L3055:
-	cmpl $69,468(%edi)
+	cmpl $69,468(%rdi)
 	jne L3056
-	movl $69,8(%ebp)
+	movl $69,8(%rbp)
 L3056:
-	cmpl $66,468(%edi)
+	cmpl $66,468(%rdi)
 	jne L3057
-	movl $8,8(%ebp)
+	movl $8,8(%rbp)
 L3057:
-	cmpl $80,468(%edi)
+	cmpl $80,468(%rdi)
 	jne L3058
-	movl $12,8(%ebp)
+	movl $12,8(%rbp)
 L3058:
-	cmpl $67,468(%edi)
+	cmpl $67,468(%rdi)
 	jne L3059
-	movl $13,8(%ebp)
+	movl $13,8(%rbp)
 L3059:
-	cmpl $88,468(%edi)
+	cmpl $88,468(%rdi)
 	jne L3060
-	movl $16,20(%ebp)
-	movl $2,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L3011
-	movl %eax,8(%ebp)
+	movl $16,20(%rbp)
+	movl $2,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *L3011
+	movl %eax,8(%rbp)
 L3060:
-	cmpl $48,468(%edi)
+	cmpl $48,468(%rdi)
 	jl L3061
-	cmpl $57,468(%edi)
+	cmpl $57,468(%rdi)
 	jg L3061
-	movl 468(%edi),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L3008
+	movl 468(%rdi),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L3008
 	movl $64,%ecx
 	imull %ecx
-	movl %eax,12(%ebp)
-	movl $8,24(%ebp)
-	movl $2,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *L3011
+	movl %eax,12(%rbp)
+	movl $8,24(%rbp)
+	movl $2,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *L3011
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	addl %ecx,%eax
-	movl %eax,8(%ebp)
+	movl %eax,8(%rbp)
 	cmpl $255,%eax
 	jle L3062
-	movl $34,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *604(%edi)
+	movl $34,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *604(%rdi)
 L3062:
 L3061:
-	leal 12(%ebp),%ecx
-	calll *504(%edi)
+	leal 12(%rbp),%ecx
+	call *504(%rdi)
 	jmp L3047
 L3046:
-	cmpl $10,468(%edi)
+	cmpl $10,468(%rdi)
 	jne L3063
-	incl 532(%edi)
+	incl 532(%rdi)
 L3063:
 L3047:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 L3044:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	READOCTALORHEX
 L3010:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,16(%ebp)
-	movl $1,20(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,16(%rbp)
+	movl $1,20(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
 	jmp L3065
 L3066:
-	leal 36(%ebp),%ecx
-	calll *504(%edi)
-	movl 468(%edi),%eax
+	leal 36(%rbp),%ecx
+	call *504(%rdi)
+	movl 468(%rdi),%eax
 L3067:
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *L3008
-	movl %eax,28(%ebp)
-	cmpl 8(%ebp),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *L3008
+	movl %eax,28(%rbp)
+	cmpl 8(%rbp),%eax
 	jle L3068
-	movl $34,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *604(%edi)
+	movl $34,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *604(%rdi)
 L3068:
-	movl 8(%ebp),%eax
-	imull 16(%ebp)
-	addl 28(%ebp),%eax
-	movl %eax,16(%ebp)
-	incl 20(%ebp)
+	movl 8(%rbp),%eax
+	imull 16(%rbp)
+	addl 28(%rbp),%eax
+	movl %eax,16(%rbp)
+	incl 20(%rbp)
 L3065:
-	movl 20(%ebp),%eax
-	cmpl 24(%ebp),%eax
+	movl 20(%rbp),%eax
+	cmpl 24(%rbp),%eax
 	jle L3066
-	movl 16(%ebp),%eax
+	movl 16(%rbp),%eax
 L3064:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L3012:
 	ret
 	.data
@@ -2353,492 +2419,513 @@ L3043:
 	jmp L4012
 //	NEWVEC
 L4001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 672(%edi),%eax
-	subl 8(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 672(%rdi),%eax
+	subl 8(%rbp),%eax
 	decl %eax
-	movl %eax,672(%edi)
-	cmpl 676(%edi),%eax
+	movl %eax,672(%rdi)
+	cmpl 676(%rdi),%eax
 	jg L4014
-	movl $0,768(%edi)
-	movl $98,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *604(%edi)
+	movl $0,768(%rdi)
+	movl $98,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *604(%rdi)
 L4014:
-	movl 672(%edi),%eax
+	movl 672(%rdi),%eax
 L4013:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LIST1
 L4002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *668(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,16(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *668(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,16(%rbp)
 	movl $0,%eax
-	addl 12(%ebp),%eax
+	addl 12(%rbp),%eax
 	mov %eax,%ecx
-	movl 16(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
+	movl 16(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
 L4015:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LIST2
 L4003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $1,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *668(%edi)
-	movl %eax,16(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $1,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *668(%rdi)
+	movl %eax,16(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
 	movl $0,%eax
-	addl 16(%ebp),%eax
+	addl 16(%rbp),%eax
 	mov %eax,%ecx
-	movl 20(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
-	movl %eax,20(%ebp)
-	movl 16(%ebp),%eax
+	movl 20(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
+	movl %eax,20(%rbp)
+	movl 16(%rbp),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 20(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 16(%ebp),%eax
+	movl 20(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 16(%rbp),%eax
 L4016:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LIST3
 L4004:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $2,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *668(%edi)
-	movl %eax,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $2,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *668(%rdi)
+	movl %eax,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
 	movl $0,%eax
-	addl 20(%ebp),%eax
+	addl 20(%rbp),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 20(%ebp),%eax
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 20(%rbp),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 16(%ebp),%eax
-	movl %eax,24(%ebp)
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 16(%rbp),%eax
+	movl %eax,24(%rbp)
 	movl $2,%eax
-	addl 20(%ebp),%eax
+	addl 20(%rbp),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 20(%ebp),%eax
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 20(%rbp),%eax
 L4017:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LIST4
 L4005:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $3,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *668(%edi)
-	movl %eax,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $3,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *668(%rdi)
+	movl %eax,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
 	movl $0,%eax
-	addl 24(%ebp),%eax
+	addl 24(%rbp),%eax
 	mov %eax,%ecx
-	movl 28(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
-	movl %eax,28(%ebp)
-	movl 24(%ebp),%eax
+	movl 28(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
+	movl %eax,28(%rbp)
+	movl 24(%rbp),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 28(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 16(%ebp),%eax
-	movl %eax,28(%ebp)
+	movl 28(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 16(%rbp),%eax
+	movl %eax,28(%rbp)
 	movl $2,%eax
-	addl 24(%ebp),%eax
+	addl 24(%rbp),%eax
 	mov %eax,%ecx
-	movl 28(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 20(%ebp),%eax
-	movl %eax,28(%ebp)
+	movl 28(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 20(%rbp),%eax
+	movl %eax,28(%rbp)
 	movl $3,%eax
-	addl 24(%ebp),%eax
+	addl 24(%rbp),%eax
 	mov %eax,%ecx
-	movl 28(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 24(%ebp),%eax
+	movl 28(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 24(%rbp),%eax
 L4018:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LIST5
 L4006:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $4,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *668(%edi)
-	movl %eax,28(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $4,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *668(%rdi)
+	movl %eax,28(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
 	movl $0,%eax
-	addl 28(%ebp),%eax
+	addl 28(%rbp),%eax
 	mov %eax,%ecx
-	movl 32(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl 28(%ebp),%eax
+	movl 32(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl 28(%rbp),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 32(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
+	movl 32(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
 	movl $2,%eax
-	addl 28(%ebp),%eax
+	addl 28(%rbp),%eax
 	mov %eax,%ecx
-	movl 32(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 20(%ebp),%eax
-	movl %eax,32(%ebp)
+	movl 32(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 20(%rbp),%eax
+	movl %eax,32(%rbp)
 	movl $3,%eax
-	addl 28(%ebp),%eax
+	addl 28(%rbp),%eax
 	mov %eax,%ecx
-	movl 32(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 24(%ebp),%eax
-	movl %eax,32(%ebp)
+	movl 32(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 24(%rbp),%eax
+	movl %eax,32(%rbp)
 	movl $4,%eax
-	addl 28(%ebp),%eax
+	addl 28(%rbp),%eax
 	mov %eax,%ecx
-	movl 32(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 28(%ebp),%eax
+	movl 32(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 28(%rbp),%eax
 L4019:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LIST6
 L4007:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $5,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *668(%edi)
-	movl %eax,32(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,36(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $5,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *668(%rdi)
+	movl %eax,32(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,36(%rbp)
 	movl $0,%eax
-	addl 32(%ebp),%eax
+	addl 32(%rbp),%eax
 	mov %eax,%ecx
-	movl 36(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
-	movl %eax,36(%ebp)
-	movl 32(%ebp),%eax
+	movl 36(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
+	movl %eax,36(%rbp)
+	movl 32(%rbp),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 36(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 16(%ebp),%eax
-	movl %eax,36(%ebp)
+	movl 36(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 16(%rbp),%eax
+	movl %eax,36(%rbp)
 	movl $2,%eax
-	addl 32(%ebp),%eax
+	addl 32(%rbp),%eax
 	mov %eax,%ecx
-	movl 36(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 20(%ebp),%eax
-	movl %eax,36(%ebp)
+	movl 36(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 20(%rbp),%eax
+	movl %eax,36(%rbp)
 	movl $3,%eax
-	addl 32(%ebp),%eax
+	addl 32(%rbp),%eax
 	mov %eax,%ecx
-	movl 36(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 24(%ebp),%eax
-	movl %eax,36(%ebp)
+	movl 36(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 24(%rbp),%eax
+	movl %eax,36(%rbp)
 	movl $4,%eax
-	addl 32(%ebp),%eax
+	addl 32(%rbp),%eax
 	mov %eax,%ecx
-	movl 36(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 28(%ebp),%eax
-	movl %eax,36(%ebp)
+	movl 36(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 28(%rbp),%eax
+	movl %eax,36(%rbp)
 	movl $5,%eax
-	addl 32(%ebp),%eax
+	addl 32(%rbp),%eax
 	mov %eax,%ecx
-	movl 36(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 32(%ebp),%eax
+	movl 36(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 32(%rbp),%eax
 L4020:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	FORMTREE
 L4008:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 12(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 12(%rbp),%eax
 	shr $2,%eax
-	movl %eax,8(%ebp)
-	movl %eax,400(%edi)
-	movl $0,268(%ebp)
+	movl %eax,8(%rbp)
+	movl %eax,400(%rdi)
+	movl $0,268(%rbp)
 	jmp L4022
 L4023:
-	movl $0,272(%ebp)
-	movl 268(%ebp),%eax
-	addl 400(%edi),%eax
+	movl $0,272(%rbp)
+	movl 268(%rbp),%eax
+	addl 400(%rdi),%eax
 	mov %eax,%ecx
-	movl 272(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	incl 268(%ebp)
+	movl 272(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	incl 268(%rbp)
 L4022:
-	cmpl $63,268(%ebp)
+	cmpl $63,268(%rbp)
 	jle L4023
-	movl $0,528(%edi)
-	leal 272(%ebp),%eax
+	movl $0,528(%rdi)
+	leal 272(%rbp),%eax
 	shr $2,%eax
-	movl %eax,268(%ebp)
-	movl %eax,412(%edi)
-	movl $0,416(%edi)
-	movl $20,420(%edi)
-	leal 356(%ebp),%ecx
-	calll *504(%edi)
-	cmpl $-1,468(%edi)
+	movl %eax,268(%rbp)
+	movl %eax,412(%rdi)
+	movl $0,416(%rdi)
+	movl $20,420(%rdi)
+	leal 356(%rbp),%ecx
+	call *504(%rdi)
+	cmpl $-1,468(%rdi)
 	jne L4024
 	movl $0,%eax
 	jmp L4021
 L4024:
-	leal 360(%ebp),%eax
+	leal 360(%rbp),%eax
 	shr $2,%eax
-	movl %eax,356(%ebp)
-	movl %eax,424(%edi)
-	leal 880(%ebp),%eax
+	movl %eax,356(%rbp)
+	movl %eax,424(%rdi)
+	leal 880(%rbp),%eax
 	shr $2,%eax
-	movl %eax,876(%ebp)
-	movl %eax,432(%edi)
-	movl $0,436(%edi)
-	leal 1912(%ebp),%eax
+	movl %eax,876(%rbp)
+	movl %eax,432(%rdi)
+	movl $0,436(%rdi)
+	leal 1912(%rbp),%eax
 	shr $2,%eax
-	movl %eax,1908(%ebp)
-	movl %eax,592(%edi)
-	movl $0,2316(%ebp)
-	movl $100,2320(%ebp)
+	movl %eax,1908(%rbp)
+	movl %eax,592(%rdi)
+	movl $0,2316(%rbp)
+	movl $100,2320(%rbp)
 	jmp L4027
 L4028:
-	movl $0,2324(%ebp)
-	movl 2316(%ebp),%eax
-	addl 592(%edi),%eax
+	movl $0,2324(%rbp)
+	movl 2316(%rbp),%eax
+	addl 592(%rdi),%eax
 	mov %eax,%ecx
-	movl 2324(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	incl 2316(%ebp)
+	movl 2324(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	incl 2316(%rbp)
 L4027:
-	movl 2316(%ebp),%eax
-	cmpl 2320(%ebp),%eax
+	movl 2316(%rbp),%eax
+	cmpl 2320(%rbp),%eax
 	jle L4028
-	leal 2316(%ebp),%ecx
-	calll *484(%edi)
-	leal 2316(%ebp),%ecx
-	calll *124(%edi)
-	movl %eax,540(%edi)
+	leal 2316(%rbp),%ecx
+	call *484(%rdi)
+	leal 2316(%rbp),%ecx
+	call *124(%rdi)
+	movl %eax,540(%rdi)
 	movl L4026,%eax
-	movl %eax,544(%edi)
+	movl %eax,544(%rdi)
 L4025:
-	leal 2316(%ebp),%ecx
-	calll *480(%edi)
-	movl 512(%edi),%eax
+	leal 2316(%rbp),%ecx
+	call *480(%rdi)
+	movl 512(%rdi),%eax
 	incl %eax
-	mov (,%eax,4),%eax
+	mov (,%rax,4),%eax
 	orl %eax,%eax
 	jz L4029
 	movl $L4999,%eax
 	shr $2,%eax
-	movl %eax,2324(%ebp)
-	movl 460(%edi),%eax
-	movl %eax,2328(%ebp)
-	movl 424(%edi),%eax
-	movl %eax,2332(%ebp)
-	leal 2316(%ebp),%ecx
-	calll *304(%edi)
-	cmpl $90,460(%edi)
+	movl %eax,2324(%rbp)
+	movl 460(%rdi),%eax
+	movl %eax,2328(%rbp)
+	movl 424(%rdi),%eax
+	movl %eax,2332(%rbp)
+	leal 2316(%rbp),%ecx
+	call *304(%rdi)
+	cmpl $90,460(%rdi)
 	jne L4030
 	movl $0,%eax
 	jmp L4021
 L4030:
-	jmpl *L4026
+	jmp *L4026
 L4029:
 	jmp L4033
 //	RPROG
 L4031:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,12(%ebp)
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	leal 16(%ebp),%ecx
-	calll *696(%edi)
-	movl %eax,12(%ebp)
-	cmpl $3,(,%eax,4)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,12(%rbp)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	leal 16(%rbp),%ecx
+	call *696(%rdi)
+	movl %eax,12(%rbp)
+	mov (,%rax,4),%eax
+	cmpl $3,%eax
 	je L4035
-	movl $95,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *604(%edi)
+	movl $95,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *604(%rdi)
 L4035:
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,28(%ebp)
-	cmpl $48,460(%edi)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,28(%rbp)
+	cmpl $48,460(%rdi)
 	jne L4037
-	movl $48,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *L4032
+	movl $48,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *L4032
 	jmp L4036
 L4037:
-	leal 32(%ebp),%ecx
-	calll *560(%edi)
+	leal 32(%rbp),%ecx
+	call *560(%rdi)
 L4036:
-	movl %eax,32(%ebp)
-	leal 16(%ebp),%ecx
-	calll *652(%edi)
+	movl %eax,32(%rbp)
+	leal 16(%rbp),%ecx
+	call *652(%rdi)
 L4034:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L4033:
-	cmpl $49,460(%edi)
+	cmpl $49,460(%rdi)
 	jne L4039
-	movl $49,2324(%ebp)
-	leal 2316(%ebp),%ecx
-	calll *L4032
+	movl $49,2324(%rbp)
+	leal 2316(%rbp),%ecx
+	call *L4032
 	jmp L4038
 L4039:
-	cmpl $48,460(%edi)
+	cmpl $48,460(%rdi)
 	jne L4041
-	movl $48,2324(%ebp)
-	leal 2316(%ebp),%ecx
-	calll *L4032
+	movl $48,2324(%rbp)
+	leal 2316(%rbp),%ecx
+	call *L4032
 	jmp L4040
 L4041:
-	leal 2316(%ebp),%ecx
-	calll *560(%edi)
+	leal 2316(%rbp),%ecx
+	call *560(%rdi)
 L4040:
 L4038:
-	movl %eax,2316(%ebp)
-	cmpl $90,460(%edi)
+	movl %eax,2316(%rbp)
+	cmpl $90,460(%rdi)
 	je L4042
-	movl $99,2328(%ebp)
-	leal 2320(%ebp),%ecx
-	calll *604(%edi)
+	movl $99,2328(%rbp)
+	leal 2320(%rbp),%ecx
+	call *604(%rdi)
 L4042:
-	movl 2316(%ebp),%eax
+	movl 2316(%rbp),%eax
 L4021:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	SYNREPORT
 L4009:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	incl 764(%edi)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	incl 764(%rdi)
 	movl $L4998,%eax
 	shr $2,%eax
-	movl %eax,24(%ebp)
-	movl 532(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *304(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *L4011
-	leal 16(%ebp),%ecx
-	calll *524(%edi)
-	movl 764(%edi),%eax
-	cmpl 768(%edi),%eax
+	movl %eax,24(%rbp)
+	movl 532(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *304(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *L4011
+	leal 16(%rbp),%ecx
+	call *524(%rdi)
+	movl 764(%rdi),%eax
+	cmpl 768(%rdi),%eax
 	jle L4043
 	movl $L4997,%eax
 	shr $2,%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *240(%edi)
-	movl $8,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *120(%edi)
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *240(%rdi)
+	movl $8,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *120(%rdi)
 L4043:
-	movl $0,488(%edi)
+	movl $0,488(%rdi)
 	jmp L4045
 L4044:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
 L4045:
-	cmpl $91,460(%edi)
+	cmpl $91,460(%rdi)
 	je L4046
-	cmpl $92,460(%edi)
+	cmpl $92,460(%rdi)
 	je L4046
-	cmpl $74,460(%edi)
+	cmpl $74,460(%rdi)
 	je L4046
-	cmpl $40,460(%edi)
+	cmpl $40,460(%rdi)
 	je L4046
-	cmpl $90,460(%edi)
+	cmpl $90,460(%rdi)
 	je L4046
-	movl 488(%edi),%eax
+	movl 488(%rdi),%eax
 	orl %eax,%eax
 	jz L4044
 L4046:
-	movl 540(%edi),%eax
-	movl %eax,24(%ebp)
-	movl 544(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *128(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 540(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl 544(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *128(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	SYNMESSAGE
 L4010:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	jmp L4048
 L4050:
-	movl 8(%ebp),%eax
-	movl %eax,12(%ebp)
+	movl 8(%rbp),%eax
+	movl %eax,12(%rbp)
 	movl $L4996,%eax
 	shr $2,%eax
 	jmp L4047
@@ -2951,26 +3038,28 @@ L4082:
 	jmp L4047
 	jmp L4049
 L4048:
-	movl 8(%ebp),%eax
-	mov $L4970,%edx
-	mov $32,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov $L4970,%rdx
+	mov $32,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L4050
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L4049:
 L4047:
-	movl %eax,16(%ebp)
-	movl %eax,28(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *304(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,16(%rbp)
+	movl %eax,28(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *304(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L4012:
 	ret
 	.data
@@ -3632,330 +3721,346 @@ L4970:
 	jmp L5009
 //	RDBLOCKBODY
 L5001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 540(%edi),%eax
-	movl %eax,8(%ebp)
-	movl 544(%edi),%eax
-	movl %eax,12(%ebp)
-	movl $0,16(%ebp)
-	leal 20(%ebp),%ecx
-	calll *124(%edi)
-	movl %eax,540(%edi)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 540(%rdi),%eax
+	movl %eax,8(%rbp)
+	movl 544(%rdi),%eax
+	movl %eax,12(%rbp)
+	movl $0,16(%rbp)
+	leal 20(%rbp),%ecx
+	call *124(%rdi)
+	movl %eax,540(%rdi)
 	movl L5012,%eax
-	movl %eax,544(%edi)
-	movl $97,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *616(%edi)
+	movl %eax,544(%rdi)
+	movl $97,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *616(%rdi)
 	jmp L5013
 L5015:
 L5016:
 L5017:
-	movl 460(%edi),%eax
-	movl %eax,20(%ebp)
-	leal 24(%ebp),%ecx
-	calll *480(%edi)
-	movl 588(%edi),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *564(%edi)
-	movl %eax,16(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 40(%ebp),%ecx
-	calll *560(%edi)
-	movl %eax,40(%ebp)
-	leal 24(%ebp),%ecx
-	calll *652(%edi)
-	movl %eax,16(%ebp)
+	movl 460(%rdi),%eax
+	movl %eax,20(%rbp)
+	leal 24(%rbp),%ecx
+	call *480(%rdi)
+	movl 588(%rdi),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *564(%rdi)
+	movl %eax,16(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 40(%rbp),%ecx
+	call *560(%rdi)
+	movl %eax,40(%rbp)
+	leal 24(%rbp),%ecx
+	call *652(%rdi)
+	movl %eax,16(%rbp)
 	jmp L5014
 L5018:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	leal 20(%ebp),%ecx
-	calll *580(%edi)
-	movl %eax,16(%ebp)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	leal 20(%rbp),%ecx
+	call *580(%rdi)
+	movl %eax,16(%rbp)
 L5011:
 	jmp L5020
 L5019:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl $40,28(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 36(%ebp),%ecx
-	calll *580(%edi)
-	movl %eax,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *652(%edi)
-	movl %eax,16(%ebp)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl $40,28(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 36(%rbp),%ecx
+	call *580(%rdi)
+	movl %eax,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *652(%rdi)
+	movl %eax,16(%rbp)
 L5020:
-	cmpl $40,460(%edi)
+	cmpl $40,460(%rdi)
 	je L5019
-	movl $74,28(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 36(%ebp),%ecx
-	calll *560(%edi)
-	movl %eax,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *652(%edi)
-	movl %eax,16(%ebp)
+	movl $74,28(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 36(%rbp),%ecx
+	call *560(%rdi)
+	movl %eax,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *652(%rdi)
+	movl %eax,16(%rbp)
 	jmp L5014
 L5021:
-	leal 20(%ebp),%ecx
-	calll *624(%edi)
-	movl %eax,16(%ebp)
-	cmpl $92,460(%edi)
+	leal 20(%rbp),%ecx
+	call *624(%rdi)
+	movl %eax,16(%rbp)
+	cmpl $92,460(%rdi)
 	je L5022
-	cmpl $90,460(%edi)
+	cmpl $90,460(%rdi)
 	je L5022
-	movl $51,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *604(%edi)
+	movl $51,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *604(%rdi)
 L5022:
 L5023:
 L5024:
 	jmp L5014
 L5013:
-	movl 460(%edi),%eax
-	mov $L5999,%edx
-	mov $6,%ecx
-1:	cmp (%edx),%eax
+	movl 460(%rdi),%eax
+	mov $L5999,%rdx
+	mov $6,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L5021
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L5014:
-	movl 8(%ebp),%eax
-	movl %eax,540(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,544(%edi)
-	movl 16(%ebp),%eax
+	movl 8(%rbp),%eax
+	movl %eax,540(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,544(%rdi)
+	movl 16(%rbp),%eax
 L5010:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	RDSEQ
 L5002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,8(%ebp)
-	movl $97,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *616(%edi)
-	leal 12(%ebp),%ecx
-	calll *584(%edi)
-	movl %eax,8(%ebp)
-	cmpl $92,460(%edi)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,8(%rbp)
+	movl $97,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *616(%rdi)
+	leal 12(%rbp),%ecx
+	call *584(%rdi)
+	movl %eax,8(%rbp)
+	cmpl $92,460(%rdi)
 	je L5027
-	cmpl $90,460(%edi)
+	cmpl $90,460(%rdi)
 	jne L5026
 L5027:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	jmp L5025
 L5026:
-	movl $73,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 28(%ebp),%ecx
-	calll *624(%edi)
-	movl %eax,28(%ebp)
-	leal 12(%ebp),%ecx
-	calll *652(%edi)
+	movl $73,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 28(%rbp),%ecx
+	call *624(%rdi)
+	movl %eax,28(%rbp)
+	leal 12(%rbp),%ecx
+	call *652(%rdi)
 L5025:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	RDCDEFS
 L5003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,8(%ebp)
-	movl $0,12(%ebp)
-	leal 8(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,8(%rbp)
+	movl $0,12(%rbp)
+	leal 8(%rbp),%eax
 	shr $2,%eax
-	movl %eax,16(%ebp)
-	movl 540(%edi),%eax
-	movl %eax,20(%ebp)
-	movl 544(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 28(%ebp),%ecx
-	calll *124(%edi)
-	movl %eax,540(%edi)
+	movl %eax,16(%rbp)
+	movl 540(%rdi),%eax
+	movl %eax,20(%rbp)
+	movl 544(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 28(%rbp),%ecx
+	call *124(%rdi)
+	movl %eax,540(%rdi)
 	movl L5030,%eax
-	movl %eax,544(%edi)
+	movl %eax,544(%rdi)
 L5031:
-	leal 28(%ebp),%ecx
-	calll *572(%edi)
-	movl %eax,12(%ebp)
-	cmpl $20,460(%edi)
+	leal 28(%rbp),%ecx
+	call *572(%rdi)
+	movl %eax,12(%rbp)
+	cmpl $20,460(%rdi)
 	je L5034
-	cmpl $54,460(%edi)
+	cmpl $54,460(%rdi)
 	jne L5032
 L5034:
-	leal 28(%ebp),%ecx
-	calll *480(%edi)
+	leal 28(%rbp),%ecx
+	call *480(%rdi)
 	jmp L5033
 L5032:
-	movl $45,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *604(%edi)
+	movl $45,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *604(%rdi)
 L5033:
-	movl $43,36(%ebp)
-	movl $0,40(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,44(%ebp)
-	movl $0,56(%ebp)
-	leal 48(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,48(%ebp)
-	leal 28(%ebp),%ecx
-	calll *656(%edi)
-	movl 16(%ebp),%ecx
-	mov %eax,(,%ecx,4)
-	movl 16(%ebp),%eax
-	mov (,%eax,4),%eax
+	movl $43,36(%rbp)
+	movl $0,40(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,44(%rbp)
+	movl $0,56(%rbp)
+	leal 48(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,48(%rbp)
+	leal 28(%rbp),%ecx
+	call *656(%rdi)
+	movl 16(%rbp),%ecx
+	mov %eax,(,%rcx,4)
+	movl 16(%rbp),%eax
+	mov (,%rax,4),%eax
 	incl %eax
-	movl %eax,16(%ebp)
+	movl %eax,16(%rbp)
 L5029:
-	movl $97,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *616(%edi)
-	cmpl $2,460(%edi)
+	movl $97,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *616(%rdi)
+	cmpl $2,460(%rdi)
 	je L5031
-	movl 20(%ebp),%eax
-	movl %eax,540(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,544(%edi)
-	movl 8(%ebp),%eax
+	movl 20(%rbp),%eax
+	movl %eax,540(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,544(%rdi)
+	movl 8(%rbp),%eax
 L5028:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	RDSECT
 L5004:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 464(%edi),%eax
-	movl %eax,12(%ebp)
-	movl $0,16(%ebp)
-	movl $91,28(%ebp)
-	movl $6,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *612(%edi)
-	leal 20(%ebp),%ecx
-	calll *8(%ebp)
-	movl %eax,16(%ebp)
-	cmpl $92,460(%edi)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 464(%rdi),%eax
+	movl %eax,12(%rbp)
+	movl $0,16(%rbp)
+	movl $91,28(%rbp)
+	movl $6,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *612(%rdi)
+	leal 20(%rbp),%ecx
+	call *8(%rbp)
+	movl %eax,16(%rbp)
+	cmpl $92,460(%rdi)
 	je L5036
-	movl $7,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *604(%edi)
+	movl $7,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *604(%rdi)
 L5036:
-	movl 464(%edi),%eax
-	cmpl 12(%ebp),%eax
+	movl 464(%rdi),%eax
+	cmpl 12(%rbp),%eax
 	jne L5037
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
 	jmp L5038
 L5037:
-	movl 536(%edi),%eax
-	cmpl 464(%edi),%eax
+	movl 536(%rdi),%eax
+	cmpl 464(%rdi),%eax
 	jne L5039
-	movl $0,460(%edi)
-	movl $9,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *604(%edi)
+	movl $0,460(%rdi)
+	movl $9,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *604(%rdi)
 L5039:
 L5038:
-	movl 16(%ebp),%eax
+	movl 16(%rbp),%eax
 L5035:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	RNAMELIST
 L5005:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 8(%ebp),%ecx
-	calll *572(%edi)
-	movl %eax,8(%ebp)
-	cmpl $38,460(%edi)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 8(%rbp),%ecx
+	call *572(%rdi)
+	movl %eax,8(%rbp)
+	cmpl $38,460(%rdi)
 	je L5041
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	jmp L5040
 L5041:
-	leal 12(%ebp),%ecx
-	calll *480(%edi)
-	movl $38,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 28(%ebp),%ecx
-	calll *568(%edi)
-	movl %eax,28(%ebp)
-	leal 12(%ebp),%ecx
-	calll *652(%edi)
+	leal 12(%rbp),%ecx
+	call *480(%rdi)
+	movl $38,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 28(%rbp),%ecx
+	call *568(%rdi)
+	movl %eax,28(%rbp)
+	leal 12(%rbp),%ecx
+	call *652(%rdi)
 L5040:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	RNAME
 L5006:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 464(%edi),%eax
-	movl %eax,8(%ebp)
-	movl $2,20(%ebp)
-	movl $8,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *612(%edi)
-	movl 8(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 464(%rdi),%eax
+	movl %eax,8(%rbp)
+	movl $2,20(%rbp)
+	movl $8,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *612(%rdi)
+	movl 8(%rbp),%eax
 L5042:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	IGNORE
 L5007:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	cmpl 460(%edi),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	cmpl 460(%rdi),%eax
 	jne L5043
-	leal 12(%ebp),%ecx
-	calll *480(%edi)
+	leal 12(%rbp),%ecx
+	call *480(%rdi)
 L5043:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	CHECKFOR
 L5008:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	cmpl 460(%edi),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	cmpl 460(%rdi),%eax
 	je L5044
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *604(%edi)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *604(%rdi)
 L5044:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L5009:
 	ret
 	.data
@@ -4000,574 +4105,585 @@ L5030:
 	jmp L6003
 //	RBEXP
 L6001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,8(%ebp)
-	movl 460(%edi),%eax
-	movl %eax,12(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,8(%rbp)
+	movl 460(%rdi),%eax
+	movl %eax,12(%rbp)
 	jmp L6005
 L6007:
-	movl $32,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *604(%edi)
+	movl $32,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *604(%rdi)
 L6008:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $16,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *644(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $16,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *644(%rdi)
 	jmp L6004
 L6009:
 L6010:
 L6011:
-	movl 464(%edi),%eax
-	movl %eax,8(%ebp)
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl 8(%ebp),%eax
+	movl 464(%rdi),%eax
+	movl %eax,8(%rbp)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl 8(%rbp),%eax
 	jmp L6004
 L6012:
-	movl 428(%edi),%eax
+	movl 428(%rdi),%eax
 	incl %eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *668(%edi)
-	movl %eax,8(%ebp)
-	movl $3,16(%ebp)
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *668(%rdi)
+	movl %eax,8(%rbp)
+	movl $3,16(%rbp)
 	movl $0,%eax
-	addl 8(%ebp),%eax
+	addl 8(%rbp),%eax
 	mov %eax,%ecx
-	movl 16(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl $0,16(%ebp)
-	movl 428(%edi),%eax
-	movl %eax,20(%ebp)
+	movl 16(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl $0,16(%rbp)
+	movl 428(%rdi),%eax
+	movl %eax,20(%rbp)
 	jmp L6013
 L6014:
-	movl 16(%ebp),%eax
-	addl 424(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	movl 16(%ebp),%eax
+	movl 16(%rbp),%eax
+	addl 424(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	movl 16(%rbp),%eax
 	incl %eax
-	addl 8(%ebp),%eax
+	addl 8(%rbp),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	incl 16(%ebp)
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	incl 16(%rbp)
 L6013:
-	movl 16(%ebp),%eax
-	cmpl 20(%ebp),%eax
+	movl 16(%rbp),%eax
+	cmpl 20(%rbp),%eax
 	jle L6014
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl 8(%rbp),%eax
 	jmp L6004
 L6015:
-	movl $1,24(%ebp)
-	movl 404(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *648(%edi)
-	movl %eax,8(%ebp)
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl 8(%ebp),%eax
+	movl $1,24(%rbp)
+	movl 404(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *648(%rdi)
+	movl %eax,8(%rbp)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl 8(%rbp),%eax
 	jmp L6004
 L6016:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $0,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,8(%ebp)
-	movl $106,24(%ebp)
-	movl $15,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *612(%edi)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $0,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,8(%rbp)
+	movl $106,24(%rbp)
+	movl $15,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *612(%rdi)
+	movl 8(%rbp),%eax
 	jmp L6004
 L6017:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $6,24(%ebp)
-	leal 28(%ebp),%ecx
-	calll *584(%edi)
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *648(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $6,24(%rbp)
+	leal 28(%rbp),%ecx
+	call *584(%rdi)
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *648(%rdi)
 	jmp L6004
 L6018:
-	movl $8,12(%ebp)
+	movl $8,12(%rbp)
 L6019:
 L6020:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl $37,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *648(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl $37,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *648(%rdi)
 	jmp L6004
 L6021:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $34,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *576(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $34,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *576(%rdi)
 	jmp L6004
 L6022:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $34,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,8(%ebp)
-	cmpl $1,(,%eax,4)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $34,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,8(%rbp)
+	mov (,%rax,4),%eax
+	cmpl $1,%eax
 	jne L6023
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
+	mov (,%rax,4),%eax
 	negl %eax
-	movl %eax,16(%ebp)
-	movl 8(%ebp),%eax
+	movl %eax,16(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 16(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 16(%rbp),%eax
+	mov %eax,(,%rcx,4)
 	jmp L6024
 L6023:
-	movl $17,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *648(%edi)
-	movl %eax,8(%ebp)
+	movl $17,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *648(%rdi)
+	movl %eax,8(%rbp)
 L6024:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	jmp L6004
 L6025:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $30,24(%ebp)
-	movl $24,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *648(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $30,24(%rbp)
+	movl $24,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *648(%rdi)
 	jmp L6004
 L6026:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $19,24(%ebp)
-	movl $35,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *648(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $19,24(%rbp)
+	movl $35,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *648(%rdi)
 	jmp L6004
 L6027:
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $39,24(%ebp)
-	leal 28(%ebp),%ecx
-	calll *620(%edi)
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *648(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $39,24(%rbp)
+	leal 28(%rbp),%ecx
+	call *620(%rdi)
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *648(%rdi)
 	jmp L6004
 	jmp L6006
 L6005:
-	movl 460(%edi),%eax
-	mov $L6999,%edx
-	mov $16,%ecx
-1:	cmp (%edx),%eax
+	movl 460(%rdi),%eax
+	mov $L6999,%rdx
+	mov $16,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L6007
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L6006:
 L6004:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	REXP
 L6002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 12(%ebp),%ecx
-	calll *696(%edi)
-	movl %eax,12(%ebp)
-	movl $0,16(%ebp)
-	movl $0,20(%ebp)
-	movl $0,24(%ebp)
-	movl $0,28(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 12(%rbp),%ecx
+	call *696(%rdi)
+	movl %eax,12(%rbp)
+	movl $0,16(%rbp)
+	movl $0,20(%rbp)
+	movl $0,24(%rbp)
+	movl $0,28(%rbp)
 L6029:
-	movl 460(%edi),%eax
-	movl %eax,32(%ebp)
-	movl 488(%edi),%eax
+	movl 460(%rdi),%eax
+	movl %eax,32(%rbp)
+	movl 488(%rdi),%eax
 	orl %eax,%eax
 	jz L6034
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	jmp L6028
 L6034:
 	jmp L6035
 L6037:
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	jmp L6028
 L6038:
-	leal 36(%ebp),%ecx
-	calll *480(%edi)
-	movl $0,16(%ebp)
-	cmpl $106,460(%edi)
+	leal 36(%rbp),%ecx
+	call *480(%rdi)
+	movl $0,16(%rbp)
+	cmpl $106,460(%rdi)
 	je L6039
-	leal 36(%ebp),%ecx
-	calll *620(%edi)
-	movl %eax,16(%ebp)
+	leal 36(%rbp),%ecx
+	call *620(%rdi)
+	movl %eax,16(%rbp)
 L6039:
-	movl $106,44(%ebp)
-	movl $19,48(%ebp)
-	leal 36(%ebp),%ecx
-	calll *612(%edi)
-	movl $10,44(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 36(%ebp),%ecx
-	calll *652(%edi)
-	movl %eax,12(%ebp)
+	movl $106,44(%rbp)
+	movl $19,48(%rbp)
+	leal 36(%rbp),%ecx
+	call *612(%rdi)
+	movl $10,44(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 36(%rbp),%ecx
+	call *652(%rdi)
+	movl %eax,12(%rbp)
 	jmp L6029
 L6040:
-	movl $36,24(%ebp)
-	jmpl *L6033
+	movl $36,24(%rbp)
+	jmp *L6033
 L6041:
-	movl $40,24(%ebp)
-	jmpl *L6033
+	movl $40,24(%rbp)
+	jmp *L6033
 L6042:
 L6043:
 L6044:
-	movl $35,24(%ebp)
-	jmpl *L6033
+	movl $35,24(%rbp)
+	jmp *L6033
 L6045:
 L6046:
-	movl $34,24(%ebp)
-	jmpl *L6033
+	movl $34,24(%rbp)
+	jmp *L6033
 L6047:
 L6048:
 L6049:
 L6050:
 L6051:
 L6052:
-	cmpl $30,8(%ebp)
+	cmpl $30,8(%rbp)
 	jl L6053
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	jmp L6028
 L6053:
 L6054:
-	leal 36(%ebp),%ecx
-	calll *480(%edi)
-	movl $30,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,16(%ebp)
-	movl 32(%ebp),%eax
-	movl %eax,44(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 36(%ebp),%ecx
-	calll *652(%edi)
-	movl %eax,12(%ebp)
-	cmpl $0,20(%ebp)
+	leal 36(%rbp),%ecx
+	call *480(%rdi)
+	movl $30,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,16(%rbp)
+	movl 32(%rbp),%eax
+	movl %eax,44(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 36(%rbp),%ecx
+	call *652(%rdi)
+	movl %eax,12(%rbp)
+	cmpl $0,20(%rbp)
 	jne L6055
-	movl 12(%ebp),%eax
-	movl %eax,20(%ebp)
+	movl 12(%rbp),%eax
+	movl %eax,20(%rbp)
 	jmp L6056
 L6055:
-	movl $33,44(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 36(%ebp),%ecx
-	calll *652(%edi)
-	movl %eax,20(%ebp)
+	movl $33,44(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 36(%rbp),%ecx
+	call *652(%rdi)
+	movl %eax,20(%rbp)
 L6056:
-	movl 16(%ebp),%eax
-	movl %eax,12(%ebp)
-	movl 460(%edi),%eax
-	movl %eax,32(%ebp)
-	cmpl $20,32(%ebp)
+	movl 16(%rbp),%eax
+	movl %eax,12(%rbp)
+	movl 460(%rdi),%eax
+	movl %eax,32(%rbp)
+	cmpl $20,32(%rbp)
 	jl L6057
-	cmpl $25,32(%ebp)
+	cmpl $25,32(%rbp)
 	jle L6054
 L6057:
-	movl 20(%ebp),%eax
-	movl %eax,12(%ebp)
+	movl 20(%rbp),%eax
+	movl %eax,12(%rbp)
 	jmp L6029
 L6058:
 L6059:
-	movl $25,24(%ebp)
-	movl $30,28(%ebp)
-	jmpl *L6031
+	movl $25,24(%rbp)
+	movl $30,28(%rbp)
+	jmp *L6031
 L6060:
-	movl $23,24(%ebp)
-	jmpl *L6033
+	movl $23,24(%rbp)
+	jmp *L6033
 L6061:
-	movl $22,24(%ebp)
-	jmpl *L6033
+	movl $22,24(%rbp)
+	jmp *L6033
 L6062:
 L6063:
-	movl $21,24(%ebp)
-	jmpl *L6033
+	movl $21,24(%rbp)
+	jmp *L6033
 L6064:
-	cmpl $13,8(%ebp)
+	cmpl $13,8(%rbp)
 	jl L6065
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	jmp L6028
 L6065:
-	leal 36(%ebp),%ecx
-	calll *480(%edi)
-	movl $0,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,16(%ebp)
-	movl $38,44(%ebp)
-	movl $30,48(%ebp)
-	leal 36(%ebp),%ecx
-	calll *612(%edi)
-	movl $37,44(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,52(%ebp)
-	movl $0,64(%ebp)
-	leal 56(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,56(%ebp)
-	leal 36(%ebp),%ecx
-	calll *656(%edi)
-	movl %eax,12(%ebp)
+	leal 36(%rbp),%ecx
+	call *480(%rdi)
+	movl $0,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,16(%rbp)
+	movl $38,44(%rbp)
+	movl $30,48(%rbp)
+	leal 36(%rbp),%ecx
+	call *612(%rdi)
+	movl $37,44(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,52(%rbp)
+	movl $0,64(%rbp)
+	leal 56(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,56(%rbp)
+	leal 36(%rbp),%ecx
+	call *656(%rdi)
+	movl %eax,12(%rbp)
 	jmp L6029
 L6032:
-	movl 24(%ebp),%eax
-	movl %eax,28(%ebp)
+	movl 24(%rbp),%eax
+	movl %eax,28(%rbp)
 L6030:
-	movl 8(%ebp),%eax
-	cmpl 24(%ebp),%eax
+	movl 8(%rbp),%eax
+	cmpl 24(%rbp),%eax
 	jl L6066
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	jmp L6028
 L6066:
-	leal 36(%ebp),%ecx
-	calll *480(%edi)
-	movl 32(%ebp),%eax
-	movl %eax,44(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 28(%ebp),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,52(%ebp)
-	leal 36(%ebp),%ecx
-	calll *652(%edi)
-	movl %eax,12(%ebp)
+	leal 36(%rbp),%ecx
+	call *480(%rdi)
+	movl 32(%rbp),%eax
+	movl %eax,44(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 28(%rbp),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,52(%rbp)
+	leal 36(%rbp),%ecx
+	call *652(%rdi)
+	movl %eax,12(%rbp)
 	jmp L6029
 	jmp L6036
 L6035:
-	movl 32(%ebp),%eax
-	mov $L6998,%edx
-	mov $21,%ecx
-1:	cmp (%edx),%eax
+	movl 32(%rbp),%eax
+	mov $L6998,%rdx
+	mov $21,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L6037
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L6036:
 	jmp L6029
 L6028:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L6003:
 	jmp L6068
 //	REXPLIST
 L6067:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,8(%ebp)
-	leal 8(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,8(%rbp)
+	leal 8(%rbp),%eax
 	shr $2,%eax
-	movl %eax,12(%ebp)
+	movl %eax,12(%rbp)
 L6070:
-	movl $0,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,16(%ebp)
-	cmpl $38,460(%edi)
+	movl $0,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,16(%rbp)
+	cmpl $38,460(%rdi)
 	je L6071
-	movl 16(%ebp),%eax
-	movl 12(%ebp),%ecx
-	mov %eax,(,%ecx,4)
-	movl 8(%ebp),%eax
+	movl 16(%rbp),%eax
+	movl 12(%rbp),%ecx
+	mov %eax,(,%rcx,4)
+	movl 8(%rbp),%eax
 	jmp L6069
 L6071:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl $38,28(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl $0,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *652(%edi)
-	movl 12(%ebp),%ecx
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
-	mov (,%eax,4),%eax
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl $38,28(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl $0,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *652(%rdi)
+	movl 12(%rbp),%ecx
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
+	mov (,%rax,4),%eax
 	addl $2,%eax
-	movl %eax,12(%ebp)
+	movl %eax,12(%rbp)
 	jmp L6070
 L6069:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L6068:
 	jmp L6073
 //	RDEF
 L6072:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 8(%ebp),%ecx
-	calll *568(%edi)
-	movl %eax,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 8(%rbp),%ecx
+	call *568(%rdi)
+	movl %eax,8(%rbp)
 	jmp L6075
 L6077:
-	movl $0,12(%ebp)
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl 8(%ebp),%eax
-	cmpl $2,(,%eax,4)
+	movl $0,12(%rbp)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $2,%eax
 	je L6078
-	movl $40,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *604(%edi)
+	movl $40,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *604(%rdi)
 L6078:
-	cmpl $2,460(%edi)
+	cmpl $2,460(%rdi)
 	jne L6079
-	leal 16(%ebp),%ecx
-	calll *568(%edi)
-	movl %eax,12(%ebp)
+	leal 16(%rbp),%ecx
+	call *568(%rdi)
+	movl %eax,12(%rbp)
 L6079:
-	movl $106,24(%ebp)
-	movl $41,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *612(%edi)
-	cmpl $89,460(%edi)
+	movl $106,24(%rbp)
+	movl $41,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *612(%rdi)
+	cmpl $89,460(%rdi)
 	jne L6080
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $45,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 36(%ebp),%ecx
-	calll *584(%edi)
-	movl %eax,36(%ebp)
-	movl $0,40(%ebp)
-	leal 16(%ebp),%ecx
-	calll *660(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $45,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 36(%rbp),%ecx
+	call *584(%rdi)
+	movl %eax,36(%rbp)
+	movl $0,40(%rbp)
+	leal 16(%rbp),%ecx
+	call *660(%rdi)
 	jmp L6074
 L6080:
-	cmpl $20,460(%edi)
+	cmpl $20,460(%rdi)
 	jne L6081
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	movl $44,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl $0,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,36(%ebp)
-	movl $0,40(%ebp)
-	leal 16(%ebp),%ecx
-	calll *660(%edi)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	movl $44,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl $0,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,36(%rbp)
+	movl $0,40(%rbp)
+	leal 16(%rbp),%ecx
+	call *660(%rdi)
 	jmp L6074
 L6081:
-	movl $42,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *604(%edi)
+	movl $42,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *604(%rdi)
 L6082:
-	movl $44,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *604(%edi)
+	movl $44,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *604(%rdi)
 L6083:
-	leal 12(%ebp),%ecx
-	calll *480(%edi)
-	cmpl $103,460(%edi)
+	leal 12(%rbp),%ecx
+	call *480(%rdi)
+	cmpl $103,460(%rdi)
 	jne L6084
-	leal 12(%ebp),%ecx
-	calll *480(%edi)
-	movl 8(%ebp),%eax
-	cmpl $2,(,%eax,4)
+	leal 12(%rbp),%ecx
+	call *480(%rdi)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $2,%eax
 	je L6085
-	movl $43,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *604(%edi)
+	movl $43,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *604(%rdi)
 L6085:
-	movl $42,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl $0,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,28(%ebp)
-	leal 12(%ebp),%ecx
-	calll *652(%edi)
+	movl $42,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl $0,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,28(%rbp)
+	leal 12(%rbp),%ecx
+	call *652(%rdi)
 	jmp L6074
 L6084:
-	movl $41,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 28(%ebp),%ecx
-	calll *620(%edi)
-	movl %eax,28(%ebp)
-	leal 12(%ebp),%ecx
-	calll *652(%edi)
+	movl $41,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 28(%rbp),%ecx
+	call *620(%rdi)
+	movl %eax,28(%rbp)
+	leal 12(%rbp),%ecx
+	call *652(%rdi)
 	jmp L6074
 	jmp L6076
 L6075:
-	movl 460(%edi),%eax
-	mov $L6997,%edx
-	mov $2,%ecx
-1:	cmp (%edx),%eax
+	movl 460(%rdi),%eax
+	mov $L6997,%rdx
+	mov $2,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L6082
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L6076:
 L6074:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L6073:
 	ret
 	.data
@@ -4674,13 +4790,13 @@ L6997:
 	jmp L7004
 //	RBCOM
 L7001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,8(%ebp)
-	movl $0,12(%ebp)
-	movl 460(%edi),%eax
-	movl %eax,16(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,8(%rbp)
+	movl $0,12(%rbp)
+	movl 460(%rdi),%eax
+	movl %eax,16(%rbp)
 	jmp L7006
 L7008:
 	movl $0,%eax
@@ -4694,324 +4810,330 @@ L7014:
 L7015:
 L7016:
 L7017:
-	leal 20(%ebp),%ecx
-	calll *620(%edi)
-	movl %eax,8(%ebp)
-	cmpl $50,460(%edi)
+	leal 20(%rbp),%ecx
+	call *620(%rdi)
+	movl %eax,8(%rbp)
+	cmpl $50,460(%rdi)
 	jne L7018
-	movl 460(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,28(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 36(%ebp),%ecx
-	calll *620(%edi)
-	movl %eax,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *652(%edi)
+	movl 460(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,28(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 36(%rbp),%ecx
+	call *620(%rdi)
+	movl %eax,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *652(%rdi)
 	jmp L7005
 L7018:
-	cmpl $54,460(%edi)
+	cmpl $54,460(%rdi)
 	jne L7019
-	movl 8(%ebp),%eax
-	cmpl $2,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $2,%eax
 	je L7020
-	movl $50,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *604(%edi)
+	movl $50,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *604(%rdi)
 L7020:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl $54,28(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 36(%ebp),%ecx
-	calll *L7002
-	movl %eax,36(%ebp)
-	movl $0,40(%ebp)
-	leal 20(%ebp),%ecx
-	calll *656(%edi)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl $54,28(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 36(%rbp),%ecx
+	call *L7002
+	movl %eax,36(%rbp)
+	movl $0,40(%rbp)
+	leal 20(%rbp),%ecx
+	call *656(%rdi)
 	jmp L7005
 L7019:
-	movl 8(%ebp),%eax
-	cmpl $10,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $10,%eax
 	jne L7021
-	movl $51,20(%ebp)
-	movl 8(%ebp),%eax
+	movl $51,20(%rbp)
+	movl 8(%rbp),%eax
 	mov %eax,%ecx
-	movl 20(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 8(%ebp),%eax
+	movl 20(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 8(%rbp),%eax
 	jmp L7005
 L7021:
-	movl $51,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *604(%edi)
-	movl 8(%ebp),%eax
+	movl $51,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *604(%rdi)
+	movl 8(%rbp),%eax
 	jmp L7005
 L7022:
 L7023:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,28(%ebp)
-	movl $0,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *648(%edi)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,28(%rbp)
+	movl $0,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *648(%rdi)
 	jmp L7005
 L7024:
 L7025:
 L7026:
 L7027:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl $0,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,8(%ebp)
-	movl $101,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *616(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,28(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 36(%ebp),%ecx
-	calll *584(%edi)
-	movl %eax,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *652(%edi)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl $0,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,8(%rbp)
+	movl $101,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *616(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,28(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 36(%rbp),%ecx
+	call *584(%rdi)
+	movl %eax,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *652(%rdi)
 	jmp L7005
 L7028:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl $0,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,8(%ebp)
-	movl $101,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *616(%edi)
-	leal 20(%ebp),%ecx
-	calll *584(%edi)
-	movl %eax,12(%ebp)
-	movl $102,28(%ebp)
-	movl $54,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *612(%edi)
-	movl $55,28(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 40(%ebp),%ecx
-	calll *584(%edi)
-	movl %eax,40(%ebp)
-	leal 20(%ebp),%ecx
-	calll *656(%edi)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl $0,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,8(%rbp)
+	movl $101,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *616(%rdi)
+	leal 20(%rbp),%ecx
+	call *584(%rdi)
+	movl %eax,12(%rbp)
+	movl $102,28(%rbp)
+	movl $54,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *612(%rdi)
+	movl $55,28(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 40(%rbp),%ecx
+	call *584(%rdi)
+	movl %eax,40(%rbp)
+	leal 20(%rbp),%ecx
+	call *656(%rdi)
 	jmp L7005
 L7029:
-	movl $0,20(%ebp)
-	movl $0,24(%ebp)
-	movl $0,28(%ebp)
-	leal 32(%ebp),%ecx
-	calll *480(%edi)
-	leal 32(%ebp),%ecx
-	calll *572(%edi)
-	movl %eax,8(%ebp)
-	movl $20,40(%ebp)
-	movl $57,44(%ebp)
-	leal 32(%ebp),%ecx
-	calll *612(%edi)
-	movl $0,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,20(%ebp)
-	movl $99,40(%ebp)
-	movl $58,44(%ebp)
-	leal 32(%ebp),%ecx
-	calll *612(%edi)
-	movl $0,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,24(%ebp)
-	cmpl $100,460(%edi)
+	movl $0,20(%rbp)
+	movl $0,24(%rbp)
+	movl $0,28(%rbp)
+	leal 32(%rbp),%ecx
+	call *480(%rdi)
+	leal 32(%rbp),%ecx
+	call *572(%rdi)
+	movl %eax,8(%rbp)
+	movl $20,40(%rbp)
+	movl $57,44(%rbp)
+	leal 32(%rbp),%ecx
+	call *612(%rdi)
+	movl $0,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,20(%rbp)
+	movl $99,40(%rbp)
+	movl $58,44(%rbp)
+	leal 32(%rbp),%ecx
+	call *612(%rdi)
+	movl $0,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,24(%rbp)
+	cmpl $100,460(%rdi)
 	jne L7030
-	leal 32(%ebp),%ecx
-	calll *480(%edi)
-	movl $0,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,28(%ebp)
+	leal 32(%rbp),%ecx
+	call *480(%rdi)
+	movl $0,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,28(%rbp)
 L7030:
-	movl $101,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *616(%edi)
-	movl $56,40(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,44(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 24(%ebp),%eax
-	movl %eax,52(%ebp)
-	movl 28(%ebp),%eax
-	movl %eax,56(%ebp)
-	leal 60(%ebp),%ecx
-	calll *584(%edi)
-	movl %eax,60(%ebp)
-	leal 32(%ebp),%ecx
-	calll *664(%edi)
+	movl $101,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *616(%rdi)
+	movl $56,40(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,44(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 24(%rbp),%eax
+	movl %eax,52(%rbp)
+	movl 28(%rbp),%eax
+	movl %eax,56(%rbp)
+	leal 60(%rbp),%ecx
+	call *584(%rdi)
+	movl %eax,60(%rbp)
+	leal 32(%rbp),%ecx
+	call *664(%rdi)
 	jmp L7005
 L7031:
 L7032:
 L7033:
 L7034:
 L7035:
-	movl 464(%edi),%eax
-	movl %eax,8(%ebp)
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl 8(%ebp),%eax
+	movl 464(%rdi),%eax
+	movl %eax,8(%rbp)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl 8(%rbp),%eax
 	jmp L7005
 L7036:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl $0,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,8(%ebp)
-	movl $98,28(%ebp)
-	movl $60,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *612(%edi)
-	movl $70,28(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl 624(%edi),%eax
-	movl %eax,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *564(%edi)
-	movl %eax,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *652(%edi)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl $0,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,8(%rbp)
+	movl $98,28(%rbp)
+	movl $60,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *612(%rdi)
+	movl $70,28(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl 624(%rdi),%eax
+	movl %eax,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *564(%rdi)
+	movl %eax,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *652(%rdi)
 	jmp L7005
 L7037:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl $0,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,8(%ebp)
-	movl $54,28(%ebp)
-	movl $61,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *612(%edi)
-	movl $71,28(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 36(%ebp),%ecx
-	calll *L7002
-	movl %eax,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *652(%edi)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl $0,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,8(%rbp)
+	movl $54,28(%rbp)
+	movl $61,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *612(%rdi)
+	movl $71,28(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 36(%rbp),%ecx
+	call *L7002
+	movl %eax,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *652(%rdi)
 	jmp L7005
 L7038:
-	leal 20(%ebp),%ecx
-	calll *480(%edi)
-	movl $54,28(%ebp)
-	movl $62,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *612(%edi)
-	movl $72,28(%ebp)
-	leal 32(%ebp),%ecx
-	calll *L7002
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *648(%edi)
+	leal 20(%rbp),%ecx
+	call *480(%rdi)
+	movl $54,28(%rbp)
+	movl $62,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *612(%rdi)
+	movl $72,28(%rbp)
+	leal 32(%rbp),%ecx
+	call *L7002
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *648(%rdi)
 	jmp L7005
 L7039:
-	movl 560(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *564(%edi)
+	movl 560(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *564(%rdi)
 	jmp L7005
 	jmp L7007
 L7006:
-	movl 460(%edi),%eax
-	mov $L7999,%edx
-	mov $26,%ecx
-1:	cmp (%edx),%eax
+	movl 460(%rdi),%eax
+	mov $L7999,%rdx
+	mov $26,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L7008
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L7007:
 L7005:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	RCOM
 L7003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 8(%ebp),%ecx
-	calll *L7002
-	movl %eax,8(%ebp)
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 8(%rbp),%ecx
+	call *L7002
+	movl %eax,8(%rbp)
+	cmpl $0,8(%rbp)
 	jne L7041
-	movl $51,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *604(%edi)
+	movl $51,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *604(%rdi)
 L7041:
 	jmp L7043
 L7042:
-	movl 460(%edi),%eax
-	movl %eax,12(%ebp)
-	leal 16(%ebp),%ecx
-	calll *480(%edi)
-	cmpl $61,12(%ebp)
+	movl 460(%rdi),%eax
+	movl %eax,12(%rbp)
+	leal 16(%rbp),%ecx
+	call *480(%rdi)
+	cmpl $61,12(%rbp)
 	jne L7044
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *648(%edi)
-	movl %eax,8(%ebp)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *648(%rdi)
+	movl %eax,8(%rbp)
 	jmp L7045
 L7044:
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	movl $0,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *576(%edi)
-	movl %eax,32(%ebp)
-	leal 16(%ebp),%ecx
-	calll *652(%edi)
-	movl %eax,8(%ebp)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	movl $0,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *576(%rdi)
+	movl %eax,32(%rbp)
+	leal 16(%rbp),%ecx
+	call *652(%rdi)
+	movl %eax,8(%rbp)
 L7045:
 L7043:
-	cmpl $61,460(%edi)
+	cmpl $61,460(%rdi)
 	je L7042
-	cmpl $62,460(%edi)
+	cmpl $62,460(%rdi)
 	je L7042
-	cmpl $63,460(%edi)
+	cmpl $63,460(%rdi)
 	je L7042
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 L7040:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L7004:
 	ret
 	.data
@@ -5079,66 +5201,74 @@ L7999:
 	jmp L8002
 //	PLIST
 L8001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $0,20(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $0,20(%rbp)
 	movl $L8003,%eax
 	shr $2,%eax
-	movl %eax,24(%ebp)
-	cmpl $0,8(%ebp)
+	movl %eax,24(%rbp)
+	cmpl $0,8(%rbp)
 	jne L8004
 	movl $L8999,%eax
 	shr $2,%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *240(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *240(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L8004:
 	jmp L8005
 L8007:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *248(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *248(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L8008:
 	movl $2,%eax
-	addl 8(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *240(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	addl 8(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *240(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L8009:
 	movl $L8998,%eax
 	shr $2,%eax
-	movl %eax,36(%ebp)
-	movl 8(%ebp),%eax
+	movl %eax,36(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	movl %eax,40(%ebp)
-	leal 28(%ebp),%ecx
-	calll *304(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,40(%rbp)
+	leal 28(%rbp),%ecx
+	call *304(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L8010:
 	movl $2,%eax
-	addl 20(%ebp),%eax
-	movl %eax,20(%ebp)
+	addl 20(%rbp),%eax
+	movl %eax,20(%rbp)
 L8011:
 L8012:
 L8013:
 L8014:
 L8015:
-	incl 20(%ebp)
+	incl 20(%rbp)
 L8016:
 L8017:
 L8018:
@@ -5181,7 +5311,7 @@ L8054:
 L8055:
 L8056:
 L8057:
-	incl 20(%ebp)
+	incl 20(%rbp)
 L8058:
 L8059:
 L8060:
@@ -5193,7 +5323,7 @@ L8065:
 L8066:
 L8067:
 L8068:
-	incl 20(%ebp)
+	incl 20(%rbp)
 L8069:
 L8070:
 L8071:
@@ -5203,60 +5333,62 @@ L8074:
 L8075:
 L8076:
 L8077:
-	incl 20(%ebp)
-	movl 16(%ebp),%eax
-	cmpl 12(%ebp),%eax
+	incl 20(%rbp)
+	movl 16(%rbp),%eax
+	cmpl 12(%rbp),%eax
 	jne L8078
 	movl $L8997,%eax
 	shr $2,%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *240(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *240(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L8078:
 	movl $L8996,%eax
 	shr $2,%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *240(%edi)
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *248(%edi)
-	movl $2,28(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,32(%ebp)
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *240(%rdi)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *248(%rdi)
+	movl $2,28(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,32(%rbp)
 	jmp L8079
 L8080:
-	leal 36(%ebp),%ecx
-	calll *252(%edi)
-	movl $0,36(%ebp)
-	movl 12(%ebp),%eax
+	leal 36(%rbp),%ecx
+	call *252(%rdi)
+	movl $0,36(%rbp)
+	movl 12(%rbp),%eax
 	decl %eax
-	movl %eax,40(%ebp)
+	movl %eax,40(%rbp)
 	jmp L8081
 L8082:
-	movl 36(%ebp),%eax
-	addl 24(%ebp),%eax
-	mov (,%eax,4),%eax
-	movl %eax,52(%ebp)
-	leal 44(%ebp),%ecx
-	calll *240(%edi)
-	incl 36(%ebp)
+	movl 36(%rbp),%eax
+	addl 24(%rbp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,52(%rbp)
+	leal 44(%rbp),%ecx
+	call *240(%rdi)
+	incl 36(%rbp)
 L8081:
-	movl 36(%ebp),%eax
-	cmpl 40(%ebp),%eax
+	movl 36(%rbp),%eax
+	cmpl 40(%rbp),%eax
 	jle L8082
 	movl $L8995,%eax
 	shr $2,%eax
-	movl %eax,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *240(%edi)
-	movl 20(%ebp),%eax
-	cmpl 28(%ebp),%eax
+	movl %eax,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *240(%rdi)
+	movl 20(%rbp),%eax
+	cmpl 28(%rbp),%eax
 	jne L8084
 	movl $L8994,%eax
 	shr $2,%eax
@@ -5265,48 +5397,52 @@ L8084:
 	movl $L8993,%eax
 	shr $2,%eax
 L8083:
-	movl %eax,36(%ebp)
-	movl 12(%ebp),%eax
-	addl 24(%ebp),%eax
+	movl %eax,36(%rbp)
+	movl 12(%rbp),%eax
+	addl 24(%rbp),%eax
 	mov %eax,%ecx
-	movl 36(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 28(%ebp),%eax
-	addl 8(%ebp),%eax
+	movl 36(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 28(%rbp),%eax
+	addl 8(%rbp),%eax
 	decl %eax
-	mov (,%eax,4),%eax
-	movl %eax,44(%ebp)
-	movl 12(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,44(%rbp)
+	movl 12(%rbp),%eax
 	incl %eax
-	movl %eax,48(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 36(%ebp),%ecx
-	calll *608(%edi)
-	incl 28(%ebp)
+	movl %eax,48(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 36(%rbp),%ecx
+	call *608(%rdi)
+	incl 28(%rbp)
 L8079:
-	movl 28(%ebp),%eax
-	cmpl 32(%ebp),%eax
+	movl 28(%rbp),%eax
+	cmpl 32(%rbp),%eax
 	jle L8080
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 	jmp L8006
 L8005:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L8992,%edx
-	mov $70,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L8992,%rdx
+	mov $70,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L8077
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L8006:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L8002:
 	ret
 	.data
@@ -5520,85 +5656,91 @@ L8992:
 	jmp L9005
 //	NEXTPARAM
 L9001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	incl 976(%edi)
-	movl 976(%edi),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	incl 976(%rdi)
+	movl 976(%rdi),%eax
 L9006:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	TRANSREPORT
 L9002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 776(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *48(%edi)
-	incl 764(%edi)
-	movl 764(%edi),%eax
-	cmpl 768(%edi),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 776(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *48(%rdi)
+	incl 764(%rdi)
+	movl 764(%rdi),%eax
+	cmpl 768(%rdi),%eax
 	jl L9007
 	movl $L9999,%eax
 	shr $2,%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *240(%edi)
-	movl $8,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *120(%edi)
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *240(%rdi)
+	movl $8,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *120(%rdi)
 L9007:
 	movl $L9998,%eax
 	shr $2,%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *240(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *L9004
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *240(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *L9004
 	movl $L9997,%eax
 	shr $2,%eax
-	movl %eax,24(%ebp)
-	movl 1152(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *304(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl $0,28(%ebp)
-	movl $4,32(%ebp)
-	leal 16(%ebp),%ecx
-	calll *608(%edi)
-	leal 16(%ebp),%ecx
-	calll *252(%edi)
-	movl 780(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *48(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,24(%rbp)
+	movl 1152(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *304(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl $0,28(%rbp)
+	movl $4,32(%rbp)
+	leal 16(%rbp),%ecx
+	call *608(%rdi)
+	leal 16(%rbp),%ecx
+	call *252(%rdi)
+	movl 780(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *48(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	TRNMESSAGE
 L9003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	jmp L9009
 L9011:
 	movl $L9996,%eax
 	shr $2,%eax
-	movl %eax,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *304(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *304(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L9012:
 	movl $L9995,%eax
 	shr $2,%eax
@@ -5654,169 +5796,175 @@ L9028:
 	jmp L9008
 	jmp L9010
 L9009:
-	movl 8(%ebp),%eax
-	mov $L9983,%edx
-	mov $17,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov $L9983,%rdx
+	mov $17,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L9011
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L9010:
 L9008:
-	movl %eax,12(%ebp)
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *240(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,12(%rbp)
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *240(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L9005:
 	jmp L9030
 //	COMPILEAE
 L9029:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	leal 16(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	leal 16(%rbp),%eax
 	shr $2,%eax
-	movl %eax,12(%ebp)
-	leal 6024(%ebp),%eax
+	movl %eax,12(%rbp)
+	leal 6024(%rbp),%eax
 	shr $2,%eax
-	movl %eax,6020(%ebp)
-	leal 6832(%ebp),%eax
+	movl %eax,6020(%rbp)
+	leal 6832(%rbp),%eax
 	shr $2,%eax
-	movl %eax,6828(%ebp)
-	leal 8040(%ebp),%eax
+	movl %eax,6828(%rbp)
+	leal 8040(%rbp),%eax
 	shr $2,%eax
-	movl %eax,8036(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,1040(%edi)
-	movl $3,1044(%edi)
-	movl $3,1048(%edi)
-	movl $3,1052(%edi)
-	movl $1500,1056(%edi)
-	movl $0,9244(%ebp)
+	movl %eax,8036(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,1040(%rdi)
+	movl $3,1044(%rdi)
+	movl $3,1048(%rdi)
+	movl $3,1052(%rdi)
+	movl $1500,1056(%rdi)
+	movl $0,9244(%rbp)
 	movl $0,%eax
-	addl 1040(%edi),%eax
+	addl 1040(%rdi),%eax
 	mov %eax,%ecx
-	movl 9244(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl $0,9244(%ebp)
-	movl 1040(%edi),%eax
+	movl 9244(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl $0,9244(%rbp)
+	movl 1040(%rdi),%eax
 	incl %eax
 	mov %eax,%ecx
-	movl 9244(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl $0,9244(%ebp)
+	movl 9244(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl $0,9244(%rbp)
 	movl $2,%eax
-	addl 1040(%edi),%eax
+	addl 1040(%rdi),%eax
 	mov %eax,%ecx
-	movl 9244(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 6020(%ebp),%eax
-	movl %eax,1140(%edi)
-	movl $0,1144(%edi)
-	movl $200,1148(%edi)
-	movl 6828(%ebp),%eax
-	movl %eax,1060(%edi)
-	movl 8036(%ebp),%eax
-	movl %eax,1064(%edi)
-	movl $0,1068(%edi)
-	movl $300,1072(%edi)
-	movl $-1,1076(%edi)
-	movl $0,1096(%edi)
-	movl $0,1092(%edi)
-	movl $-1,1088(%edi)
-	movl $-1,1084(%edi)
-	movl $-1,1100(%edi)
-	movl $0,1152(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,1080(%edi)
-	movl $0,1004(%edi)
-	movl $0,976(%edi)
-	movl 1128(%edi),%eax
-	movl %eax,1120(%edi)
-	cmpl $0,8(%ebp)
+	movl 9244(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 6020(%rbp),%eax
+	movl %eax,1140(%rdi)
+	movl $0,1144(%rdi)
+	movl $200,1148(%rdi)
+	movl 6828(%rbp),%eax
+	movl %eax,1060(%rdi)
+	movl 8036(%rbp),%eax
+	movl %eax,1064(%rdi)
+	movl $0,1068(%rdi)
+	movl $300,1072(%rdi)
+	movl $-1,1076(%rdi)
+	movl $0,1096(%rdi)
+	movl $0,1092(%rdi)
+	movl $-1,1088(%rdi)
+	movl $-1,1084(%rdi)
+	movl $-1,1100(%rdi)
+	movl $0,1152(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,1080(%rdi)
+	movl $0,1004(%rdi)
+	movl $0,976(%rdi)
+	movl 1128(%rdi),%eax
+	movl %eax,1120(%rdi)
+	cmpl $0,8(%rbp)
 	je L9031
 L9032:
-	movl 8(%ebp),%eax
-	cmpl $49,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $49,%eax
 	je L9033
-	movl 8(%ebp),%eax
-	cmpl $48,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $48,%eax
 	je L9033
 	jmp L9034
 L9033:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	movl %eax,9252(%ebp)
-	leal 9244(%ebp),%ecx
-	calll *1160(%edi)
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,9252(%rbp)
+	leal 9244(%rbp),%ecx
+	call *1160(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
+	mov (,%rax,4),%eax
 	incl %eax
-	movl %eax,9252(%ebp)
-	leal 9244(%ebp),%ecx
-	calll *1156(%edi)
-	movl 8(%ebp),%eax
+	movl %eax,9252(%rbp)
+	leal 9244(%rbp),%ecx
+	call *1156(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,8(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,8(%rbp)
 	jmp L9032
 L9034:
 L9031:
-	movl $91,9252(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,9256(%ebp)
-	leal 9244(%ebp),%ecx
-	calll *1164(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,9252(%ebp)
-	leal 9244(%ebp),%ecx
-	calll *836(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,9252(%ebp)
-	leal 9244(%ebp),%ecx
-	calll *800(%edi)
-	movl $76,9252(%ebp)
-	movl 1144(%edi),%eax
+	movl $91,9252(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,9256(%rbp)
+	leal 9244(%rbp),%ecx
+	call *1164(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,9252(%rbp)
+	leal 9244(%rbp),%ecx
+	call *836(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,9252(%rbp)
+	leal 9244(%rbp),%ecx
+	call *800(%rdi)
+	movl $76,9252(%rbp)
+	movl 1144(%rdi),%eax
 	movl $2,%ecx
-	cltd
+	cqto
 	idivl %ecx
-	movl %eax,9256(%ebp)
-	leal 9244(%ebp),%ecx
-	calll *1164(%edi)
-	movl $0,9244(%ebp)
+	movl %eax,9256(%rbp)
+	leal 9244(%rbp),%ecx
+	call *1164(%rdi)
+	movl $0,9244(%rbp)
 	jmp L9036
 L9035:
-	movl 9244(%ebp),%eax
-	addl 1140(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,9256(%ebp)
-	leal 9248(%ebp),%ecx
-	calll *1180(%edi)
-	movl 9244(%ebp),%eax
+	movl 9244(%rbp),%eax
+	addl 1140(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,9256(%rbp)
+	leal 9248(%rbp),%ecx
+	call *1180(%rdi)
+	movl 9244(%rbp),%eax
 	incl %eax
-	addl 1140(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,9256(%ebp)
-	leal 9248(%ebp),%ecx
-	calll *1184(%edi)
+	addl 1140(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,9256(%rbp)
+	leal 9248(%rbp),%ecx
+	call *1184(%rdi)
 	movl $2,%eax
-	addl 9244(%ebp),%eax
-	movl %eax,9244(%ebp)
+	addl 9244(%rbp),%eax
+	movl %eax,9244(%rbp)
 L9036:
-	movl 1144(%edi),%eax
-	cmpl 9244(%ebp),%eax
+	movl 1144(%rdi),%eax
+	cmpl 9244(%rbp),%eax
 	jne L9035
-	leal 9248(%ebp),%ecx
-	calll *1008(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	leal 9248(%rbp),%ecx
+	call *1008(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L9030:
 	ret
 	.data
@@ -6278,752 +6426,799 @@ L9983:
 	jmp L10002
 //	TRANS
 L10001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 L10003:
-	movl $0,12(%ebp)
-	cmpl $0,8(%ebp)
+	movl $0,12(%rbp)
+	cmpl $0,8(%rbp)
 	jne L10005
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10005:
-	movl 8(%ebp),%eax
-	movl %eax,1080(%edi)
+	movl 8(%rbp),%eax
+	movl %eax,1080(%rdi)
 	jmp L10006
 L10008:
-	movl $100,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $100,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10009:
-	movl 1048(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,20(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,24(%ebp)
-	movl $0,28(%ebp)
-	movl 1124(%edi),%eax
-	movl %eax,32(%ebp)
-	movl 8(%ebp),%eax
+	movl 1048(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,20(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl $0,28(%rbp)
+	movl 1124(%rdi),%eax
+	movl %eax,32(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *804(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,44(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,48(%ebp)
-	leal 36(%ebp),%ecx
-	calll *816(%edi)
-	movl 1044(%edi),%eax
-	movl %eax,1048(%edi)
-	movl 1120(%edi),%eax
-	movl %eax,1124(%edi)
-	movl 1120(%edi),%eax
-	movl %eax,28(%ebp)
-	movl 24(%ebp),%eax
-	movl %eax,1120(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *804(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,44(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,48(%rbp)
+	leal 36(%rbp),%ecx
+	call *816(%rdi)
+	movl 1044(%rdi),%eax
+	movl %eax,1048(%rdi)
+	movl 1120(%rdi),%eax
+	movl %eax,1124(%rdi)
+	movl 1120(%rdi),%eax
+	movl %eax,28(%rbp)
+	movl 24(%rbp),%eax
+	movl %eax,1120(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *828(%edi)
-	movl 28(%ebp),%eax
-	cmpl 1120(%edi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *828(%rdi)
+	movl 28(%rbp),%eax
+	cmpl 1120(%rdi),%eax
 	je L10010
-	movl $110,44(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,48(%ebp)
-	leal 36(%ebp),%ecx
-	calll *840(%edi)
+	movl $110,44(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,48(%rbp)
+	leal 36(%rbp),%ecx
+	call *840(%rdi)
 L10010:
-	movl 1124(%edi),%eax
-	cmpl 1120(%edi),%eax
+	movl 1124(%rdi),%eax
+	cmpl 1120(%rdi),%eax
 	je L10011
-	movl 1124(%edi),%eax
-	movl %eax,1120(%edi)
-	movl $91,44(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,48(%ebp)
-	leal 36(%ebp),%ecx
-	calll *1164(%edi)
+	movl 1124(%rdi),%eax
+	movl %eax,1120(%rdi)
+	movl $91,44(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,48(%rbp)
+	leal 36(%rbp),%ecx
+	call *1164(%rdi)
 L10011:
-	movl $92,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *1160(%edi)
-	movl 8(%ebp),%eax
+	movl $92,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *1160(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *836(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *836(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *800(%edi)
-	movl 32(%ebp),%eax
-	movl %eax,1124(%edi)
-	movl 24(%ebp),%eax
-	cmpl 1120(%edi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *800(%rdi)
+	movl 32(%rbp),%eax
+	movl %eax,1124(%rdi)
+	movl 24(%rbp),%eax
+	cmpl 1120(%rdi),%eax
 	je L10012
-	movl $91,44(%ebp)
-	movl 24(%ebp),%eax
-	movl %eax,48(%ebp)
-	leal 36(%ebp),%ecx
-	calll *1164(%edi)
+	movl $91,44(%rbp)
+	movl 24(%rbp),%eax
+	movl %eax,48(%rbp)
+	leal 36(%rbp),%ecx
+	call *1164(%rdi)
 L10012:
-	movl 16(%ebp),%eax
-	movl %eax,1048(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,1044(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 16(%rbp),%eax
+	movl %eax,1048(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,1044(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10013:
 L10014:
 L10015:
-	movl 1048(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,20(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,24(%ebp)
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	movl 8(%ebp),%eax
+	movl 1048(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,20(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	cmpl $75,28(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	cmpl $75,28(%rbp)
 	jne L10016
-	movl $1,28(%ebp)
+	movl $1,28(%rbp)
 L10016:
 	jmp L10018
 L10017:
-	cmpl $79,28(%ebp)
+	cmpl $79,28(%rbp)
 	jne L10019
-	leal 36(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,36(%ebp)
-	movl 32(%ebp),%eax
+	leal 36(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,36(%rbp)
+	movl 32(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,48(%ebp)
-	movl $78,52(%ebp)
-	movl 36(%ebp),%eax
-	movl %eax,56(%ebp)
-	leal 40(%ebp),%ecx
-	calll *820(%edi)
-	movl 36(%ebp),%eax
-	movl %eax,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *936(%edi)
-	movl $102,48(%ebp)
-	movl 32(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,48(%rbp)
+	movl $78,52(%rbp)
+	movl 36(%rbp),%eax
+	movl %eax,56(%rbp)
+	leal 40(%rbp),%ecx
+	call *820(%rdi)
+	movl 36(%rbp),%eax
+	movl %eax,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *936(%rdi)
+	movl $102,48(%rbp)
+	movl 32(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1164(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *1164(%rdi)
 	jmp L10020
 L10019:
-	movl 32(%ebp),%eax
+	movl 32(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,44(%ebp)
-	movl 28(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 32(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,44(%rbp)
+	movl 28(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 32(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,52(%ebp)
-	leal 36(%ebp),%ecx
-	calll *820(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,52(%rbp)
+	leal 36(%rbp),%ecx
+	call *820(%rdi)
 L10020:
-	movl 32(%ebp),%eax
+	movl 32(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,1048(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,1048(%rdi)
 L10018:
-	cmpl $0,32(%ebp)
+	cmpl $0,32(%rbp)
 	jne L10017
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *836(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *836(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,44(%ebp)
-	leal 36(%ebp),%ecx
-	calll *800(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,1048(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,1044(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,44(%rbp)
+	leal 36(%rbp),%ecx
+	call *800(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,1048(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,1044(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10021:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *920(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *920(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10022:
-	movl 1120(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 1128(%edi),%eax
-	addl 1120(%edi),%eax
-	movl %eax,1120(%edi)
-	movl $91,28(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1164(%edi)
-	movl 8(%ebp),%eax
+	movl 1120(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 1128(%rdi),%eax
+	addl 1120(%rdi),%eax
+	movl %eax,1120(%rdi)
+	movl $91,28(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *1164(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *932(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *932(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *924(%edi)
-	movl $51,28(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1164(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *924(%rdi)
+	movl $51,28(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *1164(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10023:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl $52,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	decl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl $52,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	decl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10024:
-	movl $89,24(%ebp)
-	movl 8(%ebp),%eax
+	movl $89,24(%rbp)
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1168(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *1168(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *800(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *800(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10025:
-	movl $-1,12(%ebp)
+	movl $-1,12(%rbp)
 L10026:
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,16(%ebp)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,16(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *880(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *880(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *800(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *960(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *800(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *960(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10027:
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,16(%ebp)
-	leal 20(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,20(%ebp)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,16(%rbp)
+	leal 20(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,20(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	movl $0,36(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 24(%ebp),%ecx
-	calll *880(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	movl $0,36(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 24(%rbp),%ecx
+	call *880(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *800(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *964(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *800(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *964(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *800(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *960(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *800(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *960(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10028:
-	cmpl $0,1100(%edi)
+	cmpl $0,1100(%rdi)
 	jge L10029
-	movl $104,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
+	movl $104,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
 L10029:
-	cmpl $0,1100(%edi)
+	cmpl $0,1100(%rdi)
 	jne L10030
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,1100(%edi)
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,1100(%rdi)
 L10030:
-	movl 1100(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *964(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 1100(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *964(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10031:
-	cmpl $0,1084(%edi)
+	cmpl $0,1084(%rdi)
 	jge L10032
-	movl $104,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
+	movl $104,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
 L10032:
-	cmpl $0,1084(%edi)
+	cmpl $0,1084(%rdi)
 	jne L10033
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,1084(%edi)
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,1084(%rdi)
 L10033:
-	movl 1084(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *964(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 1084(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *964(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10034:
-	movl $97,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $97,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10035:
-	movl $68,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $68,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10036:
-	cmpl $0,1088(%edi)
+	cmpl $0,1088(%rdi)
 	jge L10037
-	movl $104,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
+	movl $104,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
 L10037:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl $98,24(%ebp)
-	movl 1088(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1168(%edi)
-	decl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl $98,24(%rbp)
+	movl 1088(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *1168(%rdi)
+	decl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10038:
-	movl $-1,12(%ebp)
+	movl $-1,12(%rbp)
 L10039:
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,16(%ebp)
-	leal 20(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,20(%ebp)
-	movl 1084(%edi),%eax
-	movl %eax,24(%ebp)
-	movl 1100(%edi),%eax
-	movl %eax,28(%ebp)
-	movl $0,1084(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,1100(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *964(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,16(%rbp)
+	leal 20(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,20(%rbp)
+	movl 1084(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl 1100(%rdi),%eax
+	movl %eax,28(%rbp)
+	movl $0,1084(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,1100(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *964(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *800(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *800(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,40(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,44(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,48(%ebp)
-	leal 32(%ebp),%ecx
-	calll *880(%edi)
-	cmpl $0,1084(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,40(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,44(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,48(%rbp)
+	leal 32(%rbp),%ecx
+	call *880(%rdi)
+	cmpl $0,1084(%rdi)
 	je L10040
-	movl 1084(%edi),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *960(%edi)
+	movl 1084(%rdi),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *960(%rdi)
 L10040:
-	movl 24(%ebp),%eax
-	movl %eax,1084(%edi)
-	movl 28(%ebp),%eax
-	movl %eax,1100(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 24(%rbp),%eax
+	movl %eax,1084(%rdi)
+	movl 28(%rbp),%eax
+	movl %eax,1100(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10041:
-	movl $-1,12(%ebp)
+	movl $-1,12(%rbp)
 L10042:
 L10043:
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,16(%ebp)
-	movl 1084(%edi),%eax
-	movl %eax,20(%ebp)
-	movl 1100(%edi),%eax
-	movl %eax,24(%ebp)
-	movl $0,1084(%edi)
-	movl $0,1100(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
-	cmpl $61,(,%eax,4)
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,16(%rbp)
+	movl 1084(%rdi),%eax
+	movl %eax,20(%rbp)
+	movl 1100(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl $0,1084(%rdi)
+	movl $0,1100(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $61,%eax
 	jne L10044
-	movl 16(%ebp),%eax
-	movl %eax,1100(%edi)
-	movl 8(%ebp),%eax
+	movl 16(%rbp),%eax
+	movl %eax,1100(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *800(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *964(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *800(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *964(%rdi)
 	jmp L10045
 L10044:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *800(%edi)
-	cmpl $0,1100(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *800(%rdi)
+	cmpl $0,1100(%rdi)
 	je L10046
-	movl 1100(%edi),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *960(%edi)
+	movl 1100(%rdi),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *960(%rdi)
 L10046:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,40(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,44(%ebp)
-	leal 28(%ebp),%ecx
-	calll *880(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,40(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,44(%rbp)
+	leal 28(%rbp),%ecx
+	call *880(%rdi)
 L10045:
-	cmpl $0,1084(%edi)
+	cmpl $0,1084(%rdi)
 	je L10047
-	movl 1084(%edi),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *960(%edi)
+	movl 1084(%rdi),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *960(%rdi)
 L10047:
-	movl 20(%ebp),%eax
-	movl %eax,1084(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,1100(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 20(%rbp),%eax
+	movl %eax,1084(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,1100(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10048:
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,16(%ebp)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,16(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,20(%ebp)
-	movl 1068(%edi),%eax
-	cmpl 1072(%edi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,20(%rbp)
+	movl 1068(%rdi),%eax
+	cmpl 1072(%rdi),%eax
 	jl L10049
-	movl $141,32(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 24(%ebp),%ecx
-	calll *840(%edi)
+	movl $141,32(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 24(%rbp),%ecx
+	call *840(%rdi)
 L10049:
-	cmpl $0,1076(%edi)
+	cmpl $0,1076(%rdi)
 	jge L10050
-	movl $105,32(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 24(%ebp),%ecx
-	calll *840(%edi)
+	movl $105,32(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 24(%rbp),%ecx
+	call *840(%rdi)
 L10050:
-	movl 1076(%edi),%eax
-	movl %eax,24(%ebp)
-	movl 1068(%edi),%eax
+	movl 1076(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl 1068(%rdi),%eax
 	decl %eax
-	movl %eax,28(%ebp)
+	movl %eax,28(%rbp)
 	jmp L10051
 L10052:
-	movl 24(%ebp),%eax
-	addl 1060(%edi),%eax
-	mov (,%eax,4),%eax
-	cmpl 20(%ebp),%eax
+	movl 24(%rbp),%eax
+	addl 1060(%rdi),%eax
+	mov (,%rax,4),%eax
+	cmpl 20(%rbp),%eax
 	jne L10053
-	movl $106,40(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,44(%ebp)
-	leal 32(%ebp),%ecx
-	calll *840(%edi)
+	movl $106,40(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,44(%rbp)
+	leal 32(%rbp),%ecx
+	call *840(%rdi)
 L10053:
-	incl 24(%ebp)
+	incl 24(%rbp)
 L10051:
-	movl 24(%ebp),%eax
-	cmpl 28(%ebp),%eax
+	movl 24(%rbp),%eax
+	cmpl 28(%rbp),%eax
 	jle L10052
-	movl 20(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 1068(%edi),%eax
-	addl 1060(%edi),%eax
+	movl 20(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 1068(%rdi),%eax
+	addl 1060(%rdi),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 16(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 1068(%edi),%eax
-	addl 1064(%edi),%eax
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 16(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 1068(%rdi),%eax
+	addl 1064(%rdi),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	incl 1068(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	incl 1068(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *800(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *800(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10054:
-	cmpl $0,1076(%edi)
+	cmpl $0,1076(%rdi)
 	jge L10055
-	movl $105,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
+	movl $105,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
 L10055:
-	cmpl $0,1092(%edi)
+	cmpl $0,1092(%rdi)
 	je L10056
-	movl $101,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
+	movl $101,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
 L10056:
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,1092(%edi)
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,1092(%rdi)
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *800(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *800(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10057:
-	cmpl $0,1076(%edi)
+	cmpl $0,1076(%rdi)
 	jge L10058
-	movl $105,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
+	movl $105,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
 L10058:
-	movl 1096(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *964(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 1096(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *964(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10059:
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *884(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *884(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10060:
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *888(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *888(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10061:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *800(%edi)
-	incl 1152(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *800(%rdi)
+	incl 1152(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,8(%ebp)
-	jmpl *L10004
+	mov (,%rax,4),%eax
+	movl %eax,8(%rbp)
+	jmp *L10004
 	jmp L10007
 L10006:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L10999,%edx
-	mov $27,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L10999,%rdx
+	mov $27,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L10008
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L10007:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L10002:
 	ret
 	.data
@@ -7093,759 +7288,824 @@ L10999:
 	jmp L11017
 //	DECLNAMES
 L11001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	je L11018
 	jmp L11019
 L11021:
-	movl $102,20(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *840(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $102,20(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *840(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11022:
 L11023:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *808(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *808(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11024:
 L11025:
-	leal 12(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	leal 12(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $4,%eax
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 8(%ebp),%eax
+	movl 12(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	movl 8(%rbp),%eax
 	addl $4,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *812(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *812(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11026:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *804(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *804(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *804(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *804(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 	jmp L11020
 L11019:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L11999,%edx
-	mov $5,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L11999,%rdx
+	mov $5,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L11021
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L11020:
 L11018:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	DECLDYN
 L11002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	je L11027
-	movl 8(%ebp),%eax
-	cmpl $2,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $2,%eax
 	jne L11028
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	movl $77,24(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 12(%ebp),%ecx
-	calll *820(%edi)
-	incl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	movl $77,24(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 12(%rbp),%ecx
+	call *820(%rdi)
+	incl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11028:
-	movl 8(%ebp),%eax
-	cmpl $38,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $38,%eax
 	jne L11029
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	movl $77,24(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 12(%ebp),%ecx
-	calll *820(%edi)
-	incl 1120(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	movl $77,24(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 12(%rbp),%ecx
+	call *820(%rdi)
+	incl 1120(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *808(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *808(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11029:
-	movl $103,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *840(%edi)
+	movl $103,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *840(%rdi)
 L11027:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	DECLSTAT
 L11003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *824(%edi)
-	movl %eax,16(%ebp)
-	movl 16(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *824(%rdi)
+	movl %eax,16(%rbp)
+	movl 16(%rbp),%eax
 	incl %eax
-	addl 1040(%edi),%eax
-	cmpl $76,(,%eax,4)
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
+	cmpl $76,%eax
 	jne L11030
 	movl $2,%eax
-	addl 16(%ebp),%eax
-	addl 1040(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl $76,36(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 24(%ebp),%ecx
-	calll *820(%edi)
-	movl 1144(%edi),%eax
-	cmpl 1148(%edi),%eax
+	addl 16(%rbp),%eax
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl $76,36(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 24(%rbp),%ecx
+	call *820(%rdi)
+	movl 1144(%rdi),%eax
+	cmpl 1148(%rdi),%eax
 	jl L11031
-	movl $144,32(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 24(%ebp),%ecx
-	calll *840(%edi)
+	movl $144,32(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 24(%rbp),%ecx
+	call *840(%rdi)
 L11031:
-	movl 20(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 1144(%edi),%eax
-	addl 1140(%edi),%eax
+	movl 20(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 1144(%rdi),%eax
+	addl 1140(%rdi),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 1144(%edi),%eax
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 1144(%rdi),%eax
 	incl %eax
-	addl 1140(%edi),%eax
+	addl 1140(%rdi),%eax
 	mov %eax,%ecx
-	movl 24(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 24(%rbp),%eax
+	mov %eax,(,%rcx,4)
 	movl $2,%eax
-	addl 1144(%edi),%eax
-	movl %eax,1144(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	addl 1144(%rdi),%eax
+	movl %eax,1144(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11030:
-	leal 20(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl $78,36(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 24(%ebp),%ecx
-	calll *820(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *936(%edi)
-	movl $101,32(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 24(%ebp),%ecx
-	calll *1168(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	leal 20(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl $78,36(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 24(%rbp),%ecx
+	call *820(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *936(%rdi)
+	movl $101,32(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 24(%rbp),%ecx
+	call *1168(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	DECLLABELS
 L11004:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 1044(%edi),%eax
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *L11009
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *816(%edi)
-	movl 1044(%edi),%eax
-	movl %eax,1048(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 1044(%rdi),%eax
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *L11009
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *816(%rdi)
+	movl 1044(%rdi),%eax
+	movl %eax,1048(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	CHECKDISTINCT
 L11005:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	jmp L11033
 L11032:
 	movl $3,%eax
-	addl 8(%ebp),%eax
-	movl %eax,16(%ebp)
-	movl 8(%ebp),%eax
-	addl 1040(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
+	addl 8(%rbp),%eax
+	movl %eax,16(%rbp)
+	movl 8(%rbp),%eax
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
 	jmp L11035
 L11034:
-	movl 16(%ebp),%eax
-	addl 1040(%edi),%eax
-	mov (,%eax,4),%eax
-	cmpl 20(%ebp),%eax
+	movl 16(%rbp),%eax
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
+	cmpl 20(%rbp),%eax
 	jne L11036
-	movl $142,32(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 24(%ebp),%ecx
-	calll *840(%edi)
+	movl $142,32(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 24(%rbp),%ecx
+	call *840(%rdi)
 L11036:
 	movl $3,%eax
-	addl 16(%ebp),%eax
-	movl %eax,16(%ebp)
+	addl 16(%rbp),%eax
+	movl %eax,16(%rbp)
 L11035:
-	movl 16(%ebp),%eax
-	cmpl 12(%ebp),%eax
+	movl 16(%rbp),%eax
+	cmpl 12(%rbp),%eax
 	jl L11034
 	movl $3,%eax
-	addl 8(%ebp),%eax
-	movl %eax,8(%ebp)
+	addl 8(%rbp),%eax
+	movl %eax,8(%rbp)
 L11033:
-	movl 12(%ebp),%eax
-	cmpl 8(%ebp),%eax
+	movl 12(%rbp),%eax
+	cmpl 8(%rbp),%eax
 	jne L11032
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	ADDNAME
 L11006:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 1044(%edi),%eax
-	cmpl 1056(%edi),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 1044(%rdi),%eax
+	cmpl 1056(%rdi),%eax
 	jl L11037
-	movl $143,28(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *840(%edi)
+	movl $143,28(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *840(%rdi)
 L11037:
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	movl 1044(%edi),%eax
-	addl 1040(%edi),%eax
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	movl 1044(%rdi),%eax
+	addl 1040(%rdi),%eax
 	mov %eax,%ecx
-	movl 20(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 12(%ebp),%eax
-	movl %eax,20(%ebp)
-	movl 1044(%edi),%eax
+	movl 20(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 12(%rbp),%eax
+	movl %eax,20(%rbp)
+	movl 1044(%rdi),%eax
 	incl %eax
-	addl 1040(%edi),%eax
+	addl 1040(%rdi),%eax
 	mov %eax,%ecx
-	movl 20(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 16(%ebp),%eax
-	movl %eax,20(%ebp)
+	movl 20(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 16(%rbp),%eax
+	movl %eax,20(%rbp)
 	movl $2,%eax
-	addl 1044(%edi),%eax
-	addl 1040(%edi),%eax
+	addl 1044(%rdi),%eax
+	addl 1040(%rdi),%eax
 	mov %eax,%ecx
-	movl 20(%ebp),%eax
-	mov %eax,(,%ecx,4)
+	movl 20(%rbp),%eax
+	mov %eax,(,%rcx,4)
 	movl $3,%eax
-	addl 1044(%edi),%eax
-	movl %eax,1044(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	addl 1044(%rdi),%eax
+	movl %eax,1044(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	CELLWITHNAME
 L11007:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 1048(%edi),%eax
-	movl %eax,12(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 1048(%rdi),%eax
+	movl %eax,12(%rbp)
 L11039:
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	subl $3,%eax
-	movl %eax,12(%ebp)
-	cmpl $0,12(%ebp)
+	movl %eax,12(%rbp)
+	cmpl $0,12(%rbp)
 	je L11040
-	movl 12(%ebp),%eax
-	addl 1040(%edi),%eax
-	mov (,%eax,4),%eax
-	cmpl 8(%ebp),%eax
+	movl 12(%rbp),%eax
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
+	cmpl 8(%rbp),%eax
 	jne L11039
 L11040:
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 L11038:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	SCANLABELS
 L11008:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	je L11041
 	jmp L11042
 L11044:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11045:
-	leal 12(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	leal 12(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $3,%eax
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
-	mov %eax,(,%ecx,4)
-	movl 8(%ebp),%eax
+	movl 12(%rbp),%eax
+	mov %eax,(,%rcx,4)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *812(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *812(%rdi)
 L11046:
 L11047:
 L11048:
 L11049:
 L11050:
 L11051:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11009
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11009
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11052:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11009
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11009
 L11053:
 L11054:
 L11055:
 L11056:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11009
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11009
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11057:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11009
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11009
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11009
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11009
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 	jmp L11043
 L11042:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L11998,%edx
-	mov $13,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L11998,%rdx
+	mov $13,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L11044
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L11043:
 L11041:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	TRANSDEF
 L11010:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11012
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11016
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11012
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11016
 	orl %eax,%eax
 	jz L11058
-	leal 12(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,12(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *964(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *L11014
-	movl 16(%ebp),%eax
-	movl %eax,1120(%edi)
-	movl $91,28(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1164(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *960(%edi)
+	leal 12(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,12(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *964(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *L11014
+	movl 16(%rbp),%eax
+	movl %eax,1120(%rdi)
+	movl $91,28(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *1164(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *960(%rdi)
 L11058:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	TRANSDYNDEFS
 L11011:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	jmp L11059
 L11061:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11012
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11012
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11012
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11012
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11062:
-	movl $45,20(%ebp)
-	movl 1124(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1164(%edi)
-	incl 1120(%edi)
-	movl 1124(%edi),%eax
+	movl $45,20(%rbp)
+	movl 1124(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *1164(%rdi)
+	incl 1120(%rdi)
+	movl 1124(%rdi),%eax
 	incl %eax
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	addl %ecx,%eax
-	movl %eax,1124(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,1124(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11063:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *932(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *932(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11064:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 	jmp L11060
 L11059:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L11997,%edx
-	mov $3,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L11997,%rdx
+	mov $3,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L11064
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L11060:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	TRANSSTATDEFS
 L11013:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	jmp L11065
 L11067:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11014
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11014
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11014
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11014
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11068:
 L11069:
-	movl 1048(%edi),%eax
-	movl %eax,12(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 1052(%edi),%eax
-	movl %eax,20(%ebp)
-	movl 1084(%edi),%eax
-	movl %eax,24(%ebp)
-	movl 1100(%edi),%eax
-	movl %eax,28(%ebp)
-	movl 1088(%edi),%eax
-	movl %eax,32(%ebp)
-	movl 1076(%edi),%eax
-	movl %eax,36(%ebp)
-	movl $-1,1084(%edi)
-	movl $-1,1100(%edi)
-	movl $-1,1088(%edi)
-	movl $-1,1076(%edi)
-	movl 8(%ebp),%eax
+	movl 1048(%rdi),%eax
+	movl %eax,12(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 1052(%rdi),%eax
+	movl %eax,20(%rbp)
+	movl 1084(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl 1100(%rdi),%eax
+	movl %eax,28(%rbp)
+	movl 1088(%rdi),%eax
+	movl %eax,32(%rbp)
+	movl 1076(%rdi),%eax
+	movl %eax,36(%rbp)
+	movl $-1,1084(%rdi)
+	movl $-1,1100(%rdi)
+	movl $-1,1088(%rdi)
+	movl $-1,1076(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,48(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,48(%rbp)
+	movl 8(%rbp),%eax
 	addl $4,%eax
-	mov (,%eax,4),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *968(%edi)
-	movl 1128(%edi),%eax
-	movl %eax,1120(%edi)
-	movl 1044(%edi),%eax
-	movl %eax,1052(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *968(%rdi)
+	movl 1128(%rdi),%eax
+	movl %eax,1120(%rdi)
+	movl 1044(%rdi),%eax
+	movl %eax,1052(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *808(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *816(%edi)
-	movl 1044(%edi),%eax
-	movl %eax,1048(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *808(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *816(%rdi)
+	movl 1044(%rdi),%eax
+	movl %eax,1048(%rdi)
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *836(%edi)
-	movl $95,48(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1164(%edi)
-	movl 8(%ebp),%eax
-	cmpl $44,(,%eax,4)
+	mov (,%rax,4),%eax
+	movl %eax,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *836(%rdi)
+	movl $95,48(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *1164(%rdi)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $44,%eax
 	jne L11070
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *924(%edi)
-	movl $96,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1160(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *924(%rdi)
+	movl $96,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *1160(%rdi)
 	jmp L11071
 L11070:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *800(%edi)
-	movl $97,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1160(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *800(%rdi)
+	movl $97,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *1160(%rdi)
 L11071:
-	movl $103,48(%ebp)
-	movl $0,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1164(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,1084(%edi)
-	movl 28(%ebp),%eax
-	movl %eax,1100(%edi)
-	movl 32(%ebp),%eax
-	movl %eax,1088(%edi)
-	movl 36(%ebp),%eax
-	movl %eax,1076(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,1048(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,1044(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,1052(%edi)
+	movl $103,48(%rbp)
+	movl $0,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *1164(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,1084(%rdi)
+	movl 28(%rbp),%eax
+	movl %eax,1100(%rdi)
+	movl 32(%rbp),%eax
+	movl %eax,1088(%rdi)
+	movl 36(%rbp),%eax
+	movl %eax,1076(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,1048(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,1044(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,1052(%rdi)
 L11072:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 	jmp L11066
 L11065:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L11996,%edx
-	mov $3,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L11996,%rdx
+	mov $3,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L11072
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L11066:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	STATDEFS
 L11015:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	cmpl $44,(,%eax,4)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $44,%eax
 	je L11075
-	movl 8(%ebp),%eax
-	cmpl $45,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $45,%eax
 	jne L11074
 L11075:
 	movl $-1,%eax
 	jmp L11073
 L11074:
-	movl 8(%ebp),%eax
-	cmpl $40,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $40,%eax
 	je L11077
 	movl $0,%eax
 	jmp L11076
 L11077:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11016
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11016
 	orl %eax,%eax
 	jz L11079
 	movl $-1,%eax
 	jmp L11078
 L11079:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *L11016
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *L11016
 L11078:
 L11076:
 L11073:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L11017:
 	ret
 	.data
@@ -7938,107 +8198,113 @@ L11996:
 	jmp L12004
 //	JUMPCOND
 L12001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 12(%ebp),%eax
-	movl %eax,20(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 12(%rbp),%eax
+	movl %eax,20(%rbp)
 	jmp L12005
 L12007:
-	notl 12(%ebp)
+	notl 12(%rbp)
 L12008:
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	orl %eax,%eax
 	jz L12009
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *964(%edi)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *964(%rdi)
 L12009:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L12010:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	movl 12(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	movl 12(%rbp),%eax
 	notl %eax
-	movl %eax,36(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 24(%ebp),%ecx
-	calll *880(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,36(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 24(%rbp),%ecx
+	call *880(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L12011:
-	notl 20(%ebp)
+	notl 20(%rbp)
 L12012:
-	movl 20(%ebp),%eax
+	movl 20(%rbp),%eax
 	orl %eax,%eax
 	jz L12013
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,36(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 24(%ebp),%ecx
-	calll *880(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,36(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 24(%rbp),%ecx
+	call *880(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,36(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 24(%ebp),%ecx
-	calll *880(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,36(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 24(%rbp),%ecx
+	call *880(%rdi)
 	jmp L12014
 L12013:
-	leal 24(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,24(%ebp)
-	movl 8(%ebp),%eax
+	leal 24(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,24(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	movl 12(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	movl 12(%rbp),%eax
 	notl %eax
-	movl %eax,40(%ebp)
-	movl 24(%ebp),%eax
-	movl %eax,44(%ebp)
-	leal 28(%ebp),%ecx
-	calll *880(%edi)
-	movl 8(%ebp),%eax
+	movl %eax,40(%rbp)
+	movl 24(%rbp),%eax
+	movl %eax,44(%rbp)
+	leal 28(%rbp),%ecx
+	call *880(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,40(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,44(%ebp)
-	leal 28(%ebp),%ecx
-	calll *880(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *960(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,40(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,44(%rbp)
+	leal 28(%rbp),%ecx
+	call *880(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *960(%rdi)
 L12014:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L12015:
-	movl 8(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *924(%edi)
-	movl 12(%ebp),%eax
+	movl 8(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *924(%rdi)
+	movl 12(%rbp),%eax
 	orl %eax,%eax
 	jz L12017
 	movl $86,%eax
@@ -8046,318 +8312,328 @@ L12015:
 L12017:
 	movl $87,%eax
 L12016:
-	movl %eax,32(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 24(%ebp),%ecx
-	calll *1168(%edi)
-	decl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,32(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 24(%rbp),%ecx
+	call *1168(%rdi)
+	decl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 	jmp L12006
 L12005:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L12999,%edx
-	mov $5,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L12999,%rdx
+	mov $5,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L12015
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L12006:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	TRANSSWITCH
 L12002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 1068(%edi),%eax
-	movl %eax,12(%ebp)
-	movl 1076(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 1092(%edi),%eax
-	movl %eax,20(%ebp)
-	movl 1096(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 28(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,28(%ebp)
-	leal 32(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,1096(%edi)
-	movl 1068(%edi),%eax
-	movl %eax,1076(%edi)
-	movl 28(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *964(%edi)
-	movl $0,1092(%edi)
-	movl 8(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 1068(%rdi),%eax
+	movl %eax,12(%rbp)
+	movl 1076(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 1092(%rdi),%eax
+	movl %eax,20(%rbp)
+	movl 1096(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 28(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,28(%rbp)
+	leal 32(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,1096(%rdi)
+	movl 1068(%rdi),%eax
+	movl %eax,1076(%rdi)
+	movl 28(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *964(%rdi)
+	movl $0,1092(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *800(%edi)
-	movl 1096(%edi),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *964(%edi)
-	movl 28(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *800(%rdi)
+	movl 1096(%rdi),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *964(%rdi)
+	movl 28(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *924(%edi)
-	cmpl $0,1092(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *924(%rdi)
+	cmpl $0,1092(%rdi)
 	jne L12018
-	movl 1096(%edi),%eax
-	movl %eax,1092(%edi)
+	movl 1096(%rdi),%eax
+	movl %eax,1092(%rdi)
 L12018:
-	movl $70,40(%ebp)
-	movl 1068(%edi),%eax
-	subl 12(%ebp),%eax
-	movl %eax,44(%ebp)
-	movl 1092(%edi),%eax
-	movl %eax,48(%ebp)
-	leal 32(%ebp),%ecx
-	calll *1176(%edi)
-	movl 1076(%edi),%eax
-	movl %eax,32(%ebp)
-	movl 1068(%edi),%eax
+	movl $70,40(%rbp)
+	movl 1068(%rdi),%eax
+	subl 12(%rbp),%eax
+	movl %eax,44(%rbp)
+	movl 1092(%rdi),%eax
+	movl %eax,48(%rbp)
+	leal 32(%rbp),%ecx
+	call *1176(%rdi)
+	movl 1076(%rdi),%eax
+	movl %eax,32(%rbp)
+	movl 1068(%rdi),%eax
 	decl %eax
-	movl %eax,36(%ebp)
+	movl %eax,36(%rbp)
 	jmp L12019
 L12020:
-	movl 32(%ebp),%eax
-	addl 1060(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1180(%edi)
-	movl 32(%ebp),%eax
-	addl 1064(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,48(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1184(%edi)
-	incl 32(%ebp)
+	movl 32(%rbp),%eax
+	addl 1060(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *1180(%rdi)
+	movl 32(%rbp),%eax
+	addl 1064(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,48(%rbp)
+	leal 40(%rbp),%ecx
+	call *1184(%rdi)
+	incl 32(%rbp)
 L12019:
-	movl 32(%ebp),%eax
-	cmpl 36(%ebp),%eax
+	movl 32(%rbp),%eax
+	cmpl 36(%rbp),%eax
 	jle L12020
-	decl 1120(%edi)
-	movl 1096(%edi),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *960(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,1096(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,1068(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,1076(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,1092(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	decl 1120(%rdi)
+	movl 1096(%rdi),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *960(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,1096(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,1068(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,1076(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,1092(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	TRANSFOR
 L12003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 1048(%edi),%eax
-	movl %eax,12(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,16(%ebp)
-	leal 20(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,20(%ebp)
-	leal 24(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,24(%ebp)
-	movl 1084(%edi),%eax
-	movl %eax,28(%ebp)
-	movl 1100(%edi),%eax
-	movl %eax,32(%ebp)
-	movl $0,36(%ebp)
-	movl $0,40(%ebp)
-	movl $1,44(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,48(%ebp)
-	movl $0,1084(%edi)
-	movl $0,1100(%edi)
-	movl 8(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 1048(%rdi),%eax
+	movl %eax,12(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,16(%rbp)
+	leal 20(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,20(%rbp)
+	leal 24(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,24(%rbp)
+	movl 1084(%rdi),%eax
+	movl %eax,28(%rbp)
+	movl 1100(%rdi),%eax
+	movl %eax,32(%rbp)
+	movl $0,36(%rbp)
+	movl $0,40(%rbp)
+	movl $1,44(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,48(%rbp)
+	movl $0,1084(%rdi)
+	movl $0,1100(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,60(%ebp)
-	movl $77,64(%ebp)
-	movl 48(%ebp),%eax
-	movl %eax,68(%ebp)
-	leal 52(%ebp),%ecx
-	calll *820(%edi)
-	movl 1044(%edi),%eax
-	movl %eax,1048(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,60(%rbp)
+	movl $77,64(%rbp)
+	movl 48(%rbp),%eax
+	movl %eax,68(%rbp)
+	leal 52(%rbp),%ecx
+	call *820(%rdi)
+	movl 1044(%rdi),%eax
+	movl %eax,1048(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *924(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *924(%rdi)
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	cmpl $1,(,%eax,4)
+	mov (,%rax,4),%eax
+	mov (,%rax,4),%eax
+	cmpl $1,%eax
 	jne L12021
-	movl $42,36(%ebp)
-	movl 8(%ebp),%eax
+	movl $42,36(%rbp)
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
+	mov (,%rax,4),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,40(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,40(%rbp)
 	jmp L12022
 L12021:
-	movl $40,36(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,40(%ebp)
-	movl 8(%ebp),%eax
+	movl $40,36(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,40(%rbp)
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *924(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *924(%rdi)
 L12022:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $4,%eax
-	cmpl $0,(,%eax,4)
+	mov (,%rax,4),%eax
+	cmpl $0,%eax
 	je L12023
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $4,%eax
-	mov (,%eax,4),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,44(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,44(%rbp)
 L12023:
-	movl $92,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1160(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *964(%edi)
-	movl 8(%ebp),%eax
+	movl $92,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *1160(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *964(%rdi)
+	movl 8(%rbp),%eax
 	addl $5,%eax
-	mov (,%eax,4),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *836(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *836(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
 	addl $5,%eax
-	mov (,%eax,4),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *800(%edi)
-	cmpl $0,1100(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *800(%rdi)
+	cmpl $0,1100(%rdi)
 	je L12024
-	movl 1100(%edi),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *960(%edi)
+	movl 1100(%rdi),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *960(%rdi)
 L12024:
-	movl $40,60(%ebp)
-	movl 48(%ebp),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1164(%edi)
-	movl $42,60(%ebp)
-	movl 44(%ebp),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1164(%edi)
-	movl $14,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1160(%edi)
-	movl $80,60(%ebp)
-	movl 48(%ebp),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1164(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *960(%edi)
-	cmpl $0,44(%ebp)
+	movl $40,60(%rbp)
+	movl 48(%rbp),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1164(%rdi)
+	movl $42,60(%rbp)
+	movl 44(%rbp),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1164(%rdi)
+	movl $14,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *1160(%rdi)
+	movl $80,60(%rbp)
+	movl 48(%rbp),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1164(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *960(%rdi)
+	cmpl $0,44(%rbp)
 	jle L12025
-	movl $40,60(%ebp)
-	movl 48(%ebp),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1164(%edi)
-	movl 36(%ebp),%eax
-	movl %eax,60(%ebp)
-	movl 40(%ebp),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1164(%edi)
+	movl $40,60(%rbp)
+	movl 48(%rbp),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1164(%rdi)
+	movl 36(%rbp),%eax
+	movl %eax,60(%rbp)
+	movl 40(%rbp),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1164(%rdi)
 	jmp L12026
 L12025:
-	movl 36(%ebp),%eax
-	movl %eax,60(%ebp)
-	movl 40(%ebp),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1164(%edi)
-	movl $40,60(%ebp)
-	movl 48(%ebp),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1164(%edi)
+	movl 36(%rbp),%eax
+	movl %eax,60(%rbp)
+	movl 40(%rbp),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1164(%rdi)
+	movl $40,60(%rbp)
+	movl 48(%rbp),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1164(%rdi)
 L12026:
-	movl $88,60(%ebp)
-	movl 24(%ebp),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1168(%edi)
-	cmpl $0,1084(%edi)
+	movl $88,60(%rbp)
+	movl 24(%rbp),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1168(%rdi)
+	cmpl $0,1084(%rdi)
 	je L12027
-	movl 1084(%edi),%eax
-	movl %eax,60(%ebp)
-	leal 52(%ebp),%ecx
-	calll *960(%edi)
+	movl 1084(%rdi),%eax
+	movl %eax,60(%rbp)
+	leal 52(%rbp),%ecx
+	call *960(%rdi)
 L12027:
-	movl 28(%ebp),%eax
-	movl %eax,1084(%edi)
-	movl 32(%ebp),%eax
-	movl %eax,1100(%edi)
-	movl 48(%ebp),%eax
-	movl %eax,1120(%edi)
-	movl $91,60(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,64(%ebp)
-	leal 52(%ebp),%ecx
-	calll *1164(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,1048(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,1044(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 28(%rbp),%eax
+	movl %eax,1084(%rdi)
+	movl 32(%rbp),%eax
+	movl %eax,1100(%rdi)
+	movl 48(%rbp),%eax
+	movl %eax,1120(%rdi)
+	movl $91,60(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,64(%rbp)
+	leal 52(%rbp),%ecx
+	call *1164(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,1048(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,1044(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L12004:
 	ret
 	.data
@@ -8384,39 +8660,43 @@ L12999:
 	jmp L13005
 //	LOAD
 L13001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	jne L13006
-	movl $148,20(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *840(%edi)
-	leal 12(%ebp),%ecx
-	calll *944(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $148,20(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *840(%rdi)
+	leal 12(%rbp),%ecx
+	call *944(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13006:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	movl %eax,12(%ebp)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,12(%rbp)
 	jmp L13007
 L13009:
-	movl $147,24(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
-	leal 16(%ebp),%ecx
-	calll *944(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $147,24(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
+	leal 16(%rbp),%ecx
+	call *944(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13010:
-	movl $120,12(%ebp)
+	movl $120,12(%rbp)
 L13011:
 L13012:
 L13013:
@@ -8426,26 +8706,28 @@ L13016:
 L13017:
 L13018:
 L13019:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	decl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	decl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13020:
 L13021:
 L13022:
@@ -8455,477 +8737,522 @@ L13025:
 L13026:
 L13027:
 L13028:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,16(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,16(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	movl 16(%ebp),%eax
-	cmpl $2,(,%eax,4)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	movl 16(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $2,%eax
 	je L13030
-	movl 16(%ebp),%eax
-	cmpl $1,(,%eax,4)
+	movl 16(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $1,%eax
 	jne L13029
 L13030:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,16(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,16(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
 L13029:
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *924(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *924(%edi)
-	cmpl $9,12(%ebp)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *924(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *924(%rdi)
+	cmpl $9,12(%rbp)
 	jne L13031
-	movl $14,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *1160(%edi)
-	movl $8,12(%ebp)
+	movl $14,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *1160(%rdi)
+	movl $8,12(%rbp)
 L13031:
-	movl 12(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *1160(%edi)
-	decl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 12(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *1160(%rdi)
+	decl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13032:
 L13033:
 L13034:
 L13035:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13036:
 L13037:
 L13038:
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	incl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	incl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13039:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *928(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *928(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13040:
-	movl $42,24(%ebp)
-	movl 8(%ebp),%eax
+	movl $42,24(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1164(%edi)
-	incl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *1164(%rdi)
+	incl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13041:
-	movl $43,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	movl 8(%ebp),%eax
+	movl $43,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1156(%edi)
-	movl $32,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1000(%edi)
-	incl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1156(%rdi)
+	movl $32,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1000(%rdi)
+	incl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13042:
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl $40,28(%ebp)
-	movl $41,32(%ebp)
-	movl $44,36(%ebp)
-	movl $42,40(%ebp)
-	leal 16(%ebp),%ecx
-	calll *948(%edi)
-	incl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl $40,28(%rbp)
+	movl $41,32(%rbp)
+	movl $44,36(%rbp)
+	movl $42,40(%rbp)
+	leal 16(%rbp),%ecx
+	call *948(%rdi)
+	incl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13043:
-	movl 1088(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 1044(%edi),%eax
-	movl %eax,20(%ebp)
-	movl 1048(%edi),%eax
-	movl %eax,24(%ebp)
-	movl 8(%ebp),%eax
+	movl 1088(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 1044(%rdi),%eax
+	movl %eax,20(%rbp)
+	movl 1048(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *836(%edi)
-	leal 28(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,1088(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *836(%rdi)
+	leal 28(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,1088(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *800(%edi)
-	movl 1088(%edi),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *960(%edi)
-	movl $93,36(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,40(%ebp)
-	leal 28(%ebp),%ecx
-	calll *1164(%edi)
-	incl 1120(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,1044(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,1048(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,1088(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *800(%rdi)
+	movl 1088(%rdi),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *960(%rdi)
+	movl $93,36(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,40(%rbp)
+	leal 28(%rbp),%ecx
+	call *1164(%rdi)
+	incl 1120(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,1044(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,1048(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,1088(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13044:
-	movl 1120(%edi),%eax
-	movl %eax,16(%ebp)
-	movl 1128(%edi),%eax
-	addl 1120(%edi),%eax
-	movl %eax,1120(%edi)
-	movl $91,28(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1164(%edi)
-	movl 8(%ebp),%eax
+	movl 1120(%rdi),%eax
+	movl %eax,16(%rbp)
+	movl 1128(%rdi),%eax
+	addl 1120(%rdi),%eax
+	movl %eax,1120(%rdi)
+	movl $91,28(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *1164(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *932(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *932(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *924(%edi)
-	movl $10,28(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1164(%edi)
-	movl 16(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *924(%rdi)
+	movl $10,28(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *1164(%rdi)
+	movl 16(%rbp),%eax
 	incl %eax
-	movl %eax,1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13045:
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,16(%ebp)
-	leal 20(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,20(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,24(%ebp)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,16(%rbp)
+	leal 20(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,20(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,24(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	movl $0,40(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,44(%ebp)
-	leal 28(%ebp),%ecx
-	calll *880(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	movl $0,40(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,44(%rbp)
+	leal 28(%rbp),%ecx
+	call *880(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *924(%edi)
-	movl $98,36(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 28(%ebp),%ecx
-	calll *1168(%edi)
-	movl 24(%ebp),%eax
-	movl %eax,1120(%edi)
-	movl $91,36(%ebp)
-	movl 1120(%edi),%eax
-	movl %eax,40(%ebp)
-	leal 28(%ebp),%ecx
-	calll *1164(%edi)
-	movl 20(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *960(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *924(%rdi)
+	movl $98,36(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 28(%rbp),%ecx
+	call *1168(%rdi)
+	movl 24(%rbp),%eax
+	movl %eax,1120(%rdi)
+	movl $91,36(%rbp)
+	movl 1120(%rdi),%eax
+	movl %eax,40(%rbp)
+	leal 28(%rbp),%ecx
+	call *1164(%rdi)
+	movl 20(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *960(%rdi)
+	movl 8(%rbp),%eax
 	addl $3,%eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *924(%edi)
-	movl $98,36(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 28(%ebp),%ecx
-	calll *1168(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *960(%edi)
-	movl $93,36(%ebp)
-	movl 24(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 28(%ebp),%ecx
-	calll *1164(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *924(%rdi)
+	movl $98,36(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 28(%rbp),%ecx
+	call *1168(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *960(%rdi)
+	movl $93,36(%rbp)
+	movl 24(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 28(%rbp),%ecx
+	call *1164(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13046:
-	leal 16(%ebp),%ecx
-	calll *972(%edi)
-	movl %eax,16(%ebp)
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *936(%edi)
-	movl 8(%ebp),%eax
+	leal 16(%rbp),%ecx
+	call *972(%rdi)
+	movl %eax,16(%rbp)
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *936(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,8(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,8(%rbp)
 	jmp L13048
 L13047:
-	movl $102,28(%ebp)
-	movl 8(%ebp),%eax
+	movl $102,28(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1164(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *1164(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,8(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,8(%rbp)
 L13048:
-	movl 8(%ebp),%eax
-	cmpl $38,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $38,%eax
 	je L13047
-	movl $102,28(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,40(%ebp)
-	leal 32(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1164(%edi)
-	movl $47,28(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1168(%edi)
-	incl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $102,28(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,40(%rbp)
+	leal 32(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *1164(%rdi)
+	movl $47,28(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	leal 20(%rbp),%ecx
+	call *1168(%rdi)
+	incl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 	jmp L13008
 L13007:
-	movl 12(%ebp),%eax
-	mov $L13999,%edx
-	mov $34,%ecx
-1:	cmp (%edx),%eax
+	movl 12(%rbp),%eax
+	mov $L13999,%rdx
+	mov $34,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L13009
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L13008:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LOADLV
 L13002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	jne L13051
-	jmpl *L13050
+	jmp *L13050
 L13051:
 	jmp L13052
 L13054:
 L13049:
-	movl $113,20(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *840(%edi)
-	leal 12(%ebp),%ecx
-	calll *944(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $113,20(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *840(%rdi)
+	leal 12(%rbp),%ecx
+	call *944(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13055:
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	movl $45,24(%ebp)
-	movl $46,28(%ebp)
-	movl $47,32(%ebp)
-	movl $0,36(%ebp)
-	leal 12(%ebp),%ecx
-	calll *948(%edi)
-	incl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	movl $45,24(%rbp)
+	movl $46,28(%rbp)
+	movl $47,32(%rbp)
+	movl $0,36(%rbp)
+	leal 12(%rbp),%ecx
+	call *948(%rdi)
+	incl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13056:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *924(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *924(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13057:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,16(%ebp)
-	movl 12(%ebp),%eax
-	cmpl $2,(,%eax,4)
+	mov (,%rax,4),%eax
+	movl %eax,16(%rbp)
+	movl 12(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $2,%eax
 	jne L13058
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,16(%ebp)
+	mov (,%rax,4),%eax
+	movl %eax,16(%rbp)
 L13058:
-	movl 12(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *924(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *924(%edi)
-	movl $14,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1160(%edi)
-	decl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 12(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *924(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *924(%rdi)
+	movl $14,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1160(%rdi)
+	decl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 	jmp L13053
 L13052:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L13998,%edx
-	mov $3,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L13998,%rdx
+	mov $3,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L13054
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L13053:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LOADZERO
 L13003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $42,16(%ebp)
-	movl $0,20(%ebp)
-	leal 8(%ebp),%ecx
-	calll *1164(%edi)
-	incl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $42,16(%rbp)
+	movl $0,20(%rbp)
+	leal 8(%rbp),%ecx
+	call *1164(%rdi)
+	incl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	LOADLIST
 L13004:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	je L13059
-	movl 8(%ebp),%eax
-	cmpl $38,(,%eax,4)
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $38,%eax
 	je L13060
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *924(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *924(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13060:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *932(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *932(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *932(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *932(%rdi)
 L13059:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L13005:
 	ret
 	.data
@@ -9023,56 +9350,57 @@ L13998:
 	jmp L14004
 //	EVALCONST
 L14001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	jne L14006
-	movl $117,20(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *840(%edi)
+	movl $117,20(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *840(%rdi)
 	movl $0,%eax
 	jmp L14005
 L14006:
 	jmp L14007
 L14009:
-	movl $118,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *840(%edi)
+	movl $118,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *840(%rdi)
 	movl $0,%eax
 	jmp L14005
 L14010:
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *824(%edi)
-	movl %eax,12(%ebp)
-	movl 12(%ebp),%eax
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *824(%rdi)
+	movl %eax,12(%rbp)
+	movl 12(%rbp),%eax
 	incl %eax
-	addl 1040(%edi),%eax
-	cmpl $1,(,%eax,4)
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
+	cmpl $1,%eax
 	jne L14011
 	movl $2,%eax
-	addl 12(%ebp),%eax
-	addl 1040(%edi),%eax
-	mov (,%eax,4),%eax
+	addl 12(%rbp),%eax
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
 	jmp L14005
 L14011:
-	movl $119,24(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
+	movl $119,24(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
 	movl $0,%eax
 	jmp L14005
 L14012:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
+	mov (,%rax,4),%eax
 	jmp L14005
 L14013:
 	movl $-1,%eax
@@ -9081,503 +9409,530 @@ L14014:
 	movl $0,%eax
 	jmp L14005
 L14015:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
 	negl %eax
 	jmp L14005
 L14016:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
 	test %eax,%eax
 	jns 1f
 	neg %eax
 1:
 	jmp L14005
 L14017:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
 	notl %eax
 	jmp L14005
 L14018:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	imull %ecx
 	jmp L14005
 L14019:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
-	cltd
+	movl 12(%rbp),%eax
+	cqto
 	idivl %ecx
 	jmp L14005
 L14020:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
-	cltd
+	movl 12(%rbp),%eax
+	cqto
 	idivl %ecx
 	mov %edx,%eax
 	jmp L14005
 L14021:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	addl %ecx,%eax
 	jmp L14005
 L14022:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	subl %ecx,%eax
 	jmp L14005
 L14023:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	shll %cl,%eax
 	jmp L14005
 L14024:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	shrl %cl,%eax
 	jmp L14005
 L14025:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	orl %ecx,%eax
 	jmp L14005
 L14026:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	andl %ecx,%eax
 	jmp L14005
 L14027:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	xorl $-1,%eax
 	xorl %ecx,%eax
 	jmp L14005
 L14028:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *940(%edi)
-	movl %eax,12(%ebp)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *940(%rdi)
+	movl %eax,12(%rbp)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *940(%edi)
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *940(%rdi)
 	mov %eax,%ecx
-	movl 12(%ebp),%eax
+	movl 12(%rbp),%eax
 	xorl %ecx,%eax
 	jmp L14005
 	jmp L14008
 L14007:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L14999,%edx
-	mov $18,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L14999,%rdx
+	mov $18,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L14009
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L14008:
 L14005:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	ASSIGN
 L14002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	je L14030
-	cmpl $0,12(%ebp)
+	cmpl $0,12(%rbp)
 	jne L14029
 L14030:
-	movl $110,24(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $110,24(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14029:
 	jmp L14031
 L14033:
-	movl 12(%ebp),%eax
-	cmpl $38,(,%eax,4)
+	movl 12(%rbp),%eax
+	mov (,%rax,4),%eax
+	cmpl $38,%eax
 	je L14034
-	movl $112,24(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $112,24(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14034:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	movl 12(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	movl 12(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *920(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *920(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	movl 12(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	movl 12(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *920(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov (,%rax,4),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *920(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14035:
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	movl $80,28(%ebp)
-	movl $81,32(%ebp)
-	movl $82,36(%ebp)
-	movl $0,40(%ebp)
-	leal 16(%ebp),%ecx
-	calll *948(%edi)
-	decl 1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	movl $80,28(%rbp)
+	movl $81,32(%rbp)
+	movl $82,36(%rbp)
+	movl $0,40(%rbp)
+	leal 16(%rbp),%ecx
+	call *948(%rdi)
+	decl 1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14036:
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl 8(%ebp),%eax
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl 8(%rbp),%eax
 	incl %eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl 8(%ebp),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl 8(%rbp),%eax
 	addl $2,%eax
-	mov (,%eax,4),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl $121,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	movl 1120(%edi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl $121,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	movl 1120(%rdi),%eax
 	subl $3,%eax
-	movl %eax,1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14037:
 L14038:
 L14039:
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *924(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *928(%edi)
-	movl $83,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1160(%edi)
-	movl 1120(%edi),%eax
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *924(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *928(%rdi)
+	movl $83,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1160(%rdi)
+	movl 1120(%rdi),%eax
 	subl $2,%eax
-	movl %eax,1120(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,1120(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14040:
-	movl $109,24(%ebp)
-	movl 1080(%edi),%eax
-	movl %eax,28(%ebp)
-	leal 16(%ebp),%ecx
-	calll *840(%edi)
+	movl $109,24(%rbp)
+	movl 1080(%rdi),%eax
+	movl %eax,28(%rbp)
+	leal 16(%rbp),%ecx
+	call *840(%rdi)
 	jmp L14032
 L14031:
-	movl 8(%ebp),%eax
-	mov (,%eax,4),%eax
-	mov $L14998,%edx
-	mov $6,%ecx
-1:	cmp (%edx),%eax
+	movl 8(%rbp),%eax
+	mov (,%rax,4),%eax
+	mov $L14998,%rdx
+	mov $6,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L14040
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L14032:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	TRANSNAME
 L14003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *824(%edi)
-	movl %eax,28(%ebp)
-	movl 28(%ebp),%eax
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *824(%rdi)
+	movl %eax,28(%rbp)
+	movl 28(%rbp),%eax
 	incl %eax
-	addl 1040(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,32(%ebp)
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,32(%rbp)
 	movl $2,%eax
-	addl 28(%ebp),%eax
-	addl 1040(%edi),%eax
-	mov (,%eax,4),%eax
-	movl %eax,36(%ebp)
-	cmpl $0,28(%ebp)
+	addl 28(%rbp),%eax
+	addl 1040(%rdi),%eax
+	mov (,%rax,4),%eax
+	movl %eax,36(%rbp)
+	cmpl $0,28(%rbp)
 	jne L14041
-	movl $115,48(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *840(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl $2,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1164(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $115,48(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *840(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl $2,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *1164(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14041:
 	jmp L14042
 L14044:
-	movl 28(%ebp),%eax
-	cmpl 1052(%edi),%eax
+	movl 28(%rbp),%eax
+	cmpl 1052(%rdi),%eax
 	jge L14045
-	movl $116,48(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *840(%edi)
+	movl $116,48(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *840(%rdi)
 L14045:
-	movl 12(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 36(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1164(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 12(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 36(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *1164(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14046:
-	movl 16(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 36(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1164(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 16(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 36(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *1164(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14047:
-	movl 20(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 36(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1168(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 20(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 36(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *1168(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14048:
-	cmpl $0,24(%ebp)
+	cmpl $0,24(%rbp)
 	jne L14049
-	movl $113,48(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *840(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
+	movl $113,48(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *840(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
 L14049:
-	movl 24(%ebp),%eax
-	movl %eax,48(%ebp)
-	movl 36(%ebp),%eax
-	movl %eax,52(%ebp)
-	leal 40(%ebp),%ecx
-	calll *1164(%edi)
+	movl 24(%rbp),%eax
+	movl %eax,48(%rbp)
+	movl 36(%rbp),%eax
+	movl %eax,52(%rbp)
+	leal 40(%rbp),%ecx
+	call *1164(%rdi)
 	jmp L14043
 L14042:
-	movl 32(%ebp),%eax
-	mov $L14997,%edx
-	mov $4,%ecx
-1:	cmp (%edx),%eax
+	movl 32(%rbp),%eax
+	mov $L14997,%rdx
+	mov $4,%rcx
+1:	cmp (%rdx),%eax
 	je 3f
-	add $8,%edx
+	add $8,%rdx
 	loop 1b
 2:	jmp L14043
-3:	jmp *4(%edx)
+3:	jmp *4(%rdx)
 L14043:
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L14004:
 	ret
 	.data
@@ -9654,387 +10009,423 @@ L14997:
 	jmp L15018
 //	COMPLAB
 L15001:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $90,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1168(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $90,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *1168(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	COMPENTRY
 L15002:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
 	movl $2,%eax
-	addl 8(%ebp),%eax
-	movl %eax,16(%ebp)
-	movl $94,28(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,40(%ebp)
-	movl $0,44(%ebp)
-	leal 32(%ebp),%ecx
-	calll *340(%edi)
-	movl %eax,32(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,36(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1176(%edi)
-	movl $1,20(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,32(%ebp)
-	movl $0,36(%ebp)
-	leal 24(%ebp),%ecx
-	calll *340(%edi)
-	movl %eax,24(%ebp)
+	addl 8(%rbp),%eax
+	movl %eax,16(%rbp)
+	movl $94,28(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,40(%rbp)
+	movl $0,44(%rbp)
+	leal 32(%rbp),%ecx
+	call *340(%rdi)
+	movl %eax,32(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,36(%rbp)
+	leal 20(%rbp),%ecx
+	call *1176(%rdi)
+	movl $1,20(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,32(%rbp)
+	movl $0,36(%rbp)
+	leal 24(%rbp),%ecx
+	call *340(%rdi)
+	movl %eax,24(%rbp)
 	jmp L15019
 L15020:
-	movl 16(%ebp),%eax
-	movl %eax,44(%ebp)
-	movl 20(%ebp),%eax
-	movl %eax,48(%ebp)
-	leal 36(%ebp),%ecx
-	calll *340(%edi)
-	movl %eax,36(%ebp)
-	leal 28(%ebp),%ecx
-	calll *1188(%edi)
-	incl 20(%ebp)
+	movl 16(%rbp),%eax
+	movl %eax,44(%rbp)
+	movl 20(%rbp),%eax
+	movl %eax,48(%rbp)
+	leal 36(%rbp),%ecx
+	call *340(%rdi)
+	movl %eax,36(%rbp)
+	leal 28(%rbp),%ecx
+	call *1188(%rdi)
+	incl 20(%rbp)
 L15019:
-	movl 20(%ebp),%eax
-	cmpl 24(%ebp),%eax
+	movl 20(%rbp),%eax
+	cmpl 24(%rbp),%eax
 	jle L15020
-	movl $32,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1000(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $32,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1000(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	COMPDATALAB
 L15003:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $100,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1168(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $100,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *1168(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	COMPJUMP
 L15004:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $85,20(%ebp)
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1168(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $85,20(%rbp)
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *1168(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	OUT1
 L15005:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1192(%edi)
-	movl $32,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1000(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1192(%rdi)
+	movl $32,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1000(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	OUT2
 L15006:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1192(%edi)
-	movl $32,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1000(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1012(%edi)
-	movl $32,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1000(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1192(%rdi)
+	movl $32,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1000(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1012(%rdi)
+	movl $32,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1000(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	OUT2P
 L15007:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1192(%edi)
-	movl $32,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1000(%edi)
-	movl $76,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1000(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1012(%edi)
-	movl $32,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1000(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1192(%rdi)
+	movl $32,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1000(%rdi)
+	movl $76,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1000(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1012(%rdi)
+	movl $32,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1000(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	OUT3P
 L15008:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1192(%edi)
-	movl $32,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1000(%edi)
-	movl 12(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1012(%edi)
-	movl $32,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1000(%edi)
-	movl $76,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1000(%edi)
-	movl 16(%ebp),%eax
-	movl %eax,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1012(%edi)
-	movl $32,28(%ebp)
-	leal 20(%ebp),%ecx
-	calll *1000(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1192(%rdi)
+	movl $32,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1000(%rdi)
+	movl 12(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1012(%rdi)
+	movl $32,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1000(%rdi)
+	movl $76,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1000(%rdi)
+	movl 16(%rbp),%eax
+	movl %eax,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1012(%rdi)
+	movl $32,28(%rbp)
+	leal 20(%rbp),%ecx
+	call *1000(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	OUTN
 L15009:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1012(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1012(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	OUTL
 L15010:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $32,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1000(%edi)
-	movl $76,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1000(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1012(%edi)
-	movl $32,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1000(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $32,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1000(%rdi)
+	movl $76,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1000(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1012(%rdi)
+	movl $32,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1000(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	OUTC
 L15011:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1012(%edi)
-	movl $32,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1000(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1012(%rdi)
+	movl $32,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1000(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	OUTSTRING
 L15012:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	movl $0,24(%ebp)
-	leal 12(%ebp),%ecx
-	calll *340(%edi)
-	movl %eax,12(%ebp)
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1012(%edi)
-	movl $32,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1000(%edi)
-	movl $1,16(%ebp)
-	movl 12(%ebp),%eax
-	movl %eax,20(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	movl $0,24(%rbp)
+	leal 12(%rbp),%ecx
+	call *340(%rdi)
+	movl %eax,12(%rbp)
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1012(%rdi)
+	movl $32,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1000(%rdi)
+	movl $1,16(%rbp)
+	movl 12(%rbp),%eax
+	movl %eax,20(%rbp)
 	jmp L15021
 L15022:
-	movl 8(%ebp),%eax
-	movl %eax,40(%ebp)
-	movl 16(%ebp),%eax
-	movl %eax,44(%ebp)
-	leal 32(%ebp),%ecx
-	calll *340(%edi)
-	movl %eax,32(%ebp)
-	leal 24(%ebp),%ecx
-	calll *1188(%edi)
-	incl 16(%ebp)
+	movl 8(%rbp),%eax
+	movl %eax,40(%rbp)
+	movl 16(%rbp),%eax
+	movl %eax,44(%rbp)
+	leal 32(%rbp),%ecx
+	call *340(%rdi)
+	movl %eax,32(%rbp)
+	leal 24(%rbp),%ecx
+	call *1188(%rdi)
+	incl 16(%rbp)
 L15021:
-	movl 16(%ebp),%eax
-	cmpl 20(%ebp),%eax
+	movl 16(%rbp),%eax
+	cmpl 20(%rbp),%eax
 	jle L15022
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	WRITEOP
 L15013:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1016(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1016(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	WRN
 L15014:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $0,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $0,8(%rbp)
 	jge L15023
-	movl $45,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1000(%edi)
-	negl 8(%ebp)
-	cmpl $0,8(%ebp)
+	movl $45,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1000(%rdi)
+	negl 8(%rbp)
+	cmpl $0,8(%rbp)
 	jge L15024
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	shrl $1,%eax
 	movl $5,%ecx
-	cltd
+	cqto
 	idivl %ecx
-	movl %eax,12(%ebp)
-	movl %eax,24(%ebp)
-	leal 16(%ebp),%ecx
-	calll *1016(%edi)
-	movl 8(%ebp),%eax
-	movl %eax,16(%ebp)
+	movl %eax,12(%rbp)
+	movl %eax,24(%rbp)
+	leal 16(%rbp),%ecx
+	call *1016(%rdi)
+	movl 8(%rbp),%eax
+	movl %eax,16(%rbp)
 	movl $10,%eax
-	imull 12(%ebp)
+	imull 12(%rbp)
 	mov %eax,%ecx
-	movl 16(%ebp),%eax
+	movl 16(%rbp),%eax
 	subl %ecx,%eax
-	movl %eax,8(%ebp)
+	movl %eax,8(%rbp)
 L15024:
 L15023:
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1016(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1016(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	WRPN
 L15015:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	cmpl $9,8(%ebp)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	cmpl $9,8(%rbp)
 	jle L15025
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	movl $10,%ecx
-	cltd
+	cqto
 	idivl %ecx
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1016(%edi)
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1016(%rdi)
 L15025:
-	movl 8(%ebp),%eax
+	movl 8(%rbp),%eax
 	movl $10,%ecx
-	cltd
+	cqto
 	idivl %ecx
 	mov %edx,%eax
 	addl $48,%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *1000(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *1000(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	ENDOCODE
 L15016:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	movl $10,16(%ebp)
-	leal 8(%ebp),%ecx
-	calll *56(%edi)
-	movl $0,1004(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	movl $10,16(%rbp)
+	leal 8(%rbp),%ecx
+	call *56(%rdi)
+	movl $0,1004(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 //	WRC
 L15017:
-	pop (%ecx)
-	mov %ebp,4(%ecx)
-	mov %ecx,%ebp
-	incl 1004(%edi)
-	cmpl $62,1004(%edi)
+	pop (%rcx)
+	mov %rbp,4(%rcx)
+	mov %rcx,%rbp
+	incl 1004(%rdi)
+	cmpl $62,1004(%rdi)
 	jle L15026
-	cmpl $32,8(%ebp)
+	cmpl $32,8(%rbp)
 	jne L15026
-	movl $10,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *56(%edi)
-	movl $0,1004(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl $10,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *56(%rdi)
+	movl $0,1004(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L15026:
-	movl 8(%ebp),%eax
-	movl %eax,20(%ebp)
-	leal 12(%ebp),%ecx
-	calll *56(%edi)
-	mov %ebp,%ecx
-	mov 4(%ecx),%ebp
-	jmp *(%ecx)
+	movl 8(%rbp),%eax
+	movl %eax,20(%rbp)
+	leal 12(%rbp),%ecx
+	call *56(%rdi)
+	mov %rbp,%rcx
+	mov 4(%rcx),%eax
+	mov %eax,%ebp
+	mov (%rcx),%eax
+	jmp *%rax
 L15018:
 	ret
 	.data
