@@ -9,8 +9,22 @@ error()
     exit 2
 }
 
-prefix=${PREFIX:-/usr/local}
-d=$prefix/lib/bcplc
+# Determine runtime location.  If PREFIX is set use it, otherwise try the
+# directory containing this script before falling back to /usr/local.
+if [ -n "$PREFIX" ]; then
+    prefix="$PREFIX"
+    d="$prefix/lib/bcplc"
+else
+    script_dir=$(cd "$(dirname "$0")" && pwd)
+    if [ -e "$script_dir/st" ]; then
+        d="$script_dir"
+    elif [ -e "$script_dir/../lib/bcplc/st" ]; then
+        d="$script_dir/../lib/bcplc"
+    else
+        prefix=/usr/local
+        d="$prefix/lib/bcplc"
+    fi
+fi
 # Allow callers to override assembler/linker prefix and runtime bitness
 BITS="${BITS:-64}"
 AS="${CROSS_PREFIX:-}as"
