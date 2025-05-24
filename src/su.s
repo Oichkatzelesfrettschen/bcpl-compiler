@@ -43,8 +43,8 @@ _start:
         mov     %rsp,%rdx               # BCPL argv
 
         xor     %ecx,%ecx
-1:      mov     (%rbx),%esi             # Get UNIX arg
-        test    %esi,%esi               # NULL?
+1:      mov     (%rbx),%rsi             # Get UNIX arg
+        test    %rsi,%rsi               # NULL?
         jz      1f
         xor     %eax,%eax
         mov     %eax,-4(%rsp)           # Zero last cell
