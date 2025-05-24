@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "oc.h"
 
-#define WORDSZ  4    /* 32-bit code */
+#define WORDSZ  4    /* BCPL word size in bytes */
 #define SDSZ    5000 /* Size of static data array */
 
 /* data types used in load stack */
@@ -248,7 +248,11 @@ static int gencode(void)
         case S_DIV:
         case S_REM:
             if (op == S_DIV || op == S_REM) {
+#if BITS==64
+                emit("cqto");
+#else
                 emit("cltd");
+#endif
             }
             codex(op == S_MULT ? X_IMUL : X_IDIV);
             if (op == S_REM) {
@@ -347,15 +351,32 @@ static int gencode(void)
                 defdata(S_ITEMN, rdn());
                 defdata(S_ITEML, rdn());
             }
+#if BITS==64
+            emit("mov $%s,%%rdx", label(l));
+            emit("mov $%d,%%rcx", n);
+#else
             emit("mov $%s,%%edx", label(l));
             emit("mov $%d,%%ecx", n);
+#endif
             emit("jecxz 2f");
+#if BITS==64
+            emit("1:cmp (%%rdx),%%eax");
+#else
             emit("1:cmp (%%edx),%%eax");
+#endif
             emit("je 3f");
+#if BITS==64
+            emit("add $8,%%rdx");
+#else
             emit("add $8,%%edx");
+#endif
             emit("loop 1b");
             emit("2:jmp %s", label(d));
+#if BITS==64
+            emit("3:jmp *4(%%rdx)");
+#else
             emit("3:jmp *4(%%edx)");
+#endif
         }
         break;
         case S_RES:
@@ -567,11 +588,19 @@ static void code(int xi, ...)
             break;
         case X_P:
         case X_LP:
+#if BITS==64
+            sprintf(s, "%d(%%rbp)", d * WORDSZ);
+#else
             sprintf(s, "%d(%%ebp)", d * WORDSZ);
+#endif
             break;
         case X_G:
         case X_LG:
+#if BITS==64
+            sprintf(s, "%d(%%rdi)", d * WORDSZ);
+#else
             sprintf(s, "%d(%%edi)", d * WORDSZ);
+#endif
             break;
         case X_L:
         case X_LL:
