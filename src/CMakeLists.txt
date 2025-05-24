@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 3.10)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Build backend programs cg and op
 add_executable(cg cg.c oc.c)
+target_compile_definitions(cg PRIVATE BITS=64)
 add_executable(op op.c pt.c)
+target_compile_definitions(op PRIVATE BITS=64)
 
-set(AS_FLAGS --64)
+# Assemble the runtime in 64-bit mode
+set(AS_FLAGS "--64" "--defsym" "BITS=64")
 set(BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -18,7 +23,17 @@ function(add_asm_object out src)
 endfunction()
 
 add_asm_object(${BUILD_DIR}/su.o ${SRC_DIR}/su.s)
-add_asm_object(${BUILD_DIR}/blib.o ${SRC_DIR}/blib.s)
+set(BLIB_SRC ${SRC_DIR}/blib.s)
+if(BOOTSTRAP)
+    add_custom_command(
+        OUTPUT ${BUILD_DIR}/blib.s
+        COMMAND bash -c "$<TARGET_FILE:cg> < ${SRC_DIR}/blib.O | $<TARGET_FILE:op> > blib.s"
+        WORKING_DIRECTORY ${BUILD_DIR}
+        DEPENDS cg op ${SRC_DIR}/blib.O
+        VERBATIM)
+    set(BLIB_SRC ${BUILD_DIR}/blib.s)
+endif()
+add_asm_object(${BUILD_DIR}/blib.o ${BLIB_SRC})
 add_asm_object(${BUILD_DIR}/global.o ${SRC_DIR}/global.s)
 add_asm_object(${BUILD_DIR}/rt.o ${SRC_DIR}/rt.s)
 add_asm_object(${BUILD_DIR}/sys.o ${SRC_DIR}/sys.s)
