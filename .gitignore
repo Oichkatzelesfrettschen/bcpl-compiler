@@ -11,6 +11,7 @@ src/st
 src/cg
 src/op
 util/*
+!util/CMakeLists.txt
 build/
 
 # Misc temporary files
