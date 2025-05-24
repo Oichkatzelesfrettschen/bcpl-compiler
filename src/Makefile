@@ -6,12 +6,13 @@ PREFIX?=/usr/local
 # CROSS_PREFIX (e.g. ``CROSS_PREFIX=i686-linux-gnu-``).
 BITS?=64
 CROSS_PREFIX?=
+CFLAGS += -DBITS=$(BITS)
 
 ifeq ($(BITS),64)
-  AFLAGS=--64
+  AFLAGS=--64 --defsym BITS=64
   LDMODE=elf_x86_64
 else
-  AFLAGS=--32
+  AFLAGS=--32 --defsym BITS=32
   LDMODE=elf_i386
 endif
 

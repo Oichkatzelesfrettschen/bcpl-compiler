@@ -2,6 +2,36 @@
 
 // BCPL compiler x86 runtime
 
+.ifndef BITS
+.set BITS,32
+.endif
+
+.if BITS==64
+.macro PUSH32 reg
+    sub $4,%rsp
+    movl \reg,(%rsp)
+.endm
+.macro PUSH32m mem
+    movl \mem,%eax
+    sub $4,%rsp
+    movl %eax,(%rsp)
+.endm
+.macro POP32 reg
+    movl (%rsp),\reg
+    add $4,%rsp
+.endm
+.else
+.macro PUSH32 reg
+    push \reg
+.endm
+.macro PUSH32m mem
+    pushl \mem
+.endm
+.macro POP32 reg
+    pop \reg
+.endm
+.endif
+
 // The following two settings can be changed as desired
         .set    FCBCNT,8                # Number of FCBs
         .set    BUFSIZ,512              # I/O buffer size
@@ -65,9 +95,9 @@ rtexit:
         mov     $FCBCNT,%ecx
 1:      cmpb    $0,FCB.FL(%ebx)         # FCB not in use?
         je      2f
-        push    %ecx
+        PUSH32 %ecx
         call    fclose
-        pop     %ecx
+        POP32 %ecx
 2:      add     $FCBSIZ,%ebx
         loop    1b
         ret
@@ -85,9 +115,9 @@ fopen:
         mov     %dl,FCB.FL(%ebx)        # Set flags
         cmp     $FL.RD,%dl              # Open for reading?
         je      1f                      # Yes
-        pushl   FCB.FD(%ebx)            # Is it a tty?
+        PUSH32m FCB.FD(%ebx)            # Is it a tty?
         call    isatty
-        pop     %ecx
+        POP32 %ecx
         test    %eax,%eax
         jnz     1f                      # Yes
         addl    $BUFSIZ,FCB.XP(%ebx)    # Enable buffering
@@ -101,9 +131,9 @@ fclose:
         testb   $FL.WR,FCB.FL(%ebx)     # In write mode?
         jz      1f
         call    flush
-1:      pushl   FCB.FD(%ebx)
+1:      PUSH32m FCB.FD(%ebx)
         call    close
-        pop     %ecx
+        POP32 %ecx
         movb    $0,FCB.FL(%ebx)         # Set as unused
         ret
 
@@ -117,9 +147,9 @@ flush:
         mov     %edx,FCB.CP(%ebx)
         sub     %edx,%ecx               # Any bytes to write?
         jz      2f
-1:      push    %ecx
-        push    %edx
-        pushl   FCB.FD(%ebx)
+1:      PUSH32 %ecx
+        PUSH32 %edx
+        PUSH32m FCB.FD(%ebx)
         call    write
         lea     12(%esp,1),%esp
         jc      3f
@@ -159,7 +189,7 @@ SELECTOUTPUT:
 // CH := RDCH()
 
 RDCH:
-        push    %ebx
+        PUSH32 %ebx
         mov     cis,%ebx
         mov     FCB.CP(%ebx),%ecx
         cmp     FCB.XP(%ebx),%ecx       # Still data in buffer?
@@ -167,9 +197,9 @@ RDCH:
         mov     FCB.BF(%ebx),%ecx
         mov     %ecx,FCB.CP(%ebx)
         mov     %ecx,FCB.XP(%ebx)
-        push    $BUFSIZ
-        push    %ecx
-        pushl   FCB.FD(%ebx)
+        PUSH32 $BUFSIZ
+        PUSH32 %ecx
+        PUSH32m FCB.FD(%ebx)
         call    read
         lea     12(%esp,1),%esp
         jc      2f                      # If error
@@ -179,21 +209,21 @@ RDCH:
 1:      movzx   (%ecx),%eax
         inc     %ecx
         mov     %ecx,FCB.CP(%ebx)
-        pop     %ebx
+        POP32 %ebx
         ret
 
 2:      orb     $FL.ERR,FCB.FL(%ebx)    # Set error flag
         jmp     1f
 3:      orb     $FL.EOF,FCB.FL(%ebx)    # Set EOF flag
 1:      mov     $-1,%eax
-        pop     %ebx
+        POP32 %ebx
         ret
 
 // WRCH(CH)
 
 WRCH:
         mov     8(%ecx),%eax
-        push    %ebx
+        PUSH32 %ebx
         mov     cos,%ebx
         mov     FCB.CP(%ebx),%ecx
         mov     %al,(%ecx)
@@ -209,7 +239,7 @@ WRCH:
         cmp     $0xa,%al                # Linefeed ?
         jne     2f
 1:      call    flush                   # Sets eax
-2:      pop     %ebx
+2:      POP32 %ebx
         ret
 
 // UNRDCH()
@@ -238,7 +268,7 @@ OUTPUT:
 // STOP(N)
 
 STOP:
-        pop     %eax
+        POP32 %eax
         mov     8(%ecx),%eax
         jmp     _stop
 
@@ -251,26 +281,26 @@ LEVEL:
 // LONGJUMP(P, L)
 
 LONGJUMP:
-        pop     %eax
+        POP32 %eax
         mov     8(%ecx),%ebp
         jmp     *12(%ecx)
 
 // REWIND()
 
 REWIND:
-        push    %ebx
+        PUSH32 %ebx
         mov     cis,%ebx
         xor     %ecx,%ecx
-        push    %ecx
-        push    %ecx
-        pushl   FCB.FD(%ebx)
+        PUSH32 %ecx
+        PUSH32 %ecx
+        PUSH32m FCB.FD(%ebx)
         call    olseek
-        pop     %eax                    # File descriptor
-        pop     %ecx
-        pop     %ecx
+        POP32 %eax                    # File descriptor
+        POP32 %ecx
+        POP32 %ecx
         mov     $FL.RD,%dl
         call    fopen
-        pop     %ebx
+        POP32 %ebx
         ret
 
 // RESULT := APTOVEC(F, N)
@@ -301,9 +331,9 @@ FINDINPUT:
 
 findio:
         mov     8(%ecx),%eax
-        push    %ebx
-        push    %esi
-        push    %edi
+        PUSH32 %ebx
+        PUSH32 %esi
+        PUSH32 %edi
         mov     $ft,%ebx
         mov     $FCBCNT,%ecx
 1:      cmpb    $0,FCB.FL(%ebx)         # Find a free FCB
@@ -316,9 +346,9 @@ findio:
         mov     %eax,%esi
         sub     $STRSIZ,%esp
         mov     %esp,%edi
-        push    $MODE
-        push    %edx                    # Flags for open
-        push    %edi
+        PUSH32 $MODE
+        PUSH32 %edx                    # Flags for open
+        PUSH32 %edi
         lodsb                           # Convert BCPL string
         movzx   %al,%ecx
         rep     movsb
@@ -332,38 +362,38 @@ findio:
         mov     $FL.WR,%dl
 1:      call    fopen
         mov     %ebx,%eax               # Result
-3:      pop     %edi
-        pop     %esi
-        pop     %ebx
+3:      POP32 %edi
+        POP32 %esi
+        POP32 %ebx
         ret
 
 // ENDREAD()
 
 ENDREAD:
-        push    %ebx
+        PUSH32 %ebx
         mov     cis,%ebx
         call    fclose
         xor     %eax,%eax
         mov     %eax,cis
-        pop     %ebx
+        POP32 %ebx
         ret
 
 // ENDWRITE()
 
 ENDWRITE:
-        push    %ebx
+        PUSH32 %ebx
         mov     cos,%ebx
         call    fclose
         xor     %eax,%eax
         mov     %eax,cos
-        pop     %ebx
+        POP32 %ebx
         ret
 
 // I:= PACKSTRING(U, S)
 
 PACKSTRING:
-        push    %esi
-        push    %edi
+        PUSH32 %esi
+        PUSH32 %edi
         mov     8(%ecx),%esi
         shl     $2,%esi
         mov     12(%ecx),%edi
@@ -379,15 +409,15 @@ PACKSTRING:
         stosb
         loop    1b
 2:      mov     %edx,%eax
-        pop     %edi
-        pop     %esi
+        POP32 %edi
+        POP32 %esi
         ret
 
 // UNPACKSTRING(S, U)
 
 UNPACKSTRING:
-        push    %esi
-        push    %edi
+        PUSH32 %esi
+        PUSH32 %edi
         mov     8(%ecx),%esi
         shl     $2,%esi
         mov     12(%ecx),%edi
@@ -400,8 +430,8 @@ UNPACKSTRING:
 1:      lodsb
         stosl
         loop    1b
-2:      pop     %edi
-        pop     %esi
+2:      POP32 %edi
+        POP32 %esi
         ret
 
 // CH := GETBYTE(V, N)
@@ -426,7 +456,7 @@ PUTBYTE:
 // V := GETVEC(SIZE)
 
 GETVEC:
-        push    %ebx
+        PUSH32 %ebx
         mov     8(%ecx),%edx            # Size arg
         add     $3,%edx                 # 1 + overhead
         shl     $2,%edx                 # As bytes
@@ -441,9 +471,9 @@ GETVEC:
 1:      mov     %edx,%eax
         add     $PGSZ-1,%eax            # Round up
         and     $~(PGSZ-1),%eax
-        push    %eax                    # Ask for memory
+        PUSH32 %eax                    # Ask for memory
         call    sbrk
-        pop     %ecx
+        POP32 %ecx
         jc      3f
         movl    $0,(%eax)               # Append to list
         mov     %ecx,4(%eax)
@@ -461,7 +491,7 @@ GETVEC:
 2:      shr     $2,%eax                 # To int pointer
         inc     %eax                    # Pass control
 3:      inc     %eax                    #  info
-        pop     %ebx
+        POP32 %ebx
         ret
 
 // FREEVEC(V)
@@ -477,10 +507,10 @@ FREEVEC:
         jz      1f                      # Yes
         cmp     %edx,%eax               # Next block above returned?
         jb      1b                      # No
-1:      push    %ecx
+1:      PUSH32 %ecx
         call    1f                      # Call ourselves
         mov     %edx,%eax
-        pop     %edx
+        POP32 %edx
 
 # Absorb, or link to, the next block %eax to this block %edx
 

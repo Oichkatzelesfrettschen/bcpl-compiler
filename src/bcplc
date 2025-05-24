@@ -81,7 +81,7 @@ do
            else
                $d/cg < $ifile | $d/op > $ofile
            fi ;;
-        3) $AS --$BITS -o $ofile $ifile ;;
+        3) $AS --$BITS --defsym BITS=$BITS -o $ofile $ifile ;;
         esac
         ifile=$ofile
         i=$(($i+1))
