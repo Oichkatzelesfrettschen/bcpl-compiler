@@ -16,3 +16,16 @@ jobs:
       run: sh makeall all
     - name: Test utilities
       run: make -C util test
+
+  cmake:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Configure, build and install
+      run: |
+        cmake -S . -B build -DCMAKE_INSTALL_PREFIX=/usr/local
+        cmake --build build
+        cmake --install build
+    - name: Test utilities (CMake)
+      run: make -C util BC=build/src/bcplc test
+
