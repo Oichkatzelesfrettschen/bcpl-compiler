@@ -13,3 +13,5 @@ csc -o bcplc-chicken main.scm
 ## Status
 
 This port is under heavy development. The files currently present are only stubs meant to establish the directory structure.
+
+For a detailed implementation plan consult [ROADMAP.md](ROADMAP.md).

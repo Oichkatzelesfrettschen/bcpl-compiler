@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
 export DEBIAN_FRONTEND=noninteractive
-: > setup.log
+LOGFILE="setup.log"
+: > "$LOGFILE"
+exec > >(tee -a "$LOGFILE") 2>&1
 
 # helper to pin to the repo's exact version if it exists and fall back to
 # alternative package managers on failure. Any failures are logged to
@@ -31,8 +33,8 @@ for arch in i386 armel armhf arm64 riscv64 powerpc ppc64el ia64; do
   dpkg --add-architecture "$arch"
 done
 
-apt-get update -y
-apt-get dist-upgrade -y
+apt-get update -y || echo "apt-get update failed" >>"$LOGFILE"
+apt-get dist-upgrade -y || echo "apt-get dist-upgrade failed" >>"$LOGFILE"
 
 # core build tools, formatters, analysis, science libs
 for pkg in \
@@ -113,6 +115,12 @@ for pkg in \
 done
 
 npm install -g eslint
+
+# Chicken Scheme tooling
+for pkg in \
+  chicken-bin libchicken-dev chicken-dev chicken-doc; do
+  apt_pin_install "$pkg"
+done
 
 # GUI & desktop-dev frameworks
 for pkg in \
