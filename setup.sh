@@ -1,16 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
+: > setup.log
 
-# helper to pin to the repo's exact version if it exists
+# helper to pin to the repo's exact version if it exists and fall back to
+# alternative package managers on failure. Any failures are logged to
+# setup.log but the script continues.
 apt_pin_install(){
   pkg="$1"
   ver=$(apt-cache show "$pkg" 2>/dev/null \
         | awk '/^Version:/{print $2; exit}')
   if [ -n "$ver" ]; then
-    apt-get install -y "${pkg}=${ver}"
+    apt-get install -y "${pkg}=${ver}" || true
   else
-    apt-get install -y "$pkg"
+    apt-get install -y "$pkg" || true
+  fi
+  if ! dpkg -s "$pkg" >/dev/null 2>&1; then
+    echo "apt-get failed for $pkg" >> setup.log
+    if ! pip3 install --break-system-packages "$pkg" >/dev/null 2>&1; then
+      echo "pip install failed for $pkg" >> setup.log
+      if ! npm install -g "$pkg" >/dev/null 2>&1; then
+        echo "npm install failed for $pkg" >> setup.log
+      fi
+    fi
   fi
 }
 
@@ -20,6 +32,7 @@ for arch in i386 armel armhf arm64 riscv64 powerpc ppc64el ia64; do
 done
 
 apt-get update -y
+apt-get dist-upgrade -y
 
 # core build tools, formatters, analysis, science libs
 for pkg in \

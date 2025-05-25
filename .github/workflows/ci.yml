@@ -24,23 +24,23 @@ jobs:
     - name: Build
       run: |
         if [ "${{ matrix.bits }}" = "32" ]; then
-          sh makeall all BITS=32 CROSS_PREFIX=i686-linux-gnu-
+          sh scripts/makeall.sh all BITS=32 CROSS_PREFIX=i686-linux-gnu-
         else
-          sh makeall all
+          sh scripts/makeall.sh all
         fi
     - name: Build Chicken Scheme port
       run: |
         if command -v csc >/dev/null 2>&1; then
-          csc -o chicken/bcplc-chicken chicken/main.scm
+          csc -o ports/chicken/bcplc-chicken ports/chicken/main.scm
         fi
     - name: Test utilities
       run: |
         if [ "${{ matrix.bits }}" = "32" ]; then
-          make -C util BC=../src/bcplc test
+          make -C tools BC=../src/bcplc test
         else
-          make -C util test
+          make -C tools test
         fi
-      run: make -C util test
+      run: make -C tools test
 
   cmake:
     runs-on: ubuntu-latest
@@ -52,5 +52,5 @@ jobs:
         cmake --build build
         cmake --install build
     - name: Test utilities (CMake)
-      run: make -C util BC=build/src/bcplc test
+      run: make -C tools BC=build/src/bcplc test
 

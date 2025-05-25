@@ -2,7 +2,7 @@
 
 # Make script for bcplc
 
-DIRS="src doc"
+DIRS="src docs"
 MAKE=make
 
 # Initialize
@@ -41,11 +41,11 @@ do
 done
 
 if [ "$target" = "all" ]; then
-    echo "===== util tests ====="
+    echo "===== tool tests ====="
     if command -v bcplc >/dev/null 2>&1; then
         BC=bcplc
     else
         BC=../src/bcplc
     fi
-    (cd util && ${MAKE} BC=${BC} test)
+    (cd tools && ${MAKE} BC=${BC} test)
 fi

@@ -4,14 +4,14 @@
 src/*.o
 src/st.s
 src/blib.s
-util/*.o
+tools/*.o
 
 # Build directories and executables
 src/st
 src/cg
 src/op
-util/*
-!util/CMakeLists.txt
+tools/*
+!tools/CMakeLists.txt
 build/
 
 # Misc temporary files

@@ -24,5 +24,5 @@ endif()
 option(BOOTSTRAP "Regenerate st.s using built cg/op" ON)
 
 add_subdirectory(src)
-add_subdirectory(util)
-add_subdirectory(doc)
+add_subdirectory(tools)
+add_subdirectory(docs)
