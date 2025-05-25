@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
+set -x
 export DEBIAN_FRONTEND=noninteractive
 : > setup.log
+# log everything for debugging
+exec > >(tee -a setup.log) 2>&1
 
 # helper to pin to the repo's exact version if it exists and fall back to
 # alternative package managers on failure. Any failures are logged to
@@ -21,6 +24,18 @@ apt_pin_install(){
       echo "pip install failed for $pkg" >> setup.log
       if ! npm install -g "$pkg" >/dev/null 2>&1; then
         echo "npm install failed for $pkg" >> setup.log
+        if [ "$pkg" = "capnproto" ] && ! command -v capnp >/dev/null 2>&1; then
+          echo "attempting manual install for capnproto" >> setup.log
+          CAPNP_URL=https://capnproto.org/capnproto-c++-0.10.4.tar.gz
+          if curl -fsSL "$CAPNP_URL" -o /tmp/capnproto.tar.gz && \
+             tar -xzf /tmp/capnproto.tar.gz -C /tmp && \
+             cd /tmp/capnproto-c++-* && ./configure && make -j"$(nproc)" && make install; then
+            cd - >/dev/null 2>&1
+            rm -rf /tmp/capnproto-c++-* /tmp/capnproto.tar.gz
+          else
+            echo "manual install failed for capnproto" >> setup.log
+          fi
+        fi
       fi
     fi
   fi
@@ -45,7 +60,7 @@ for pkg in \
   libopenblas-dev liblapack-dev libeigen3-dev \
   strace ltrace linux-perf systemtap systemtap-sdt-dev crash \
   valgrind kcachegrind trace-cmd kernelshark \
-  libasan6 libubsan1 likwid hwloc; do
+  libasan6 libubsan1 likwid hwloc capnproto; do
   apt_pin_install "$pkg"
 done
 

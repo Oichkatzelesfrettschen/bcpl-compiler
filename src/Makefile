@@ -6,6 +6,8 @@ PREFIX?=/usr/local
 # CROSS_PREFIX (e.g. ``CROSS_PREFIX=i686-linux-gnu-``).
 BITS?=64
 CROSS_PREFIX?=
+CC ?= clang
+CFLAGS += -std=c23 -Wall -Wextra -Wpedantic
 CFLAGS += -DBITS=$(BITS)
 
 ifeq ($(BITS),64)
