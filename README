@@ -41,8 +41,8 @@ non‑native platforms.
 
 To build the compiler from the top-level directory, run::
 
-    ./makeall
-    ./makeall install
+    ./scripts/makeall.sh
+    ./scripts/makeall.sh install
 
 Alternatively, you can build directly within ``src/``::
 
@@ -57,7 +57,7 @@ assembler and linker commands.
 
 After installation, verify the compiler by running::
 
-    bcplc util/cmpltest.bcpl
+    bcplc tools/cmpltest.bcpl
 
 By default the runtime is 64 bit, so running under ``qemu-i386`` is no
 longer required.  A 32-bit build remains available for older
@@ -83,12 +83,12 @@ Build
 
 See INSTALL for detailed build instructions. Build the compiler with
 
-    ./makeall
+    ./scripts/makeall.sh
 
 and then install it, optionally overriding `PREFIX` to choose an
 installation directory:
 
-    ./makeall install
+    ./scripts/makeall.sh install
 
 The project also provides CMake files.  A typical out-of-tree build
 looks like::
@@ -99,7 +99,7 @@ looks like::
 
 The CMake build regenerates ``st.s`` using the freshly built code
 generator by default.  Set ``-DBOOTSTRAP=OFF`` to skip this step.  The
-``util`` and ``doc`` targets may be built from the same build
+``tools`` and ``docs`` targets may be built from the same build
 directory.
 
 Ensure the resulting `bcplc` driver is on your `PATH` (or supply a
@@ -108,7 +108,7 @@ installed, the tests can be run with the freshly built copy in
 ``src/``.  The driver automatically searches its own directory for the
 runtime components, so no installation is required::
 
-    make -C util BC=../src/bcplc test
+    make -C tools BC=../src/bcplc test
 
 After installation the shorter
 
@@ -120,8 +120,8 @@ will also compile and execute the "cmpltest" suite using the
 Experimental Chicken Scheme Port
 -------------------------------
 An early experiment using [Chicken Scheme](https://call-cc.org/) lives in
-the `chicken/` directory.  It is not built by default and currently
-contains only stubs.  Consult `chicken/README.md` for more information.
+the `ports/chicken/` directory.  It is not built by default and currently
+contains only stubs.  Consult `ports/chicken/README.md` for more information.
 
 
 Robert Nordier
@@ -130,11 +130,11 @@ www.nordier.com
 Experimental Go Port
 ====================
 
-The `experimental/bcpl-go` directory contains an in-progress rewrite of
+The `experiments/bcpl-go` directory contains an in-progress rewrite of
 selected components in Go.  The module targets Go 1.24 and currently
 implements a basic version of the `bcplc` driver.  Tests can be run with
 
-    go test ./experimental/bcpl-go
+    go test ./experiments/bcpl-go
 
 The port is incomplete but provides a starting point for further
 translation and refactoring in Go.
