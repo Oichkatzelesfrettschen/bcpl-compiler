@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(bcplc C)
+if(NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    message(FATAL_ERROR "Clang is required to build this project")
+endif()
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)

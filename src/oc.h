@@ -1,3 +1,4 @@
+#pragma once
 /* Copyright (c) 2012 Robert Nordier. All rights reserved. */
 
 /* OCODE operators */

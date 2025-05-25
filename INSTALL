@@ -23,6 +23,10 @@ followed by (as root)
 
     ./scripts/makeall.sh install
 
+This project now mandates Clang as the C compiler and makes use of the
+C23 language standard.  Ensure `clang` is installed and on your `PATH`
+before building.
+
 The build defaults to a 64-bit runtime.  Use ``BITS=32`` with
 ``scripts/makeall.sh`` or ``make`` in ``src`` (or ``-DBITS=32`` when using CMake)
 to create 32-bit binaries and set ``CROSS_PREFIX`` as needed for cross
