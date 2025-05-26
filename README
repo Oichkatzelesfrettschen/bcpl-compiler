@@ -34,8 +34,9 @@ Building
 Before building you may install a comprehensive cross‑compilation
 environment by running ``./setup.sh`` as root.  The script configures
 package repositories for multiple architectures and installs toolchains
-and emulators such as ``qemu`` to enable execution of foreign binaries,
-including 16‑bit and 32‑bit x86 programs.  This is optional for a
+and emulators such as ``qemu`` to enable execution of foreign binaries.
+It also fetches the IA‑16 GCC cross‑compiler, ``protoc`` and numerous
+other development utilities.  Installing the script is optional for a
 straightforward native build but recommended when targeting older or
 non‑native platforms.
 
@@ -55,9 +56,14 @@ Alternatively, you can build directly within ``src/``::
 
 The Makefiles and CMake build files default to a 64-bit runtime.
 Specify ``BITS=32`` (or ``-DBITS=32`` when using CMake) to build
-32-bit binaries.  Cross builds may also set ``CROSS_PREFIX``
+32-bit binaries or ``BITS=16`` to target an experimental 16-bit
+runtime.  Cross builds may also set ``CROSS_PREFIX``
 (for example ``CROSS_PREFIX=i686-linux-gnu-``) to select alternate
-assembler and linker commands.
+assembler and linker commands.  The IA‑16 toolchain installed by
+``setup.sh`` exposes the prefix ``ia16-elf-`` so a full 16-bit build
+looks like::
+
+    make -C src BITS=16 CROSS_PREFIX=ia16-elf-
 
 After installation, verify the compiler by running::
 
@@ -65,7 +71,9 @@ After installation, verify the compiler by running::
 
 By default the runtime is 64 bit, so running under ``qemu-i386`` is no
 longer required.  A 32-bit build remains available for older
-environments via ``BITS=32`` or ``-DBITS=32``.
+environments via ``BITS=32`` or ``-DBITS=32``.  ``BITS=16`` produces
+a 16-bit binary suitable for DOS environments or emulators such as
+``dosemu`` or ``qemu-system-i386``.
 
 This should print::
 

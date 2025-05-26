@@ -14,6 +14,9 @@ will be found useful should you wish to test the compiler once that
 has been built and installed. The "docs" directory contains
 relevant documentation.
 
+Optionally run ``./setup.sh`` as root to install build dependencies
+including QEMU, numerous cross‑compilers and the IA‑16 toolchain.
+
 To build and install the compiler in automated fashion (assuming
 you're on a supported platform), try
 
@@ -29,8 +32,12 @@ before building.
 
 The build defaults to a 64-bit runtime.  Use ``BITS=32`` with
 ``scripts/makeall.sh`` or ``make`` in ``src`` (or ``-DBITS=32`` when using CMake)
-to create 32-bit binaries and set ``CROSS_PREFIX`` as needed for cross
-builds.
+to create 32-bit binaries.  Setting ``BITS=16`` builds an experimental
+16-bit runtime; this requires the IA‑16 toolchain installed by
+``setup.sh``.  Cross builds may set ``CROSS_PREFIX`` as needed.  A typical
+16-bit build uses::
+
+    make -C src BITS=16 CROSS_PREFIX=ia16-elf-
 
 Otherwise, change to the "src" directory. Check that the "sys.s"
 symbolic link points to either "sys_linux.s" or "sys_freebsd.s",
