@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# This is the "living" environment setup script used by continuous
+# integration and by developers.  It logs all output to setup.log and
+# keeps running even when individual installation steps fail.
+# Downloads are retried with checksum verification when possible.  Any
+# network or installation failure is recorded in the log but does not
+# abort the script.
 set -euo pipefail
 set -x
 export DEBIAN_FRONTEND=noninteractive
@@ -27,7 +33,7 @@ apt_pin_install(){
         if [ "$pkg" = "capnproto" ] && ! command -v capnp >/dev/null 2>&1; then
           echo "attempting manual install for capnproto" >> setup.log
           CAPNP_URL=https://capnproto.org/capnproto-c++-0.10.4.tar.gz
-          if curl -fsSL "$CAPNP_URL" -o /tmp/capnproto.tar.gz && \
+          if download_with_retry "$CAPNP_URL" /tmp/capnproto.tar.gz "$CAPNP_URL.sha256" && \
              tar -xzf /tmp/capnproto.tar.gz -C /tmp && \
              cd /tmp/capnproto-c++-* && ./configure && make -j"$(nproc)" && make install; then
             cd - >/dev/null 2>&1
@@ -39,6 +45,36 @@ apt_pin_install(){
       fi
     fi
   fi
+
+}
+
+# download_with_retry URL DEST [CHECKSUM_URL]
+# Repeatedly fetches an archive, optionally verifying its SHA256 checksum.
+# Failures are logged and the function returns non-zero after 3 attempts.
+download_with_retry(){
+  local url="$1" dest="$2" sum_url="${3:-}"
+  local attempt=0
+  while [ $attempt -lt 3 ]; do
+    if curl -fsSL "$url" -o "$dest"; then
+      if [ -n "$sum_url" ] && curl -fsSL "$sum_url" -o "$dest.sha256"; then
+        if sha256sum -c "$dest.sha256" >/dev/null 2>&1; then
+          rm -f "$dest.sha256"
+          return 0
+        else
+          echo "checksum mismatch for $dest" >> setup.log
+        fi
+      else
+        [ -n "$sum_url" ] && echo "failed to fetch checksum for $dest" >> setup.log
+        return 0
+      fi
+    else
+      echo "download failed for $url" >> setup.log
+    fi
+    attempt=$((attempt+1))
+    sleep 2
+  done
+  echo "giving up on $url" >> setup.log
+  return 1
 }
 
 # enable foreign architectures for cross-compilation
@@ -152,19 +188,25 @@ for pkg in \
 done
 
 # IA-16 (8086/286) cross-compiler
-IA16_VER=$(curl -fsSL https://api.github.com/repos/tkchia/gcc-ia16/releases/latest \
-           | awk -F\" '/tag_name/{print $4; exit}')
-curl -fsSL "https://github.com/tkchia/gcc-ia16/releases/download/${IA16_VER}/ia16-elf-gcc-linux64.tar.xz" \
-  | tar -Jx -C /opt
-echo 'export PATH=/opt/ia16-elf-gcc/bin:$PATH' > /etc/profile.d/ia16.sh
-export PATH=/opt/ia16-elf-gcc/bin:$PATH
+IA16_VER=$(curl -fsSL https://api.github.com/repos/tkchia/gcc-ia16/releases/latest 2>>setup.log \
+           | awk -F\" '/tag_name/{print $4; exit}') || IA16_VER=""
+if [ -n "$IA16_VER" ] && \
+   download_with_retry "https://github.com/tkchia/gcc-ia16/releases/download/${IA16_VER}/ia16-elf-gcc-linux64.tar.xz" /tmp/ia16.tar.xz "https://github.com/tkchia/gcc-ia16/releases/download/${IA16_VER}/ia16-elf-gcc-linux64.tar.xz.sha256"; then
+  tar -Jxf /tmp/ia16.tar.xz -C /opt && rm /tmp/ia16.tar.xz
+  echo 'export PATH=/opt/ia16-elf-gcc/bin:$PATH' > /etc/profile.d/ia16.sh
+  export PATH=/opt/ia16-elf-gcc/bin:$PATH
+else
+  echo "IA16 toolchain download failed" >> setup.log
+fi
 
 # protoc installer (pinned)
 PROTO_VERSION=25.1
-curl -fsSL "https://raw.githubusercontent.com/protocolbuffers/protobuf/v${PROTO_VERSION}/protoc-${PROTO_VERSION}-linux-x86_64.zip" \
-  -o /tmp/protoc.zip
-unzip -d /usr/local /tmp/protoc.zip
-rm /tmp/protoc.zip
+PROTO_URL="https://raw.githubusercontent.com/protocolbuffers/protobuf/v${PROTO_VERSION}/protoc-${PROTO_VERSION}-linux-x86_64.zip"
+if download_with_retry "$PROTO_URL" /tmp/protoc.zip "$PROTO_URL.sha256"; then
+  unzip -d /usr/local /tmp/protoc.zip && rm /tmp/protoc.zip
+else
+  echo "protoc download failed" >> setup.log
+fi
 
 # gmake alias
 command -v gmake >/dev/null 2>&1 || ln -s "$(command -v make)" /usr/local/bin/gmake
