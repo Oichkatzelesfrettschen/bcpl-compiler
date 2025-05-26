@@ -3,6 +3,7 @@
 /* A peephole optimizer: inspired by copt by Christopher W. Fraser */
 
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 #define SZ 64 /* Input line size */
@@ -71,9 +72,10 @@ int main(void)
 {
     char buf[LN][SZ];
     const char *const **pp, *const *p;
-    int eof, lz, ln, i, j, k;
+    bool eof;
+    int lz, ln, i, j, k;
 
-    for (eof = lz = ln = 0;; lz = lz + j & (LN - 1), ln -= j) {
+    for (eof = false, lz = ln = 0;; lz = lz + j & (LN - 1), ln -= j) {
         while (ln < LN && !eof)
         {
             if (!(eof = fgets(buf[lz + ln & (LN - 1)], SZ, stdin) == NULL))
