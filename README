@@ -44,9 +44,10 @@ To build the compiler from the top-level directory, run::
     ./scripts/makeall.sh
     ./scripts/makeall.sh install
 
-The build now requires the Clang compiler with C23 support. Ensure
-`clang` is available in your `PATH` or specify `CC=clang` when
-invoking the Makefiles.
+The build now requires the Clang compiler with C23 support.  The
+Makefile selects ``clang`` by default, so no extra arguments are
+needed.  Use ``CC=gcc`` or another compiler only if it understands
+C23.
 
 Alternatively, you can build directly within ``src/``::
 
