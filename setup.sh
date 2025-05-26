@@ -187,6 +187,29 @@ for pkg in \
   apt_pin_install "$pkg"
 done
 
+# verification, linting and documentation
+for pkg in \
+  shellcheck graphviz doxygen doxygen-latex pandoc \
+  python3-sphinx python3-pydot python3-pygraphviz \
+  coq coq-doc agda isabelle \
+  llvm-19-linker-tools llvm-bolt; do
+  apt_pin_install "$pkg"
+done
+
+# TLA+ tools
+if [ ! -f /usr/local/bin/tla2tools.jar ]; then
+  TLA_URL="https://github.com/tlaplus/tlaplus/releases/latest/download/tla2tools.jar"
+  if download_with_retry "$TLA_URL" /usr/local/bin/tla2tools.jar; then
+    cat > /usr/local/bin/tla2tools <<'EOF'
+#!/bin/sh
+exec java -jar /usr/local/bin/tla2tools.jar "$@"
+EOF
+    chmod +x /usr/local/bin/tla2tools
+  else
+    echo "TLA+ download failed" >> setup.log
+  fi
+fi
+
 # IA-16 (8086/286) cross-compiler
 IA16_VER=$(curl -fsSL https://api.github.com/repos/tkchia/gcc-ia16/releases/latest 2>>setup.log \
            | awk -F\" '/tag_name/{print $4; exit}') || IA16_VER=""
