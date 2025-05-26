@@ -6,7 +6,8 @@ PREFIX?=/usr/local
 # CROSS_PREFIX (e.g. ``CROSS_PREFIX=i686-linux-gnu-``).
 BITS?=64
 CROSS_PREFIX?=
-CC ?= clang
+# Clang is required for the C23 sources.  Use CC=foo to override.
+CC = clang
 CFLAGS += -std=c23 -Wall -Wextra -Wpedantic
 CFLAGS += -DBITS=$(BITS)
 
