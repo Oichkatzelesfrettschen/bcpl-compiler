@@ -29,8 +29,13 @@ fi
 BITS="${BITS:-64}"
 AS="${CROSS_PREFIX:-}as"
 LD="${CROSS_PREFIX:-}ld"
-ohead="$d/su.o"
-otail="$d/blib.o $d/global.o $d/rt.o $d/sys.o"
+if [ "$BITS" = "16" ]; then
+    ohead="$d/su16.o"
+    otail="$d/blib.o $d/global.o $d/rt.o $d/sys_ia16.o"
+else
+    ohead="$d/su.o"
+    otail="$d/blib.o $d/global.o $d/rt.o $d/sys.o"
+fi
 
 stcmd="$d/st"
 Oflag=0
@@ -106,6 +111,8 @@ done
 if test $cflag -eq 4; then
     if [ "$BITS" = "64" ]; then
         EM=elf_x86_64
+    elif [ "$BITS" = "32" ]; then
+        EM=elf_i386
     else
         EM=elf_i386
     fi

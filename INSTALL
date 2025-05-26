@@ -29,9 +29,11 @@ before building.
 
 The build defaults to a 64-bit runtime.  Use ``BITS=32`` with
 ``scripts/makeall.sh`` or ``make`` in ``src`` (or ``-DBITS=32`` when using CMake)
-to create 32-bit binaries and set ``CROSS_PREFIX`` as needed for cross
-builds.  ``WORDSZ`` is derived from ``BITS`` so a 64-bit runtime uses
-8-byte words while a 32-bit runtime uses 4-byte words.
+to create 32-bit binaries or ``BITS=16`` for IA-16 targets.  Set
+``CROSS_PREFIX`` as needed for cross builds (for example
+``CROSS_PREFIX=i686-linux-gnu-`` or ``CROSS_PREFIX=ia16-elf-``). ``WORDSZ`` is
+derived from ``BITS`` so a 64-bit runtime uses 8-byte words, a 32-bit
+runtime uses 4-byte words and a 16-bit runtime uses 2-byte words.
 
 Otherwise, change to the "src" directory. Check that the "sys.s"
 symbolic link points to either "sys_linux.s" or "sys_freebsd.s",

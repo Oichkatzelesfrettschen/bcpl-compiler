@@ -71,12 +71,13 @@ Alternatively, you can build directly within ``src/``::
     make -C src install
 
 The Makefiles and CMake build files default to a 64-bit runtime.
-Specify ``BITS=32`` (or ``-DBITS=32`` when using CMake) to build
-32-bit binaries.  Cross builds may also set ``CROSS_PREFIX``
-(for example ``CROSS_PREFIX=i686-linux-gnu-``) to select alternate
-assembler and linker commands.  The BCPL word size (``WORDSZ``)
-is selected automatically from ``BITS`` and will be 8 bytes for
-a 64-bit build, 4 bytes for 32 bit and 2 bytes for 16 bit.
+Specify ``BITS=32`` (or ``-DBITS=32`` when using CMake) for a 32-bit
+runtime or ``BITS=16`` for the experimental IA‑16 build.  Cross builds
+may also set ``CROSS_PREFIX`` (for example ``CROSS_PREFIX=i686-linux-gnu-``
+or ``CROSS_PREFIX=ia16-elf-``) to select alternate assembler and linker
+commands.  The BCPL word size (``WORDSZ``) is selected automatically from
+``BITS`` and will be 8 bytes for a 64-bit build, 4 bytes for 32 bit and
+2 bytes for 16 bit.
 
 After installation, verify the compiler by running::
 
