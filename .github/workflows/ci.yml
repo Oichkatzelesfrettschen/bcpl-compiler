@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        bits: [64, 32]
+        bits: [64, 32, 16]
     steps:
     - uses: actions/checkout@v4
     - name: Install 32-bit deps
@@ -21,10 +21,21 @@ jobs:
       run: |
         sudo apt-get update -y
         sudo apt-get install -y gcc-i686-linux-gnu
+    - name: Install IA-16 cross-compiler
+      if: ${{ matrix.bits == '16' }}
+      run: |
+        sudo apt-get update -y
+        IA16_VER=$(curl -fsSL https://api.github.com/repos/tkchia/gcc-ia16/releases/latest \
+                    | awk -F\" '/tag_name/{print $4; exit}')
+        sudo curl -fsSL "https://github.com/tkchia/gcc-ia16/releases/download/${IA16_VER}/ia16-elf-gcc-linux64.tar.xz" \
+          | sudo tar -C /opt -Jx
+        echo "/opt/ia16-elf-gcc/bin" >> "$GITHUB_PATH"
     - name: Build
       run: |
         if [ "${{ matrix.bits }}" = "32" ]; then
           sh scripts/makeall.sh all BITS=32 CROSS_PREFIX=i686-linux-gnu-
+        elif [ "${{ matrix.bits }}" = "16" ]; then
+          sh scripts/makeall.sh all BITS=16 CROSS_PREFIX=ia16-elf-
         else
           sh scripts/makeall.sh all
         fi
@@ -37,10 +48,29 @@ jobs:
       run: |
         if [ "${{ matrix.bits }}" = "32" ]; then
           make -C tools BC=../src/bcplc test
+        elif [ "${{ matrix.bits }}" = "16" ]; then
+          make -C tools BC=../src/bcplc test
         else
           make -C tools test
         fi
-      run: make -C tools test
+    - name: Build LLVM/INTCODE backend
+      if: ${{ hashFiles('llvm/**') != '' || hashFiles('intcode/**') != '' }}
+      run: |
+        if [ -d llvm ]; then
+          make -C llvm all
+        fi
+        if [ -d intcode ]; then
+          make -C intcode all
+        fi
+    - name: Test LLVM/INTCODE backend
+      if: ${{ hashFiles('llvm/**') != '' || hashFiles('intcode/**') != '' }}
+      run: |
+        if [ -d llvm ]; then
+          make -C llvm test
+        fi
+        if [ -d intcode ]; then
+          make -C intcode test
+        fi
 
   cmake:
     runs-on: ubuntu-latest
