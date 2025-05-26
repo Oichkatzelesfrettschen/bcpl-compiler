@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "oc.h"
@@ -141,10 +142,12 @@ int main(void)
 
 static ocode_op gencode(void)
 {
-    int ro, s1, s2, s3, sn;
+    bool ro;
+    int rcode, s1, s2, s3, sn;
     ocode_op op;
 
-    dt = sp = lp = ro = 0;
+    dt = sp = lp = rcode = 0;
+    ro = false;
     emit(".text");
     for (;;)
     {
@@ -298,7 +301,8 @@ static ocode_op gencode(void)
             codex(X_CMP);
             o2 = rdop(1);
             if (o2 == S_JT || o2 == S_JF) {
-                ro = op;
+                ro = true;
+                rcode = op;
             } else {
                 emit("set%s %%al", relstr[op - S_EQ][1]);
                 emit("movzx %%al,%%eax");
@@ -354,8 +358,8 @@ static ocode_op gencode(void)
         case S_JT:
         case S_JF:
             if (ro) {
-                emit("j%s %s", relstr[ro - S_EQ][op == S_JT], label(rdn()));
-                ro = 0;
+                emit("j%s %s", relstr[rcode - S_EQ][op == S_JT], label(rdn()));
+                ro = false;
             } else {
                 emit("orl %%eax,%%eax");
                 emit("j%s %s", op == S_JF ? "z" : "nz", label(rdn()));
@@ -735,9 +739,11 @@ static int rdop(int peek)
 
 static int rdn(void)
 {
-    int neg, n;
+    bool neg;
+    int n;
 
-    neg = n = 0;
+    neg = false;
+    n = 0;
     do
     {
         ch = getchar();
@@ -745,7 +751,7 @@ static int rdn(void)
     if (ch == 'L') {
         ch = getchar();
     } else if (ch == '-') {
-        neg = 1;
+        neg = true;
         ch = getchar();
     }
     while (isdigit(ch))
