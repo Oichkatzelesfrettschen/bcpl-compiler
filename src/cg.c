@@ -10,7 +10,18 @@
 #include <stdlib.h>
 #include "oc.h"
 
-#define WORDSZ  4    /* BCPL word size in bytes */
+#if BITS==64
+# define WORDSZ 8
+# define WORD_SHIFT 3
+#elif BITS==32
+# define WORDSZ 4
+# define WORD_SHIFT 2
+#elif BITS==16
+# define WORDSZ 2
+# define WORD_SHIFT 1
+#else
+# error "Unsupported BITS value"
+#endif
 #define SDSZ    5000 /* Size of static data array */
 
 /* data types used in load stack */
@@ -236,11 +247,11 @@ static ocode_op gencode(void)
             codelab(l);
 #if BITS==64
             emit("pop (%%rcx)");
-            emit("mov %%rbp,4(%%rcx)");
+            emit("mov %%rbp,%d(%%rcx)", WORDSZ);
             emit("mov %%rcx,%%rbp");
 #else
             emit("pop (%%ecx)");
-            emit("mov %%ebp,4(%%ecx)");
+            emit("mov %%ebp,%d(%%ecx)", WORDSZ);
             emit("mov %%ecx,%%ebp");
 #endif
         }
@@ -256,9 +267,9 @@ static ocode_op gencode(void)
             break;
         case S_RV:
 #if BITS==64
-            emit("mov (,%%rax,4),%%eax");
+            emit("mov (,%%rax,%d),%%eax", WORDSZ);
 #else
-            emit("mov (,%%eax,4),%%eax");
+            emit("mov (,%%eax,%d),%%eax", WORDSZ);
 #endif
             break;
         case S_ABS:
@@ -327,7 +338,7 @@ static ocode_op gencode(void)
             break;
         case S_GETBYTE:
         case S_PUTBYTE:
-            emit("shl $2,%%eax");
+            emit("shl $%d,%%eax", WORD_SHIFT);
             codex(X_ADD);
             if (op == S_GETBYTE) {
 #if BITS==64
@@ -347,9 +358,9 @@ static ocode_op gencode(void)
             break;
         case S_STIND:
 #if BITS==64
-            emit("mov %%eax,(,%%rcx,4)");
+            emit("mov %%eax,(,%%rcx,%d)", WORDSZ);
 #else
-            emit("mov %%eax,(,%%ecx,4)");
+            emit("mov %%eax,(,%%ecx,%d)", WORDSZ);
 #endif
             break;
         case S_GOTO:
@@ -401,9 +412,9 @@ static ocode_op gencode(void)
             emit("loop 1b");
             emit("2:jmp %s", label(d));
 #if BITS==64
-            emit("3:jmp *4(%%rdx)");
+            emit("3:jmp *%d(%%rdx)", WORDSZ); 
 #else
-            emit("3:jmp *4(%%edx)");
+            emit("3:jmp *%d(%%edx)", WORDSZ);
 #endif
         }
         break;
@@ -429,13 +440,13 @@ static ocode_op gencode(void)
         case S_RTRN:
 #if BITS==64
             emit("mov %%rbp,%%rcx");
-            emit("mov 4(%%rcx),%%eax");
+            emit("mov %d(%%rcx),%%eax", WORDSZ);
             emit("mov %%eax,%%ebp");
             emit("mov (%%rcx),%%eax");
             emit("jmp *%%rax");
 #else
             emit("mov %%ebp,%%ecx");
-            emit("mov 4(%%ecx),%%ebp");
+            emit("mov %d(%%ecx),%%ebp", WORDSZ);
             emit("jmp *(%%ecx)");
 #endif
             break;
@@ -566,7 +577,7 @@ static void loadreg(int i, int must)
     if (p || must) {
         code(p && t != X_LL ? X_LEA : X_MOV, X_R, i, t, ldata[i]);
         if (p) {
-            emit("shr $2,%%%s", reg[i]);
+            emit("shr $%d,%%%s", WORD_SHIFT, reg[i]);
         }
         ltype[i] = X_R;
         ldata[i] = i;
