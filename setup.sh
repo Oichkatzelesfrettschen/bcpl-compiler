@@ -17,7 +17,7 @@ exec > >(tee -a setup.log) 2>&1
 # setup.log but the script continues.
 apt_pin_install(){
   pkg="$1"
-  ver=$(apt-cache show "$pkg" 2>/dev/null \
+  ver=$( (apt-cache show "$pkg" 2>/dev/null || true) \
         | awk '/^Version:/{print $2; exit}')
   if [ -n "$ver" ]; then
     apt-get install -y "${pkg}=${ver}" || true
@@ -82,8 +82,8 @@ for arch in i386 armel armhf arm64 riscv64 powerpc ppc64el ia64; do
   dpkg --add-architecture "$arch"
 done
 
-apt-get update -y
-apt-get dist-upgrade -y
+apt-get update -y || echo "apt-get update failed" >> setup.log
+apt-get dist-upgrade -y || echo "apt-get dist-upgrade failed" >> setup.log
 
 # core build tools, formatters, analysis, science libs
 for pkg in \

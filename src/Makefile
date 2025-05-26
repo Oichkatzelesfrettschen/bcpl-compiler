@@ -33,11 +33,19 @@ else
   SYS_SRC=sys.s
 endif
 
-LLVM_CONFIG?=llvm-config
-LLVM_CFLAGS:=$(shell $(LLVM_CONFIG) --cflags 2>/dev/null)
-LLVM_LDFLAGS:=$(shell $(LLVM_CONFIG) --ldflags --libs core bitwriter native 2>/dev/null)
+LLVM_CONFIG ?= llvm-config
+HAVE_LLVM := $(shell command -v $(LLVM_CONFIG) >/dev/null 2>&1 && echo yes)
+ifeq ($(HAVE_LLVM),yes)
+LLVM_CFLAGS := $(shell $(LLVM_CONFIG) --cflags 2>/dev/null)
+LLVM_LDFLAGS := $(shell $(LLVM_CONFIG) --ldflags --libs core bitwriter native 2>/dev/null)
+ALL_TARGETS := cg op llcg st
+else
+LLVM_CFLAGS :=
+LLVM_LDFLAGS :=
+ALL_TARGETS := cg op st
+endif
 
-all: cg op llcg st
+all: $(ALL_TARGETS)
 
 cg: cg.o oc.o
 	$(CROSS_PREFIX)$(CC) $(CFLAGS) -o cg cg.o oc.o
@@ -55,13 +63,15 @@ op.o: op.c
 	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c op.c
 
 pt.o: pt.c
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c pt.c
+       $(CROSS_PREFIX)$(CC) $(CFLAGS) -c pt.c
 
+ifeq ($(HAVE_LLVM),yes)
 llcg: llcg.o
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -o llcg llcg.o $(LLVM_LDFLAGS)
+       $(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -o llcg llcg.o $(LLVM_LDFLAGS)
 
 llcg.o: llcg.c
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -c llcg.c
+       $(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -c llcg.c
+endif
 
 st: su.o st.o blib.o global.o rt.o sys.o
 	$(CROSS_PREFIX)ld -m $(LDMODE) -o st su.o st.o blib.o global.o rt.o sys.o
@@ -101,7 +111,7 @@ blib.chk: blib.O
 st.chk: st.O
 	cp st.O st.chk
 
-install: bcplc bcplc.1 st cg op llcg LIBHDR su.o blib.o global.o rt.o sys.o
+install: bcplc bcplc.1 st cg op $(if $(HAVE_LLVM),llcg) LIBHDR su.o blib.o global.o rt.o sys.o
 	mkdir -p $(PREFIX)/bin
 	install -c  -m 755 bcplc     $(PREFIX)/bin
 	mkdir -p $(PREFIX)/man/man1
@@ -110,7 +120,9 @@ install: bcplc bcplc.1 st cg op llcg LIBHDR su.o blib.o global.o rt.o sys.o
 	install -cs -m 555 st	     $(PREFIX)/lib/bcplc
 	install -cs -m 555 cg	     $(PREFIX)/lib/bcplc
 	install -cs -m 555 op	     $(PREFIX)/lib/bcplc
+ifneq ($(HAVE_LLVM),)
 	install -cs -m 555 llcg        $(PREFIX)/lib/bcplc
+endif
 	install -c  -m 644 LIBHDR    $(PREFIX)/lib/bcplc
 	install -c  -m 444 su.o	     $(PREFIX)/lib/bcplc
 	install -c  -m 444 blib.o    $(PREFIX)/lib/bcplc
@@ -121,6 +133,6 @@ install: bcplc bcplc.1 st cg op llcg LIBHDR su.o blib.o global.o rt.o sys.o
 	ln $(PREFIX)/lib/bcplc/LIBHDR $(PREFIX)/lib/bcplc/libhdr
 
 clean:
-	rm -f cg cg.o oc.o op op.o pt.o llcg llcg.o
+	rm -f cg cg.o oc.o op op.o pt.o $(if $(HAVE_LLVM),llcg llcg.o)
 	rm -f st st.o st.s blib.o blib.s su.o global.o rt.o sys.o
 	rm -f blib.chk st.chk
