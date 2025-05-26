@@ -28,6 +28,22 @@ command line arguments and error reporting. Some documentation
 that formed part of the original BCPL distribution tape is also
 included, as are a few utility programs.
 
+Requirements
+============
+
+The compiler relies on a standard set of development tools.  Ensure at
+least the following packages are available::
+
+    clang
+    make
+    cmake
+    binutils
+    gcc-multilib
+    qemu
+
+Running ``./setup.sh`` installs all of the above along with a full
+cross‑compilation environment and the IA‑16 toolchain.
+
 Building
 ========
 
