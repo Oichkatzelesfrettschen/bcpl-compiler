@@ -86,7 +86,7 @@ static int labno;          /* label counter */
 static int loff;           /* label offset */
 static int ch;             /* last char read */
 
-static int  gencode(void);
+static ocode_op gencode(void);
 static void load(int, int);
 static void save(int, int);
 static void force(int);
@@ -104,7 +104,7 @@ static void error(const char *, ...);
 
 int main(void)
 {
-    int op;
+    ocode_op op;
 
     do
     {
@@ -116,9 +116,10 @@ int main(void)
     return 0;
 }
 
-static int gencode(void)
+static ocode_op gencode(void)
 {
-    int ro, op, s1, s2, s3, sn;
+    int ro, s1, s2, s3, sn;
+    ocode_op op;
 
     dt = sp = lp = ro = 0;
     emit(".text");
