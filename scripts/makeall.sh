@@ -5,6 +5,10 @@
 DIRS="src docs"
 MAKE=make
 
+# Verify required tools before proceeding
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+"$script_dir/check-deps.sh"
+
 # Initialize
 if test $# -gt 1; then
     echo "usage: makeall [target]" 1>&2
