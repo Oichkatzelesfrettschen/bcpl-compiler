@@ -101,7 +101,7 @@ static void emit(const char *, ...);
 static char *label(int);
 static int  rdop(int);
 static int  rdn(void);
-static void error(const char *, ...);
+[[noreturn]] static void error(const char *, ...);
 
 /*
  * Helper to append formatted data to a buffer while tracking the
@@ -762,7 +762,7 @@ static int rdn(void)
     return neg ? -n : n;
 }
 
-static void error(const char *msg, ...)
+[[noreturn]] static void error(const char *msg, ...)
 {
     va_list ap;
 
