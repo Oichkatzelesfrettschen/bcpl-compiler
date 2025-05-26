@@ -1,9 +1,10 @@
 # Makefile for bcplc/src
 
 PREFIX?=/usr/local
-# Set BITS=32 to build a 32-bit runtime or BITS=64 for a native x86-64
-# build.  Additional cross-compilation prefixes may be supplied via
-# CROSS_PREFIX (e.g. ``CROSS_PREFIX=i686-linux-gnu-``).
+# Set BITS=16 to build a 16-bit runtime, BITS=32 for a 32-bit runtime
+# or BITS=64 for a native x86-64 build.  Additional cross-compilation
+# prefixes may be supplied via ``CROSS_PREFIX`` (e.g.
+# ``CROSS_PREFIX=i686-linux-gnu-``).
 BITS?=64
 CROSS_PREFIX?=
 CC ?= clang
@@ -13,9 +14,14 @@ CFLAGS += -DBITS=$(BITS)
 ifeq ($(BITS),64)
   AFLAGS=--64 --defsym BITS=64
   LDMODE=elf_x86_64
-else
+else ifeq ($(BITS),32)
   AFLAGS=--32 --defsym BITS=32
   LDMODE=elf_i386
+else ifeq ($(BITS),16)
+  AFLAGS=--16 --defsym BITS=16
+  LDMODE=elf_i386
+else
+  $(error Unsupported BITS setting: $(BITS))
 endif
 
 all: cg op st
@@ -41,8 +47,15 @@ pt.o: pt.c
 st: su.o st.o blib.o global.o rt.o sys.o
 	$(CROSS_PREFIX)ld -m $(LDMODE) -o st su.o st.o blib.o global.o rt.o sys.o
 
-su.o: su.s
-	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o su.o su.s
+SU_SRC:=su.s
+SYS_SRC:=sys.s
+ifeq ($(BITS),16)
+  SU_SRC:=su16.s
+  SYS_SRC:=sys_ia16.s
+endif
+
+su.o: $(SU_SRC)
+	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o su.o $(SU_SRC)
 
 st.o: st.s
 	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o st.o st.s
@@ -62,9 +75,9 @@ global.o: global.s
 rt.o: rt.s
 	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o rt.o rt.s
 
-sys.o: sys.s
-	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o sys.o sys.s
-
+sys.o: $(SYS_SRC)
+	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o sys.o $(SYS_SRC)
+	
 check:	blib.O blib.chk st.O st.chk
 	cmp blib.O blib.chk
 	cmp st.O st.chk

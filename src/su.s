@@ -82,7 +82,7 @@ _start:
         mov     %rbp,%rcx
         mov     START*4(%rdi),%eax
         call    *%rax                   # To BCPL start
-.else
+.elseif BITS==32
         mov     $G,%edi                 # Global vector
         mov     (%esp),%ecx             # UNIX argc
         lea     4(%esp),%ebx            # UNIX argv
@@ -142,6 +142,11 @@ _start:
         mov     %eax,8(%ebp)            # As arg
         mov     %ebp,%ecx
         call    *START*4(%edi)          # To BCPL start
+.elseif BITS==16
+        mov     $G,%di                  # Global vector
+        call    rtinit
+        movw    START*2(%di),%ax
+        call    *%ax                    # To BCPL start
 .endif
 finish:
         xor     %eax,%eax               # Exit code
@@ -150,8 +155,11 @@ _stop:
         mov     %eax,%edi
         call    rtexit                  # Runtime cleanup
         call    _exit                   # Terminate
-.else
+.elseif BITS==32
         push    %eax
         call    rtexit                  # Runtime cleanup
         call    _exit                   # Terminate
+.elseif BITS==16
+        call    rtexit                  # Runtime cleanup
+        ret
 .endif

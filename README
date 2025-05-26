@@ -54,18 +54,18 @@ Alternatively, you can build directly within ``src/``::
     make -C src install
 
 The Makefiles and CMake build files default to a 64-bit runtime.
-Specify ``BITS=32`` (or ``-DBITS=32`` when using CMake) to build
-32-bit binaries.  Cross builds may also set ``CROSS_PREFIX``
-(for example ``CROSS_PREFIX=i686-linux-gnu-``) to select alternate
-assembler and linker commands.
+Specify ``BITS=32`` or ``BITS=16`` (or ``-DBITS=<bits>`` when using
+CMake) to build 32‑ or 16‑bit binaries.  Cross builds may also set
+``CROSS_PREFIX`` (for example ``CROSS_PREFIX=i686-linux-gnu-``) to
+select alternate assembler and linker commands.
 
 After installation, verify the compiler by running::
 
     bcplc tools/cmpltest.bcpl
 
 By default the runtime is 64 bit, so running under ``qemu-i386`` is no
-longer required.  A 32-bit build remains available for older
-environments via ``BITS=32`` or ``-DBITS=32``.
+longer required.  32‑ and 16‑bit builds remain available for older
+environments via ``BITS=<bits>`` or ``-DBITS=<bits>``.
 
 This should print::
 

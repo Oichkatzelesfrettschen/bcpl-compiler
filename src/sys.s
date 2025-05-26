@@ -103,7 +103,7 @@ oflags: .long   01101
         .data
 curbrk: .quad   0
 
-.else
+.elseif BITS==32
 
         .set    RESULT2,91              # BCPL RESULT2
 

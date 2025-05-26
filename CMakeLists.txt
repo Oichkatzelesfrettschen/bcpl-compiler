@@ -12,7 +12,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 # variable mirrors the Makefiles and can be overridden on the command
 # line with ``-DBITS=32``.
 set(BITS "64" CACHE STRING "Target word size" )
-set_property(CACHE BITS PROPERTY STRINGS 32 64)
+set_property(CACHE BITS PROPERTY STRINGS 16 32 64)
 
 # Optional prefix for assembler/linker tools when cross compiling.  The
 # environment variable of the same name is used as the default to
