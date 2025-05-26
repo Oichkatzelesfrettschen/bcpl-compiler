@@ -102,6 +102,29 @@ static int  rdop(int);
 static int  rdn(void);
 static void error(const char *, ...);
 
+/*
+ * Helper to append formatted data to a buffer while tracking the
+ * remaining space.  The function aborts with an error message if the
+ * formatted string would exceed the available space.
+ */
+static void buf_append(char **sp, size_t *rem, const char *fmt, ...)
+{
+    int n;
+    va_list ap;
+
+    if (*rem == 0) {
+        error("instruction too long");
+    }
+    va_start(ap, fmt);
+    n = vsnprintf(*sp, *rem, fmt, ap);
+    va_end(ap);
+    if (n < 0 || (size_t)n >= *rem) {
+        error("instruction too long");
+    }
+    *sp += n;
+    *rem -= n;
+}
+
 int main(void)
 {
     ocode_op op;
@@ -553,7 +576,12 @@ static void codex(int xi)
 
 static void code(int xi, ...)
 {
+    /*
+     * A 64-byte buffer easily accommodates the longest formatted
+     * instruction which is well under 32 characters.
+     */
     char buf[64], *s;
+    size_t rem = sizeof(buf);
     int typ[2], dat[2];
     va_list ap;
     int cj, i1, na, x, i, t, d;
@@ -569,50 +597,59 @@ static void code(int xi, ...)
         dat[i] = va_arg(ap, int);
     }
     s = buf;
-    s += sprintf(s, xistr[xi]);
+    buf_append(&s, &rem, "%s", xistr[xi]);
     for (i = na - 1; i >= i1; i--)
     {
+        if (rem <= 1) {
+            error("instruction too long");
+        }
         *s++ = i == na - 1 ? ' ' : ',';
+        rem--;
         t = typ[i];
         d = dat[i];
         if (t <= 3) {
             if (cj) {
+                if (rem <= 1) {
+                    error("instruction too long");
+                }
                 *s++ = '*';
+                rem--;
             }
         } else if (t != X_LP && t != X_LG && !cj) {
+            if (rem <= 1) {
+                error("instruction too long");
+            }
             *s++ = '$';
+            rem--;
         }
         switch (t)
         {
         case X_R:
-            sprintf(s, "%%%s", reg[d]);
+            buf_append(&s, &rem, "%%%s", reg[d]);
             break;
         case X_P:
         case X_LP:
 #if BITS==64
-            sprintf(s, "%d(%%rbp)", d * WORDSZ);
+            buf_append(&s, &rem, "%d(%%rbp)", d * WORDSZ);
 #else
-            sprintf(s, "%d(%%ebp)", d * WORDSZ);
+            buf_append(&s, &rem, "%d(%%ebp)", d * WORDSZ);
 #endif
             break;
         case X_G:
         case X_LG:
 #if BITS==64
-            sprintf(s, "%d(%%rdi)", d * WORDSZ);
+            buf_append(&s, &rem, "%d(%%rdi)", d * WORDSZ);
 #else
-            sprintf(s, "%d(%%edi)", d * WORDSZ);
+            buf_append(&s, &rem, "%d(%%edi)", d * WORDSZ);
 #endif
             break;
         case X_L:
         case X_LL:
-            sprintf(s, "%s", label(d));
+            buf_append(&s, &rem, "%s", label(d));
             break;
         case X_N:
-            sprintf(s, "%d", d);
+            buf_append(&s, &rem, "%d", d);
             break;
-        }
-        while (*s) {
-            s++;
         }
     }
     va_end(ap);
@@ -653,7 +690,9 @@ static void codelab(int n)
 {
     char buf[32];
 
-    sprintf(buf, "%s:", label(n));
+    if (snprintf(buf, sizeof(buf), "%s:", label(n)) >= (int)sizeof(buf)) {
+        error("label buffer overflow");
+    }
     emit(buf);
 }
 
@@ -677,7 +716,9 @@ static char *label(int n)
 {
     static char buf[32];
 
-    sprintf(buf, "L%d", loff + n);
+    if (snprintf(buf, sizeof(buf), "L%d", loff + n) >= (int)sizeof(buf)) {
+        error("label buffer overflow");
+    }
     return buf;
 }
 
