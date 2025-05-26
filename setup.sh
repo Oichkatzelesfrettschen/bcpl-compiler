@@ -51,7 +51,7 @@ apt-get dist-upgrade -y
 
 # core build tools, formatters, analysis, science libs
 for pkg in \
-  build-essential gcc g++ clang lld llvm \
+  build-essential gcc g++ clang lld llvm libclang-dev llvm-dev \
   clang-format uncrustify astyle editorconfig pre-commit \
   flake8 python3-pytest \
   make bmake ninja-build cmake meson \

@@ -142,3 +142,24 @@ implements a basic version of the `bcplc` driver.  Tests can be run with
 
 The port is incomplete but provides a starting point for further
 translation and refactoring in Go.
+
+Experimental LLVM Backend
+=========================
+
+An optional tool named ``llcg`` can translate OCODE directly to LLVM IR.
+When LLVM is available, build it alongside ``cg`` and ``op`` via::
+
+    make -C src llcg
+
+or with CMake in an out-of-tree build::
+
+    cmake -S . -B build -DLLVM_DIR=/path/to/llvm/cmake
+    cmake --build build --target llcg
+
+The generated IR can be compiled to native code using ``clang`` or ``llc``.
+For example, to produce an object file directly::
+
+    ./llcg < input.O > prog.ll
+    clang -c prog.ll -o prog.o
+
+This bypasses the classic assembler pipeline used by ``cg`` and ``op``.

@@ -12,6 +12,19 @@ target_compile_definitions(cg PRIVATE BITS=${BITS})
 add_executable(op op.c pt.c)
 target_compile_definitions(op PRIVATE BITS=${BITS})
 
+# Optional LLVM backend llcg
+find_package(LLVM QUIET CONFIG)
+if(LLVM_FOUND)
+    include_directories(${LLVM_INCLUDE_DIRS})
+    add_definitions(${LLVM_DEFINITIONS})
+    llvm_map_components_to_libnames(LLCG_LIBS
+        core bitwriter native
+    )
+    add_executable(llcg llcg.c)
+    target_link_libraries(llcg PRIVATE ${LLCG_LIBS})
+    target_compile_definitions(llcg PRIVATE BITS=${BITS})
+endif()
+
 # Assemble the runtime
 if(BITS STREQUAL "64")
     set(AS_FLAGS "--64" "--defsym" "BITS=64")
@@ -88,6 +101,9 @@ add_custom_target(runtime ALL DEPENDS ${BUILD_DIR}/st)
 
 # Installation
 install(TARGETS cg op RUNTIME DESTINATION lib/bcplc)
+if(TARGET llcg)
+    install(TARGETS llcg RUNTIME DESTINATION lib/bcplc)
+endif()
 install(PROGRAMS ${BUILD_DIR}/st DESTINATION lib/bcplc)
 install(PROGRAMS bcplc DESTINATION bin)
 install(FILES bcplc.1 DESTINATION share/man/man1)
