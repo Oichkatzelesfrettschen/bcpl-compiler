@@ -1,6 +1,6 @@
 BCPLC README
 
-This is an x86 (IA-32) port of the "classic" old BCPL compiler
+This is an x86 (IA-32) and x86_64 (x64) port of the "classic" old BCPL compiler
 (around 1980) from the Tripos Research Group at Cambridge University.
 
 BCPL was a popular systems programming language during the 1960s
