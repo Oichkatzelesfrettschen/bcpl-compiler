@@ -85,7 +85,7 @@ int main(void)
         {
             return 0;
         }
-        for (pp = pat; p = *pp; pp++) {
+        for (pp = pat; (p = *pp); pp++) {
             for (i = 0; i < 10; i++)
             {
                 *reg[i] = 0;
