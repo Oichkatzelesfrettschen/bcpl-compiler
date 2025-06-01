@@ -9,7 +9,7 @@ BITS?=64
 CROSS_PREFIX?=
 # Clang is required for the C23 sources.  Use CC=foo to override.
 CC = clang
-CFLAGS += -std=c23 -Wall -Wextra -Wpedantic
+CFLAGS += -std=c23 -Wall -Wextra -Wpedantic -g
 CFLAGS += -DBITS=$(BITS)
 
 ifeq ($(BITS),64)
@@ -63,14 +63,14 @@ op.o: op.c
 	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c op.c
 
 pt.o: pt.c
-       $(CROSS_PREFIX)$(CC) $(CFLAGS) -c pt.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c pt.c
 
 ifeq ($(HAVE_LLVM),yes)
 llcg: llcg.o
-       $(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -o llcg llcg.o $(LLVM_LDFLAGS)
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -o llcg llcg.o $(LLVM_LDFLAGS)
 
 llcg.o: llcg.c
-       $(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -c llcg.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -c llcg.c
 endif
 
 st: su.o st.o blib.o global.o rt.o sys.o
