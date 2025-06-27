@@ -17,3 +17,4 @@ build/
 # Misc temporary files
 *~
 *.tmp
+.DS_Store
