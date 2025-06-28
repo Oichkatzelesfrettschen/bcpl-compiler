@@ -19,22 +19,12 @@ if test -z "$1"; then
     target="all"
 fi
 
-# Configure
-if test -e src/sys.s; then
-    :
-else
-    os=`uname`
-    case "${os}" in
-    FreeBSD)
-        sys="sys_freebsd.s" ;;
-    Linux)
-        sys="sys_linux.s" ;;
-    *)
-        echo "${os}: Not supported" 1>&2
-        exit 2
-    esac
-    ln -s ${sys} src/sys.s
-    echo "Configured for ${os}"
+# Remove old sys.s symlink if it exists, as src/Makefile now handles SYS_SRC directly
+if [ -L src/sys.s ]; then
+    echo "Removing old src/sys.s symlink."
+    rm -f src/sys.s
+elif [ -e src/sys.s ]; then
+    echo "Warning: src/sys.s exists and is not a symlink. Please check."
 fi
 
 # Make

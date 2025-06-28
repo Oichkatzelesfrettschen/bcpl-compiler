@@ -22,6 +22,17 @@
 #else
 # error "Unsupported BITS value"
 #endif
+
+#if BITS==64
+#define DATA_DIRECTIVE ".quad"
+#elif BITS==32
+#define DATA_DIRECTIVE ".long"
+#elif BITS==16
+#define DATA_DIRECTIVE ".word"
+#else
+#error "Unsupported BITS value for DATA_DIRECTIVE"
+#endif
+
 #define SDSZ    5000 /* Size of static data array */
 
 /* data types used in load stack */
@@ -440,9 +451,11 @@ static ocode_op gencode(void)
         case S_RTRN:
 #if BITS==64
             emit("mov %%rbp,%%rcx");
-            emit("mov %d(%%rcx),%%eax", WORDSZ);
-            emit("mov %%eax,%%ebp");
-            emit("mov (%%rcx),%%eax");
+            emit("mov %d(%%rcx),%%eax", WORDSZ); // This should be mov %d(%%rcx), %%rbp or similar for restoring rbp
+            emit("mov %%eax,%%ebp");             // This moves 32-bit eax to ebp, should be mov %%rax, %%rbp if eax was full 64-bit address
+                                                 // Or rather, mov %d(%%rcx), %%rbp
+                                                 // And for return address: mov (%%rcx), %%rax
+            emit("mov (%%rcx),%%eax");           // This should be mov (%%rcx), %%rax
             emit("jmp *%%rax");
 #else
             emit("mov %%ebp,%%ecx");
@@ -653,7 +666,7 @@ static void code(int xi, ...)
         case X_G:
         case X_LG:
 #if BITS==64
-            buf_append(&s, &rem, "%d(%%rdi)", d * WORDSZ);
+            buf_append(&s, &rem, "%d(%%rdi)", d * WORDSZ); // TODO: Check if RDI is always BCPL Global Vector base
 #else
             buf_append(&s, &rem, "%d(%%edi)", d * WORDSZ);
 #endif
@@ -686,14 +699,14 @@ static void outdata(int k, int n)
     switch (k)
     {
     case S_DATALAB:
-        emit(".align 4");
+        emit(".align %d", WORDSZ); // Use WORDSZ for alignment
         codelab(n);
         return;
     case S_ITEMN:
-        emit(".long %d", n);
+        emit("%s %d", DATA_DIRECTIVE, n); // Use conditional DATA_DIRECTIVE
         return;
     case S_ITEML:
-        emit(".long %s", label(n));
+        emit("%s %s", DATA_DIRECTIVE, label(n)); // Use conditional DATA_DIRECTIVE
         return;
     case S_LSTR:
         emit(".byte %d", n);
@@ -783,3 +796,18 @@ static int rdn(void)
     va_end(ap);
     exit(1);
 }
+
+// One potential issue: S_FNRN/S_RTRN for BITS==64
+// emit("mov %d(%%rcx),%%eax", WORDSZ); // This loads 32-bit eax from [rcx+WORDSZ]
+// emit("mov %%eax,%%ebp");             // This moves 32-bit eax to 32-bit ebp
+// emit("mov (%%rcx),%%eax");           // This loads 32-bit eax from [rcx]
+// emit("jmp *%%rax");                  // Jumps to 64-bit address in rax (upper 32 bits of rax are garbage)
+// These should probably be:
+// emit("mov %d(%%rcx),%%rbp", WORDSZ); // Load full rbp
+// emit("mov (%%rcx),%%rax");           // Load full return address into rax
+// emit("jmp *%%rax");
+
+// Also, in code() function:
+// case X_G: case X_LG: emit("%d(%%rdi)", d * WORDSZ); for BITS=64
+// This assumes RDI holds the base of the Global Vector G. This must be ensured by su.s or rt.s.
+// The original code used EDI for 32-bit.

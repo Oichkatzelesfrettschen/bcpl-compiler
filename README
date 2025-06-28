@@ -184,3 +184,52 @@ For example, to produce an object file directly::
     clang -c prog.ll -o prog.o
 
 This bypasses the classic assembler pipeline used by ``cg`` and ``op``.
+
+Development Notes & x86_64 Status (As of Recent Efforts)
+=========================================================
+
+Recent efforts have focused on ensuring true native x86_64 compatibility, particularly concerning the system call interface, and beginning code modernization.
+
+**x86_64 Syscall Implementation:**
+*   The build system (Makefiles, `bcplc` driver) has been modified to support distinct 64-bit system call object files (`sys64.o`, `su64.o` using `sys$(BITS).o` and `su$(BITS).o` naming).
+*   A new assembly file, `src/sys_linux_x86_64.s`, was created to provide syscall wrappers using the native x86_64 Linux ABI (`syscall` instruction, arguments in `rdi, rsi, rdx`, etc.). This replaces the previous approach where 64-bit ELF executables would make 32-bit `int 0x80` syscalls.
+*   Error reporting via the BCPL global `RESULT2` (at `G+RESULT2_OFFSET`) has been implemented in these new syscall wrappers.
+*   The build system now includes `-g` debug symbols for assembly components.
+
+**Current Status (x86_64) - Persistent Segmentation Fault:**
+*   Compiling BCPL programs (e.g., a simple "hello world" or `tools/cmpltest.bcpl`) using the x86_64 build (`BITS=64`) consistently results in a **segmentation fault**.
+*   The fault occurs during the execution of `src/st` (the main compiler executable, derived from BCPL code).
+
+**Debugging Efforts & Findings:**
+1.  **Initial System Checks:** Verified file integrity, permissions, types (ELF64 for `st`, shell script for `bcplc`), static linking of `st`, and x86_64 host architecture. These were not the cause.
+2.  **Address Sanitizer (ASan):**
+    *   The C components of the toolchain (`cg`, `op`) were successfully compiled and linked with ASan after installing `libclang-rt-18-dev`.
+    *   ASan did *not* report any memory errors within `cg` or `op` during the `bcplc` execution that leads to the segfault. This suggests the memory error originates within `st` or its direct assembly interactions.
+3.  **`strace` Analysis:**
+    *   This was highly informative: `strace -f src/bcplc ...` showed that `src/st` calls `ioctl(TCGETS)` (likely from an `isatty` call) with a clearly invalid file descriptor (e.g., `86488280`).
+    *   The `ioctl` syscall correctly returns `-EBADF` (Bad File Descriptor).
+    *   The `SIGSEGV` in `src/st` occurs *after* this failed `ioctl` call.
+4.  **Assembly Code Review & Fixes:**
+    *   Based on `strace`, the `isatty` wrapper in `src/sys_linux_x86_64.s` was reviewed. It was found to not set `RESULT2` upon `ioctl` failure. This was corrected to ensure `RESULT2` is set with the `errno` (e.g., `EBADF`).
+    *   The `sbrk` wrapper was also reviewed for register preservation (`rbx`) and error reporting.
+    *   Despite these corrections to the syscall shims, the segmentation fault in `st` persists. This indicates the root cause is likely within `st`'s logic leading to the use of the garbage FD, and its subsequent failure to handle the situation correctly even with improved error reporting from the shims.
+5.  **Core Dumps:**
+    *   Core dumps are successfully generated (e.g., as `core`) when `st` crashes. This provides an artifact for potential offline `gdb` analysis.
+6.  **Debugging Limitations:** The primary impediment to resolving the segfault is the inability to use `gdb` interactively in the current environment to debug `src/st` with the generated core dump.
+
+**Code Modernization Analysis (Phase 1 - Static Analysis):**
+*   **`cloc`:** Confirmed that Assembly and C are the main languages for the core compiler/runtime.
+*   **`cppcheck` (C files):** Reported no critical errors; only minor style suggestions and informational items.
+*   **`lizard` (C files):** Highlighted `gencode()` in `src/cg.c` (Cyclomatic Complexity 114) and `code()` in `src/cg.c` (CCN 23) as major complexity hotspots requiring future refactoring.
+*   The BCPL compiler core (`src/st.bcpl`) is substantial (approx. 2000 NLOC).
+
+**Hypothesized Root Cause of Segfault:**
+The `st` program (compiled BCPL) appears to be using an uninitialized or corrupted variable as a file descriptor when calling `isatty`. Even with `isatty` now correctly reporting the `EBADF` error via `RESULT2`, the subsequent logic within `st` fails, leading to a memory access violation. The exact nature of this internal error in `st` requires direct debugging of `st`.
+
+**Path Forward:**
+1.  **Resolve Segmentation Fault (Highest Priority):**
+    *   **Interactive `gdb` debugging of `src/st` using a generated core dump is essential.** This will show the exact instruction and state at the time of the crash.
+    *   Focus on the code path in `st` that calls `isatty` and handles its return value and `RESULT2`. Trace how the invalid FD is generated.
+2.  **Verify BCPL Runtime & ABI (rt.s, su.s):** Once `st` can be debugged, a thorough review of `rt.s` (runtime) and `su.s` (startup) for 64-bit calling conventions, stack management, and memory layout assumptions is needed to ensure they correctly support the 64-bit compiled BCPL code and interact with the syscall shims.
+3.  **Refactor C Code:** After achieving a stable x86_64 runtime, address the complexity in `src/cg.c` (especially `gencode()`).
+4.  **Continue Modernization:** Further assess other C components and the BCPL codebase.

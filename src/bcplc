@@ -29,13 +29,23 @@ fi
 BITS="${BITS:-64}"
 AS="${CROSS_PREFIX:-}as"
 LD="${CROSS_PREFIX:-}ld"
-if [ "$BITS" = "16" ]; then
-    ohead="$d/su16.o"
-    otail="$d/blib.o $d/global.o $d/rt.o $d/sys_ia16.o"
-else
-    ohead="$d/su.o"
-    otail="$d/blib.o $d/global.o $d/rt.o $d/sys.o"
-fi
+
+# Construct paths to BITS-specific runtime object files
+ohead="$d/su${BITS}.o"
+otail_common="$d/blib.o $d/global.o $d/rt.o" # Assuming these are common for now
+osys="$d/sys${BITS}.o"
+
+# Original logic for 16-bit specific names, if they were different from su16.o/sys16.o pattern
+# if [ "$BITS" = "16" ]; then
+#    ohead="$d/su16.o" # now covered by su${BITS}.o
+#    otail="$otail_common $d/sys_ia16.o" # now covered by sys${BITS}.o (sys16.o)
+# else
+#    ohead="$d/su.o" # now covered by su${BITS}.o (su32.o or su64.o)
+#    otail="$otail_common $d/sys.o" # now covered by sys${BITS}.o (sys32.o or sys64.o)
+# fi
+# Simplified:
+otail="$otail_common $osys"
+
 
 stcmd="$d/st"
 Oflag=0
