@@ -1,0 +1,5 @@
+# Hashes of file build rules.
+39b385c4f67067dd3dd92ccfbbdcb35f src/CMakeFiles/st_executable
+d2f6606e0b9f54b0338049dc3f0090ad src/st
+065d7719e011d112dff73cd6f53339fb src/st.s
+e16e2b36690a458e3f5893f652978ece src/st_bcpl.o

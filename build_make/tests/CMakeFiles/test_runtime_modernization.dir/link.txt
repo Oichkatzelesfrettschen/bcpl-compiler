@@ -1,0 +1,1 @@
+/usr/bin/clang -std=c17 -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o CMakeFiles/test_runtime_modernization.dir/test_memory_safety.c.o -o test_runtime_modernization  ../src/libbcpl_runtime.a
