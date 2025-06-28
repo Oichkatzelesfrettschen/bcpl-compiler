@@ -331,38 +331,134 @@ int bcpl_platform_error_convert(int sys_error) {
 }
 
 // =============================================================================
-// STACK OPERATIONS
+// MEMORY ALLOCATION FUNCTIONS (MISSING IMPLEMENTATIONS)
 // =============================================================================
 
-void *bcpl_get_stack_pointer(void) {
+/**
+ * @brief Allocate memory using platform-specific allocator
+ * @param size Size in bytes
+ * @return Allocated memory pointer or NULL on failure
+ */
+void *bcpl_platform_alloc(size_t size) {
+  return malloc(size);
+}
+
+/**
+ * @brief Free memory allocated by bcpl_platform_alloc
+ * @param ptr Memory pointer to free
+ */
+void bcpl_platform_free(void *ptr) {
+  if (ptr) {
+    free(ptr);
+  }
+}
+
+/**
+ * @brief Allocate page-aligned memory
+ * @param size Size in bytes (will be rounded up to page boundary)
+ * @return Allocated memory pointer or NULL on failure
+ */
+void *bcpl_platform_alloc_pages(size_t size) {
+  size_t page_size = getpagesize();
+  size_t aligned_size = ((size + page_size - 1) / page_size) * page_size;
+
+  void *ptr = mmap(NULL, aligned_size, PROT_READ | PROT_WRITE,
+                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+  return (ptr == MAP_FAILED) ? NULL : ptr;
+}
+
+/**
+ * @brief Free page-aligned memory
+ * @param ptr Memory pointer
+ * @param size Size that was originally requested
+ */
+void bcpl_platform_free_pages(void *ptr, size_t size) {
+  if (ptr) {
+    size_t page_size = getpagesize();
+    size_t aligned_size = ((size + page_size - 1) / page_size) * page_size;
+    munmap(ptr, aligned_size);
+  }
+}
+
+/**
+ * @brief Memory comparison function
+ * @param ptr1 First memory block
+ * @param ptr2 Second memory block
+ * @param size Number of bytes to compare
+ * @return 0 if equal, < 0 if ptr1 < ptr2, > 0 if ptr1 > ptr2
+ */
+int bcpl_platform_memcmp(const void *ptr1, const void *ptr2, size_t size) {
+  return memcmp(ptr1, ptr2, size);
+}
+
+/**
+ * @brief Remove/delete a file
+ * @param filename Path to file to remove
+ * @return 0 on success, -1 on failure
+ */
+int bcpl_platform_remove(const char *filename) {
+  return unlink(filename);
+}
+
+/**
+ * @brief Get high-resolution time in nanoseconds
+ * @return Current time in nanoseconds
+ */
+uint64_t bcpl_platform_get_time_ns(void) {
+  return bcpl_platform_get_timestamp();
+}
+
+/**
+ * @brief Sleep for specified milliseconds
+ * @param milliseconds Sleep duration in milliseconds
+ */
+void bcpl_platform_sleep_ms(uint32_t milliseconds) {
+  bcpl_platform_sleep((uint64_t)milliseconds * 1000000); // Convert to nanoseconds
+}
+
+// =============================================================================
+// CPU FEATURE DETECTION AND SYSTEM INFO
+// =============================================================================
+
+/**
+ * @brief CPU features structure
+ */
+typedef struct {
+  char arch_name[32];
+  int core_count;
+  bool has_simd;
+  bool has_aes;
+  uint32_t feature_flags;
+} bcpl_cpu_features_t;
+
+/**
+ * @brief Get comprehensive CPU feature information
+ * @return CPU features structure
+ */
+bcpl_cpu_features_t bcpl_platform_get_cpu_features(void) {
+  bcpl_cpu_features_t features = {0};
+
+  // Get architecture name
 #if defined(__aarch64__)
-  void *sp;
-  __asm__ volatile("mov %0, sp" : "=r"(sp));
-  return sp;
+  strncpy(features.arch_name, "ARM64", sizeof(features.arch_name) - 1);
+  features.has_simd = true;  // ARM64 always has NEON
+  features.has_aes = true;   // Most ARM64 CPUs have AES
+  features.feature_flags = BCPL_CPU_FEATURE_NEON;
 #elif defined(__x86_64__)
-  void *sp;
-  __asm__ volatile("movq %%rsp, %0" : "=r"(sp));
-  return sp;
+  strncpy(features.arch_name, "x86_64", sizeof(features.arch_name) - 1);
+  features.has_simd = true;  // Assume SSE2 at minimum
+  features.has_aes = false;  // Conservative assumption
+  features.feature_flags = BCPL_CPU_FEATURE_SSE2;
 #else
-  // Fallback using a local variable address
-  char dummy;
-  return &dummy;
+  strncpy(features.arch_name, "unknown", sizeof(features.arch_name) - 1);
+  features.has_simd = false;
+  features.has_aes = false;
+  features.feature_flags = 0;
 #endif
-}
 
-bool bcpl_is_on_stack(void *addr) {
-  // Simple heuristic: check if address is near current stack pointer
-  void *sp = bcpl_get_stack_pointer();
-  uintptr_t addr_val = (uintptr_t)addr;
-  uintptr_t sp_val = (uintptr_t)sp;
+  // Get core count
+  features.core_count = bcpl_platform_get_cpu_count();
 
-  // Assume stack grows downward and is within 8MB
-  uintptr_t stack_size = 8 * 1024 * 1024;
-
-  return (addr_val <= sp_val) && (addr_val >= (sp_val - stack_size));
-}
-
-size_t bcpl_get_stack_size(void) {
-  // Return a conservative estimate
-  return 8 * 1024 * 1024; // 8MB default on macOS
+  return features;
 }

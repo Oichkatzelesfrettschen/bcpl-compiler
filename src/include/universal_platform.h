@@ -183,6 +183,42 @@ void bcpl_platform_aligned_free(void *ptr);
  */
 size_t bcpl_platform_get_page_size(void);
 
+/**
+ * @brief Allocate memory using platform allocator
+ * @param size Size in bytes
+ * @return Memory pointer or NULL on failure
+ */
+void *bcpl_platform_alloc(size_t size);
+
+/**
+ * @brief Free memory allocated by bcpl_platform_alloc
+ * @param ptr Memory to free
+ */
+void bcpl_platform_free(void *ptr);
+
+/**
+ * @brief Allocate page-aligned memory
+ * @param size Size in bytes
+ * @return Page-aligned memory or NULL on failure
+ */
+void *bcpl_platform_alloc_pages(size_t size);
+
+/**
+ * @brief Free page-aligned memory
+ * @param ptr Memory to free
+ * @param size Original requested size
+ */
+void bcpl_platform_free_pages(void *ptr, size_t size);
+
+/**
+ * @brief Memory comparison function
+ * @param ptr1 First memory block
+ * @param ptr2 Second memory block
+ * @param size Number of bytes to compare
+ * @return Comparison result
+ */
+int bcpl_platform_memcmp(const void *ptr1, const void *ptr2, size_t size);
+
 // ============================================================================
 // PROCESS AND SYSTEM OPERATIONS
 // ============================================================================
@@ -215,6 +251,18 @@ uint64_t bcpl_platform_get_timestamp(void);
  * @param nanoseconds Sleep duration in nanoseconds
  */
 void bcpl_platform_sleep(uint64_t nanoseconds);
+
+/**
+ * @brief Get high-resolution time in nanoseconds
+ * @return Current time in nanoseconds
+ */
+uint64_t bcpl_platform_get_time_ns(void);
+
+/**
+ * @brief Sleep for specified milliseconds
+ * @param milliseconds Sleep duration
+ */
+void bcpl_platform_sleep_ms(uint32_t milliseconds);
 
 // ============================================================================
 // PLATFORM-SPECIFIC OPTIMIZATIONS
@@ -266,11 +314,20 @@ typedef enum {
   BCPL_CPU_FEATURE_ALTIVEC = 32
 } bcpl_cpu_feature_t;
 
+// CPU features information structure
+typedef struct {
+  char arch_name[32];
+  int core_count;
+  bool has_simd;
+  bool has_aes;
+  uint32_t feature_flags;
+} bcpl_cpu_features_t;
+
 /**
- * @brief Detect available CPU features
- * @return Bitmask of available features
+ * @brief Get comprehensive CPU feature information
+ * @return CPU features structure
  */
-uint32_t bcpl_platform_get_cpu_features(void);
+bcpl_cpu_features_t bcpl_platform_get_cpu_features(void);
 
 /**
  * @brief Get number of CPU cores
