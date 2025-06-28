@@ -1,3 +1,29 @@
+/**
+ * @file global.s
+ * @brief BCPL global vector definition and runtime support
+ * @author Robert Nordier
+ * @date 2004, 2012
+ * 
+ * Defines the BCPL global vector (G) which provides access to runtime
+ * functions and standard library routines. The global vector is a key
+ * component of BCPL's runtime environment, providing a standardized
+ * interface to system services.
+ * 
+ * Global Vector Layout:
+ * - G0-G99: Standard library functions
+ * - G100+: User-defined global functions
+ * 
+ * Key global functions include:
+ * - I/O operations (RDCH, WRCH, etc.)
+ * - Memory management (GETVEC, FREEVEC)
+ * - String operations
+ * - Mathematical functions
+ * - System interface functions
+ * 
+ * @see blib.bcpl for the BCPL implementations of many global functions
+ * @see LIBHDR for global vector indices and function declarations
+ */
+
 // Copyright (c) 2004, 2012 Robert Nordier. All rights reserved.
 
 // BCPL compiler x86 runtime

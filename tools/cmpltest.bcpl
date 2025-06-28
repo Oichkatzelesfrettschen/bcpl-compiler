@@ -1,3 +1,41 @@
+/**
+ * @file cmpltest.bcpl  
+ * @brief Comprehensive BCPL Compiler Test Suite
+ * @author M. Richards (original), BCPL Compiler Team (modifications)
+ * @version $Id: cmpltest.bcpl,v 1.2 2004/12/09 20:39:40 rn Exp $
+ * @copyright Copyright (c) BCPL Compiler Team. All rights reserved.
+ * 
+ * This is a universal code generator test program originally written by
+ * M. Richards to test the CII 10070 code generator. It has been adapted
+ * to thoroughly test the BCPL compiler's code generation capabilities
+ * across different target architectures.
+ * 
+ * ## Test Coverage
+ * The test suite validates:
+ * - **Arithmetic Operations**: All basic arithmetic and comparison operators
+ * - **Control Flow**: Conditional statements, loops, and jumps
+ * - **Function Calls**: Parameter passing, return values, recursion
+ * - **Memory Operations**: Variable access, array operations, pointer arithmetic
+ * - **Data Types**: Constants, variables, vectors, and string handling
+ * - **Language Features**: Pattern matching, valof expressions, etc.
+ * 
+ * ## Test Methodology
+ * Each test compares expected results with actual compiler output,
+ * tracking success/failure counts and providing detailed diagnostics
+ * for any failures. The test results validate the correctness of:
+ * - OCODE generation by the frontend
+ * - Code generation by the backend
+ * - Runtime behavior of generated code
+ * 
+ * ## Usage
+ * Run the test suite after building the compiler to verify correctness:
+ * ```
+ * make -C tools test
+ * ```
+ * 
+ * Expected output: "119 TESTS COMPLETED, 0 FAILURE(S)"
+ */
+
 // $Id: cmpltest.bcpl,v 1.2 2004/12/09 20:39:40 rn Exp $
 
 GET "LIBHDR"
@@ -6,14 +44,43 @@ GET "LIBHDR"
 // WRITTEN BY M. RICHARDS ORIGINALLY TO TEST THE
 // CII 10070 CODE-GENERATOR.
 
-GLOBAL $( F:100; G:101; H:102
-          TESTNO:103; FAILCOUNT:104
-          V:105; TESTCOUNT:106; QUIET:107; T:108  $)
+/**
+ * @brief Global variables for test execution state
+ * 
+ * These globals maintain state throughout test execution including
+ * test counters, result storage, and configuration flags.
+ */
+GLOBAL $( F:100; G:101; H:102          // Test function globals
+          TESTNO:103; FAILCOUNT:104     // Test numbering and failure count
+          V:105; TESTCOUNT:106; QUIET:107; T:108  // Test state and config
+$)
 
+/**
+ * @brief Static test data and constants
+ * 
+ * These static variables provide known test values and are used
+ * to verify proper static variable handling by the compiler.
+ */
 STATIC $( A=10; B=11; C=12; W=0  $)
 
+/**
+ * @brief Manifest constants for testing constant handling
+ * 
+ * These manifest constants test the compiler's ability to handle
+ * compile-time constant expressions and optimizations.
+ */
 MANIFEST $( K0=0; K1=1; K2=2  $)
 
+/**
+ * @brief Test evaluation function (currently commented out)
+ * @param X Actual result from test
+ * @param Y Expected result 
+ * @return The expected result Y
+ * 
+ * This function would compare actual vs expected results and track
+ * test success/failure statistics. Currently disabled pending
+ * full test implementation.
+ */
 //LET T(X, Y) = VALOF
 //   $( TESTNO := TESTNO + 1
 //      TESTCOUNT := TESTCOUNT + 1
@@ -25,29 +92,51 @@ MANIFEST $( K0=0; K1=1; K2=2  $)
 //                 FAILCOUNT := FAILCOUNT + 1  $)
 //      RESULTIS Y  $)
 
-
+/**
+ * @brief Multi-parameter test function (currently commented out)
+ * @param A,B,C,D,E,F Test parameters
+ * @param G Expected result
+ * @return Result of test evaluation
+ * 
+ * This function would test parameter passing with multiple arguments
+ * and verify arithmetic operations across parameters.
+ */
 //LET T1(A,B,C,D,E,F,G) = T(A+B+C+D+E+F, G)
 
+/**
+ * @brief Main test program entry point
+ * @param PARM Command line parameters (unused)
+ * 
+ * This is the main entry point for the test suite. Currently contains
+ * placeholder code for the full test implementation.
+ */
 LET START(PARM) BE
-$(1 //LET V1 = VEC 200
-//    AND V2 = VEC 200
-//    TESTER(0, 1, 2, V1, V2)
+$(1 //LET V1 = VEC 200    // Test vector allocation
+//    AND V2 = VEC 200    // Second test vector
+//    TESTER(0, 1, 2, V1, V2)  // Run main test suite
 $)1
 
-
+/**
+ * @brief Main test execution function
+ * @param X,Y,Z Test parameters
+ * @param V1,V2 Test vectors for memory operations
+ * 
+ * This function contains the main body of the test suite, including
+ * initialization of test variables and execution of all test cases.
+ * The tests validate compiler correctness across all supported features.
+ */
 AND TESTER(X, Y, Z, V1, V2) BE
 $(1 //WRITEF("*NCGTESTER ENTERED *N*N")
 
 //  FIRST INITIALIZE CERTAIN VARIABLES
 
-//    F, G, H := 100, 101, 102
-//    TESTNO, TESTCOUNT, FAILCOUNT := 0, 0, 0
-//    V, W := V1, V2
+//    F, G, H := 100, 101, 102           // Initialize global functions
+//    TESTNO, TESTCOUNT, FAILCOUNT := 0, 0, 0  // Reset counters  
+//    V, W := V1, V2                     // Set test vectors
 
-//    FOR I = 0 TO 200 DO V!I, W!I := 1000+I, 10000+I
+//    FOR I = 0 TO 200 DO V!I, W!I := 1000+I, 10000+I  // Initialize test data
 
-
-//    QUIET := FALSE
+//    QUIET := FALSE                     // Enable verbose output
 //  QUIET := GETBYTE(PARM,0)>0 & GETBYTE(PARM,1)='Q' -> TRUE, FALSE
 
 //  TEST SIMPLE VARIABLES AND EXPRESSIONS

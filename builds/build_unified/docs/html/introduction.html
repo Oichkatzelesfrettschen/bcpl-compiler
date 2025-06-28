@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; BCPL Compiler 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Architecture Overview" href="architecture.html" />
+    <link rel="prev" title="BCPL Compiler Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BCPL Compiler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-bcpl">What is BCPL?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#this-implementation">This Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#history">History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-frontend.html">Compiler Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-backend.html">Compiler Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime-system.html">Runtime System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-utilities.html">Tools and Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building-installing.html">Building and Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BCPL Compiler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<p>The BCPL Compiler is a complete implementation of the BCPL (Basic Combined Programming Language)
+programming language, originally designed by Martin Richards at Cambridge University in 1966.
+BCPL was influential in the development of the C programming language and Unix.</p>
+<section id="what-is-bcpl">
+<h2>What is BCPL?<a class="headerlink" href="#what-is-bcpl" title="Link to this heading"></a></h2>
+<p>BCPL is a systems programming language that emphasizes simplicity and portability. Key features include:</p>
+<ul class="simple">
+<li><p>Simple, recursive-descent syntax</p></li>
+<li><p>Single data type (word)</p></li>
+<li><p>Powerful pointer manipulation</p></li>
+<li><p>Block structure with lexical scoping</p></li>
+<li><p>Coroutine support</p></li>
+<li><p>Machine-independent design</p></li>
+</ul>
+</section>
+<section id="this-implementation">
+<h2>This Implementation<a class="headerlink" href="#this-implementation" title="Link to this heading"></a></h2>
+<p>This BCPL compiler implementation provides:</p>
+<ul class="simple">
+<li><p>Complete BCPL language support according to the original specification</p></li>
+<li><p>Multiple backend targets (x86, LLVM)</p></li>
+<li><p>Peephole optimization</p></li>
+<li><p>Standard library implementation</p></li>
+<li><p>Development tools and utilities</p></li>
+</ul>
+<p>The compiler is written primarily in C with the BCPL standard library implemented in BCPL itself,
+demonstrating the self-hosting capabilities of the language.</p>
+</section>
+<section id="history">
+<h2>History<a class="headerlink" href="#history" title="Link to this heading"></a></h2>
+<p>BCPL influenced many later languages and systems:</p>
+<ul class="simple">
+<li><p>B language (precursor to C)</p></li>
+<li><p>Early Unix utilities</p></li>
+<li><p>Portable systems programming concepts</p></li>
+<li><p>Virtual machine and bytecode concepts</p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<p>To start using the BCPL compiler, see the <a class="reference internal" href="building-installing.html"><span class="doc">Building and Installing</span></a> guide for installation
+instructions and basic usage examples.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="BCPL Compiler Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="architecture.html" class="btn btn-neutral float-right" title="Architecture Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BCPL Compiler Documentation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

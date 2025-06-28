@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Runtime System &mdash; BCPL Compiler 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tools and Utilities" href="tools-utilities.html" />
+    <link rel="prev" title="Compiler Backend" href="compiler-backend.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BCPL Compiler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-frontend.html">Compiler Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-backend.html">Compiler Backend</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Runtime System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#startup-code">Startup Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memory-management">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-interface">System Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#standard-library">Standard Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#global-variables">Global Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stream-system">Stream System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#process-model">Process Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging-support">Debugging Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#platform-portability">Platform Portability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-initialization">Runtime Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools-utilities.html">Tools and Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building-installing.html">Building and Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BCPL Compiler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Runtime System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/runtime-system.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="runtime-system">
+<h1>Runtime System<a class="headerlink" href="#runtime-system" title="Link to this heading"></a></h1>
+<p>The BCPL runtime system provides essential services for executing BCPL programs.
+It includes startup code, system call interfaces, and standard library functions.</p>
+<section id="startup-code">
+<h2>Startup Code<a class="headerlink" href="#startup-code" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Assembly Startup</strong> (su.s, su16.s)</dt><dd><p>Low-level program initialization:</p>
+<ul class="simple">
+<li><p>Process initialization</p></li>
+<li><p>Stack setup</p></li>
+<li><p>Command-line argument processing</p></li>
+<li><p>Environment variable access</p></li>
+<li><p>Program entry point establishment</p></li>
+</ul>
+</dd>
+<dt><strong>System-Specific Variants</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">su.s</span></code>: Standard 32/64-bit startup</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">su16.s</span></code>: 16-bit systems (legacy)</p></li>
+<li><p>Platform-specific initialization sequences</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="memory-management">
+<h2>Memory Management<a class="headerlink" href="#memory-management" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Stack Management</strong></dt><dd><ul class="simple">
+<li><p>Frame pointer maintenance</p></li>
+<li><p>Local variable allocation</p></li>
+<li><p>Parameter passing conventions</p></li>
+<li><p>Return address handling</p></li>
+</ul>
+</dd>
+<dt><strong>Global Data</strong></dt><dd><ul class="simple">
+<li><p>Static variable storage</p></li>
+<li><p>Constant data sections</p></li>
+<li><p>Global symbol resolution</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="system-interface">
+<h2>System Interface<a class="headerlink" href="#system-interface" title="Link to this heading"></a></h2>
+<dl>
+<dt><strong>System Call Wrappers</strong> (sys.s, sys_*.s)</dt><dd><p>Platform-specific system call interfaces:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sys_linux.s</span></code>: Linux system calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys_freebsd.s</span></code>: FreeBSD system calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys_ia16.s</span></code>: 16-bit system interface</p></li>
+</ul>
+<p>Core system calls supported:</p>
+<ul class="simple">
+<li><p>File I/O operations</p></li>
+<li><p>Process control</p></li>
+<li><p>Memory allocation</p></li>
+<li><p>Time and date functions</p></li>
+</ul>
+</dd>
+<dt><strong>I/O System</strong></dt><dd><p>Stream-based input/output:</p>
+<ul class="simple">
+<li><p>Standard streams (input, output, error)</p></li>
+<li><p>File operations (open, close, read, write)</p></li>
+<li><p>Character and line-based I/O</p></li>
+<li><p>Buffered I/O for efficiency</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="standard-library">
+<h2>Standard Library<a class="headerlink" href="#standard-library" title="Link to this heading"></a></h2>
+<dl>
+<dt><strong>BCPL Standard Library</strong> (blib.bcpl)</dt><dd><p>Core runtime functions written in BCPL:</p>
+<p><strong>I/O Functions</strong>
+.. code-block:: bcpl</p>
+<blockquote>
+<div><p>WRCH(ch)           // Write character
+RDCH()             // Read character
+WRITES(string)     // Write string
+WRITEF(format, ..) // Formatted output
+NEWLINE()          // Write newline</p>
+</div></blockquote>
+<p><strong>Memory Functions</strong>
+.. code-block:: bcpl</p>
+<blockquote>
+<div><p>GETVEC(size)       // Allocate memory
+FREEVEC(ptr)       // Free memory</p>
+</div></blockquote>
+<p><strong>String Functions</strong>
+.. code-block:: bcpl</p>
+<blockquote>
+<div><p>COMPSTRING(s1, s2) // Compare strings
+COPYSTRING(s1, s2) // Copy strings</p>
+</div></blockquote>
+<p><strong>Math Functions</strong>
+.. code-block:: bcpl</p>
+<blockquote>
+<div><p>ABS(n)             // Absolute value
+MAX(a, b)          // Maximum
+MIN(a, b)          // Minimum</p>
+</div></blockquote>
+</dd>
+</dl>
+</section>
+<section id="global-variables">
+<h2>Global Variables<a class="headerlink" href="#global-variables" title="Link to this heading"></a></h2>
+<p>The runtime system maintains global variables:</p>
+<div class="highlight-bcpl notranslate"><div class="highlight"><pre><span></span>INPUT()        // Current input stream
+OUTPUT()       // Current output stream
+SYSPRINT       // System error stream
+CURRENTDIR     // Current directory
+PROGRAMNAME    // Program name
+</pre></div>
+</div>
+</section>
+<section id="stream-system">
+<h2>Stream System<a class="headerlink" href="#stream-system" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Stream Objects</strong></dt><dd><p>BCPL streams encapsulate I/O operations:</p>
+<ul class="simple">
+<li><p>File handles</p></li>
+<li><p>Buffer management</p></li>
+<li><p>Error state tracking</p></li>
+<li><p>End-of-file detection</p></li>
+</ul>
+</dd>
+<dt><strong>Stream Operations</strong></dt><dd><ul class="simple">
+<li><p>Opening and closing files</p></li>
+<li><p>Reading and writing data</p></li>
+<li><p>Seeking and positioning</p></li>
+<li><p>Stream selection and switching</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Runtime Errors</strong></dt><dd><p>The system detects and reports:</p>
+<ul class="simple">
+<li><p>Stack overflow</p></li>
+<li><p>Memory allocation failures</p></li>
+<li><p>Invalid file operations</p></li>
+<li><p>System call errors</p></li>
+</ul>
+</dd>
+<dt><strong>Error Reporting</strong></dt><dd><ul class="simple">
+<li><p>Error messages to SYSPRINT</p></li>
+<li><p>Program termination with exit codes</p></li>
+<li><p>Optional stack traces</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="process-model">
+<h2>Process Model<a class="headerlink" href="#process-model" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Program Execution</strong></dt><dd><ul class="simple">
+<li><p>Single-threaded execution model</p></li>
+<li><p>Procedure call stack</p></li>
+<li><p>Return value handling</p></li>
+<li><p>Program termination</p></li>
+</ul>
+</dd>
+<dt><strong>Environment Access</strong></dt><dd><ul class="simple">
+<li><p>Command-line arguments</p></li>
+<li><p>Environment variables</p></li>
+<li><p>Working directory</p></li>
+<li><p>System resources</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="debugging-support">
+<h2>Debugging Support<a class="headerlink" href="#debugging-support" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Runtime Debugging</strong></dt><dd><ul class="simple">
+<li><p>Optional runtime checks</p></li>
+<li><p>Memory usage tracking</p></li>
+<li><p>Procedure call tracing</p></li>
+<li><p>Assertion support</p></li>
+</ul>
+</dd>
+<dt><strong>Integration with Debuggers</strong></dt><dd><ul class="simple">
+<li><p>Symbol table generation</p></li>
+<li><p>Debug information format</p></li>
+<li><p>Breakpoint support</p></li>
+<li><p>Variable inspection</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="platform-portability">
+<h2>Platform Portability<a class="headerlink" href="#platform-portability" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Abstraction Layer</strong></dt><dd><p>The runtime provides a consistent interface across:</p>
+<ul class="simple">
+<li><p>Different operating systems</p></li>
+<li><p>Various hardware architectures</p></li>
+<li><p>16-bit, 32-bit, and 64-bit systems</p></li>
+</ul>
+</dd>
+<dt><strong>Configuration</strong></dt><dd><ul class="simple">
+<li><p>Word size adaptation (16/32/64 bit)</p></li>
+<li><p>Endianness handling</p></li>
+<li><p>System call mapping</p></li>
+<li><p>Character encoding support</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="runtime-initialization">
+<h2>Runtime Initialization<a class="headerlink" href="#runtime-initialization" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Startup Sequence</strong></dt><dd><ol class="arabic simple">
+<li><p>Process initialization</p></li>
+<li><p>Stack setup</p></li>
+<li><p>Global variable initialization</p></li>
+<li><p>Standard stream setup</p></li>
+<li><p>Command-line processing</p></li>
+<li><p>Main program execution</p></li>
+<li><p>Cleanup and termination</p></li>
+</ol>
+</dd>
+<dt><strong>Library Initialization</strong></dt><dd><ul class="simple">
+<li><p>Standard library setup</p></li>
+<li><p>System interface initialization</p></li>
+<li><p>Error handling setup</p></li>
+<li><p>Resource allocation</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="compiler-backend.html" class="btn btn-neutral float-left" title="Compiler Backend" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tools-utilities.html" class="btn btn-neutral float-right" title="Tools and Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BCPL Compiler Documentation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

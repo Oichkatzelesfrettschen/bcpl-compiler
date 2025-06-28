@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="sys__ia16_8s" kind="file" language="C++">
+    <compoundname>sys_ia16.s</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">//<sp/>BCPL<sp/>compiler<sp/>IA-16<sp/>runtime<sp/>system<sp/>interface</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>This<sp/>is<sp/>a<sp/>very<sp/>small<sp/>DOS-like<sp/>stub<sp/>using<sp/>INT<sp/>21h<sp/>to<sp/>implement<sp/>a</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>subset<sp/>of<sp/>the<sp/>required<sp/>system<sp/>calls.<sp/><sp/>It<sp/>is<sp/>only<sp/>sufficient<sp/>for<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>test<sp/>suite<sp/>and<sp/>should<sp/>be<sp/>replaced<sp/>with<sp/>a<sp/>full<sp/>implementation.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">.code16</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/>RESULT2,91</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">.global<sp/>_exit,<sp/>read,<sp/>write,<sp/>open,<sp/>close,<sp/>olseek</highlight></codeline>
+<codeline><highlight class="normal">.global<sp/>sbrk,<sp/>ioctl,<sp/>isatty</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">_exit:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>4(%sp),<sp/>%al</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>$0x4c,<sp/>%ah</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/>$0x21</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">read:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>not<sp/>implemented</highlight></codeline>
+<codeline><highlight class="normal">write:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>4(%sp),<sp/>%bx<sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>fd</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>6(%sp),<sp/>%dx<sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>buf</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>8(%sp),<sp/>%cx<sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>len</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>$0x40,<sp/>%ah</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/>$0x21</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline><highlight class="normal">open:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>not<sp/>implemented</highlight></codeline>
+<codeline><highlight class="normal">close:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>not<sp/>implemented</highlight></codeline>
+<codeline><highlight class="normal">olseek:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>not<sp/>implemented</highlight></codeline>
+<codeline><highlight class="normal">sbrk:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/>%ax,<sp/>%ax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline><highlight class="normal">ioctl:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/>%ax,<sp/>%ax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline><highlight class="normal">isatty:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/>%ax,<sp/>%ax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">.data</highlight></codeline>
+<codeline><highlight class="normal">curbrk:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.word<sp/>0</highlight></codeline>
+    </programlisting>
+    <location file="src/sys_ia16.s"/>
+  </compounddef>
+</doxygen>

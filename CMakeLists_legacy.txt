@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 3.10)
+project(bcplc C CXX)
+if(NOT CMAKE_C_COMPILER_ID STREQUAL "Clang" AND NOT CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+    message(FATAL_ERROR "Clang is required to build this project (C compiler: ${CMAKE_C_COMPILER_ID})")
+endif()
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    message(FATAL_ERROR "Clang is required to build this project (C++ compiler: ${CMAKE_CXX_COMPILER_ID})")
+endif()
+set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Allow selection of runtime bitness.  The historical runtime is 32 bit
+# but the repository defaults to a 64 bit build.  A ``BITS`` cache
+# variable mirrors the Makefiles and can be overridden on the command
+# line with ``-DBITS=32``.
+set(BITS "64" CACHE STRING "Target word size" )
+set_property(CACHE BITS PROPERTY STRINGS 16 32 64)
+
+# Optional prefix for assembler/linker tools when cross compiling.  The
+# environment variable of the same name is used as the default to
+# maintain compatibility with the traditional Makefiles and driver
+# script.
+set(CROSS_PREFIX "$ENV{CROSS_PREFIX}" CACHE STRING "Cross compilation tool prefix")
+
+if (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+option(BOOTSTRAP "Regenerate st.s using built cg/op" ON)
+
+add_subdirectory(src)
+add_subdirectory(tools)
+add_subdirectory(docs)

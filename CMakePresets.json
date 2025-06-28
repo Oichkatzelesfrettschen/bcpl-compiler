@@ -1,0 +1,87 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 20, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "dev",
+      "description": "Development build: Debug + sanitizers + clang-tidy + docs",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/dev",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ENABLE_ASAN": "ON",
+        "ENABLE_UBSAN": "ON",
+        "ENABLE_CLANG_TIDY": "ON",
+        "ENABLE_DOCS": "ON"
+      }
+    },
+    {
+      "name": "ci",
+      "description": "CI build: coverage + static analysis + docs",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/ci",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "ENABLE_COVERAGE": "ON",
+        "ENABLE_CLANG_ANALYZER": "ON",
+        "ENABLE_CPPCHECK": "ON",
+        "ENABLE_DOCS": "ON"
+      }
+    },
+    {
+      "name": "security",
+      "description": "Security audit: all sanitizers + CFI + analyzer",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/security",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "ENABLE_ASAN": "ON",
+        "ENABLE_MSAN": "ON",
+        "ENABLE_UBSAN": "ON",
+        "ENABLE_CFI": "ON",
+        "ENABLE_CLANG_ANALYZER": "ON"
+      }
+    },
+    {
+      "name": "performance",
+      "description": "Performance build: Release + ThinLTO + VTune + benchmarks",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/performance",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "ENABLE_THIN_LTO": "ON",
+        "ENABLE_VTUNE": "ON",
+        "ENABLE_BENCHMARKS": "ON"
+      }
+    },
+    {
+      "name": "analysis",
+      "description": "Deep analysis: Debug + all static analysis + valgrind + coverage",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/analysis",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ENABLE_CLANG_TIDY": "ON",
+        "ENABLE_CLANG_ANALYZER": "ON",
+        "ENABLE_CPPCHECK": "ON",
+        "ENABLE_VALGRIND": "ON",
+        "ENABLE_COVERAGE": "ON"
+      }
+    },
+    {
+      "name": "fuzz",
+      "description": "Fuzzing: Debug + libFuzzer + sanitizers",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/fuzz",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ENABLE_FUZZING": "ON",
+        "ENABLE_ASAN": "ON",
+        "ENABLE_UBSAN": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "default", "configurePreset": "dev" }
+  ]
+}

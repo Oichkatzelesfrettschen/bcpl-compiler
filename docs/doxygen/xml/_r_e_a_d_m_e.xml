@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_r_e_a_d_m_e" kind="file" language="C++">
+    <compoundname>README</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">BCPLC<sp/>README</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>is<sp/>an<sp/>x86<sp/>(IA-32)<sp/>and<sp/>x86_64<sp/>with<sp/>BIOS<sp/>and<sp/>UEFI<sp/>(x64)<sp/>port<sp/>of<sp/>the<sp/>&quot;classic&quot;<sp/>old<sp/>BCPL<sp/>compiler</highlight></codeline>
+<codeline><highlight class="normal">(around<sp/>1980)<sp/>from<sp/>the<sp/>Tripos<sp/>Research<sp/>Group<sp/>at<sp/>Cambridge<sp/>University.<sp/>Experimental<sp/>support<sp/>exists<sp/>for<sp/>retro-modern<sp/>x86<sp/>(IA-16)<sp/>systems,<sp/></highlight></codeline>
+<codeline><highlight class="normal">for<sp/>the<sp/>compiler<sp/>written<sp/>in<sp/>Chicken<sp/>Scheme,<sp/>written<sp/>in<sp/>Haskell,<sp/>Written<sp/>in<sp/>Haskell<sp/>orchestrating<sp/>C<sp/>via<sp/>chicken<sp/>scheme,<sp/>and<sp/>written<sp/>in<sp/>Go!<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">BCPL<sp/>was<sp/>a<sp/>popular<sp/>systems<sp/>programming<sp/>language<sp/>during<sp/>the<sp/>1960s</highlight></codeline>
+<codeline><highlight class="normal">and<sp/>1970s,<sp/>and<sp/>is<sp/>of<sp/>great<sp/>historical<sp/>importance:<sp/>about<sp/>the<sp/>time</highlight></codeline>
+<codeline><highlight class="normal">of<sp/>the<sp/>birth<sp/>of<sp/>UNIX,<sp/>BCPL<sp/>directly<sp/>inspired<sp/>the<sp/>computer<sp/>language</highlight></codeline>
+<codeline><highlight class="normal">B<sp/>and<sp/>thus<sp/>had<sp/>a<sp/>very<sp/>big<sp/>influence<sp/>on<sp/>the<sp/>development<sp/>of<sp/>C.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>compiler<sp/>available<sp/>here<sp/>is<sp/>very<sp/>close<sp/>to<sp/>that<sp/>featured<sp/>in<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">book,<sp/>_BCPL:<sp/>the<sp/>language<sp/>and<sp/>its<sp/>compiler_<sp/>by<sp/>Martin<sp/>Richards<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">Colin<sp/>Whitby-Stevens<sp/>(Cambridge:<sp/>Cambridge<sp/>University<sp/>Press,<sp/>1979).</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">As<sp/>a<sp/>real,<sp/>working<sp/>computer<sp/>language<sp/>implementation,<sp/>that<sp/>can<sp/>be</highlight></codeline>
+<codeline><highlight class="normal">studied,<sp/>modified,<sp/>and<sp/>played<sp/>with,<sp/>the<sp/>classic<sp/>BCPL<sp/>compiler<sp/>has</highlight></codeline>
+<codeline><highlight class="normal">a<sp/>good<sp/>deal<sp/>to<sp/>recommend<sp/>it.<sp/>The<sp/>compiler<sp/>frontend<sp/>consists<sp/>of</highlight></codeline>
+<codeline><highlight class="normal">only<sp/>about<sp/>2000<sp/>lines<sp/>of<sp/>BCPL<sp/>code,<sp/>and<sp/>(as<sp/>supplied<sp/>here)<sp/>compiles</highlight></codeline>
+<codeline><highlight class="normal">to<sp/>a<sp/>static<sp/>(fully-linked)<sp/>x86<sp/>binary<sp/>that<sp/>is<sp/>less<sp/>than<sp/>36000<sp/>bytes</highlight></codeline>
+<codeline><highlight class="normal">in<sp/>size.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>present<sp/>distribution<sp/>supplies<sp/>a<sp/>compiler<sp/>backend<sp/>(OCODE<sp/>to<sp/>x86</highlight></codeline>
+<codeline><highlight class="normal">code<sp/>generator),<sp/>together<sp/>with<sp/>peephole<sp/>optimizer,<sp/>and<sp/>reasonably</highlight></codeline>
+<codeline><highlight class="normal">extensive<sp/>runtime<sp/>support.<sp/>A<sp/>few<sp/>revisions<sp/>have<sp/>been<sp/>made<sp/>to<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">compiler<sp/>frontend<sp/>--<sp/>it<sp/>looks<sp/>for<sp/>header<sp/>files<sp/>in<sp/>a<sp/>standard<sp/>location,</highlight></codeline>
+<codeline><highlight class="normal">for<sp/>instance<sp/>--<sp/>and<sp/><sp/>the<sp/>runtime<sp/>incorporates<sp/>support<sp/>for<sp/>UNIX</highlight></codeline>
+<codeline><highlight class="normal">command<sp/>line<sp/>arguments<sp/>and<sp/>error<sp/>reporting.<sp/>Some<sp/>documentation</highlight></codeline>
+<codeline><highlight class="normal">that<sp/>formed<sp/>part<sp/>of<sp/>the<sp/>original<sp/>BCPL<sp/>distribution<sp/>tape<sp/>is<sp/>also</highlight></codeline>
+<codeline><highlight class="normal">included,<sp/>as<sp/>are<sp/>a<sp/>few<sp/>utility<sp/>programs.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Requirements</highlight></codeline>
+<codeline><highlight class="normal">============</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>compiler<sp/>relies<sp/>on<sp/>a<sp/>standard<sp/>set<sp/>of<sp/>development<sp/>tools.<sp/><sp/>Ensure<sp/>at</highlight></codeline>
+<codeline><highlight class="normal">least<sp/>the<sp/>following<sp/>packages<sp/>are<sp/>available::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>clang</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cmake</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>binutils</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>gcc-multilib</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>qemu</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Running<sp/>``./setup.sh``<sp/>installs<sp/>all<sp/>of<sp/>the<sp/>above<sp/>along<sp/>with<sp/>a<sp/>full</highlight></codeline>
+<codeline><highlight class="normal">cross‑compilation<sp/>environment<sp/>and<sp/>the<sp/>IA‑16<sp/>toolchain.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Building</highlight></codeline>
+<codeline><highlight class="normal">========</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Before<sp/>building<sp/>you<sp/>may<sp/>install<sp/>a<sp/>comprehensive<sp/>cross‑compilation</highlight></codeline>
+<codeline><highlight class="normal">environment<sp/>by<sp/>running<sp/>``./setup.sh``<sp/>as<sp/>root.<sp/><sp/>The<sp/>script<sp/>configures</highlight></codeline>
+<codeline><highlight class="normal">package<sp/>repositories<sp/>for<sp/>multiple<sp/>architectures<sp/>and<sp/>installs<sp/>toolchains</highlight></codeline>
+<codeline><highlight class="normal">and<sp/>emulators<sp/>such<sp/>as<sp/>``qemu``<sp/>to<sp/>enable<sp/>execution<sp/>of<sp/>foreign<sp/>binaries,</highlight></codeline>
+<codeline><highlight class="normal">including<sp/>16‑bit<sp/>and<sp/>32‑bit<sp/>x86<sp/>programs.<sp/><sp/>This<sp/>is<sp/>optional<sp/>for<sp/>a</highlight></codeline>
+<codeline><highlight class="normal">straightforward<sp/>native<sp/>build<sp/>but<sp/>recommended<sp/>when<sp/>targeting<sp/>older<sp/>or</highlight></codeline>
+<codeline><highlight class="normal">non‑native<sp/>platforms.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">To<sp/>build<sp/>the<sp/>compiler<sp/>from<sp/>the<sp/>top-level<sp/>directory,<sp/>run::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./scripts/makeall.sh</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./scripts/makeall.sh<sp/>install</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>build<sp/>now<sp/>requires<sp/>the<sp/>Clang<sp/>compiler<sp/>with<sp/>C23<sp/>support.<sp/><sp/>The</highlight></codeline>
+<codeline><highlight class="normal">Makefile<sp/>selects<sp/>``clang``<sp/>by<sp/>default,<sp/>so<sp/>no<sp/>extra<sp/>arguments<sp/>are</highlight></codeline>
+<codeline><highlight class="normal">needed.<sp/><sp/>Use<sp/>``CC=gcc``<sp/>or<sp/>another<sp/>compiler<sp/>only<sp/>if<sp/>it<sp/>understands</highlight></codeline>
+<codeline><highlight class="normal">C23.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Alternatively,<sp/>you<sp/>can<sp/>build<sp/>directly<sp/>within<sp/>``src/``::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make<sp/>-C<sp/>src</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make<sp/>-C<sp/>src<sp/>install</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>Makefiles<sp/>and<sp/>CMake<sp/>build<sp/>files<sp/>default<sp/>to<sp/>a<sp/>64-bit<sp/>runtime.</highlight></codeline>
+<codeline><highlight class="normal">Specify<sp/>``BITS=32``<sp/>(or<sp/>``-DBITS=32``<sp/>when<sp/>using<sp/>CMake)<sp/>for<sp/>a<sp/>32-bit</highlight></codeline>
+<codeline><highlight class="normal">runtime<sp/>or<sp/>``BITS=16``<sp/>for<sp/>the<sp/>experimental<sp/>IA‑16<sp/>build.<sp/><sp/>Cross<sp/>builds</highlight></codeline>
+<codeline><highlight class="normal">may<sp/>also<sp/>set<sp/>``CROSS_PREFIX``<sp/>(for<sp/>example<sp/>``CROSS_PREFIX=i686-linux-gnu-``</highlight></codeline>
+<codeline><highlight class="normal">or<sp/>``CROSS_PREFIX=ia16-elf-``)<sp/>to<sp/>select<sp/>alternate<sp/>assembler<sp/>and<sp/>linker</highlight></codeline>
+<codeline><highlight class="normal">commands.<sp/><sp/>The<sp/>BCPL<sp/>word<sp/>size<sp/>(``WORDSZ``)<sp/>is<sp/>selected<sp/>automatically<sp/>from</highlight></codeline>
+<codeline><highlight class="normal">``BITS``<sp/>and<sp/>will<sp/>be<sp/>8<sp/>bytes<sp/>for<sp/>a<sp/>64-bit<sp/>build,<sp/>4<sp/>bytes<sp/>for<sp/>32<sp/>bit<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">2<sp/>bytes<sp/>for<sp/>16<sp/>bit.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">After<sp/>installation,<sp/>verify<sp/>the<sp/>compiler<sp/>by<sp/>running::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bcplc<sp/>tools/cmpltest.bcpl</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">By<sp/>default<sp/>the<sp/>runtime<sp/>is<sp/>64<sp/>bit,<sp/>so<sp/>running<sp/>under<sp/>``qemu-i386``<sp/>is<sp/>no</highlight></codeline>
+<codeline><highlight class="normal">longer<sp/>required.<sp/><sp/>A<sp/>32-bit<sp/>build<sp/>remains<sp/>available<sp/>for<sp/>older</highlight></codeline>
+<codeline><highlight class="normal">environments<sp/>via<sp/>``BITS=32``<sp/>or<sp/>``-DBITS=32``.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>should<sp/>print::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>119<sp/>TESTS<sp/>COMPLETED,<sp/>0<sp/>FAILURE(S)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Martin<sp/>Richards,<sp/>the<sp/>originator<sp/>of<sp/>BCPL,<sp/>has<sp/>a<sp/>home<sp/>page<sp/>at</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>http://www.cl.cam.ac.uk/~mr10/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Richards<sp/>has<sp/>continued<sp/>to<sp/>develop<sp/>BCPL,<sp/>very<sp/>much<sp/>as<sp/>though<sp/>it<sp/>were</highlight></codeline>
+<codeline><highlight class="normal">still<sp/>a<sp/>living<sp/>language,<sp/>and<sp/>has<sp/>a<sp/>large<sp/>and<sp/>complex<sp/>distribution</highlight></codeline>
+<codeline><highlight class="normal">of<sp/>&quot;present<sp/>day&quot;<sp/>BCPL<sp/>available,<sp/>together<sp/>with<sp/>some<sp/>archive<sp/>materials.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>web<sp/>page<sp/>for<sp/>this<sp/>distribution<sp/>is</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>http://www.nordier.com/software/obcpl.html</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Build</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">See<sp/>INSTALL<sp/>for<sp/>detailed<sp/>build<sp/>instructions.<sp/>Build<sp/>the<sp/>compiler<sp/>with</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./scripts/makeall.sh</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">and<sp/>then<sp/>install<sp/>it,<sp/>optionally<sp/>overriding<sp/>`PREFIX`<sp/>to<sp/>choose<sp/>an</highlight></codeline>
+<codeline><highlight class="normal">installation<sp/>directory:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./scripts/makeall.sh<sp/>install</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>project<sp/>also<sp/>provides<sp/>CMake<sp/>files.<sp/><sp/>A<sp/>typical<sp/>out-of-tree<sp/>build</highlight></codeline>
+<codeline><highlight class="normal">looks<sp/>like::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cmake<sp/>-S<sp/>.<sp/>-B<sp/>build<sp/>-DCMAKE_INSTALL_PREFIX=/usr/local</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cmake<sp/>--build<sp/>build</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cmake<sp/>--install<sp/>build</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>CMake<sp/>build<sp/>regenerates<sp/>``st.s``<sp/>using<sp/>the<sp/>freshly<sp/>built<sp/>code</highlight></codeline>
+<codeline><highlight class="normal">generator<sp/>by<sp/>default.<sp/><sp/>Set<sp/>``-DBOOTSTRAP=OFF``<sp/>to<sp/>skip<sp/>this<sp/>step.<sp/><sp/>The</highlight></codeline>
+<codeline><highlight class="normal">``tools``<sp/>and<sp/>``docs``<sp/>targets<sp/>may<sp/>be<sp/>built<sp/>from<sp/>the<sp/>same<sp/>build</highlight></codeline>
+<codeline><highlight class="normal">directory.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Ensure<sp/>the<sp/>resulting<sp/>`bcplc`<sp/>driver<sp/>is<sp/>on<sp/>your<sp/>`PATH`<sp/>(or<sp/>supply<sp/>a</highlight></codeline>
+<codeline><highlight class="normal">`BC`<sp/>variable<sp/>pointing<sp/>to<sp/>it).<sp/><sp/>If<sp/>the<sp/>driver<sp/>has<sp/>not<sp/>yet<sp/>been</highlight></codeline>
+<codeline><highlight class="normal">installed,<sp/>the<sp/>tests<sp/>can<sp/>be<sp/>run<sp/>with<sp/>the<sp/>freshly<sp/>built<sp/>copy<sp/>in</highlight></codeline>
+<codeline><highlight class="normal">``src/``.<sp/><sp/>The<sp/>driver<sp/>automatically<sp/>searches<sp/>its<sp/>own<sp/>directory<sp/>for<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">runtime<sp/>components,<sp/>so<sp/>no<sp/>installation<sp/>is<sp/>required::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make<sp/>-C<sp/>tools<sp/>BC=../src/bcplc<sp/>test</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">After<sp/>installation<sp/>the<sp/>shorter</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make<sp/>test</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">will<sp/>also<sp/>compile<sp/>and<sp/>execute<sp/>the<sp/>&quot;cmpltest&quot;<sp/>suite<sp/>using<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">64-bit<sp/>runtime<sp/>system.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Experimental<sp/>Chicken<sp/>Scheme<sp/>Port</highlight></codeline>
+<codeline><highlight class="normal">-------------------------------</highlight></codeline>
+<codeline><highlight class="normal">An<sp/>early<sp/>experiment<sp/>using<sp/>[Chicken<sp/>Scheme](https://call-cc.org/)<sp/>lives<sp/>in</highlight></codeline>
+<codeline><highlight class="normal">the<sp/>`ports/chicken/`<sp/>directory.<sp/><sp/>It<sp/>is<sp/>not<sp/>built<sp/>by<sp/>default<sp/>and<sp/>currently</highlight></codeline>
+<codeline><highlight class="normal">contains<sp/>only<sp/>stubs.<sp/><sp/>Consult<sp/>`ports/chicken/README.md`<sp/>for<sp/>more<sp/>information.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Robert<sp/>Nordier</highlight></codeline>
+<codeline><highlight class="normal">www.nordier.com</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Experimental<sp/>Go<sp/>Port</highlight></codeline>
+<codeline><highlight class="normal">====================</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>`experiments/bcpl-go`<sp/>directory<sp/>contains<sp/>an<sp/>in-progress<sp/>rewrite<sp/>of</highlight></codeline>
+<codeline><highlight class="normal">selected<sp/>components<sp/>in<sp/>Go.<sp/><sp/>The<sp/>module<sp/>targets<sp/>Go<sp/>1.24<sp/>and<sp/>currently</highlight></codeline>
+<codeline><highlight class="normal">implements<sp/>a<sp/>basic<sp/>version<sp/>of<sp/>the<sp/>`bcplc`<sp/>driver.<sp/><sp/>Tests<sp/>can<sp/>be<sp/>run<sp/>with</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>go<sp/>test<sp/>./experiments/bcpl-go</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>port<sp/>is<sp/>incomplete<sp/>but<sp/>provides<sp/>a<sp/>starting<sp/>point<sp/>for<sp/>further</highlight></codeline>
+<codeline><highlight class="normal">translation<sp/>and<sp/>refactoring<sp/>in<sp/>Go.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Experimental<sp/>LLVM<sp/>Backend</highlight></codeline>
+<codeline><highlight class="normal">=========================</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">An<sp/>optional<sp/>tool<sp/>named<sp/>``llcg``<sp/>can<sp/>translate<sp/>OCODE<sp/>directly<sp/>to<sp/>LLVM<sp/>IR.</highlight></codeline>
+<codeline><highlight class="normal">When<sp/>LLVM<sp/>is<sp/>available,<sp/>build<sp/>it<sp/>alongside<sp/>``cg``<sp/>and<sp/>``op``<sp/>via::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make<sp/>-C<sp/>src<sp/>llcg</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">or<sp/>with<sp/>CMake<sp/>in<sp/>an<sp/>out-of-tree<sp/>build::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cmake<sp/>-S<sp/>.<sp/>-B<sp/>build<sp/>-DLLVM_DIR=/path/to/llvm/cmake</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cmake<sp/>--build<sp/>build<sp/>--target<sp/>llcg</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>generated<sp/>IR<sp/>can<sp/>be<sp/>compiled<sp/>to<sp/>native<sp/>code<sp/>using<sp/>``clang``<sp/>or<sp/>``llc``.</highlight></codeline>
+<codeline><highlight class="normal">For<sp/>example,<sp/>to<sp/>produce<sp/>an<sp/>object<sp/>file<sp/>directly::</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./llcg<sp/>&lt;<sp/>input.O<sp/>&gt;<sp/>prog.ll</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>clang<sp/>-c<sp/>prog.ll<sp/>-o<sp/>prog.o</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>bypasses<sp/>the<sp/>classic<sp/>assembler<sp/>pipeline<sp/>used<sp/>by<sp/>``cg``<sp/>and<sp/>``op``.</highlight></codeline>
+    </programlisting>
+    <location file="README"/>
+  </compounddef>
+</doxygen>

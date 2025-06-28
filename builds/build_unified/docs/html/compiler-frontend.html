@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compiler Frontend &mdash; BCPL Compiler 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compiler Backend" href="compiler-backend.html" />
+    <link rel="prev" title="Architecture Overview" href="architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BCPL Compiler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compiler Frontend</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lexical-analysis">Lexical Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#token-types">Token Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#syntax-analysis">Syntax Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#grammar">Grammar</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symbol-table">Symbol Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integration">Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-backend.html">Compiler Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime-system.html">Runtime System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-utilities.html">Tools and Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building-installing.html">Building and Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BCPL Compiler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Compiler Frontend</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/compiler-frontend.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="compiler-frontend">
+<h1>Compiler Frontend<a class="headerlink" href="#compiler-frontend" title="Link to this heading"></a></h1>
+<p>The BCPL compiler frontend handles lexical analysis, parsing, and syntax tree construction.
+It is implemented primarily in the <code class="docutils literal notranslate"><span class="pre">src/st.bcpl</span></code> file, which contains multiple sections
+for different phases of compilation.</p>
+<section id="lexical-analysis">
+<h2>Lexical Analysis<a class="headerlink" href="#lexical-analysis" title="Link to this heading"></a></h2>
+<p>The lexical analyzer (LEX sections) tokenizes BCPL source code:</p>
+<dl class="simple">
+<dt><strong>LEX1 Section</strong></dt><dd><p>Core tokenization logic that recognizes:</p>
+<ul class="simple">
+<li><p>Numbers (decimal, octal, hexadecimal)</p></li>
+<li><p>Identifiers and keywords</p></li>
+<li><p>Operators and punctuation</p></li>
+<li><p>String and character constants</p></li>
+<li><p>Comments</p></li>
+</ul>
+</dd>
+<dt><strong>LEX2 Section</strong></dt><dd><p>Symbol table management:</p>
+<ul class="simple">
+<li><p>Hash table for identifier lookup</p></li>
+<li><p>Keyword recognition</p></li>
+<li><p>Symbol storage and retrieval</p></li>
+</ul>
+</dd>
+<dt><strong>LEX3 Section</strong></dt><dd><p>Support functions:</p>
+<ul class="simple">
+<li><p>Character classification</p></li>
+<li><p>Number parsing utilities</p></li>
+<li><p>String handling</p></li>
+</ul>
+</dd>
+</dl>
+<section id="token-types">
+<h3>Token Types<a class="headerlink" href="#token-types" title="Link to this heading"></a></h3>
+<p>The compiler recognizes these token categories:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Literals</span>
+<span class="n">S</span><span class="p">.</span><span class="n">NUMBER</span><span class="w">        </span><span class="c1">// Numeric constants</span>
+<span class="n">S</span><span class="p">.</span><span class="n">STRING</span><span class="w">        </span><span class="c1">// String literals</span>
+<span class="n">S</span><span class="p">.</span><span class="n">CHARCONST</span><span class="w">     </span><span class="c1">// Character constants</span>
+
+<span class="c1">// Identifiers and keywords</span>
+<span class="n">S</span><span class="p">.</span><span class="n">NAME</span><span class="w">          </span><span class="c1">// User identifiers</span>
+<span class="n">S</span><span class="p">.</span><span class="n">LET</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="p">.</span><span class="n">BE</span><span class="w">     </span><span class="c1">// Declaration keywords</span>
+<span class="n">S</span><span class="p">.</span><span class="n">IF</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="p">.</span><span class="n">WHILE</span><span class="w">   </span><span class="c1">// Control flow keywords</span>
+
+<span class="c1">// Operators</span>
+<span class="n">S</span><span class="p">.</span><span class="n">PLUS</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="p">.</span><span class="n">MINUS</span><span class="w"> </span><span class="c1">// Arithmetic operators</span>
+<span class="n">S</span><span class="p">.</span><span class="n">EQ</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="p">.</span><span class="n">NE</span><span class="w">      </span><span class="c1">// Comparison operators</span>
+<span class="n">S</span><span class="p">.</span><span class="n">ASSIGN</span><span class="w">        </span><span class="c1">// Assignment operator</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="syntax-analysis">
+<h2>Syntax Analysis<a class="headerlink" href="#syntax-analysis" title="Link to this heading"></a></h2>
+<p>The parser (SYN sections) builds an abstract syntax tree:</p>
+<dl class="simple">
+<dt><strong>SYN0 Section</strong></dt><dd><p>Tree construction utilities:</p>
+<ul class="simple">
+<li><p>Memory management for tree nodes</p></li>
+<li><p>List building functions</p></li>
+<li><p>Tree traversal support</p></li>
+</ul>
+</dd>
+<dt><strong>SYN1-SYN4 Sections</strong></dt><dd><p>Recursive descent parser implementing BCPL grammar:</p>
+<ul class="simple">
+<li><p>Expression parsing with operator precedence</p></li>
+<li><p>Statement parsing</p></li>
+<li><p>Declaration parsing</p></li>
+<li><p>Block structure handling</p></li>
+</ul>
+</dd>
+</dl>
+<section id="grammar">
+<h3>Grammar<a class="headerlink" href="#grammar" title="Link to this heading"></a></h3>
+<p>BCPL uses a relatively simple grammar with these main constructs:</p>
+<ul class="simple">
+<li><p><strong>Expressions</strong>: Arithmetic, logical, and relational operations</p></li>
+<li><p><strong>Statements</strong>: Assignments, procedure calls, control flow</p></li>
+<li><p><strong>Declarations</strong>: Variables, procedures, and manifest constants</p></li>
+<li><p><strong>Blocks</strong>: Compound statements with local scope</p></li>
+</ul>
+</section>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<p>The frontend provides comprehensive error reporting:</p>
+<ul class="simple">
+<li><p>Syntax error detection and recovery</p></li>
+<li><p>Meaningful error messages with line numbers</p></li>
+<li><p>Warning generation for suspicious constructs</p></li>
+<li><p>Configurable error reporting levels</p></li>
+</ul>
+</section>
+<section id="symbol-table">
+<h2>Symbol Table<a class="headerlink" href="#symbol-table" title="Link to this heading"></a></h2>
+<p>The compiler maintains symbol tables for:</p>
+<ul class="simple">
+<li><p><strong>Global symbols</strong>: Top-level declarations</p></li>
+<li><p><strong>Local symbols</strong>: Block-scoped identifiers</p></li>
+<li><p><strong>Keywords</strong>: Reserved language keywords</p></li>
+<li><p><strong>Operators</strong>: Operator precedence and associativity</p></li>
+</ul>
+</section>
+<section id="integration">
+<h2>Integration<a class="headerlink" href="#integration" title="Link to this heading"></a></h2>
+<p>The frontend interfaces with:</p>
+<ul class="simple">
+<li><p><strong>Input system</strong>: File handling and character input</p></li>
+<li><p><strong>Backend</strong>: Passes syntax tree to code generation</p></li>
+<li><p><strong>Error system</strong>: Coordinates error reporting</p></li>
+<li><p><strong>Option system</strong>: Handles compilation flags and options</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="architecture.html" class="btn btn-neutral float-left" title="Architecture Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compiler-backend.html" class="btn btn-neutral float-right" title="Compiler Backend" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BCPL Compiler Documentation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

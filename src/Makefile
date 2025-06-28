@@ -12,17 +12,37 @@ CC = clang
 CFLAGS += -std=c23 -Wall -Wextra -Wpedantic -g
 CFLAGS += -DBITS=$(BITS)
 
-ifeq ($(BITS),64)
-  AFLAGS=--64 --defsym BITS=64
-  LDMODE=elf_x86_64
-else ifeq ($(BITS),32)
-  AFLAGS=--32 --defsym BITS=32
-  LDMODE=elf_i386
-else ifeq ($(BITS),16)
-  AFLAGS=--16 --defsym BITS=16
-  LDMODE=elf_i386
+# Detect OS for assembler flags
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+  # macOS uses clang as assembler
+  AS = clang
+  ifeq ($(BITS),64)
+    AFLAGS=-c -arch arm64 -DBITS=64
+    LDMODE=
+  else ifeq ($(BITS),32)
+    AFLAGS=-c -arch i386 -DBITS=32
+    LDMODE=
+  else ifeq ($(BITS),16)
+    $(error 16-bit builds not supported on macOS)
+  else
+    $(error Unsupported BITS value: $(BITS))
+  endif
 else
-  $(error Unsupported BITS value: $(BITS))
+  # Linux/other use GNU as
+  AS = $(CROSS_PREFIX)as
+  ifeq ($(BITS),64)
+    AFLAGS=--64 --defsym BITS=64
+    LDMODE=elf_x86_64
+  else ifeq ($(BITS),32)
+    AFLAGS=--32 --defsym BITS=32
+    LDMODE=elf_i386
+  else ifeq ($(BITS),16)
+    AFLAGS=--16 --defsym BITS=16
+    LDMODE=elf_i386
+  else
+    $(error Unsupported BITS value: $(BITS))
+  endif
 endif
 
 ifeq ($(BITS),16)
@@ -77,28 +97,28 @@ st: su.o st.o blib.o global.o rt.o sys.o
 	$(CROSS_PREFIX)ld -m $(LDMODE) -o st su.o st.o blib.o global.o rt.o sys.o
 
 su.o: $(SU_SRC)
-	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o su.o $(SU_SRC)
+	$(AS) $(AFLAGS) -o su.o $(SU_SRC)
 
 st.o: st.s
-	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o st.o st.s
+	$(AS) $(AFLAGS) -o st.o st.s
 
 st.s: cg op st.O
 	./cg < st.O | ./op > st.s
 
 blib.o: blib.s
-	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o blib.o blib.s
+	$(AS) $(AFLAGS) -o blib.o blib.s
 
 blib.s: cg op blib.O
 	./cg < blib.O | ./op > blib.s
 
 global.o: global.s
-	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o global.o global.s
+	$(AS) $(AFLAGS) -o global.o global.s
 
 rt.o: rt.s
-	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o rt.o rt.s
+	$(AS) $(AFLAGS) -o rt.o rt.s
 
 sys.o: $(SYS_SRC)
-	$(CROSS_PREFIX)$(AS) $(AFLAGS) -o sys.o $(SYS_SRC)
+	$(AS) $(AFLAGS) -o sys.o $(SYS_SRC)
 
 check:	blib.O blib.chk st.O st.chk
 	cmp blib.O blib.chk

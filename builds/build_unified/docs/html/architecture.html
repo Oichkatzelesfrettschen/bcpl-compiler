@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture Overview &mdash; BCPL Compiler 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compiler Frontend" href="compiler-frontend.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BCPL Compiler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#compilation-pipeline">Compilation Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#frontend-components">Frontend Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scanner-translator-st">Scanner/Translator (ST)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocode-intermediate-representation">OCODE Intermediate Representation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#backend-components">Backend Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#code-generator-cg">Code Generator (CG)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimizer-op">Optimizer (OP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#llvm-backend-llcg">LLVM Backend (LLCG)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-system">Runtime System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#memory-management">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#standard-library">Standard Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-interface">System Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#build-system">Build System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#make-based-build">Make-based Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cmake-build">CMake Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#driver-scripts">Driver Scripts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-frontend.html">Compiler Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-backend.html">Compiler Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime-system.html">Runtime System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-utilities.html">Tools and Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building-installing.html">Building and Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BCPL Compiler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Architecture Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/architecture.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="architecture-overview">
+<h1>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Link to this heading"></a></h1>
+<p>The BCPL compiler is structured as a multi-pass compiler with clear separation
+between frontend, intermediate representation, and backend components.</p>
+<section id="compilation-pipeline">
+<span id="architecture-diagram"></span><h2>Compilation Pipeline<a class="headerlink" href="#compilation-pipeline" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>BCPL Source
+     |
+     v
+[ST Frontend] ──&gt; OCODE (Intermediate Representation)
+     |                    |
+     |                    v
+     |               [CG Backend] ──&gt; x86 Assembly
+     |                    |
+     |                    v
+     |               [OP Optimizer] ──&gt; Optimized Assembly
+     |                    |
+     |                    v
+     |               [AS Assembler] ──&gt; Object Code
+     |                    |
+     |                    v
+     |               [LD Linker] ──&gt; Executable
+     |
+     v
+[LLCG Backend] ──&gt; LLVM IR ──&gt; [LLVM] ──&gt; Optimized Code
+</pre></div>
+</div>
+</section>
+<section id="frontend-components">
+<h2>Frontend Components<a class="headerlink" href="#frontend-components" title="Link to this heading"></a></h2>
+<section id="scanner-translator-st">
+<h3>Scanner/Translator (ST)<a class="headerlink" href="#scanner-translator-st" title="Link to this heading"></a></h3>
+<p>The ST component is the main compiler frontend, written in BCPL itself.
+It performs:</p>
+<ul class="simple">
+<li><p><strong>Lexical Analysis</strong>: Tokenization of BCPL source code</p></li>
+<li><p><strong>Syntax Analysis</strong>: Parsing using recursive descent</p></li>
+<li><p><strong>Semantic Analysis</strong>: Type checking and scope resolution</p></li>
+<li><p><strong>OCODE Generation</strong>: Production of intermediate representation</p></li>
+</ul>
+<p>The frontend is self-hosting, demonstrating BCPL’s capability for
+systems programming.</p>
+</section>
+<section id="ocode-intermediate-representation">
+<h3>OCODE Intermediate Representation<a class="headerlink" href="#ocode-intermediate-representation" title="Link to this heading"></a></h3>
+<p>OCODE is a stack-based intermediate representation that abstracts
+BCPL language constructs into a simpler instruction set:</p>
+<ul class="simple">
+<li><p><strong>Platform Independent</strong>: OCODE is target-neutral</p></li>
+<li><p><strong>Stack-Based</strong>: Uses a virtual stack for computations</p></li>
+<li><p><strong>Typed Operations</strong>: Each operation has well-defined semantics</p></li>
+<li><p><strong>Optimization Friendly</strong>: Suitable for analysis and transformation</p></li>
+</ul>
+</section>
+</section>
+<section id="backend-components">
+<h2>Backend Components<a class="headerlink" href="#backend-components" title="Link to this heading"></a></h2>
+<section id="code-generator-cg">
+<h3>Code Generator (CG)<a class="headerlink" href="#code-generator-cg" title="Link to this heading"></a></h3>
+<p>The primary backend generates x86 assembly from OCODE:</p>
+<ul class="simple">
+<li><p><strong>Multi-Architecture</strong>: Supports x86-16, x86-32, and x86-64</p></li>
+<li><p><strong>Register Allocation</strong>: Efficient use of x86 registers</p></li>
+<li><p><strong>Load Stack</strong>: Tracks values for optimization</p></li>
+<li><p><strong>GNU Assembler Output</strong>: Compatible with standard tools</p></li>
+</ul>
+</section>
+<section id="optimizer-op">
+<h3>Optimizer (OP)<a class="headerlink" href="#optimizer-op" title="Link to this heading"></a></h3>
+<p>A peephole optimizer that improves generated assembly:</p>
+<ul class="simple">
+<li><p><strong>Pattern Matching</strong>: Recognizes inefficient instruction sequences</p></li>
+<li><p><strong>Dead Code Elimination</strong>: Removes unused operations</p></li>
+<li><p><strong>Instruction Combining</strong>: Merges related operations</p></li>
+<li><p><strong>Size Optimization</strong>: Reduces code size</p></li>
+</ul>
+</section>
+<section id="llvm-backend-llcg">
+<h3>LLVM Backend (LLCG)<a class="headerlink" href="#llvm-backend-llcg" title="Link to this heading"></a></h3>
+<p>An experimental backend targeting LLVM IR:</p>
+<ul class="simple">
+<li><p><strong>Modern Infrastructure</strong>: Leverages LLVM’s optimization passes</p></li>
+<li><p><strong>Multiple Targets</strong>: Can target any LLVM-supported architecture</p></li>
+<li><p><strong>Future-Proof</strong>: Provides path to modern code generation</p></li>
+<li><p><strong>Proof of Concept</strong>: Currently implements minimal OCODE subset</p></li>
+</ul>
+</section>
+</section>
+<section id="runtime-system">
+<h2>Runtime System<a class="headerlink" href="#runtime-system" title="Link to this heading"></a></h2>
+<p>The BCPL runtime provides essential services:</p>
+<section id="memory-management">
+<h3>Memory Management<a class="headerlink" href="#memory-management" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>BCPL Stack</strong>: Separate from system stack</p></li>
+<li><p><strong>Global Vector</strong>: Inter-module communication</p></li>
+<li><p><strong>Static Storage</strong>: Compile-time allocated data</p></li>
+<li><p><strong>Dynamic Allocation</strong>: Runtime memory management</p></li>
+</ul>
+</section>
+<section id="standard-library">
+<h3>Standard Library<a class="headerlink" href="#standard-library" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>I/O Functions</strong>: Character and string operations</p></li>
+<li><p><strong>Numeric Functions</strong>: Number formatting and parsing</p></li>
+<li><p><strong>Utility Functions</strong>: Common programming constructs</p></li>
+<li><p><strong>System Interface</strong>: OS interaction primitives</p></li>
+</ul>
+</section>
+<section id="system-interface">
+<h3>System Interface<a class="headerlink" href="#system-interface" title="Link to this heading"></a></h3>
+<p>Platform-specific components handle OS interaction:</p>
+<ul class="simple">
+<li><p><strong>System Calls</strong>: File I/O, process control</p></li>
+<li><p><strong>Startup Code</strong>: Program initialization</p></li>
+<li><p><strong>Exception Handling</strong>: Error recovery</p></li>
+<li><p><strong>Platform Abstraction</strong>: Portable interfaces</p></li>
+</ul>
+</section>
+</section>
+<section id="build-system">
+<h2>Build System<a class="headerlink" href="#build-system" title="Link to this heading"></a></h2>
+<p>The compiler supports both traditional and modern build systems:</p>
+<section id="make-based-build">
+<h3>Make-based Build<a class="headerlink" href="#make-based-build" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Traditional Makefiles</strong>: Compatible with standard make</p></li>
+<li><p><strong>Cross-compilation</strong>: Support for target architecture selection</p></li>
+<li><p><strong>Dependency Tracking</strong>: Automatic rebuild on changes</p></li>
+<li><p><strong>Installation</strong>: Standard install targets</p></li>
+</ul>
+</section>
+<section id="cmake-build">
+<h3>CMake Build<a class="headerlink" href="#cmake-build" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Modern Build System</strong>: CMake-based configuration</p></li>
+<li><p><strong>IDE Integration</strong>: Support for various development environments</p></li>
+<li><p><strong>Testing Integration</strong>: Automated test execution</p></li>
+<li><p><strong>Package Detection</strong>: Automatic dependency resolution</p></li>
+</ul>
+</section>
+<section id="driver-scripts">
+<h3>Driver Scripts<a class="headerlink" href="#driver-scripts" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Unified Interface</strong>: Single command for complete compilation</p></li>
+<li><p><strong>Option Processing</strong>: Compatible with standard compiler interfaces</p></li>
+<li><p><strong>Tool Coordination</strong>: Manages multi-pass compilation</p></li>
+<li><p><strong>Error Handling</strong>: Comprehensive error reporting</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compiler-frontend.html" class="btn btn-neutral float-right" title="Compiler Frontend" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BCPL Compiler Documentation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

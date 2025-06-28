@@ -1,0 +1,19 @@
+# ninja log v7
+14	1965	1751137802031859658	src/CMakeFiles/bcpl_runtime.dir/runtime/memory.c.o	fe969b9bd1cf9a5d
+68	2026	1751137802085324938	src/CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.o	72a0789110bf124f
+57	2149	1751137802082095787	src/CMakeFiles/bcpl_runtime.dir/runtime/strings.c.o	e06c474164884ba8
+46	2263	1751137802063925218	src/CMakeFiles/bcpl_runtime.dir/runtime/io.c.o	32bb38486ddfc986
+7	2275	1751137802024770959	src/CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.o	2b77a57699b58c10
+1966	2341	1751137803983950384	src/CMakeFiles/cg.dir/oc.c.o	4dc7147dc0bc2b8e
+99	2379	1751137802130754463	src/CMakeFiles/bcpl_runtime.dir/runtime/startup.c.o	604970068264eb54
+224	2397	1751137802266696884	src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o	f19fbb38dff542e3
+13	2464	1751137802030182418	src/CMakeFiles/bcpl_runtime.dir/runtime/universal_startup.c.o	7b55a0352695089c
+2149	2659	1751137804166441213	src/CMakeFiles/op.dir/pt.c.o	988787e71b1cf5be
+2264	2835	1751137804281502397	src/CMakeFiles/st_tmp.dir/bootstrap_main.c.o	d84e79ecfcf9693f
+2397	2839	1751137804414992352	tests/CMakeFiles/test_platform_compatibility.dir/test_cross_platform.c.o	e4560504cf65a168
+2026	2968	1751137804043909506	src/CMakeFiles/op.dir/op.c.o	ec63535597118a11
+122	3011	1751137802139859101	src/CMakeFiles/bcpl_runtime.dir/runtime/rt.c.o	13133bd42cff0721
+2379	3031	1751137804396733369	tests/CMakeFiles/test_runtime_modernization.dir/test_memory_safety.c.o	e56d0e540f08c484
+2464	3116	1751137804481767724	tests/CMakeFiles/test_platform_compatibility.dir/test_architecture.c.o	71e8e83fc65c8447
+2687	3240	1751137804704498236	tests/CMakeFiles/test_performance.dir/test_performance.c.o	29ae91214520a0fe
+297	3777	1751137802314890492	src/CMakeFiles/cg.dir/cg.c.o	cf64f7be5f3a3422

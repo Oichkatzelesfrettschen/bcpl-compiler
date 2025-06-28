@@ -1,23 +1,79 @@
+/**
+ * @file su.s
+ * @brief BCPL compiler x86 startup code
+ * @author Robert Nordier
+ * @copyright Copyright (c) 2004, 2012 Robert Nordier. All rights reserved.
+ * 
+ * This file provides the startup and initialization code for BCPL programs.
+ * It sets up the BCPL runtime environment, initializes the global vector,
+ * allocates the BCPL stack, and transfers control to the BCPL program.
+ * 
+ * ## Architecture Support
+ * The startup code supports both 32-bit and 64-bit x86 architectures
+ * through conditional assembly based on the BITS preprocessor variable.
+ * 
+ * ## BCPL Runtime Environment
+ * The startup code establishes:
+ * - Global vector for inter-module communication
+ * - BCPL stack separate from the system stack
+ * - Command-line argument processing
+ * - Standard global variables (ARGC, ARGV, etc.)
+ * 
+ * ## Memory Layout
+ * - System stack: Used for system calls and startup
+ * - BCPL stack: Separate stack for BCPL program execution
+ * - Global vector: Fixed-size array for global variables
+ * - Heap: Managed separately by the BCPL runtime
+ */
+
 // Copyright (c) 2004, 2012 Robert Nordier. All rights reserved.
 
 // BCPL compiler x86 startup code
 
+/**
+ * @brief Architecture configuration
+ * Default to 32-bit if BITS is not defined
+ */
 .ifndef BITS
 .set BITS,32
 .endif
 
-// The following setting can be changed as desired.
-        .set    STKSIZ,0x400000         # BCPL stack size
+/**
+ * @brief BCPL stack size configuration
+ * The BCPL stack is separate from the system stack and is used
+ * for all BCPL program execution. This can be adjusted based on
+ * program requirements.
+ */
+        .set    STKSIZ,0x400000         # BCPL stack size (4MB default)
 
-// BCPL globals
-        .set    START,1
-        .set    STACKBASE,95
-        .set    STACKEND,96
-        .set    ARGC,97
-        .set    ARGV,98
-        .set    PARAM,99
+/**
+ * @brief BCPL global vector slot assignments
+ * These constants define the standard global vector slots used
+ * by the BCPL runtime system.
+ */
+        .set    START,1                 # Entry point function (global 1)
+        .set    STACKBASE,95           # Base of BCPL stack
+        .set    STACKEND,96            # End of BCPL stack  
+        .set    ARGC,97                # Command line argument count
+        .set    ARGV,98                # Command line argument vector
+        .set    PARAM,99               # Parameter string
 
+/**
+ * @brief Exported symbols for linker
+ * These symbols are referenced by the BCPL runtime and linker
+ */
         .global _start, _stop, finish
+
+/**
+ * @brief Program entry point
+ * 
+ * This is the main entry point called by the operating system.
+ * It performs the following initialization:
+ * 1. Sets up the BCPL global vector
+ * 2. Processes command-line arguments
+ * 3. Allocates and initializes the BCPL stack
+ * 4. Transfers control to the BCPL START function
+ */
 
 _start:
         cld

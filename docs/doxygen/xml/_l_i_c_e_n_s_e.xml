@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_l_i_c_e_n_s_e" kind="file" language="C++">
+    <compoundname>LICENSE</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">BCPLC<sp/>LICENSE</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>software<sp/>distribution<sp/>contains<sp/>the<sp/>BCPL<sp/>compiler<sp/>and<sp/>related<sp/>materials.</highlight></codeline>
+<codeline><highlight class="normal">Most<sp/>files<sp/>are<sp/>derived<sp/>from<sp/>an<sp/>early<sp/>BCPL<sp/>compiler<sp/>distribution<sp/>from<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">Tripos<sp/>Research<sp/>Group,<sp/>University<sp/>of<sp/>Cambridge<sp/>Computer<sp/>Laboratory</highlight></codeline>
+<codeline><highlight class="normal">(c)<sp/>1978-1980.<sp/><sp/>Changes<sp/>and<sp/>additions<sp/>were<sp/>made<sp/>by<sp/>Robert<sp/>Nordier<sp/>in<sp/>2004<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">2012.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">All<sp/>files<sp/>are<sp/>freely<sp/>redistributable,<sp/>as<sp/>noted<sp/>in<sp/>the<sp/>COPYRIGHT<sp/>file.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>software<sp/>is<sp/>provided<sp/>&quot;as<sp/>is&quot;,<sp/>without<sp/>warranty<sp/>of<sp/>any<sp/>kind,<sp/>express<sp/>or</highlight></codeline>
+<codeline><highlight class="normal">implied,<sp/>including<sp/>but<sp/>not<sp/>limited<sp/>to<sp/>the<sp/>warranties<sp/>of<sp/>merchantability,</highlight></codeline>
+<codeline><highlight class="normal">fitness<sp/>for<sp/>a<sp/>particular<sp/>purpose<sp/>and<sp/>noninfringement.<sp/>In<sp/>no<sp/>event<sp/>shall<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">authors<sp/>or<sp/>copyright<sp/>holders<sp/>be<sp/>liable<sp/>for<sp/>any<sp/>claim,<sp/>damages<sp/>or<sp/>other</highlight></codeline>
+<codeline><highlight class="normal">liability,<sp/>whether<sp/>in<sp/>an<sp/>action<sp/>of<sp/>contract,<sp/>tort<sp/>or<sp/>otherwise,<sp/>arising<sp/>from,</highlight></codeline>
+<codeline><highlight class="normal">out<sp/>of<sp/>or<sp/>in<sp/>connection<sp/>with<sp/>the<sp/>software<sp/>or<sp/>the<sp/>use<sp/>or<sp/>other<sp/>dealings<sp/>in<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">software.</highlight></codeline>
+    </programlisting>
+    <location file="LICENSE"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compiler Backend &mdash; BCPL Compiler 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Runtime System" href="runtime-system.html" />
+    <link rel="prev" title="Compiler Frontend" href="compiler-frontend.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BCPL Compiler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-frontend.html">Compiler Frontend</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compiler Backend</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#code-generation">Code Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#translation-phases">Translation Phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocode-intermediate-representation">OCODE Intermediate Representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimization">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#register-allocation">Register Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#target-support">Target Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output-generation">Output Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-interface">Runtime Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backend-integration">Backend Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="runtime-system.html">Runtime System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-utilities.html">Tools and Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building-installing.html">Building and Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BCPL Compiler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Compiler Backend</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/compiler-backend.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="compiler-backend">
+<h1>Compiler Backend<a class="headerlink" href="#compiler-backend" title="Link to this heading"></a></h1>
+<p>The BCPL compiler backend handles code generation, optimization, and output generation.
+It supports multiple target architectures and includes sophisticated optimization passes.</p>
+<section id="code-generation">
+<h2>Code Generation<a class="headerlink" href="#code-generation" title="Link to this heading"></a></h2>
+<p>The compiler provides multiple backend implementations:</p>
+<dl class="simple">
+<dt><strong>x86 Code Generator (cg.c)</strong></dt><dd><p>Native x86 assembly generation:</p>
+<ul class="simple">
+<li><p>Direct register allocation</p></li>
+<li><p>Efficient instruction selection</p></li>
+<li><p>Platform-specific optimizations</p></li>
+<li><p>Support for 16-bit, 32-bit, and 64-bit targets</p></li>
+</ul>
+</dd>
+<dt><strong>LLVM Backend (llcg.c)</strong></dt><dd><p>LLVM IR generation:</p>
+<ul class="simple">
+<li><p>Modern optimization infrastructure</p></li>
+<li><p>Portable code generation</p></li>
+<li><p>Advanced optimization passes</p></li>
+<li><p>Multiple target architecture support</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="translation-phases">
+<h2>Translation Phases<a class="headerlink" href="#translation-phases" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>TRN0 Section</strong> (st.bcpl)</dt><dd><p>Translation initialization:</p>
+<ul class="simple">
+<li><p>Symbol table setup</p></li>
+<li><p>Code generation preparation</p></li>
+<li><p>Target architecture selection</p></li>
+</ul>
+</dd>
+<dt><strong>TRN1-TRN2 Sections</strong> (st.bcpl)</dt><dd><p>Intermediate code generation:</p>
+<ul class="simple">
+<li><p>Syntax tree traversal</p></li>
+<li><p>OCODE instruction generation</p></li>
+<li><p>Symbol resolution and binding</p></li>
+<li><p>Control flow analysis</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="ocode-intermediate-representation">
+<h2>OCODE Intermediate Representation<a class="headerlink" href="#ocode-intermediate-representation" title="Link to this heading"></a></h2>
+<p>The compiler uses OCODE as its intermediate representation:</p>
+<dl>
+<dt><strong>Instruction Set</strong></dt><dd><p>Core OCODE operations defined in <code class="docutils literal notranslate"><span class="pre">oc.h</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Data movement</span>
+<span class="n">OP_LOAD</span><span class="p">,</span><span class="w"> </span><span class="n">OP_STORE</span><span class="w">    </span><span class="c1">// Memory operations</span>
+<span class="n">OP_LOADK</span><span class="w">             </span><span class="c1">// Load constant</span>
+
+<span class="c1">// Arithmetic</span>
+<span class="n">OP_ADD</span><span class="p">,</span><span class="w"> </span><span class="n">OP_SUB</span><span class="w">       </span><span class="c1">// Basic arithmetic</span>
+<span class="n">OP_MUL</span><span class="p">,</span><span class="w"> </span><span class="n">OP_DIV</span><span class="w">       </span><span class="c1">// Multiplication/division</span>
+
+<span class="c1">// Control flow</span>
+<span class="n">OP_JUMP</span><span class="p">,</span><span class="w"> </span><span class="n">OP_JUMPF</span><span class="w">    </span><span class="c1">// Unconditional/conditional jumps</span>
+<span class="n">OP_CALL</span><span class="p">,</span><span class="w"> </span><span class="n">OP_RETURN</span><span class="w">   </span><span class="c1">// Procedure calls</span>
+
+<span class="c1">// Comparison</span>
+<span class="n">OP_EQ</span><span class="p">,</span><span class="w"> </span><span class="n">OP_NE</span><span class="w">         </span><span class="c1">// Equality testing</span>
+<span class="n">OP_LT</span><span class="p">,</span><span class="w"> </span><span class="n">OP_LE</span><span class="w">         </span><span class="c1">// Relational operations</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong>Attributes</strong> (oc.c)</dt><dd><p>Each OCODE instruction has attributes:</p>
+<ul class="simple">
+<li><p>Operand count and types</p></li>
+<li><p>Stack effect (push/pop behavior)</p></li>
+<li><p>Optimization hints</p></li>
+<li><p>Target-specific properties</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="optimization">
+<h2>Optimization<a class="headerlink" href="#optimization" title="Link to this heading"></a></h2>
+<dl>
+<dt><strong>Peephole Optimization</strong> (op.c, pt.c)</dt><dd><p>Pattern-based local optimizations:</p>
+<ul class="simple">
+<li><p>Instruction combining</p></li>
+<li><p>Dead code elimination</p></li>
+<li><p>Strength reduction</p></li>
+<li><p>Redundancy elimination</p></li>
+</ul>
+<p>Example patterns:</p>
+<div class="highlight-asm notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before optimization</span>
+<span class="nf">movl</span><span class="w"> </span><span class="no">$2</span><span class="p">,</span><span class="nv">%ecx</span>
+<span class="nf">imull</span><span class="w"> </span><span class="nv">%ecx</span>
+
+<span class="c1"># After optimization</span>
+<span class="nf">shll</span><span class="w"> </span><span class="no">$1</span><span class="p">,</span><span class="nv">%eax</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong>Global Optimizations</strong></dt><dd><p>Cross-basic-block optimizations:</p>
+<ul class="simple">
+<li><p>Constant propagation</p></li>
+<li><p>Common subexpression elimination</p></li>
+<li><p>Register allocation improvements</p></li>
+<li><p>Control flow optimization</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="register-allocation">
+<h2>Register Allocation<a class="headerlink" href="#register-allocation" title="Link to this heading"></a></h2>
+<p>The compiler uses different strategies based on the backend:</p>
+<dl class="simple">
+<dt><strong>x86 Backend</strong></dt><dd><p>Simple but effective allocation:</p>
+<ul class="simple">
+<li><p>Stack-based expression evaluation</p></li>
+<li><p>Register caching for frequently used values</p></li>
+<li><p>Spill code generation when needed</p></li>
+</ul>
+</dd>
+<dt><strong>LLVM Backend</strong></dt><dd><p>Leverages LLVM’s allocation:</p>
+<ul class="simple">
+<li><p>SSA-based register allocation</p></li>
+<li><p>Graph coloring algorithms</p></li>
+<li><p>Advanced spilling strategies</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="target-support">
+<h2>Target Support<a class="headerlink" href="#target-support" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>x86 Family</strong></dt><dd><ul class="simple">
+<li><p>16-bit (8086/80286)</p></li>
+<li><p>32-bit (i386 and later)</p></li>
+<li><p>64-bit (x86-64)</p></li>
+</ul>
+</dd>
+<dt><strong>Operating Systems</strong></dt><dd><ul class="simple">
+<li><p>Linux</p></li>
+<li><p>FreeBSD</p></li>
+<li><p>Custom bare-metal targets</p></li>
+</ul>
+</dd>
+<dt><strong>Instruction Selection</strong></dt><dd><p>Platform-specific optimizations:</p>
+<ul class="simple">
+<li><p>Use of specialized instructions</p></li>
+<li><p>Addressing mode optimization</p></li>
+<li><p>Calling convention compliance</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="output-generation">
+<h2>Output Generation<a class="headerlink" href="#output-generation" title="Link to this heading"></a></h2>
+<p>The backend generates:</p>
+<ul class="simple">
+<li><p><strong>Assembly code</strong>: Human-readable assembly files</p></li>
+<li><p><strong>Object files</strong>: Native object code (via assembler)</p></li>
+<li><p><strong>Executables</strong>: Linked final programs</p></li>
+<li><p><strong>Debug information</strong>: Debugging symbols and metadata</p></li>
+</ul>
+</section>
+<section id="runtime-interface">
+<h2>Runtime Interface<a class="headerlink" href="#runtime-interface" title="Link to this heading"></a></h2>
+<p>The backend coordinates with the runtime system:</p>
+<ul class="simple">
+<li><p><strong>Calling conventions</strong>: Parameter passing and return values</p></li>
+<li><p><strong>Memory layout</strong>: Stack frame organization</p></li>
+<li><p><strong>System calls</strong>: Operating system interface</p></li>
+<li><p><strong>Error handling</strong>: Runtime error reporting</p></li>
+</ul>
+</section>
+<section id="backend-integration">
+<h2>Backend Integration<a class="headerlink" href="#backend-integration" title="Link to this heading"></a></h2>
+<p>The backend integrates with:</p>
+<ul class="simple">
+<li><p><strong>Frontend</strong>: Receives syntax trees and symbol tables</p></li>
+<li><p><strong>Optimizer</strong>: Applies optimization passes</p></li>
+<li><p><strong>Assembler</strong>: Generates final machine code</p></li>
+<li><p><strong>Linker</strong>: Combines with runtime and libraries</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="compiler-frontend.html" class="btn btn-neutral float-left" title="Compiler Frontend" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="runtime-system.html" class="btn btn-neutral float-right" title="Runtime System" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BCPL Compiler Documentation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

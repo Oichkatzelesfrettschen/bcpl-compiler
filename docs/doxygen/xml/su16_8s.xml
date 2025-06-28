@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="su16_8s" kind="file" language="C++">
+    <compoundname>su16.s</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">//<sp/>BCPL<sp/>compiler<sp/>IA-16<sp/>startup<sp/>code<sp/>(experimental)</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Minimal<sp/>stub<sp/>that<sp/>sets<sp/>up<sp/>a<sp/>small<sp/>stack<sp/>and<sp/>jumps<sp/>to<sp/>the<sp/>BCPL<sp/>entry</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>point<sp/>defined<sp/>in<sp/>the<sp/>global<sp/>vector.<sp/><sp/>Real<sp/>implementations<sp/>should</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>populate<sp/>ARGC/ARGV<sp/>properly<sp/>and<sp/>handle<sp/>environment<sp/>setup.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">.code16</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">.set<sp/><sp/><sp/><sp/>STKSIZ,0x4000<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>16<sp/>KiB<sp/>stack</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/><sp/><sp/><sp/>START,1</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/><sp/><sp/><sp/>STACKBASE,95</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/><sp/><sp/><sp/>STACKEND,96</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/><sp/><sp/><sp/>ARGC,97</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/><sp/><sp/><sp/>ARGV,98</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/><sp/><sp/><sp/>PARAM,99</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">.global<sp/>_start,<sp/>_stop,<sp/>finish</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">_start:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cli</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>$G,<sp/>%di<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Global<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>%sp,<sp/>%ax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>%ax,<sp/>STACKEND*2(%di)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/>$STKSIZ,<sp/>%sp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>%sp,<sp/>%bp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>%sp,<sp/>%ax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>%ax,<sp/>STACKBASE*2(%di)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>$0,<sp/>PARAM*2(%di)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/>rtinit</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>$G,<sp/>%di</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>%bp,<sp/>%cx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/>START*2(%di),<sp/>%ax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/>*%ax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>To<sp/>BCPL<sp/>start</highlight></codeline>
+<codeline><highlight class="normal">finish:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/>%ax,<sp/>%ax</highlight></codeline>
+<codeline><highlight class="normal">_stop:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>push<sp/><sp/><sp/>%ax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/>rtexit</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/>_exit</highlight></codeline>
+    </programlisting>
+    <location file="src/su16.s"/>
+  </compounddef>
+</doxygen>

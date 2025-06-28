@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="blib_8bcpl" kind="file" language="C++">
+    <compoundname>blib.bcpl</compoundname>
+    <briefdescription>
+<para>BCPL Standard Library Implementation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>BCPL Compiler Team </para>
+</simplesect>
+<simplesect kind="copyright"><para>Copyright (c) BCPL Compiler Team. All rights reserved.</para>
+</simplesect>
+This file implements the core BCPL standard library functions that provide essential I/O, string manipulation, and utility operations. These functions form the foundation of the BCPL runtime environment and are available to all BCPL programs.</para>
+<sect1 id="blib_8bcpl_1autotoc_md0_1s1"><sect2 id="blib_8bcpl_1autotoc_md0">
+<title>Library Categories</title><para><itemizedlist>
+<listitem><para><bold>I/O Functions</bold>: Character and string output, formatted number output</para>
+</listitem><listitem><para><bold>Numeric Functions</bold>: Number parsing, different base output (octal, hex)</para>
+</listitem><listitem><para><bold>String Functions</bold>: String output and basic manipulation</para>
+</listitem><listitem><para><bold>Utility Functions</bold>: Page formatting, line breaks</para>
+</listitem></itemizedlist>
+</para>
+</sect2></sect1>
+<sect1 id="blib_8bcpl_1autotoc_md1_1s1"><sect2 id="blib_8bcpl_1autotoc_md1">
+<title>Implementation Notes</title><para>All functions in this library are written in BCPL itself, demonstrating the self-hosting nature of the BCPL system. The library depends on lower-level primitive functions (RDCH, WRCH) provided by the runtime. </para>
+</sect2></sect1>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">//<sp/>BLIB<sp/>-<sp/>BCPL<sp/>Standard<sp/>Library</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal">GET<sp/></highlight><highlight class="stringliteral">&quot;LIBHDR&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">LET<sp/>WRITES(S)<sp/>BE<sp/>FOR<sp/>I<sp/>=<sp/>1<sp/>TO<sp/>S<sp/>%<sp/>0<sp/>DO<sp/>WRCH(S<sp/>%<sp/>I)</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">AND<sp/>WRITED(N,<sp/>D)<sp/>BE</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>LET<sp/>T<sp/>=<sp/>VEC<sp/>20<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Temporary<sp/>storage<sp/>for<sp/>digits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>AND<sp/>I,<sp/>K<sp/>=<sp/>0,<sp/>N<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Digit<sp/>index<sp/>and<sp/>working<sp/>value</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>TEST<sp/>N<sp/>&lt;<sp/>0<sp/>THEN<sp/>D<sp/>:=<sp/>D-1<sp/>ELSE<sp/>K<sp/>:=<sp/>-N<sp/><sp/></highlight><highlight class="comment">//<sp/>Adjust<sp/>width<sp/>for<sp/>sign</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>T!I,<sp/>K,<sp/>I<sp/>:=<sp/>K<sp/>REM<sp/>10,<sp/>K<sp/>/<sp/>10,<sp/>I<sp/>+<sp/>1<sp/>REPEATUNTIL<sp/>K<sp/>=<sp/>0<sp/><sp/></highlight><highlight class="comment">//<sp/>Extract<sp/>digits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>FOR<sp/>J<sp/>=<sp/>I<sp/>+<sp/>1<sp/>TO<sp/>D<sp/>DO<sp/>WRCH(</highlight><highlight class="stringliteral">&apos;*S&apos;</highlight><highlight class="normal">)<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Output<sp/>leading<sp/>spaces</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>IF<sp/>N<sp/>&lt;<sp/>0<sp/>DO<sp/>WRCH(</highlight><highlight class="charliteral">&apos;-&apos;</highlight><highlight class="normal">)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Output<sp/>sign<sp/>if<sp/>negative</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>FOR<sp/>J<sp/>=<sp/>I-1<sp/>TO<sp/>0<sp/>BY<sp/>-1<sp/>DO<sp/>WRCH(</highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal"><sp/>-<sp/>T!J)<sp/><sp/></highlight><highlight class="comment">//<sp/>Output<sp/>digits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal">AND<sp/>WRITEN(N)<sp/>BE<sp/>WRITED(N,<sp/>0)</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal">AND<sp/>NEWLINE()<sp/>BE<sp/>WRCH(&apos;*N&apos;)</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal">AND<sp/>NEWPAGE()<sp/>BE<sp/>WRCH(&apos;*P&apos;)</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal">AND<sp/>READN()<sp/>=<sp/>VALOF</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>LET<sp/>SUM<sp/>=<sp/>0<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Accumulated<sp/>number<sp/>value</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>AND<sp/>NEG<sp/>=<sp/>FALSE<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Sign<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">L:</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>TERMINATOR<sp/>:=<sp/>RDCH()<sp/><sp/></highlight><highlight class="comment">//<sp/>Read<sp/>next<sp/>character</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>SWITCHON<sp/>TERMINATOR<sp/>INTO</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/>&apos;*S&apos;:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Space</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/>&apos;*T&apos;:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Tab</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/>&apos;*N&apos;:<sp/>GOTO<sp/>L<sp/></highlight><highlight class="comment">//<sp/>Newline<sp/>-<sp/>skip<sp/>whitespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/></highlight><highlight class="charliteral">&apos;-&apos;</highlight><highlight class="normal">:<sp/><sp/>NEG<sp/>:=<sp/>TRUE<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Negative<sp/>sign</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/></highlight><highlight class="charliteral">&apos;+&apos;</highlight><highlight class="normal">:<sp/><sp/>TERMINATOR<sp/>:=<sp/>RDCH()<sp/><sp/></highlight><highlight class="comment">//<sp/>Positive<sp/>sign</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>WHILE<sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal"><sp/>&lt;=<sp/>TERMINATOR<sp/>&lt;=<sp/></highlight><highlight class="charliteral">&apos;9&apos;</highlight><highlight class="normal"><sp/>DO<sp/><sp/></highlight><highlight class="comment">//<sp/>Process<sp/>digits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SUM<sp/>:=<sp/>10<sp/>*<sp/>SUM<sp/>+<sp/>TERMINATOR<sp/>-<sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TERMINATOR<sp/>:=<sp/>RDCH()</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>IF<sp/>NEG<sp/>DO<sp/>SUM<sp/>:=<sp/>-SUM<sp/><sp/></highlight><highlight class="comment">//<sp/>Apply<sp/>sign</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>RESULTIS<sp/>SUM</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal">AND<sp/>WRITEOCT(N,<sp/>D)<sp/>BE</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>IF<sp/>D<sp/>&gt;<sp/>1<sp/>DO<sp/>WRITEOCT(N<sp/>&gt;&gt;<sp/>3,<sp/>D<sp/>-<sp/>1)<sp/><sp/></highlight><highlight class="comment">//<sp/>Recursive<sp/>digit<sp/>output</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>WRCH((N&amp;7)<sp/>+<sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal">)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Output<sp/>current<sp/>digit</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">AND<sp/>WRITEHEX(N,<sp/>D)<sp/>BE</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>IF<sp/>D<sp/>&gt;<sp/>1<sp/>DO<sp/>WRITEHEX(N<sp/>&gt;&gt;<sp/>4,<sp/>D<sp/>-<sp/>1)</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>WRCH((N<sp/>&amp;<sp/>15)!TABLE</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;1&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;2&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;3&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;4&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;5&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;6&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;7&apos;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="charliteral">&apos;8&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;9&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;A&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;B&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;C&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;D&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;E&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="charliteral">&apos;F&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal">AND<sp/>WRITEF(FORMAT,<sp/>A,<sp/><ref refid="cmpltest_8bcpl_1a9d3d9048db16a7eee539e93e3618cbe7" kindref="member">B</ref>,<sp/><ref refid="cmpltest_8bcpl_1aaa53ca0b650dfd85c4f59fa156f7a2cc" kindref="member">C</ref>,<sp/>D,<sp/>E,<sp/>F,<sp/>G,<sp/>H,<sp/>I,<sp/>J,<sp/>K)<sp/>BE</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>LET<sp/>T<sp/>=<sp/>@A</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>FOR<sp/>P<sp/>=<sp/>1<sp/>TO<sp/>FORMAT<sp/>%<sp/>0<sp/>DO</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>LET<sp/>K<sp/>=<sp/>FORMAT<sp/>%<sp/>P</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TEST<sp/>K<sp/>=<sp/></highlight><highlight class="charliteral">&apos;%&apos;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>THEN</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>LET<sp/>F,<sp/>Q,<sp/>N<sp/>=<sp/>0,<sp/>T!0,<sp/>0</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AND<sp/>TYPE<sp/>=<sp/>FORMAT<sp/>%<sp/>(P<sp/>+<sp/>1)</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>P<sp/>:=<sp/>P<sp/>+<sp/>1</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SWITCHON<sp/>CAPITALCH(TYPE)<sp/>INTO</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>(</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DEFAULT:<sp/>WRCH(TYPE);<sp/><sp/><sp/><sp/><sp/>ENDCASE</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/></highlight><highlight class="charliteral">&apos;S&apos;</highlight><highlight class="normal">:<sp/>F<sp/>:=<sp/>WRITES;<sp/><sp/><sp/>GOTO<sp/>L</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/></highlight><highlight class="charliteral">&apos;C&apos;</highlight><highlight class="normal">:<sp/>F<sp/>:=<sp/>WRCH;<sp/><sp/><sp/><sp/><sp/>GOTO<sp/>L</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/></highlight><highlight class="charliteral">&apos;O&apos;</highlight><highlight class="normal">:<sp/>F<sp/>:=<sp/>WRITEOCT;<sp/>GOTO<sp/>M</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/></highlight><highlight class="charliteral">&apos;X&apos;</highlight><highlight class="normal">:<sp/>F<sp/>:=<sp/>WRITEHEX;<sp/>GOTO<sp/>M</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/></highlight><highlight class="charliteral">&apos;I&apos;</highlight><highlight class="normal">:<sp/>F<sp/>:=<sp/>WRITED;<sp/><sp/><sp/>GOTO<sp/>M</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CASE<sp/></highlight><highlight class="charliteral">&apos;N&apos;</highlight><highlight class="normal">:<sp/>F<sp/>:=<sp/>WRITED;<sp/><sp/><sp/>GOTO<sp/>L</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M:</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>P<sp/>:=<sp/>P<sp/>+<sp/>1</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>N<sp/>:=<sp/>CAPITALCH(FORMAT<sp/>%<sp/>P)</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>N<sp/>:=<sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal"><sp/>&lt;=<sp/>N<sp/>&lt;=<sp/></highlight><highlight class="charliteral">&apos;9&apos;</highlight><highlight class="normal"><sp/>-&gt;<sp/>N<sp/>-<sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal">,<sp/>N<sp/>-<sp/></highlight><highlight class="charliteral">&apos;A&apos;</highlight><highlight class="normal"><sp/>+<sp/>10</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>L:</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>F(Q,<sp/>N);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/>:=<sp/>T<sp/>+<sp/>1</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>OR<sp/>WRCH(K)</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><ref refid="cmpltest_8bcpl_1a131ef34f2bb675e2eb24d0e0f9559200" kindref="member">$</ref>)</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal">AND<sp/>CAPITALCH(CH)<sp/>=<sp/></highlight><highlight class="charliteral">&apos;a&apos;</highlight><highlight class="normal"><sp/>&lt;=<sp/>CH<sp/>&lt;=<sp/></highlight><highlight class="charliteral">&apos;z&apos;</highlight><highlight class="normal"><sp/>-&gt;<sp/>CH<sp/>-<sp/>(</highlight><highlight class="charliteral">&apos;a&apos;</highlight><highlight class="normal"><sp/>-<sp/></highlight><highlight class="charliteral">&apos;A&apos;</highlight><highlight class="normal">),<sp/>CH</highlight></codeline>
+    </programlisting>
+    <location file="src/blib.bcpl"/>
+  </compounddef>
+</doxygen>

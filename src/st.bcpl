@@ -1,8 +1,54 @@
+/**
+ * @file st.bcpl
+ * @brief BCPL compiler main driver and syntax analysis
+ * @author Robert Nordier
+ * @date 2012
+ * 
+ * This is the main compiler module that handles command-line options,
+ * initialization, and coordinates the compilation phases including
+ * lexical analysis, syntax analysis, and code generation.
+ * 
+ * Key sections:
+ * - MASTER: Main entry point and option processing
+ * - LEX: Lexical analyzer for tokenizing BCPL source
+ * - SYN: Syntax analyzer for parsing BCPL grammar
+ * - TRN: Code generation and optimization
+ * 
+ * Compilation options supported:
+ * - P: Parse only (syntax check)
+ * - T: Tree dump for debugging
+ * - C: Code generation
+ * - M: Memory map
+ * - N: No optimization
+ * - S: Print source code
+ * - E: Enable lexical tracing
+ * - L: Set tree size limit
+ * - 3: Use 3-word save space
+ * 
+ * @see SYNHDR for syntax tree definitions
+ * @see TRNHDR for translation phase definitions
+ */
+
 //  MASTER
+/**
+ * @brief MASTER section - Main compiler entry point
+ * 
+ * Handles command-line processing, option parsing, and coordinates
+ * the overall compilation process. Initializes all compiler phases
+ * and manages the compilation pipeline.
+ */
 SECTION "MASTER"
 
 GET "SYNHDR"
 
+/**
+ * @brief Main compiler entry point
+ * @param PARM Command line parameters (unused in current implementation)
+ * 
+ * Initializes the compiler, processes options from the OPT file,
+ * and starts the compilation process. Sets up I/O streams and
+ * configures compilation options based on the options file.
+ */
 LET START(PARM) BE
 $(1
 LET SYSI, SYSO = INPUT(), OUTPUT()
@@ -99,11 +145,25 @@ $(2 LET COMP(V, TREEMAX) BE
    FINISH   $)1
 
 .
-//    LEX1
+/**
+ * @brief LEX1 section - Core lexical analyzer
+ * 
+ * Implements the main lexical analysis functions including token recognition,
+ * symbol identification, and character processing. Handles numbers, identifiers,
+ * operators, and special symbols according to BCPL syntax rules.
+ */
 SECTION "LEX1"
 
 GET "SYNHDR"
 
+/**
+ * @brief Get next symbol from input stream
+ * 
+ * Main lexical analysis routine that reads characters from the input
+ * and converts them into tokens/symbols. Handles whitespace, comments,
+ * numbers, identifiers, operators, and string constants.
+ * Sets global variables SYMB and DECVAL with the recognized token.
+ */
 LET NEXTSYMB() BE
 $(1 NLPENDING := FALSE
 
@@ -269,11 +329,25 @@ $)2 REPEAT
 $)1
 
 .
-//    LEX2
+/**
+ * @brief LEX2 section - Symbol table and keyword lookup
+ * 
+ * Implements symbol table management, keyword recognition, and identifier
+ * lookup functionality. Maintains a hash table of identifiers and keywords
+ * for efficient symbol resolution during lexical analysis.
+ */
 SECTION "LEX2"
 
 GET "SYNHDR"
 
+/**
+ * @brief Look up word in symbol table
+ * @return Symbol table entry for the word, or 0 if not found
+ * 
+ * Searches the symbol table for the current word (stored in WORDV).
+ * Uses hash table lookup for efficient symbol resolution.
+ * Returns symbol table entry containing symbol type and value.
+ */
 LET LOOKUPWORD() = VALOF
 $(1 LET HASHVAL =
             (WORDV!0+WORDV!WORDSIZE >> 1) REM NAMETABLESIZE
@@ -519,7 +593,13 @@ AND READOCTALORHEX(RADIX,DIGITS) = VALOF
        RESULTIS ANSWER
     $)
 .
-//    SYN0
+/**
+ * @brief SYN0 section - Syntax tree management
+ * 
+ * Provides utility functions for syntax tree construction and management.
+ * Handles memory allocation for tree nodes and list structures used
+ * during parsing to represent the program's abstract syntax tree.
+ */
 SECTION "SYN0"
 
 GET "SYNHDR"

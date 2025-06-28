@@ -1,3 +1,23 @@
+/**
+ * @file sys_linux.s
+ * @brief Linux system call interface for BCPL runtime
+ * @author Robert Nordier
+ * @date 2004, 2012
+ * 
+ * Provides Linux-specific system call wrappers for the BCPL runtime system.
+ * Maps BCPL I/O and system operations to Linux system calls using the
+ * standard Linux x86 system call interface.
+ * 
+ * System calls supported:
+ * - File I/O: read, write, open, close, lseek
+ * - Process control: exit
+ * - Memory management: brk
+ * - Error handling: Standard errno conventions
+ * 
+ * @see sys.s for the generic system call dispatcher
+ * @see su.s for the startup code that uses these interfaces
+ */
+
 // Copyright (c) 2004, 2012 Robert Nordier. All rights reserved.
 
 // BCPL compiler x86 runtime

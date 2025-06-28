@@ -1,31 +1,73 @@
-cmake_minimum_required(VERSION 3.10)
-project(bcplc C)
-if(NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
-    message(FATAL_ERROR "Clang is required to build this project")
-endif()
-set(CMAKE_C_STANDARD 23)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
+# CMakeLists.txt for Modern BCPL Code Generator
+# Comprehensive build system for the modernized architecture
 
-# Allow selection of runtime bitness.  The historical runtime is 32 bit
-# but the repository defaults to a 64 bit build.  A ``BITS`` cache
-# variable mirrors the Makefiles and can be overridden on the command
-# line with ``-DBITS=32``.
-set(BITS "64" CACHE STRING "Target word size" )
-set_property(CACHE BITS PROPERTY STRINGS 16 32 64)
+cmake_minimum_required(VERSION 3.20)
+project(bcpl_modern_compiler 
+    VERSION 1.0.0
+    DESCRIPTION "Modern C23 BCPL Compiler"
+    LANGUAGES C CXX
+)
 
-# Optional prefix for assembler/linker tools when cross compiling.  The
-# environment variable of the same name is used as the default to
-# maintain compatibility with the traditional Makefiles and driver
-# script.
-set(CROSS_PREFIX "$ENV{CROSS_PREFIX}" CACHE STRING "Cross compilation tool prefix")
+# =============================================================================
+# INCLUDE CUSTOM MODULES
+# =============================================================================
 
-if (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+include(Options)
 
-option(BOOTSTRAP "Regenerate st.s using built cg/op" ON)
+# =============================================================================
+# MODULAR PROJECT LAYOUT
+# =============================================================================
 
 add_subdirectory(src)
-add_subdirectory(tools)
+add_subdirectory(tests)
 add_subdirectory(docs)
+
+# =============================================================================
+# ENABLE TESTING
+# =============================================================================
+
+enable_testing()
+
+# =============================================================================
+# WORKFLOW WRAPPERS (external scripts)
+# =============================================================================
+if(ENABLE_PGO)
+  message(STATUS "Adding PGO build target via build_pgo.sh")
+  add_custom_target(pgo
+    COMMAND ${CMAKE_SOURCE_DIR}/build_pgo.sh
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Profile-Guided Optimization build"
+  )
+endif()
+if(ENABLE_MAX_PERF)
+  message(STATUS "Adding max performance build target via build_max_performance.sh")
+  add_custom_target(max_performance
+    COMMAND ${CMAKE_SOURCE_DIR}/build_max_performance.sh
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Max hardware-specific performance build"
+  )
+endif()
+if(ENABLE_PORTABLE_PERF)
+  message(STATUS "Adding portable performance build target via build_portable_optimized.sh")
+  add_custom_target(portable_performance
+    COMMAND ${CMAKE_SOURCE_DIR}/build_portable_optimized.sh
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Portable performance baseline build"
+  )
+endif()
+if(ENABLE_VALGRIND)
+  # valgrind target defined in Options.cmake via valgrind custom target for tests
+endif()
+if(ENABLE_COVERAGE)
+  # coverage target defined in Options.cmake via coverage custom target
+endif()
+
+# =============================================================================
+# ORCHESTRATION AND MODULAR INCLUSION
+# =============================================================================
+
+# Entire monolithic build logic moved into src/, tests/, docs/
+# Monolithic sections removed as per new project structure
+
+return()  # End root CMake processing after including subdirectories

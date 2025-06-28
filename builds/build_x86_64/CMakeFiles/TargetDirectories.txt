@@ -1,0 +1,9 @@
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/bcpl_runtime.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/cg.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/op.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/edit_cache.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/rebuild_cache.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/list_install_components.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/install.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/install/local.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_x86_64/CMakeFiles/install/strip.dir

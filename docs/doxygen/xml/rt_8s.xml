@@ -1,0 +1,570 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="rt_8s" kind="file" language="C++">
+    <compoundname>rt.s</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">//<sp/>Copyright<sp/>(c)<sp/>2004,<sp/>2012<sp/>Robert<sp/>Nordier.<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>BCPL<sp/>compiler<sp/>x86<sp/>runtime</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">.ifndef<sp/>BITS</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/>BITS,32</highlight></codeline>
+<codeline><highlight class="normal">.endif</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">.if<sp/>BITS==64</highlight></codeline>
+<codeline><highlight class="normal">.macro<sp/>PUSH32<sp/>reg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sub<sp/>$4,%rsp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>movl<sp/>\reg,(%rsp)</highlight></codeline>
+<codeline><highlight class="normal">.endm</highlight></codeline>
+<codeline><highlight class="normal">.macro<sp/>PUSH32m<sp/>mem</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>movl<sp/>\mem,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sub<sp/>$4,%rsp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>movl<sp/>%eax,(%rsp)</highlight></codeline>
+<codeline><highlight class="normal">.endm</highlight></codeline>
+<codeline><highlight class="normal">.macro<sp/>POP32<sp/>reg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>movl<sp/>(%rsp),\reg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>add<sp/>$4,%rsp</highlight></codeline>
+<codeline><highlight class="normal">.endm</highlight></codeline>
+<codeline><highlight class="normal">.else</highlight></codeline>
+<codeline><highlight class="normal">.macro<sp/>PUSH32<sp/>reg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>push<sp/>\reg</highlight></codeline>
+<codeline><highlight class="normal">.endm</highlight></codeline>
+<codeline><highlight class="normal">.macro<sp/>PUSH32m<sp/>mem</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pushl<sp/>\mem</highlight></codeline>
+<codeline><highlight class="normal">.endm</highlight></codeline>
+<codeline><highlight class="normal">.macro<sp/>POP32<sp/>reg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pop<sp/>\reg</highlight></codeline>
+<codeline><highlight class="normal">.endm</highlight></codeline>
+<codeline><highlight class="normal">.endif</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>following<sp/>two<sp/>settings<sp/>can<sp/>be<sp/>changed<sp/>as<sp/>desired</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FCBCNT,8<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Number<sp/>of<sp/>FCBs</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>BUFSIZ,512<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>I/O<sp/>buffer<sp/>size</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>System<sp/>interfacing<sp/>constants</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>IFLAGS,0<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>open<sp/>flags<sp/>(input)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>MODE,0666<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>open<sp/>mode<sp/>(output)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>PGSZ,4096<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>sbrk<sp/>increment</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>STDIN,0<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>stdin</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>STDOUT,1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>stdout</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Miscellaneous</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>STRSIZ,256<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>BCPL<sp/>string<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FCBSIZ,20<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>FCB<sp/>size</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>FCB<sp/>structure</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FCB.BF,0<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Buffer<sp/>pointer</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FCB.XP,4<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Extra<sp/>pointer</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FCB.CP,8<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Current<sp/>pointer</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FCB.FD,12<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>File<sp/>descriptor</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FCB.FL,16<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Flags</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>FCB<sp/>flags<sp/>(if<sp/>flags<sp/>are<sp/>zero,<sp/>FCB<sp/>is<sp/>unallocated)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FL.RD,1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Open<sp/>for<sp/>reading</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FL.WR,2<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Open<sp/>for<sp/>writing</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FL.NB,4<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>No<sp/>buffering</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FL.EOF,64<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>End<sp/>of<sp/>file</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>FL.ERR,128<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>I/O<sp/>error</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>BCPL<sp/>globals</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>HEAP,94<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Internal<sp/>heap<sp/>pointer</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Called<sp/>once<sp/>by<sp/>startup<sp/>code.<sp/><sp/>Sets<sp/>the<sp/>buffer<sp/>of<sp/>each<sp/>FCB,</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>and<sp/>associates<sp/>the<sp/>first<sp/>two<sp/>streams<sp/>with<sp/>stdin<sp/>and<sp/>stdout.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>rtinit</highlight></codeline>
+<codeline><highlight class="normal">rtinit:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$ft,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$FCBCNT,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$bf,%eax</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,(%ebx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>FCB<sp/>buffer</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$BUFSIZ,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$FCBSIZ,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loop<sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$ft,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$STDIN,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>up<sp/>stdin</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$FL.RD,%dl<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/><sp/>as<sp/>input</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>fopen</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$ft+FCBSIZ,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$STDOUT,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>up<sp/>stdout</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$FL.WR,%dl<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/><sp/>as<sp/>output</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>fopen</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Called<sp/>once<sp/>by<sp/>startup<sp/>code.<sp/><sp/>Closes<sp/>each<sp/>open<sp/>stream.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>rtexit</highlight></codeline>
+<codeline><highlight class="normal">rtexit:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$ft,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$FCBCNT,%ecx</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>cmpb<sp/><sp/><sp/><sp/>$0,FCB.FL(%ebx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>FCB<sp/>not<sp/>in<sp/>use?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>je<sp/><sp/><sp/><sp/><sp/><sp/>2f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>fclose</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$FCBSIZ,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loop<sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Sets<sp/>up<sp/>an<sp/>FCB</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Entry:<sp/>eax<sp/>=<sp/>file<sp/>descriptor;<sp/>ebx<sp/>=<sp/>FCB;<sp/>dl<sp/>=<sp/>flags</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Exit:<sp/>eax,<sp/>ecx<sp/>undefined</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">fopen:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,FCB.FD(%ebx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>file<sp/>descriptor</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>FCB.BF(%ebx),%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Initialize<sp/>pointers</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,FCB.CP(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,FCB.XP(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%dl,FCB.FL(%ebx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>flags</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>$FL.RD,%dl<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Open<sp/>for<sp/>reading?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>je<sp/><sp/><sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Yes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32m<sp/>FCB.FD(%ebx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Is<sp/>it<sp/>a<sp/>tty?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>isatty</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>test<sp/><sp/><sp/><sp/>%eax,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jnz<sp/><sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Yes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>addl<sp/><sp/><sp/><sp/>$BUFSIZ,FCB.XP(%ebx)<sp/><sp/><sp/><sp/>#<sp/>Enable<sp/>buffering</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Closes<sp/>an<sp/>FCB</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Entry:<sp/>ebx<sp/>=<sp/>FCB</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Exit:<sp/>eax,<sp/>ecx,<sp/>edx<sp/>undefined</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">fclose:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>testb<sp/><sp/><sp/>$FL.WR,FCB.FL(%ebx)<sp/><sp/><sp/><sp/><sp/>#<sp/>In<sp/>write<sp/>mode?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jz<sp/><sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>flush</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>PUSH32m<sp/>FCB.FD(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>close</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>movb<sp/><sp/><sp/><sp/>$0,FCB.FL(%ebx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>as<sp/>unused</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Flushes<sp/>the<sp/>stream<sp/>buffer</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Entry:<sp/>ebx<sp/>=<sp/>stream</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>Exit:<sp/>eax<sp/>=<sp/>0/-1,<sp/>ecx,<sp/>edx<sp/>undefined</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">flush:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>FCB.CP(%ebx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>FCB.BF(%ebx),%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edx,FCB.CP(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%edx,%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Any<sp/>bytes<sp/>to<sp/>write?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jz<sp/><sp/><sp/><sp/><sp/><sp/>2f</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32m<sp/>FCB.FD(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>write</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lea<sp/><sp/><sp/><sp/><sp/>12(%esp,1),%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>3f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>%eax,%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%eax,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jne<sp/><sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%eax,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Result</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">3:<sp/><sp/><sp/><sp/><sp/><sp/>orb<sp/><sp/><sp/><sp/><sp/>$FL.ERR,FCB.FL(%ebx)<sp/><sp/><sp/><sp/>#<sp/>Set<sp/>error<sp/>flag</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$-1,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Standard<sp/>BCPL<sp/>routines<sp/>and<sp/>functions</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>We<sp/>assume<sp/>a<sp/>save<sp/>size<sp/>of<sp/>2.<sp/><sp/>On<sp/>entry,<sp/>ecx<sp/>addresses<sp/>the<sp/>stack</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>frame.<sp/><sp/>A<sp/>result<sp/>is<sp/>returned<sp/>in<sp/>eax.<sp/><sp/>ebp,<sp/>edi<sp/>must<sp/>be<sp/>preserved:</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>ebp<sp/>addresses<sp/>the<sp/>caller&apos;s<sp/>stack<sp/>frame<sp/>and<sp/>edi<sp/>the<sp/>global<sp/>vector.</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>We<sp/>preserve<sp/>ebx<sp/>and<sp/>esi<sp/>though<sp/>they<sp/>are<sp/>not<sp/>currently<sp/>used<sp/>by<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>CG.<sp/><sp/>eax,<sp/>ecx,<sp/>edx<sp/>need<sp/>not<sp/>be<sp/>preserved.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>SELECTINPUT(N)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SELECTINPUT:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,cis</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>SELECTOUTPUT(N)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">SELECTOUTPUT:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,cos</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>CH<sp/>:=<sp/>RDCH()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">RDCH:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>cis,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>FCB.CP(%ebx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>FCB.XP(%ebx),%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Still<sp/>data<sp/>in<sp/>buffer?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jb<sp/><sp/><sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Yes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>FCB.BF(%ebx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,FCB.CP(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,FCB.XP(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>$BUFSIZ</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32m<sp/>FCB.FD(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>read</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lea<sp/><sp/><sp/><sp/><sp/>12(%esp,1),%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>2f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>If<sp/>error</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>test<sp/><sp/><sp/><sp/>%eax,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>je<sp/><sp/><sp/><sp/><sp/><sp/>3f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>If<sp/>nothing<sp/>read</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>%eax,FCB.XP(%ebx)</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>movzx<sp/><sp/><sp/>(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,FCB.CP(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>orb<sp/><sp/><sp/><sp/><sp/>$FL.ERR,FCB.FL(%ebx)<sp/><sp/><sp/><sp/>#<sp/>Set<sp/>error<sp/>flag</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal">3:<sp/><sp/><sp/><sp/><sp/><sp/>orb<sp/><sp/><sp/><sp/><sp/>$FL.EOF,FCB.FL(%ebx)<sp/><sp/><sp/><sp/>#<sp/>Set<sp/>EOF<sp/>flag</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$-1,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>WRCH(CH)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">WRCH:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>cos,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>FCB.CP(%ebx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%al,(%ecx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,FCB.CP(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>FCB.XP(%ebx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jb<sp/><sp/><sp/><sp/><sp/><sp/>2f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>testb<sp/><sp/><sp/>$FL.NB,FCB.FL(%ebx)<sp/><sp/><sp/><sp/><sp/>#<sp/>No<sp/>buffering?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jne<sp/><sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Yes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>FCB.BF(%ebx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>$BUFSIZ,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jae<sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>$0xa,%al<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Linefeed<sp/>?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jne<sp/><sp/><sp/><sp/><sp/>2f</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>flush<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Sets<sp/>eax</highlight></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>UNRDCH()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">UNRDCH:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>cis,%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>FCB.CP(%edx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>FCB.BF(%edx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>je<sp/><sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dec<sp/><sp/><sp/><sp/><sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,FCB.CP(%edx)</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>STREAM<sp/>:=<sp/>INPUT()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">INPUT:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>cis,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>STREAM<sp/>:=<sp/>OUTPUT()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">OUTPUT:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>cos,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>STOP(N)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">STOP:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>_stop</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>P<sp/>:=<sp/>LEVEL()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">LEVEL:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ebp,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>LONGJUMP(P,<sp/>L)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">LONGJUMP:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%ebp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>*12(%ecx)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>REWIND()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">REWIND:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>cis,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%ecx,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32m<sp/>FCB.FD(%ebx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>olseek</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>File<sp/>descriptor</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$FL.RD,%dl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>fopen</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>RESULT<sp/>:=<sp/>APTOVEC(F,<sp/>N)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">APTOVEC:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>12(%ecx),%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edx,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>%ecx,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xchg<sp/><sp/><sp/><sp/>%ecx,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edx,12(%ecx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shr<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,8(%ecx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>*8(%edx)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>STREAM<sp/>:=<sp/>FINDOUTPUT(S)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">FINDOUTPUT:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>oflags,%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>findio</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>STREAM<sp/>:=<sp/>FINDINPUT(S)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">FINDINPUT:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$IFLAGS,%edx</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">findio:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$ft,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$FCBCNT,%ecx</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>cmpb<sp/><sp/><sp/><sp/>$0,FCB.FL(%ebx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Find<sp/>a<sp/>free<sp/>FCB</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>je<sp/><sp/><sp/><sp/><sp/><sp/>2f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$FCBSIZ,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loop<sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%eax,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>3f</highlight></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>$STRSIZ,%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%esp,%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>$MODE</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Flags<sp/>for<sp/>open</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lodsb<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Convert<sp/>BCPL<sp/>string</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>movzx<sp/><sp/><sp/>%al,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rep<sp/><sp/><sp/><sp/><sp/>movsb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%cl,(%edi)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>open</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lea<sp/><sp/><sp/><sp/><sp/>12+STRSIZ(%esp),%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>$IFLAGS,%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$FL.RD,%dl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>je<sp/><sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$FL.WR,%dl</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>fopen</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ebx,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Result</highlight></codeline>
+<codeline><highlight class="normal">3:<sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>ENDREAD()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">ENDREAD:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>cis,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>fclose</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%eax,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,cis</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>ENDWRITE()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">ENDWRITE:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>cos,%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>fclose</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%eax,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,cos</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>I:=<sp/>PACKSTRING(U,<sp/>S)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">PACKSTRING:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>12(%ecx),%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lodsl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>movzx<sp/><sp/><sp/>%al,%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edx,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shr<sp/><sp/><sp/><sp/><sp/>$2,%edx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>movl<sp/><sp/><sp/><sp/>%ecx,(%edi,%edx,4)<sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Zero<sp/>last<sp/>cell</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stosb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jecxz<sp/><sp/><sp/>2f</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>lodsl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stosb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loop<sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edx,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>UNPACKSTRING(S,<sp/>U)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">UNPACKSTRING:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>12(%ecx),%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%eax,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lodsb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stosl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jecxz<sp/><sp/><sp/>2f</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>lodsb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stosl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loop<sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%esi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>CH<sp/>:=<sp/>GETBYTE(V,<sp/>N)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">GETBYTE:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>12(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>movzb<sp/><sp/><sp/>(%eax),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>PUTBYTE(V,<sp/>N,<sp/>B)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">PUTBYTE:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>12(%ecx),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>16(%ecx),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%cl,(%eax)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>V<sp/>:=<sp/>GETVEC(SIZE)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">GETVEC:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Size<sp/>arg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$3,%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>1<sp/>+<sp/>overhead</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>As<sp/>bytes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lea<sp/><sp/><sp/><sp/><sp/>HEAP*4(%edi),%ebx<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Free<sp/>list</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(%ebx),%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Next<sp/>block</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>test<sp/><sp/><sp/><sp/>%eax,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>End<sp/>of<sp/>list?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jz<sp/><sp/><sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Yes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>%edx,4(%eax)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Big<sp/>enough?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jae<sp/><sp/><sp/><sp/><sp/>2f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Yes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,%ebx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Continue</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edx,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$PGSZ-1,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Round<sp/>up</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>and<sp/><sp/><sp/><sp/><sp/>$~(PGSZ-1),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Ask<sp/>for<sp/>memory</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>sbrk</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>3f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>movl<sp/><sp/><sp/><sp/>$0,(%eax)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Append<sp/>to<sp/>list</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,4(%eax)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,(%ebx)</highlight></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>4(%eax),%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Size<sp/>of<sp/>block</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%edx,%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Less<sp/>requested<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>$8,%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Big<sp/>enough<sp/>for<sp/>new<sp/>block?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jbe<sp/><sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>No</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,4(%eax)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Shrink<sp/>block</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>%ecx,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Point<sp/>past<sp/>it</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edx,4(%eax)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Fill<sp/>in<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>2f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Join<sp/>common</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(%eax),%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Remove<sp/>block</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,(%ebx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/><sp/>from<sp/>list</highlight></codeline>
+<codeline><highlight class="normal">2:<sp/><sp/><sp/><sp/><sp/><sp/>shr<sp/><sp/><sp/><sp/><sp/>$2,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>To<sp/>int<sp/>pointer</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Pass<sp/>control</highlight></codeline>
+<codeline><highlight class="normal">3:<sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/><sp/>info</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%ebx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>FREEVEC(V)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">FREEVEC:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>8(%ecx),%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Vector<sp/>arg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>$2,%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Include<sp/>MCB</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>To<sp/>bytes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lea<sp/><sp/><sp/><sp/><sp/>HEAP*4(%edi),%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Base<sp/>MCB<sp/>as<sp/>next</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Current<sp/>MCB</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(%ecx),%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Get<sp/>link</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>test<sp/><sp/><sp/><sp/>%eax,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>End<sp/>of<sp/>list?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jz<sp/><sp/><sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Yes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>%edx,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Next<sp/>block<sp/>above<sp/>returned?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jb<sp/><sp/><sp/><sp/><sp/><sp/>1b<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>No</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>PUSH32<sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Call<sp/>ourselves</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edx,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>POP32<sp/>%edx</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#<sp/>Absorb,<sp/>or<sp/>link<sp/>to,<sp/>the<sp/>next<sp/>block<sp/>%eax<sp/>to<sp/>this<sp/>block<sp/>%edx</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>4(%edx),%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Our<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>%edx,%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Past<sp/>ourselves</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmp<sp/><sp/><sp/><sp/><sp/>%eax,%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Contiguous?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jne<sp/><sp/><sp/><sp/><sp/>1f<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>No</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>4(%eax),%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Add<sp/>next<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>%ecx,4(%edx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/><sp/>to<sp/>our<sp/>size</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(%eax),%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Next<sp/>link</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,(%edx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>our<sp/>link</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.data</highlight></codeline>
+<codeline><highlight class="normal">cis:<sp/><sp/><sp/><sp/>.long<sp/><sp/><sp/>ft<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>CIS</highlight></codeline>
+<codeline><highlight class="normal">cos:<sp/><sp/><sp/><sp/>.long<sp/><sp/><sp/>ft+FCBSIZ<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>COS</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.comm<sp/><sp/><sp/>ft,FCBCNT*FCBSIZ<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>FCBs</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.comm<sp/><sp/><sp/>bf,FCBCNT*BUFSIZ<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Buffers</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G11;<sp/>.equ<sp/>G11,SELECTINPUT</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G12;<sp/>.equ<sp/>G12,SELECTOUTPUT</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G13;<sp/>.equ<sp/>G13,RDCH</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G14;<sp/>.equ<sp/>G14,WRCH</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G15;<sp/>.equ<sp/>G15,UNRDCH</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G16;<sp/>.equ<sp/>G16,INPUT</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G17;<sp/>.equ<sp/>G17,OUTPUT</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G30;<sp/>.equ<sp/>G30,STOP</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G31;<sp/>.equ<sp/>G31,LEVEL</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G32;<sp/>.equ<sp/>G32,LONGJUMP</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G35;<sp/>.equ<sp/>G35,REWIND</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G40;<sp/>.equ<sp/>G40,APTOVEC</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G41;<sp/>.equ<sp/>G41,FINDOUTPUT</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G42;<sp/>.equ<sp/>G42,FINDINPUT</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G46;<sp/>.equ<sp/>G46,ENDREAD</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G47;<sp/>.equ<sp/>G47,ENDWRITE</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G66;<sp/>.equ<sp/>G66,PACKSTRING</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G67;<sp/>.equ<sp/>G67,UNPACKSTRING</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G85;<sp/>.equ<sp/>G85,GETBYTE</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G86;<sp/>.equ<sp/>G86,PUTBYTE</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G87;<sp/>.equ<sp/>G87,GETVEC</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>G88;<sp/>.equ<sp/>G88,FREEVEC</highlight></codeline>
+    </programlisting>
+    <location file="src/rt.s"/>
+  </compounddef>
+</doxygen>

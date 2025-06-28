@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools and Utilities &mdash; BCPL Compiler 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api-reference.html" />
+    <link rel="prev" title="Runtime System" href="runtime-system.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BCPL Compiler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-frontend.html">Compiler Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-backend.html">Compiler Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime-system.html">Runtime System</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tools and Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#compiler-tools">Compiler Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-system">Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-scripts">Development Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-framework">Testing Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging-tools">Debugging Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-tools">Documentation Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-quality-tools">Code Quality Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#distribution-tools">Distribution Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-examples">Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tool-configuration">Tool Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building-installing.html">Building and Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BCPL Compiler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tools and Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tools-utilities.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tools-and-utilities">
+<h1>Tools and Utilities<a class="headerlink" href="#tools-and-utilities" title="Link to this heading"></a></h1>
+<p>The BCPL compiler includes various development tools and utilities to aid in
+program development, testing, and maintenance.</p>
+<section id="compiler-tools">
+<h2>Compiler Tools<a class="headerlink" href="#compiler-tools" title="Link to this heading"></a></h2>
+<dl>
+<dt><strong>cmpltest.bcpl</strong></dt><dd><p>Comprehensive test suite for the compiler:</p>
+<ul class="simple">
+<li><p>Automated testing framework</p></li>
+<li><p>Regression test collection</p></li>
+<li><p>Performance benchmarks</p></li>
+<li><p>Correctness verification</p></li>
+</ul>
+<p>Usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all tests</span>
+bcpl<span class="w"> </span>cmpltest.bcpl
+
+<span class="c1"># Run specific test categories</span>
+bcpl<span class="w"> </span>cmpltest.bcpl<span class="w"> </span>-syntax
+bcpl<span class="w"> </span>cmpltest.bcpl<span class="w"> </span>-codegen
+</pre></div>
+</div>
+</dd>
+<dt><strong>Cross-Reference Tool (xref.bcpl)</strong></dt><dd><p>Generates cross-reference listings:</p>
+<ul class="simple">
+<li><p>Symbol usage analysis</p></li>
+<li><p>Procedure call graphs</p></li>
+<li><p>Include file dependencies</p></li>
+<li><p>Symbol definition locations</p></li>
+</ul>
+<p>Features:</p>
+<ul class="simple">
+<li><p>HTML output format</p></li>
+<li><p>Interactive browsing</p></li>
+<li><p>Search and filtering</p></li>
+<li><p>Export capabilities</p></li>
+</ul>
+</dd>
+<dt><strong>General Purpose Manager (gpm.bcpl)</strong></dt><dd><p>Project build and management utility:</p>
+<ul class="simple">
+<li><p>Dependency tracking</p></li>
+<li><p>Incremental compilation</p></li>
+<li><p>Build script execution</p></li>
+<li><p>Configuration management</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="build-system">
+<h2>Build System<a class="headerlink" href="#build-system" title="Link to this heading"></a></h2>
+<dl>
+<dt><strong>CMake Support</strong> (CMakeLists.txt)</dt><dd><p>Modern build system integration:</p>
+<ul class="simple">
+<li><p>Cross-platform build configuration</p></li>
+<li><p>Dependency management</p></li>
+<li><p>Testing framework integration</p></li>
+<li><p>Installation rules</p></li>
+</ul>
+<p>Example usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>build
+<span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>..
+make
+make<span class="w"> </span>install
+</pre></div>
+</div>
+</dd>
+<dt><strong>Makefile Support</strong></dt><dd><p>Traditional make-based builds:</p>
+<ul class="simple">
+<li><p>Platform-specific rules</p></li>
+<li><p>Optimization level control</p></li>
+<li><p>Debug/release configurations</p></li>
+<li><p>Clean and install targets</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="development-scripts">
+<h2>Development Scripts<a class="headerlink" href="#development-scripts" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>check-deps.sh</strong></dt><dd><p>Dependency verification script:</p>
+<ul class="simple">
+<li><p>Checks for required tools</p></li>
+<li><p>Verifies library versions</p></li>
+<li><p>Reports missing dependencies</p></li>
+<li><p>Suggests installation commands</p></li>
+</ul>
+</dd>
+<dt><strong>hog_test.sh</strong></dt><dd><p>Memory usage testing:</p>
+<ul class="simple">
+<li><p>Stress testing with large inputs</p></li>
+<li><p>Memory leak detection</p></li>
+<li><p>Performance profiling</p></li>
+<li><p>Resource usage monitoring</p></li>
+</ul>
+</dd>
+<dt><strong>makeall.sh</strong></dt><dd><p>Complete build automation:</p>
+<ul class="simple">
+<li><p>Builds all components</p></li>
+<li><p>Runs test suites</p></li>
+<li><p>Generates documentation</p></li>
+<li><p>Creates distribution packages</p></li>
+</ul>
+</dd>
+<dt><strong>setup.sh</strong></dt><dd><p>Development environment setup:</p>
+<ul class="simple">
+<li><p>Configures build environment</p></li>
+<li><p>Sets up development tools</p></li>
+<li><p>Initializes workspace</p></li>
+<li><p>Downloads dependencies</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="testing-framework">
+<h2>Testing Framework<a class="headerlink" href="#testing-framework" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Test Categories</strong></dt><dd><p>The test suite covers:</p>
+<ul class="simple">
+<li><p><strong>Syntax tests</strong>: Parser correctness</p></li>
+<li><p><strong>Semantic tests</strong>: Type checking and scoping</p></li>
+<li><p><strong>Code generation tests</strong>: Output verification</p></li>
+<li><p><strong>Runtime tests</strong>: Execution correctness</p></li>
+<li><p><strong>Performance tests</strong>: Speed and memory usage</p></li>
+</ul>
+</dd>
+<dt><strong>Test Execution</strong></dt><dd><ul class="simple">
+<li><p>Automated test running</p></li>
+<li><p>Result comparison</p></li>
+<li><p>Failure reporting</p></li>
+<li><p>Regression detection</p></li>
+</ul>
+</dd>
+<dt><strong>Test Data</strong></dt><dd><ul class="simple">
+<li><p>Positive test cases (should compile/run)</p></li>
+<li><p>Negative test cases (should fail)</p></li>
+<li><p>Edge cases and boundary conditions</p></li>
+<li><p>Performance benchmarks</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="debugging-tools">
+<h2>Debugging Tools<a class="headerlink" href="#debugging-tools" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>GDB Integration</strong> (gdb_commands.txt)</dt><dd><p>Debugger command scripts:</p>
+<ul class="simple">
+<li><p>Common debugging sequences</p></li>
+<li><p>BCPL-specific pretty printers</p></li>
+<li><p>Backtrace enhancement</p></li>
+<li><p>Variable inspection helpers</p></li>
+</ul>
+</dd>
+<dt><strong>Debug Builds</strong></dt><dd><p>Special compilation modes:</p>
+<ul class="simple">
+<li><p>Symbol table generation</p></li>
+<li><p>Debug information inclusion</p></li>
+<li><p>Runtime checking enabled</p></li>
+<li><p>Optimization disabled</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="documentation-tools">
+<h2>Documentation Tools<a class="headerlink" href="#documentation-tools" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Doxygen Integration</strong></dt><dd><p>API documentation generation:</p>
+<ul class="simple">
+<li><p>Function documentation</p></li>
+<li><p>Data structure descriptions</p></li>
+<li><p>Cross-references</p></li>
+<li><p>Call graphs</p></li>
+</ul>
+</dd>
+<dt><strong>Sphinx Documentation</strong></dt><dd><p>User and developer guides:</p>
+<ul class="simple">
+<li><p>Tutorial content</p></li>
+<li><p>Architecture descriptions</p></li>
+<li><p>API references</p></li>
+<li><p>Build instructions</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="code-quality-tools">
+<h2>Code Quality Tools<a class="headerlink" href="#code-quality-tools" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Static Analysis</strong></dt><dd><p>Code quality checking:</p>
+<ul class="simple">
+<li><p>Lint-style warnings</p></li>
+<li><p>Style compliance checking</p></li>
+<li><p>Dead code detection</p></li>
+<li><p>Complexity analysis</p></li>
+</ul>
+</dd>
+<dt><strong>Formatting Tools</strong></dt><dd><p>Code formatting utilities:</p>
+<ul class="simple">
+<li><p>Consistent indentation</p></li>
+<li><p>Style guide enforcement</p></li>
+<li><p>Automatic formatting</p></li>
+<li><p>Configuration management</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="distribution-tools">
+<h2>Distribution Tools<a class="headerlink" href="#distribution-tools" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Packaging Scripts</strong></dt><dd><p>Distribution creation:</p>
+<ul class="simple">
+<li><p>Source packages</p></li>
+<li><p>Binary distributions</p></li>
+<li><p>Installation packages</p></li>
+<li><p>Dependency bundling</p></li>
+</ul>
+</dd>
+<dt><strong>Port Management</strong> (ports/)</dt><dd><p>Platform-specific adaptations:</p>
+<ul class="simple">
+<li><p>Operating system ports</p></li>
+<li><p>Architecture adaptations</p></li>
+<li><p>Feature availability mapping</p></li>
+<li><p>Configuration templates</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="usage-examples">
+<h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading"></a></h2>
+<dl>
+<dt><strong>Basic Compilation</strong></dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compile a BCPL program</span>
+bcpl<span class="w"> </span>hello.bcpl
+
+<span class="c1"># Compile with optimization</span>
+bcpl<span class="w"> </span>-O<span class="w"> </span>hello.bcpl
+
+<span class="c1"># Generate assembly listing</span>
+bcpl<span class="w"> </span>-S<span class="w"> </span>hello.bcpl
+</pre></div>
+</div>
+</dd>
+<dt><strong>Development Workflow</strong></dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up development environment</span>
+./setup.sh
+
+<span class="c1"># Build everything</span>
+./makeall.sh
+
+<span class="c1"># Run tests</span>
+bcpl<span class="w"> </span>cmpltest.bcpl
+
+<span class="c1"># Check dependencies</span>
+./check-deps.sh
+</pre></div>
+</div>
+</dd>
+<dt><strong>Documentation Generation</strong></dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate API docs</span>
+doxygen
+
+<span class="c1"># Build user manual</span>
+<span class="nb">cd</span><span class="w"> </span>docs/sphinx
+make<span class="w"> </span>html
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+<section id="tool-configuration">
+<h2>Tool Configuration<a class="headerlink" href="#tool-configuration" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Environment Variables</strong></dt><dd><p>Key configuration variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">BCPL_PATH</span></code>: Library search path</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BCPL_OPTIONS</span></code>: Default compiler options</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BCPL_DEBUG</span></code>: Debug mode control</p></li>
+</ul>
+</dd>
+<dt><strong>Configuration Files</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.bcplrc</span></code>: User configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OPT</span></code>: Compiler options</p></li>
+<li><p>Build configuration files</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="runtime-system.html" class="btn btn-neutral float-left" title="Runtime System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api-reference.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BCPL Compiler Documentation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
