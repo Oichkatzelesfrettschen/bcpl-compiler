@@ -214,6 +214,20 @@ op/fast:
 .PHONY : op/fast
 
 # Convenience name for target.
+src/CMakeFiles/test_ocode_64bit.dir/rule:
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/test_ocode_64bit.dir/rule
+.PHONY : src/CMakeFiles/test_ocode_64bit.dir/rule
+
+# Convenience name for target.
+test_ocode_64bit: src/CMakeFiles/test_ocode_64bit.dir/rule
+.PHONY : test_ocode_64bit
+
+# fast build rule for target.
+test_ocode_64bit/fast:
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/build
+.PHONY : test_ocode_64bit/fast
+
+# Convenience name for target.
 src/CMakeFiles/st_gen_arm64.dir/rule:
 	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/st_gen_arm64.dir/rule
 .PHONY : src/CMakeFiles/st_gen_arm64.dir/rule
@@ -281,6 +295,7 @@ oc.o: oc.c.o
 # target to build an object file
 oc.c.o:
 	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/cg.dir/build.make src/CMakeFiles/cg.dir/oc.c.o
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/oc.c.o
 .PHONY : oc.c.o
 
 oc.i: oc.c.i
@@ -289,6 +304,7 @@ oc.i: oc.c.i
 # target to preprocess a source file
 oc.c.i:
 	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/cg.dir/build.make src/CMakeFiles/cg.dir/oc.c.i
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/oc.c.i
 .PHONY : oc.c.i
 
 oc.s: oc.c.s
@@ -297,7 +313,35 @@ oc.s: oc.c.s
 # target to generate assembly for a file
 oc.c.s:
 	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/cg.dir/build.make src/CMakeFiles/cg.dir/oc.c.s
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/oc.c.s
 .PHONY : oc.c.s
+
+ocode_64bit.o: ocode_64bit.c.o
+.PHONY : ocode_64bit.o
+
+# target to build an object file
+ocode_64bit.c.o:
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/cg.dir/build.make src/CMakeFiles/cg.dir/ocode_64bit.c.o
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/ocode_64bit.c.o
+.PHONY : ocode_64bit.c.o
+
+ocode_64bit.i: ocode_64bit.c.i
+.PHONY : ocode_64bit.i
+
+# target to preprocess a source file
+ocode_64bit.c.i:
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/cg.dir/build.make src/CMakeFiles/cg.dir/ocode_64bit.c.i
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/ocode_64bit.c.i
+.PHONY : ocode_64bit.c.i
+
+ocode_64bit.s: ocode_64bit.c.s
+.PHONY : ocode_64bit.s
+
+# target to generate assembly for a file
+ocode_64bit.c.s:
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/cg.dir/build.make src/CMakeFiles/cg.dir/ocode_64bit.c.s
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/ocode_64bit.c.s
+.PHONY : ocode_64bit.c.s
 
 op.o: op.c.o
 .PHONY : op.o
@@ -539,6 +583,30 @@ runtime/vectors.c.s:
 	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/bcpl_runtime.dir/build.make src/CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.s
 .PHONY : runtime/vectors.c.s
 
+test_ocode_64bit.o: test_ocode_64bit.c.o
+.PHONY : test_ocode_64bit.o
+
+# target to build an object file
+test_ocode_64bit.c.o:
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/test_ocode_64bit.c.o
+.PHONY : test_ocode_64bit.c.o
+
+test_ocode_64bit.i: test_ocode_64bit.c.i
+.PHONY : test_ocode_64bit.i
+
+# target to preprocess a source file
+test_ocode_64bit.c.i:
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/test_ocode_64bit.c.i
+.PHONY : test_ocode_64bit.c.i
+
+test_ocode_64bit.s: test_ocode_64bit.c.s
+.PHONY : test_ocode_64bit.s
+
+# target to generate assembly for a file
+test_ocode_64bit.c.s:
+	cd /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/test_ocode_64bit.c.s
+.PHONY : test_ocode_64bit.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -556,6 +624,7 @@ help:
 	@echo "... bcpl_runtime"
 	@echo "... cg"
 	@echo "... op"
+	@echo "... test_ocode_64bit"
 	@echo "... arch/arm64/runtime_arm64.o"
 	@echo "... arch/arm64/runtime_arm64.i"
 	@echo "... arch/arm64/runtime_arm64.s"
@@ -565,6 +634,9 @@ help:
 	@echo "... oc.o"
 	@echo "... oc.i"
 	@echo "... oc.s"
+	@echo "... ocode_64bit.o"
+	@echo "... ocode_64bit.i"
+	@echo "... ocode_64bit.s"
 	@echo "... op.o"
 	@echo "... op.i"
 	@echo "... op.s"
@@ -595,6 +667,9 @@ help:
 	@echo "... runtime/vectors.o"
 	@echo "... runtime/vectors.i"
 	@echo "... runtime/vectors.s"
+	@echo "... test_ocode_64bit.o"
+	@echo "... test_ocode_64bit.i"
+	@echo "... test_ocode_64bit.s"
 .PHONY : help
 
 

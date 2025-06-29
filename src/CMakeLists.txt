@@ -123,8 +123,19 @@ apply_tooling_flags(bcpl_runtime)
 # BCPL CODE GENERATOR
 # =============================================================================
 
-add_executable(cg cg.c oc.c)
-target_compile_options(cg PRIVATE ${BCPL_C_FLAGS})
+# Select OCODE implementation based on architecture
+if(BCPL_ARCH_BITS EQUAL 64)
+    message(STATUS "Using 64-bit OCODE implementation for ${TARGET_ARCH}")
+    set(OCODE_SOURCES oc.c ocode_64bit.c)
+    set(OCODE_DEFINES -DBCPL_USE_64BIT_OCODE=1)
+else()
+    message(STATUS "Using legacy OCODE implementation for ${TARGET_ARCH}")
+    set(OCODE_SOURCES oc.c)
+    set(OCODE_DEFINES -DBCPL_USE_64BIT_OCODE=0)
+endif()
+
+add_executable(cg cg.c ${OCODE_SOURCES})
+target_compile_options(cg PRIVATE ${BCPL_C_FLAGS} ${OCODE_DEFINES})
 target_link_libraries(cg PRIVATE bcpl_runtime)
 apply_tooling_flags(cg)
 set_target_properties(cg PROPERTIES OUTPUT_NAME "cg_${TARGET_ARCH}")
@@ -138,6 +149,18 @@ target_compile_options(op PRIVATE ${BCPL_C_FLAGS})
 target_link_libraries(op PRIVATE bcpl_runtime)
 apply_tooling_flags(op)
 set_target_properties(op PROPERTIES OUTPUT_NAME "op_${TARGET_ARCH}")
+
+# =============================================================================
+# 64-BIT OCODE TEST PROGRAM
+# =============================================================================
+
+if(BCPL_ARCH_BITS EQUAL 64)
+    add_executable(test_ocode_64bit test_ocode_64bit.c ${OCODE_SOURCES})
+    target_compile_options(test_ocode_64bit PRIVATE ${BCPL_C_FLAGS} ${OCODE_DEFINES})
+    target_link_libraries(test_ocode_64bit PRIVATE bcpl_runtime)
+    apply_tooling_flags(test_ocode_64bit)
+    set_target_properties(test_ocode_64bit PROPERTIES OUTPUT_NAME "test_ocode_64bit_${TARGET_ARCH}")
+endif()
 
 # =============================================================================
 # SYMBOL TABLE GENERATION

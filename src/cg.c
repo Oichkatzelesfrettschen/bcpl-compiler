@@ -33,6 +33,15 @@
 /* BCPL compiler backend: generate x86 assembler from OCODE. */
 
 #include "oc.h"
+
+// Include 64-bit OCODE bridge for enhanced functionality on 64-bit builds
+#if defined(BCPL_USE_64BIT_OCODE) && BCPL_USE_64BIT_OCODE == 1
+#include "ocode_bridge.h"
+#define OCODE_ENHANCED_64BIT 1
+#else
+#define OCODE_ENHANCED_64BIT 0
+#endif
+
 #include <assert.h>
 #include <ctype.h>
 #include <stdarg.h>
@@ -344,11 +353,29 @@ static void buf_append(char **sp, size_t *rem, const char *fmt, ...) {
 int main(void) {
   ocode_op op;
 
+#if OCODE_ENHANCED_64BIT
+  // Initialize 64-bit OCODE context for enhanced features
+  ocode_context_t ocode_ctx;
+  if (ocode_init_context(&ocode_ctx, 1024)) {
+    printf("# Using %s OCODE implementation version %s\n",
+           ocode_get_implementation_name(), ocode_get_version());
+    printf("# Native word size: %zu bytes\n", ocode_get_word_size());
+    if (ocode_has_64bit_features()) {
+      printf("# Enhanced 64-bit features available\n");
+    }
+  }
+#endif
+
   do {
     labno = 1000;
     op = gencode();
     loff += 1000;
   } while (op != S_END);
+
+#if OCODE_ENHANCED_64BIT
+  // Cleanup 64-bit OCODE context
+  ocode_cleanup_context(&ocode_ctx);
+#endif
 
   return 0;
 }

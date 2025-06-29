@@ -55,15 +55,21 @@
 },
 {
   "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
-  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -o CMakeFiles/cg.dir/cg.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/cg.c",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -DBCPL_USE_64BIT_OCODE=1 -o CMakeFiles/cg.dir/cg.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/cg.c",
   "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/cg.c",
   "output": "src/CMakeFiles/cg.dir/cg.c.o"
 },
 {
   "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
-  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -o CMakeFiles/cg.dir/oc.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -DBCPL_USE_64BIT_OCODE=1 -o CMakeFiles/cg.dir/oc.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
   "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
   "output": "src/CMakeFiles/cg.dir/oc.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -DBCPL_USE_64BIT_OCODE=1 -o CMakeFiles/cg.dir/ocode_64bit.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/ocode_64bit.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/ocode_64bit.c",
+  "output": "src/CMakeFiles/cg.dir/ocode_64bit.c.o"
 },
 {
   "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
@@ -76,6 +82,24 @@
   "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -o CMakeFiles/op.dir/pt.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/pt.c",
   "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/pt.c",
   "output": "src/CMakeFiles/op.dir/pt.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -DBCPL_USE_64BIT_OCODE=1 -o CMakeFiles/test_ocode_64bit.dir/test_ocode_64bit.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/test_ocode_64bit.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/test_ocode_64bit.c",
+  "output": "src/CMakeFiles/test_ocode_64bit.dir/test_ocode_64bit.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -DBCPL_USE_64BIT_OCODE=1 -o CMakeFiles/test_ocode_64bit.dir/oc.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
+  "output": "src/CMakeFiles/test_ocode_64bit.dir/oc.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/arch/arm64 -std=c17 -g -std=c2x -arch arm64 -Wall -Wextra -Wpedantic -fdiagnostics-color=always -DBCPL_ARM64=1 -DBCPL_AARCH64=1 -DBCPL_64BIT=1 -DBCPL_ARCH_BITS=64 -DBCPL_WORD_SIZE=8 -g3 -O0 -DDEBUG=1 -DBCPL_DEBUG=1 -march=armv8-a -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -DTARGET_ARCH_arm64=1 -D_DARWIN_C_SOURCE -DBCPL_USE_64BIT_OCODE=1 -o CMakeFiles/test_ocode_64bit.dir/ocode_64bit.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/ocode_64bit.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/ocode_64bit.c",
+  "output": "src/CMakeFiles/test_ocode_64bit.dir/ocode_64bit.c.o"
 },
 {
   "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/tests",

@@ -123,6 +123,7 @@ ctest -R performance   # Performance tests
 
 - [Build Instructions](docs/BUILD.md) - Detailed build guide
 - [Modernization Guide](docs/MODERNIZATION.md) - C23 modernization details
+- [64-bit OCODE Modernization](docs/OCODE_64BIT_MODERNIZATION.md) - Modern OCODE system
 - [API Reference](docs/API.md) - Runtime API documentation
 - [Architecture Guide](docs/ARCHITECTURE.md) - Compiler architecture
 - [BCPL Language Reference](docs/LANGUAGE.md) - BCPL language specification
@@ -188,6 +189,7 @@ Please report issues on [GitHub Issues](https://github.com/eirikr/bcpl-compiler/
 - [x] C23 runtime modernization
 - [x] Multi-architecture support
 - [x] Cross-platform builds
+- [x] 64-bit OCODE modernization
 - [ ] IDE integration (LSP server)
 - [ ] WebAssembly target
 - [ ] Package manager integration

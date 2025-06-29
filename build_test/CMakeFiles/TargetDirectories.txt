@@ -8,6 +8,7 @@
 /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src/CMakeFiles/bcpl_runtime.dir
 /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src/CMakeFiles/cg.dir
 /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src/CMakeFiles/op.dir
+/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src/CMakeFiles/test_ocode_64bit.dir
 /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src/CMakeFiles/st_gen_arm64.dir
 /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src/CMakeFiles/test.dir
 /Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src/CMakeFiles/edit_cache.dir

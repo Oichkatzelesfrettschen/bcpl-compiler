@@ -211,6 +211,19 @@ op/fast:
 .PHONY : op/fast
 
 #=============================================================================
+# Target rules for targets named test_ocode_64bit
+
+# Build rule for target.
+test_ocode_64bit: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_ocode_64bit
+.PHONY : test_ocode_64bit
+
+# fast build rule for target.
+test_ocode_64bit/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/test_ocode_64bit.dir/build.make src/CMakeFiles/test_ocode_64bit.dir/build
+.PHONY : test_ocode_64bit/fast
+
+#=============================================================================
 # Target rules for targets named st_gen_arm64
 
 # Build rule for target.
@@ -293,6 +306,7 @@ help:
 	@echo "... cg"
 	@echo "... op"
 	@echo "... test_no_assembly"
+	@echo "... test_ocode_64bit"
 	@echo "... test_performance"
 	@echo "... test_platform_compatibility"
 	@echo "... test_runtime_modernization"

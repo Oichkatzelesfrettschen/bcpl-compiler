@@ -80,6 +80,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/bcpl_runtime.dir/DependInfo.cmake"
   "src/CMakeFiles/cg.dir/DependInfo.cmake"
   "src/CMakeFiles/op.dir/DependInfo.cmake"
+  "src/CMakeFiles/test_ocode_64bit.dir/DependInfo.cmake"
   "src/CMakeFiles/st_gen_arm64.dir/DependInfo.cmake"
   "tests/CMakeFiles/test_runtime_modernization.dir/DependInfo.cmake"
   "tests/CMakeFiles/test_platform_compatibility.dir/DependInfo.cmake"
