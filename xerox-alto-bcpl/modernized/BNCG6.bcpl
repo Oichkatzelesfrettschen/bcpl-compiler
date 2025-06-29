@@ -1,0 +1,203 @@
+// BNCG6.bcpl - BCPL Compiler
+// Nova Code Generator, Instruction generation routines
+// Copyright Xerox Corporation 1980
+/// DCS*  Last modified on Sat 02 Nov 74 BY DCS.
+//  Paxton, 9-14-78: unsigned compares
+
+GET "bncgx"
+
+STATIC [
+opcode = nil
+defer = nil
+addrsign = nil
+addrval = nil
+star = nil
+indx = nil
+cary = nil
+shft = nil
+noload = nil
+reg1 = nil
+reg2 = nil
+skip = nil
+]
+
+LET CG(op) BE
+ [  TEST PassTwo THEN op = Code!PC OR Code!PC = op
+    IF SWCode DO
+     [	WW($*n)
+	WriteO(op); WW($*t)
+	TEST LabelDef THEN WriteS("LAB") OR WriteS("   ");    LabelDef = false
+	WriteO(PC)
+	WW($*t)
+	WriteInstr(op)
+	WW($*t)
+      ]
+    PC = PC + 1
+    IF PC ge PCmax DO CGreport(0)
+  ]
+
+AND CGn(n) BE
+ [  TEST PassTwo THEN n = Code!PC OR Code!PC = n
+    IF SWCode DO
+     [	WW($*n)
+	WriteO(n); WW($*t)
+	TEST LabelDef THEN WriteS("LAB") OR WriteS("   ");    LabelDef = false
+	WriteO(PC)
+	WW($*t)
+	WriteS("  ")
+	WriteO(n)
+	WW($*t)
+      ]
+    PC = PC + 1
+    IF PC ge PCmax DO CGreport(0)
+  ]
+
+AND WriteInstr(op) BE
+ [winst
+    TEST (op & #100000) eq 0
+    THEN
+	[mref
+	  opcode = selecton (op & #074000) RSHIFT 11 INTO
+	    [	CASE #00:	"jmp   "
+		CASE #01:	"jsr   "
+		CASE #02:	"isz   "
+		CASE #03:	"dsz   "
+		CASE #04:	"lda 0 "
+		CASE #05:	"lda 1 "
+		CASE #06:	"lda P "
+		CASE #07:	"lda X "
+		CASE #10:	"sta 0 "
+		CASE #11:	"sta 1 "
+		CASE #12:	"sta P "
+		CASE #13:	"sta X "
+		CASE #14:	SWAlto?"ALTO ","IO  0 "
+		CASE #15:	SWAlto?"JSRII","IO  1 "
+		CASE #16:	SWAlto?"ALTO ","IO  P "
+		CASE #17:	SWAlto?"ALTO ","IO  X "
+	      ]
+	  defer = ((op & #002000) eq 0 ? "  ", " @")
+	  LET paddr = op & #377; LET maddr = Wval(paddr)
+	  addrsign = (paddr eq maddr ? 0, $-)
+	  maddr = (maddr gr 0 ? maddr, maddr eq 0 ? 0, -maddr)
+	  star = 0
+	  SWITCHON (op & #001400) RSHIFT 8 INTO
+	    [	CASE 0:	indx = ",Z"; addrval = paddr; addrsign = 0; ENDCASE
+		CASE 1:	indx = " "; star = $.; addrval = maddr
+			IF addrsign eq 0 DO addrsign = $+; ENDCASE
+		CASE 2:	indx = ",P"; addrval = maddr; ENDCASE
+		CASE 3:	indx = ",X"; addrval = maddr; ENDCASE
+	     ]
+	  WriteS(opcode)
+	  WriteS(defer)
+	  IF star ne 0 DO WW(star)
+	  IF addrsign ne 0 DO WW(addrsign)
+	  WriteOct(addrval)
+	  WriteS(indx)
+	  RETURN
+	]mref
+    OR
+	[regop
+	  opcode = selecton (op & #003400) RSHIFT 8 INTO
+	    [	CASE 0:	"com"
+		CASE 1:	"neg"
+		CASE 2:	"mov"
+		CASE 3:	"inc"
+		CASE 4:	"adc"
+		CASE 5:	"sub"
+		CASE 6:	"add"
+		CASE 7:	"AND"
+	     ]
+	  cary = selecton (op & #000060) RSHIFT 4 INTO
+	    [	CASE 0:	0
+		CASE 1:	$z
+		CASE 2:	$o
+		CASE 3:	$c
+	     ]
+	  shft = selecton (op & #000300) RSHIFT 6 INTO
+	    [	CASE 0:	0
+		CASE 1:	$l
+		CASE 2:	$r
+		CASE 3:	$s
+	     ]
+	  noload = ((op & #000010) eq 0 ? 0, $#)
+	  reg1 = selecton (op & #060000) RSHIFT 13 INTO
+	    [	CASE 0:	$0
+		CASE 1:	$1
+		CASE 2:	$P
+		CASE 3:	$X
+	     ]
+	  reg2 = selecton (op & #014000) RSHIFT 11 INTO
+	    [	CASE 0:	$0
+		CASE 1:	$1
+		CASE 2:	$P
+		CASE 3:	$X
+	     ]
+	  skip = selecton (op & #000007) INTO
+	    [	CASE 0:	"   "
+		CASE 1:	"skp"
+		CASE 2:	"szc"
+		CASE 3:	"snc"
+		CASE 4:	"szr"
+		CASE 5:	"snr"
+		CASE 6:	"sez"
+		CASE 7:	"sbn"
+	     ]
+	  WriteS(opcode)
+	  IF cary ne 0 DO WW(cary)
+	  IF shft ne 0 DO WW(shft)
+	  IF noload ne 0 DO WW(noload)
+	  WW($*s)
+	  WW(reg1)
+	  WW($*s)
+	  WW(reg2)
+	  WW($*s)
+	  WriteS(skip)
+	  RETURN
+	]regop
+  ]winst
+
+AND WriteLabel(l) BE
+ [  WriteS("   (LAB")
+    WriteOct(plabdefvec!l)
+    WW($))
+  ]
+
+AND WriteName(n) BE
+ [  IF n eq 0 DO [ WriteS("??"); RETURN ]
+    /// DCS* Better Symbol TABLE
+    WriteS(LookForSym(n))
+  ]
+
+AND WriteSkip(op) BE
+ [  LET ac1 = (op RSHIFT 13) & #3
+    LET ac2 = (op RSHIFT 11) & #3
+    op = op & #103777
+    LET skip = selecton op INTO
+		[ CASE Isne0: "ne 0"
+		  CASE Iseq0: "eq 0"
+		  CASE Isge0: "ge 0"
+		  CASE Isgr0: "gr 0"
+		  CASE Isle0: "le 0"
+		  CASE Isls0: "ls 0"
+		  CASE Isne:  "ne"
+		  CASE Iseq:  "eq"
+		  CASE Isge:  "ge"
+		  CASE Isgr:  "gr"
+		  CASE Isle:  "le"
+		  CASE Isls:  "ls"
+		  CASE Isuge:  "uge"
+		  CASE Isugr:  "ugr"
+		  CASE Isule:  "ule"
+		  CASE Isuls:  "uls"
+		  CASE Isne1: "ne -1"
+		  CASE Iseq1: "eq -1"
+		  DEFAULT: "??"
+		 ]
+    WriteS("// skip IF ")
+    TEST ac2 eq X THEN WriteS("X ")
+    OR [ WriteS("AC"); WriteOct(ac2); WW($*s) ]
+    WriteS(skip)
+    UNLESS ac1 eq ac2 DO
+    TEST ac1 eq X THEN WriteS(" X")
+    OR [ WriteS(" AC"); WriteOct(ac1); WW($*s) ]
+  ]

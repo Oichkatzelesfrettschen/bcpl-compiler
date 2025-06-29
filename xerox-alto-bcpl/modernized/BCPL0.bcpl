@@ -1,0 +1,411 @@
+// =============================================================================
+// Modernized Xerox Alto BCPL Source: BCPL0.bcpl
+// Original: Xerox PARC Alto BCPL Compiler
+// Modernized FOR: Modern BCPL Compiler with C23 Runtime
+// Date: 2025-06-29
+// =============================================================================
+
+GET "LIBHDR"
+GET "BCPLX"
+
+// BCPL0.bcpl - BCPL Main program
+// Copyright Xerox Corporation 1980
+// Swinehart, 9 May 77, always type dest file report line
+// Swinehart, 6 May 77, file lengths -> statics
+// Called from In..CPL<SWINEHART>BCPL0.;3     4-APR-75 07:29:49    EDIT BY SWINEHART
+// pull SWAltoc...ime <SWINEHART>BCPL0.;2    28-MAR-75 13:18:15    EDIT BY SWINEHART
+
+// last modified BY Butterfield, May 9, 1979  2:18 PM
+// - SWUnsignedCompares, O (Oz) GLOBAL switch, unsigned compares - 5/8
+// - SWStackStrings, I (IFS) GLOBAL switch, strings AND tables on stack - 5/4
+// - Main, allow multiple source files - 5/3
+// - SWNoExtExts, Main, -E GLOBAL switch, allow EXTERNAL & EXTERNAL - 2/12
+// - SWGetLINEs, Main, add -G GLOBAL switch, don"\1"t "LINE" get files, sets this false
+SWNoExtExts = true  // GLOBAL /-E, allow EXTERNAL & EXTERNAL, sets this false
+SWStackStrings = false  //IF true, put string AND tables on stack
+SWUnsignedCompares = false  //IF true, enable uls, ule, uge, AND ugt
+]
+
+
+//----------------------------------------------------------------------------
+LET Main(paramvec) BE
+//----------------------------------------------------------------------------
+[ 
+// Called from InitBCPL in system-dependent
+// file (BCPLDOS, BCPLALTO, BCPLRDOS...)
+LET fNL = FileNameLength/Bytesperword+1
+GetnameT = GetFileMax*GetnameN-1
+GetlineT = 2*GetFileMax*GetlineN-1  // gets us coming AND going
+LET vecLen, VEC = (15+GetFileMax)*fNL+GetnameT+GetlineT+40, vecLen
+Dvec(Main,lv VEC); FOR i = 0 TO vecLen DO VEC!i = 0
+InitFree(FreeMax)
+
+BCPLname = VEC
+LEXname = BCPLname + fNL
+CAEname = LEXname + fNL
+SAEname = CAEname + fNL
+TRNname = SAEname + fNL
+NCGname = TRNname + fNL
+
+filename = NCGname + fNL // needs FileNameLength+11
+sw = filename+FileNameLength+11 // needs 27
+
+ReadCOMCM()
+FixFileName(BCPLname, "", 0)
+FixFileName(LEXname, ".YL", 0)
+FixFileName(CAEname, ".YC", 0)
+FixFileName(SAEname, ".YS", 0)
+FixFileName(TRNname, ".YT", 0)
+FixFileName(NCGname, ".YG", 0)
+
+FOR i = 1 TO sw!0 SWITCHON sw!i INTO
+   [
+   CASE $D: SWDebug = true; LOOP
+   CASE $H: SWHelp, SWDebug = true, true; LOOP
+   CASE $F: IF SWTTOtype DO BadSwitch(i); SWTTOfile = true; LOOP
+   CASE $T: IF SWTTOfile DO BadSwitch(i); SWTTOtype = true; LOOP
+   CASE $A: SWOutput, SWListCode = true, true; LOOP
+   CASE $W: SWWait = true; LOOP
+   CASE $P: SWWait = false; LOOP
+   CASE $S: IF SWAlto THEN SWFastFrame = #74400; LOOP
+   CASE $U: SWUpperCase, SWOneCase = true, true; LOOP
+   // CASE $X: SWAlto = true; LOOP
+   // CASE $N: SWNoxios = true; LOOP
+   CASE $G: SWPrepare = true; LOOP
+   CASE -$G: SWGetLINEs = false; LOOP
+   CASE -$E: SWNoExtExts = false; LOOP
+   CASE $I: SWStackStrings = true; LOOP
+   CASE $O: SWUnsignedCompares = true; LOOP
+   DEFAULT: BadSwitch(i)
+   ]
+
+SourceName = sw+27
+BinName = SourceName+fNL
+OutputName = BinName+fNL
+SourceDevice = OutputName+fNL
+Device = SourceDevice+fNL
+DECLName = Device+fNL
+DICTName = DECLName+fNL // DICTName needs fNL
+
+myFrame = MyFrame()
+LET moreSources = ReadCOMCM() LSHIFT 8;
+LET reads = 0
+   [
+   IF filename!0 eq -1 THEN [ moreSources = 0; BREAK ]
+   TEST sw!0 eq 0
+      ifso
+         [
+         TEST SourceName!0 eq 0
+            ifso FixFileName(SourceName, "", Device)
+            ifnot
+               [
+               IF reads ne 1 % NOT SWAlto THEN
+                Error("Two source file names")
+               CloseCOMCM(); BREAK;
+               ]
+         IF BinName!0 eq 0 THEN FixFileName(BinName, ".BR", Device)
+         IF OutputName!0 eq 0 THEN FixFileName(OutputName, ".BT", Device)
+         IF SWPrepare THEN
+            [
+            FixFileName(DECLName, ".BL", Device)
+            FixFileName(DICTName, ".BD", Device)
+            ]
+         ]
+      ifnot FOR i = 1 TO sw!0 SWITCHON sw!i INTO
+         [
+         CASE $A: SWOutput, SWListCode = true, true
+         CASE $F: IF SWTTOtype DO BadSwitch(i)
+                  IF sw!i eq $F DO SWTTOfile = true
+                  FixFileName(OutputName, ".BT", Device)
+                  LOOP
+
+         CASE $R: FixFileName(BinName, ".BR", Device)
+                  LOOP
+
+         CASE $C: TEST SourceName!0 eq 0
+                  THEN FixFileName(SourceName, "", Device)
+                  OR   Error("TWO SOURCE FILE NAMES")
+                  LOOP
+
+         CASE $G:
+                  IF SWPrepare THEN Error("/G Both GLOBAL AND Local")
+                  SWUseDecl = true;
+                  FixFileName(DECLName, ".BL", Device)
+                  FixFileName(DICTName, ".BD", Device)
+                  LOOP
+
+         /// DCS* command line manifests -- see enterparams() in LEX
+         ///   number/V sets MANIFEST value -- DEFAULT is 0
+         ///   name/M does "MANIFEST name = current-number"
+         /// 5-9-77 number/S sets getframe call value TO number (octal) 
+         ///   entry of names must BE delayed UNTIL enterparams in LEX
+         CASE $V:
+         CASE $M:
+         CASE $S:
+            SWParamset = true  ///  Will reread COM.CM in LEX
+            LOOP
+         CASE $L:
+         CASE $T:
+            [
+            SWOutput = true
+            UNLESS i eq 1 & sw!0 le 2 DO BadSwitch(i)
+            LET L, T = sw!1 eq $L, sw!(sw!0) eq $T
+            FOR j = 1 TO filename!0 DO SWITCHON filename!j INTO
+               [
+               CASE $L: SWLexList, SWLexTrace = L, T; LOOP
+               CASE $C: SWCaeList, SWCaeTrace = L, T; LOOP
+               CASE $S: SWSaeList, SWSaeTrace = L, T; LOOP
+               CASE $T: SWTrnList, SWOcode = L, T; LOOP
+               CASE $1: SWPassOneList, SWPassOneCode = L, T; LOOP
+               CASE $2: SWPassTwoList, SWPassTwoCode = L, T; LOOP
+               DEFAULT: BadSwitch(i)
+               ]
+            i = sw!0
+            LOOP
+            ]
+
+         DEFAULT: BadSwitch(i)
+         ]
+   moreSources = (moreSources & #177400) + ReadCOMCM(); reads = reads + 1;
+   ] REPEAT
+
+
+IF SourceName!0 eq 0 DO Error("No source file name")
+IF SourceDevice!0 eq 0 DO Movestring(SourceName, SourceDevice)
+IF BinName!0 eq 0 DO Error("No binary file name")
+
+TEST SWTTOfile % (SWOutput & NOT SWTTOtype)
+   ifso
+      [
+      IF OutputName!0 eq 0 THEN Error("No output file name")
+      OutputStream = OpenOutput(OutputName)
+      ]
+   ifnot [ OutputStream = TTOstream; OutputName!0 = 0 ]
+
+TEST SWTTOfile
+   ifso ErrorStream = OutputStream
+   ifnot ErrorStream = TTOstream
+
+Ostream = TTOstream
+
+/// DCS* Modifications TO clean up, add printing FOR SWPrepare
+FOR i=0 TO (OutputStream eq TTOstream? 0, 1) DO
+   [
+   WriteS(BCPLname); WW($*s)
+   WriteN(Version RSHIFT 8); WW($.); WriteN(Version & #377);
+   WriteS(" -- ")
+   TEST SWPrepare
+      ifso [ WriteS(DECLName); WriteS(" , "); WriteS(DICTName) ]
+      ifnot
+         [
+         IF OutputName!0 ne 0 DO [ WriteS(OutputName); WriteS(" , ") ]
+         WriteS(BinName);
+         ]
+   WriteS(" = "); WriteS(SourceName); WW($*n) 
+   Ostream = OutputStream
+   ]
+
+GetnameV = DICTName+fNL; GetnameP = 0
+LET nv = GetnameV+GetnameT+1
+FOR i = 0 TO GetnameT BY GetnameN DO [ GetnameV!i = nv; nv = nv + fNL ]
+GetlineV = nv; GetlineP = 0
+
+//  This Here's The Compiler
+
+InitFree(DictFreeLimit)
+Overlay(LEXname, DictFreeLimit+1)
+IF SWHelp DO Help("LEX START")
+SWList = SWLexList
+ReadSource()
+IF SWHelp DO Help("LEX END")
+
+/// DCS* Precompiled Declarations
+IF SWPrepare THEN GOTO Abort
+
+InitFree(TreeFreeLimit)
+Overlay(CAEname, TreeFreeLimit+1)
+IF SWHelp DO Help("CAE START")
+SWList = SWCaeList
+ConstructTree()
+IF SWHelp DO Help("CAE END")
+UNLESS Reportcount eq 0 GOTO Abort
+Overlay(SAEname, TreeFreeLimit+1)
+IF SWHelp DO Help("SAE START")
+SWList = SWSaeList
+DeclareNames()
+IF SWHelp DO Help("SAE END")
+Overlay(TRNname, TreeFreeLimit+1)
+IF SWHelp DO Help("TRN START")
+SWList = SWTrnList
+TranslateTree()
+IF SWHelp DO Help("TRN END")
+
+UNLESS Reportcount eq 0 GOTO Abort
+
+InitFree(CodeFreeLimit)
+CodeStream = OpenOutput(BinName)
+Overlay(NCGname, CodeFreeLimit+1)
+IF SWHelp DO Help("NCG START")
+IF SWListCode DO SWPassTwoList, SWPassTwoCode = true, true
+GenerateCode()
+IF SWHelp DO Help("NCG END")
+
+  Abort:
+GotoLabel(myFrame, localAbort)
+  localAbort:
+
+TEST Reportcount eq 0
+  ifnot
+     [
+     Ostream = TTOstream
+     WriteN(Reportcount)
+     WriteS(" ERROR"); UNLESS Reportcount eq 1 DO WW($S)
+     WriteS(" IN "); WriteS(SourceName)
+     WW($*n)
+     UNLESS OutputName!0 eq 0 DO CloseOutput(OutputStream, OutputName)
+     ]
+  ifso
+     [
+     UNLESS SWPrepare DO CloseOutput(CodeStream, BinName)
+     Ostream = ErrorStream
+     FOR i=0 TO (OutputStream eq ErrorStream? 0, 1) DO TEST SWPrepare
+        ifso [ WriteS(" finished*n") ]
+        ifnot
+           [
+           WW($*n); WriteS(BinName); WriteS(" -- "); WriteO(PC); WW($*s);
+           WW($(); WriteN(PC); WW($)); WriteS(" WORDS*n")
+           Ostream = OutputStream
+           ]
+     UNLESS OutputName!0 eq 0 DO
+     CloseOutput(OutputStream, OutputName)
+     ]
+IF moreSources eq 0 THEN finish;
+CloseInput(SourceStream);
+RestartBCPL(moreSources RSHIFT 8, moreSources & #377);
+]
+
+//----------------------------------------------------------------------------
+AND BCPLreport(n, Message) BE
+//----------------------------------------------------------------------------
+[ 
+  Ostream = n ge 0 ? ErrorStream, TTOstream
+  IF n ls 0 DO [ SWDebug = true ]
+  WriteS("ERROR ")
+
+  Reportcount = Reportcount + 1
+
+  LET f = lv n - 6
+  IF SWDebug % Message eq 0 DO
+    [	WriteN(n)
+     ]
+  TEST SWDebug
+  ifnot WriteS(": ")
+  ifso
+    [	WriteS(" FROM ")
+	LET p = f!0 - (SWNoxios? 0, #200)
+	WriteO(p!1)
+	WriteS(" IN ")
+	LET q = p!0 - (SWNoxios? 0, #200)
+	WriteO(q!2 - 2)
+	WriteS(" , FRAME AT ")
+	WriteO(q)
+	WW($*n)
+     ]
+
+  IF Message ne 0 DO WriteS(Message)
+  WW($*n)
+
+  IF Reportcount gr MaxErrors DO
+    [	Ostream = TTOstream
+	WriteS("TOO MANY ERRORS*n")
+	GOTO Abort
+     ]
+
+]
+
+AND WriteLine(line) = WriteLines(line, 0, 1)
+
+AND WriteLines(line, lineoffset, linecount) = valof
+[
+  STATIC [ Prevfile = -1; Prevline = -1 ]
+
+  LET ch = nil
+
+  LET i = 0
+  WHILE Usc(line, GetlineV!i) gr 0 DO
+    [	IF i eq GetlineP DO [ line = GetlineV!i; BREAK ]
+	i = i + GetlineN
+     ]
+  LET file = GetlineV!(i+1)
+  UNLESS file eq Curfile DO
+    [	CloseInput(SourceStream, GetnameV!Curfile)
+	Curfile = file
+	SourceStream = OpenInput(GetnameV!Curfile)
+     ]
+  line = line - (GetlineV!i - GetlineV!(i+2))
+  IF line le 0 DO line = 0
+
+  Reposition(SourceStream, line)
+  UNLESS lineoffset eq 0 DO
+  TEST lineoffset ls 0
+  THEN [ line = Back1(line)
+	 lineoffset = lineoffset+1
+       ] REPEATUNTIL lineoffset eq 0
+  OR IF lineoffset gr 0 DO
+       [ line = Forward1(line)
+	 lineoffset = lineoffset-1
+       ] REPEATUNTIL lineoffset eq 0
+
+  IF Prevline eq line & Prevfile eq file RESULTIS false
+  Prevline, Prevfile = line, file
+
+  Reposition(SourceStream, line)
+  FOR i = 1 TO linecount DO
+  [ [ Readch(SourceStream, lv ch)
+    ] REPEATWHILE ch eq $*n
+      WW(ch)
+    [ Readch(SourceStream, lv ch)
+      IF ch eq #777 BREAK
+      WW(ch)
+    ] REPEATUNTIL ch eq $*n
+  ]
+
+  RESULTIS true
+
+]
+
+AND Back1(line) = valof
+[
+  LET ch = nil
+
+  [ line = line - 1
+    IF line le 0 RESULTIS 0
+    Reposition(SourceStream, line)
+    Readch(SourceStream, lv ch)
+  ] REPEATWHILE ch eq $*n
+  [ line = line - 1
+    IF line le 0 RESULTIS 0
+    Reposition(SourceStream, line)
+    Readch(SourceStream, lv ch)
+  ] REPEATUNTIL ch eq $*n
+
+  RESULTIS line + 1
+]
+
+AND Forward1(line) = valof
+[
+  LET ch = nil
+
+  Reposition(SourceStream, line)
+  [ Readch(SourceStream, lv ch)
+    line = line + 1
+  ] REPEATWHILE ch eq $*n
+  [ Readch(SourceStream, lv ch)
+    line = line + 1
+  ] REPEATUNTIL ch eq $*n % ch eq #777
+  [ Readch(SourceStream, lv ch)
+    line = line + 1
+  ] REPEATWHILE ch eq $*n
+
+  RESULTIS line
+]

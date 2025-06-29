@@ -1,0 +1,192 @@
+// BCPLALTO.bcpl - BCPL Alto-specific functions
+// Copyright Xerox Corporation 1980
+// Swinehart, 6 May 77, File lengths -> statics
+// Edit BY Boggs TO increase size of source file name 1 Apr 77
+// Edits BY Sproull TO convert TO new OS September 7, 1976
+// InitBCPL calls Main<SWINEHART>BCPLALTO.;9     4-APR-75 07:54:29    EDIT BY SWINEHART
+// pull SWAltoc...ime <SWINEHART>BCPLALTO.;8    28-MAR-75 13:24:11    EDIT BY SWINEHART
+// <SWINEHART>BCPLALTO.;5    21-MAR-75 11:44:33    EDIT BY SWINEHART
+
+// last modified BY Butterfield, March 10, 1980  4:39 PM
+// - InitBCPL, print date of March 10, 1980 - 3/10
+// - RestartBCPL, add CounterJunta AND add RestartAfterCounterJunta - 1/8
+// - convert TO OS 17: get bcplfiles.d AND remove noLog - 1/7/80
+// - incorporate Paxton"\1"s
+// named A,B,C,D -- see loadbcpl.cm.  The next lFP*3 are
+// used FOR FP"\1"t open file:"); Error(name) ]
+RESULTIS r
+]
+
+AND OpenInput(name) = openfile(name, ksTypeReadOnly)
+
+AND OpenOutput(name) = openfile(name, ksTypeWriteOnly)
+
+AND closechannel(chnl) BE Closes(chnl)
+
+AND Position(chnl) = FilePos(chnl)
+
+AND Reposition(channel, pos) BE SetFilePos(channel, 0, pos)
+
+AND ResetStream(channel) BE Resets(channel)
+
+AND IsFile(name) = valof
+[
+LET s = OpenFile(name, ksTypeReadOnly); IF s eq 0 THEN RESULTIS false
+Closes(s); RESULTIS true
+]
+
+//Open a file possible from FP, AND no logging....
+AND openNlog(nm, typ, fp) = valof
+[
+  LET s=OpenFile(nm, typ, 1, 0, fp)
+  IF s eq 0 THEN CallSwat("Cannot open vital file", nm)
+  RESULTIS s
+]
+
+AND OpenTemp(ch) = valof
+[
+  LET name = FileNameLength/2; Dvec(OpenTemp,lv name)
+  Unpackstring("Bcpl.Scratch0", filename)
+  filename!(filename!0) = ch
+  FixFileName(name, "", "")
+// Speed up opening these files:
+  compileif lFP*3+FPParamOffset gr 25 THEN [ foo=nil ]
+  LET fromFp=BcplParamVec+ (selecton ch INTO
+	[
+	CASE $l: FPParamOffset
+	CASE $d: FPParamOffset+lFP
+	CASE $c: FPParamOffset+lFP*2
+	DEFAULT: CallSwat("temp")
+	] )
+  LET fp=VEC lFP
+  MoveBlock(fp, fromFp, lFP)
+  LET s=openNlog(name,ksTypeReadWrite,fp)
+  FOR i=0 TO lFP-1 DO IF fp!i ne fromFp!i THEN
+	[
+	MoveBlock(fromFp, fp, lFP)
+	LET t=openNlog(0, ksTypeReadWrite, lv BcplRunCfa>>CFA.fp)
+	SetFilePos(t, 0, (offset SV.BLV/16)*2)
+	WriteBlock(t, BcplParamVec, (size BLV.overlayAddress/16))
+	Closes(t)
+	BREAK
+	]
+  RESULTIS s
+]
+
+AND Overlay(name) BE
+[
+  LET h = VEC 16
+  Unpackstring(name, h)		//Find out which one
+  LET c=h!(h!0)
+  LET ovNum=selecton c INTO
+	[
+	CASE $L: 1
+	CASE $C: 2
+	CASE $S: 3
+	CASE $T: 4
+	CASE $G: 5
+	DEFAULT: CallSwat("Bad overlay name")
+	]
+  LET s = openNlog(0, ksTypeReadOnly, lv BcplRunCfa>>CFA.fp)
+  JumpToFa(s, lv BcplRunCfa>>CFA.fa)
+	[
+	ReadBlock(s, h, 16)
+	ReadBlock(s, h!0, h!1)
+	LET extra=(h!4)&#377		//More TO read TO finish page
+	IF extra THEN
+	  FOR i=extra*2 TO 511 DO UNLESS Endofs(s) THEN Gets(s)
+	GetCurrentFa(s, lv BcplRunCfa>>CFA.fa)
+	BcplOverlayCnt=BcplOverlayCnt+1
+	] REPEATUNTIL BcplOverlayCnt eq ovNum
+  Closes(s)
+ ]
+
+AND Help(Message) BE
+[
+WriteS(Message)
+CallSwat("Help called",Message)
+]
+
+AND CloseCOMCM() BE [ CloseInput(cstream); cstream = 0; ]
+
+AND ReadCOMCM(filepos; numargs na)  = valof
+[	//read the next name AND switch list from COM.CM
+  IF cstream eq 0 DO cstream=openNlog("COM.CM", ksTypeReadOnly, fpComCm)
+  IF na ge 1 THEN SetFilePos(cstream, 0, filepos)
+  filepos = FilePos(cstream)
+
+filename!0, sw!0 = 0,0
+LET noswitches, notoken, i = true,true,1
+	[toke
+	Readch(cstream, lv filename!i)
+	SWITCHON filename!i INTO
+ 
+	[
+	CASE $*S:  IF notoken THEN LOOP; BREAK //may begin with blanks
+ 
+	CASE $*N:   UNLESS notoken DO BREAK	//otherwise fall thru AND
+	i = 1		//force it TO look like the beginning
+	CASE #777:
+	IF i eq 1 THEN [	//endof com.cm; beginning of line
+		CloseInput(cstream)
+		cstream = 0
+		filename!0 = -1
+		RESULTIS filepos ]
+	BREAK
+ 
+	CASE $/:  noswitches = false; BREAK
+ 
+	DEFAULT:
+	IF i gr FileNameLength DO Error("file name too long")
+	i = i + 1; notoken = false
+	]
+	]toke  REPEAT
+ 
+filename!0 = i - 1
+IF noswitches THEN RESULTIS filepos
+ 
+LET j, c = 1, nil; notoken = true; LET minus = false;
+[swloop
+Readch(cstream, lv c)
+IF c ge $a & c le $z THEN c=c-$a+$A
+SWITCHON c INTO
+	[swcases
+	CASE $*S: IF notoken THEN LOOP  // OR fall through TO BREAK
+	CASE $*N: CASE #377:  BREAK
+	CASE $/: LOOP
+	CASE $-: minus = true; LOOP
+	CASE $A TO $Z: notoken = false
+	 sw!j = (minus? -c, c); j = j + 1; minus = false;
+	]swcases
+]swloop  REPEAT
+sw!0 = j - 1
+RESULTIS filepos
+ ]
+
+
+AND InitFree(codetop) BE
+[ //external[ FreeBottom] // Reset free space bottom AND zframemax
+  FreelistP = codetop + 1
+  rv zframemax = codetop + 1  ]
+
+AND Newvec(n) = valof
+[nv
+//external[ MaxTop ]
+MANIFEST[ stackoffset = 4 ]
+LET oldv, newv = FreelistP, FreelistP +n + 1
+
+IF ( newv < 0 ? true, // IF newv in upper memory, all is lost
+     ((lv n)-stackoffset < 0 ? false, // IF stack still in upper
+         				     // memory, all is well
+     (newv gr ( lv n - stackoffset ) ))) // ELSE, normal TEST
+ THEN [
+	rv zframemax = rv zframemax - #1000
+	Error("Out of Free Storage: Program too Big")
+      ]
+
+FreelistP = newv; rv zframemax = FreelistP
+ 
+ 
+RESULTIS oldv
+]nv
+

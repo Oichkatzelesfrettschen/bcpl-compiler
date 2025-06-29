@@ -1,0 +1,285 @@
+// BLEX1.bcpl - BCPL Compiler -- Lexical Analyzer, Part 1.
+// Copyright Xerox Corporation 1980
+// Last modified on Wed 01 Nov 72 0009.49 BY  jec.
+
+//   Last modified BY Butterfield, February 12, 1979  4:23 PM
+//   - reformatting; Readsymb, get from - 1/23/79
+//   - Readsymb, convert get names TO lowercase FOR DictionaryEntry - 1/26
+
+//   Readsymb   Read the next lexical token AND write it on the LEX file
+
+GET "blexx"   //  Declarations of values FOR lexemes.
+
+//----------------------------------------------------------------------------
+STATIC  // Scalars used BY LEX
+//----------------------------------------------------------------------------
+[
+ReadAhead = false  // true IF a token has been read ahead INTO ExtraItem.
+ExtraItem = nil  //  Holds a token that has been read ahead, IF any.
+LastItem = 0  // Holds last item processed BY LexOut
+NewLineptr = 0  // holds pointer TO last $*N seen
+NLPending = false  // true IF a newline was just seen
+Chkind = Empty  // Character type, as in above MANIFEST declaration.
+]
+
+
+//  The following routine is the lexical processor FOR BCPL.  Calling it causes the next lexeme
+//  TO BE read from the input stream AND the appropriate canonic symbol TO BE stored INTO Symb.
+//  In addition, there may BE data in the V-vector, as follows...
+//   Symb      V!0      V!1, V!2, ...
+//   NUMBER      value
+//   CHARCONST   value
+//   NAME      dict pointer
+//   STRINGCONST   n      n words of the string, packed.
+//   SECTBRA      n      the label, as a packed string n words long
+//   SECTKET      n      ditto
+
+//  Readsymb writes out the lexeme on the LEX file, along with the necessary
+//  information from V.  Nextsymb in CAE reads this file AND puts the info back INTO V.
+
+// This routine also handles the preprocessor rules regarding insertion of
+// SEMICOLON AND DO where needed, AND processes the GET directive.
+// This routine also handles the elimintation of control characters
+// which are added TO formatted files BY BRAVO 9/16/75
+
+//----------------------------------------------------------------------------
+LET Readsymb() BE
+//----------------------------------------------------------------------------
+[
+ LET getList = false;  // used TO indicate within get a, b, ... from "file"
+ MANIFEST
+    [
+    getFirst = 1; getNew = 2; getOld = 3;
+    getFrom = 3; getNewFrom = 5; getOldFrom = 6;
+    ]
+ STATIC [ outflag = true; T = nil ]
+ IF ReadAhead DO  // DO we already have a symbol in hand?
+  [ ReadAhead=false; LexOut(ExtraItem); RETURN; ]  // Yes, RETURN it.
+ LET Vp = 0; V!0 = 0  //  Counter of characters read.
+ UNLESS Chkind eq Empty GOTO M
+Next:  // Come here TO read next character.
+ Rch();
+L:
+ Chkind = Kind(Ch)
+M:
+ Curline = Chline  // Set the line pointer FOR the char last read
+ SWITCHON Chkind INTO  // What sort of character is it?
+    [
+    CASE Ignorable:  // Skip spaces AND such.
+     [ Rch() REPEATWHILE Ch eq $*s % Ch eq $*t; GOTO L ]
+    CASE Digit: [ LET n = DoNumber(10); RETURN; ]
+    CASE BravoTail:  // Bravo formatting information follows ^Z up TO *n
+     [ Rch() REPEATUNTIL Ch eq $*n % Ch eq #777; GOTO L; ]
+
+    CASE Capital:   //  Start of an identifier
+    CASE Small:   //  Start of a possible reserved word
+       [
+       STATIC [ FirstName = true; UpperCase = false ]
+       LET SmallSW = Chkind eq Small  // TO remember IF it is all lower CASE
+       LET DigitSW = false  // TO remember IF it has a digit in it
+          [
+          SWITCHON Chkind INTO
+             [
+             DEFAULT: BREAK  // NOT a character that is in identifiers.
+             CASE Digit: DigitSW = true
+             CASE Capital: SmallSW = false
+             CASE Small:  //  Might still BE reserved
+             IF Vp ge Vmax BREAK   //  Name too long.
+             Vp = Vp + 1; V!Vp = Ch     //  Store the character.
+             Rch(); Chkind = Kind(Ch)   //  Read the next one.
+             ]
+          ] REPEAT
+       IF Vp > NAMELENGTH DO [ LEXreport(11); Vp = NAMELENGTH ]
+       V!0 = Vp;  // The word has been scanned.
+       IF SWUpperCase THEN FOR i = 1 TO V!0 DO
+        IF $a le V!i & V!i le $z DO V!i = V!i+($A-$a)
+       IF SWLowerCase THEN FOR i = 1 TO V!0 DO  //currently never set
+        IF $A le V!i & V!i le $Z DO V!i = V!i+($a-$A)
+       LET Name = VEC NAMELENGTH/Bytesperword; Packstring(V,Name)
+       IF FirstName DO
+          [
+          IF SWUpperCase % NOT SmallSW DO SWUpperCase, UpperCase = true, true
+          FirstName = false
+          ]
+       IF UpperCase & NOT DigitSW DO
+          [
+          FOR i = 1 TO V!0 DO IF $A le V!i & V!i le $Z DO V!i = V!i + ($a-$A)
+          SmallSW = true
+          ]
+       LET r = 0  // see IF it's a reserved word
+       IF SmallSW DO r = ReservedWord()
+       IF getList ne false THEN TEST getList gr getFrom
+          ifnot
+             [
+             LET entry = DictionaryEntry(Name)
+             LET new = Dictionary!(entry-1)<<SYMPTR.Virgin
+             IF getList eq getFirst THEN getList = new? getNew, getOld;
+             IF getList ne (new? getNew, getOld) THEN LEXreport(4);
+             TEST Ch eq $,
+                ifnot getList = getList + getFrom;
+                ifso Rch();
+             WHILE Ch eq $*s % Ch eq $*t % Ch eq $*n DO Rch();
+             Chkind = Kind(Ch);
+             IF Chkind ne Capital & Chkind ne Small THEN LEXreport(4);
+             Vp = 0; GOTO M;
+             ]
+          ifso
+             [
+             WHILE Ch eq $*s % Ch eq $*t % Ch eq $*n DO Rch();
+             TEST r eq FROM & Ch eq $*"
+                ifnot LEXreport(4);
+                ifso 
+                   [
+                   LET new = GetFilename(Name, getList eq getOldFrom);
+                   TEST getList eq getNewFrom
+                       ifnot IF new THEN LEXreport(4);
+                       ifso
+                        [ OpenSource(Name, true); Chkind=Empty; Readsymb(); ]
+                   ]
+             RETURN;
+             ]
+
+       SWITCHON r INTO  //  handle "get", "newname", AND "from"
+          [
+          CASE GET:
+             [
+             WHILE Ch eq $*s % Ch eq $*t DO Rch()
+             IF Ch ne $*" THEN
+                [
+                Chkind = Kind(Ch);
+                IF Chkind ne Capital & Chkind ne Small THEN LEXreport(4);
+                getList = getFirst; Vp = 0; GOTO M;
+                ]
+             IF GetFilename(Name) THEN
+              [ OpenSource(Name); Chkind = Empty; Readsymb(); ]
+             RETURN;
+             ]
+          CASE NEWNAME:
+             [
+             outflag = false; Readsymb(); outflag = true
+             V!0 = -(Dictionary!(T-1)<<SYMPTR.Virgin); LexOut(NUMBER) 
+             RETURN
+             ]
+          DEFAULT:  // NOT 0, "get", "newname", OR "from"
+           [ LexOut(r); RETURN; ]
+          CASE FROM:  // from is only reserved in get
+          CASE 0:  // NOT a reserved word
+          ]
+       T = DictionaryEntry(Name)  // NOT reserved, so look the name up
+       V!0 = T   //  AND RETURN the dict pointer
+       IF outflag THEN LexOut(NAME)   //  with a NAME lexeme
+       RETURN
+       ]
+    DEFAULT:  // NOT simple, branch on the character rather than the type.
+    ]
+ Chkind = Empty   //  Mark the character as having been used.
+ SWITCHON Ch INTO
+    [
+    CASE $#:  // An octal number.
+       [
+       Rch(); UNLESS $0 le Ch & Ch le $7 DO LEXreport(6)
+       LET n = DoNumber(8); RETURN
+       ]
+    CASE $[:
+    CASE $]:
+       [
+       LET x = Ch AND VV = VEC BRACKETLENGTH  // Remember what it was.
+          [
+          Rch(); Chkind = Kind(Ch); UNLESS Chkind ge Digit BREAK
+          Vp = Vp + 1; IF Vp ge Vmax BREAK; VV!Vp = Ch
+          ] REPEAT
+       IF Vp gr BRACKETLENGTH DO [ LEXreport(7); Vp = BRACKETLENGTH ]
+       TEST Vp eq 0
+          ifso LexOut(x eq $[ ? SECTBRA, SECTKET)
+          ifnot  // Pack the label (TEST backwards TO keep brackets balanced)
+           [ VV!0=Vp; Packstring(VV, V); LexOut(x eq $] ? NAMEKET, NAMEBRA) ]
+       RETURN   
+       ]
+    CASE $@: LexOut(RV); RETURN
+    CASE $.: LexOut(DOT); RETURN
+    CASE $(: LexOut(RBRA); RETURN
+    CASE $): LexOut(RKET); RETURN
+    CASE $+: LexOut(PLUS); RETURN
+    CASE $,: LexOut(COMMA); RETURN
+    CASE $;: LexOut(SEMICOLON); RETURN
+    CASE $&: LexOut(LOGAND); RETURN
+    CASE $%: LexOut(LOGOR); RETURN
+    CASE $=:
+       [
+       Rch(); IF Ch eq $> DO [ LexOut(HEFALUMP); RETURN ]
+       LexOut(ASS); Chkind = Kind(Ch); RETURN
+       ]
+
+    CASE $<:
+       [
+       Rch(); IF Ch eq $< DO [ LexOut(LEFTLUMP); RETURN ]
+       IF Ch eq $= DO [ LexOut(LE); RETURN ]
+       LexOut(LS); Chkind = Kind(Ch); RETURN
+       ]
+    CASE $>:
+       [
+       Rch()
+       IF Ch eq $> DO [ LexOut(RIGHTLUMP); RETURN ]
+       IF Ch eq $= DO [ LexOut(GE); RETURN ]
+       LexOut(GR); Chkind = Kind(Ch); RETURN
+       ]
+    CASE $**: LexOut(MULT) ; RETURN
+    CASE $/:   //  Division OR comment
+       [
+       Rch()
+       IF Ch ne $/ DO [ LexOut(DIV); Chkind = Kind(Ch); RETURN ]  // Division.
+       Rch() REPEATUNTIL Ch eq $*n % Ch eq #777   //  Skip a comment.
+       GOTO L   //  Process the terminator as the char just read
+       ]
+    CASE #12:  // Line Feed -- like *n
+    CASE #14:  // Form Feed -- like *n 
+    CASE $*n: NLPending = true; NewLineptr = Curline; GOTO Next
+    CASE $!: LexOut(VECAP) ; RETURN
+    CASE $?: LexOut(COND) ; RETURN
+    CASE $-: LexOut(MINUS); RETURN
+    CASE $::  LexOut(COLON); RETURN
+    CASE $^:  LexOut(UPLUMP); RETURN
+    CASE $*":  // String quote AND
+    CASE $$: DoString(); RETURN    //  Character constant.
+    CASE #777:  // End of a file.
+    EOF:
+       [
+       LET done = CloseSource();
+       IF V!0 ne 0 % done & NOT SWPrepare THEN
+        [ LexWrite(SEMICOLON); LexOut(END); ]
+       IF done THEN [ Symb = END; RETURN ]; Ch = $*n; GOTO L  // fake a *n 
+       ]
+    DEFAULT:
+       [
+       LEXreport(8)
+       WriteS("The character is *""); WW(Ch)
+       WriteS("*" AND has ascii code "); WriteO(Ch)
+       WriteS(" octal*n")
+       GOTO Next
+       ]
+    ]
+]
+
+//----------------------------------------------------------------------------
+AND GetFilename(name, parenthesize; numargs na) = valof
+//----------------------------------------------------------------------------
+[
+LET Vp = 1;
+[ Rch(); IF $A le Ch & Ch le $Z DO Ch = Ch+($a-$A); V!Vp = Ch; Vp = Vp+1 ]
+ REPEATUNTIL Ch eq $*" % Ch eq $*n
+UNLESS Ch eq $*" DO [ LEXreport(4) ]  // include the "
+V!0 = Vp - 1; Packstring(V, name)
+/// DCS* two functions:
+///  1) notify user of gets, as they are got
+///  2) ignore all but first request FOR same get file prints
+///  -- "foo" FOR first get, "(foo)" FOR subsequent ones
+///  enters foo" INTO Dictionary, in order TO tell.
+LET T = DictionaryEntry(name)
+LET new = Dictionary!(T-1)<<SYMPTR.Virgin ne 0
+name!0 = ((name!0 RSHIFT 8 - 1) LSHIFT 8) +(name!0 & 377b); WW($*s)
+IF na ls 2 THEN parenthesize = NOT new
+TEST parenthesize
+   ifso [ WW($(); WriteS(name); WW($)); ]
+   ifnot [ WriteS(name); ]
+RESULTIS new
+]

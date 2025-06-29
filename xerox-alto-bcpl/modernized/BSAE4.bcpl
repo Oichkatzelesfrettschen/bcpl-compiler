@@ -1,0 +1,195 @@
+// BSAE4.bcpl - BCPL Compiler -- SAE part 4 -- STRUCTURE reference handling
+// Copyright Xerox Corporation 1980
+
+//	LookatQual
+//	TraceStructName
+//	StructSize
+//	CheckStruct
+
+GET "bsaex"
+
+LET LookatQual(x) = valof
+[ LET S = NULLQUALNODE
+  IF x!0 eq 0 RESULTIS S
+  LET def = StructWithName(x!1)
+  IF def eq 0 DO [ SAEreport(14, x!1); x!(-1) = S; RESULTIS S ]
+  def = DVec!(DvecLoc+1)	//the top-level node containing the name
+
+  LET u = VEC QualMax * 4
+  u!0 = 0
+  LET q = 1
+  u!q = 0
+
+  LET p = 1
+  FOR k = 1 TO x!0 DO
+  [nextname
+	LET v = VEC QualMax*2
+	v!0 = 0
+	v!1 = 0
+	LET d = TraceStructName(x!p, def, v)
+	IF d eq 0 DO [ SAEreport(14, x!p); x!(-1) = S; RESULTIS S ]
+
+	LET m = x!(p+1)
+	LET n = v!0
+	TEST m gr n
+	THEN [ SAEreport(15, x!p); x!(-1) = S; RESULTIS S ]
+	OR IF m ls n UNLESS k eq x!0
+	THEN [ SAEreport(16, x!p); x!(-1) = S; RESULTIS S ]
+
+	LET r = 1
+	FOR l = 1 TO x!(p+1) DO
+	[nextsubscr
+	    u!q = u!q + v!r
+	    LET subdef = v!(r+1)
+	    LET lvsub = Lookat(lv x!((p+1)+l))
+	    TEST lvsub gr 0
+	    THEN
+	     [	LET sub = rv lvsub
+		UNLESS sub ge H3!subdef DO SAEreport(17, x!p)
+		UNLESS sub le H4!subdef DO SAEreport(18, x!p)
+		u!q = u!q + (sub - H3!subdef) * StructSize(H2!subdef)
+	     ]
+	    OR
+	     [	u!(q+1) = x!((p+1)+l)
+		u!(q+2) = lv H3!subdef
+		u!(q+3) = StructSize(H2!subdef)
+		u!0 = u!0 + 1
+		q = q + 4
+		u!q = 0
+	     ]
+	    r = r + 2
+	]nextsubscr
+
+	u!q = u!q + v!r
+	u!(q+1) = StructSize(v!(r+1))
+
+	p = (p+1) + x!(p+1) +1
+	def = d
+  ]nextname
+
+  S = Newvec(q+1)
+  H1!S = u!q
+  H2!S = u!(q+1)
+  FOR i = 0 TO q-1 DO (H3+i)!S = u!i
+  x!(-1) = S
+  RESULTIS S
+]
+
+AND TraceStructName(name, def, v) = valof
+[ IF (H1!def & NameBit) ne 0 DO
+     [	TEST (H1!def & NameMask) eq (name & NameMask)
+	THEN [ v!(v!0*2+2) = H2!def; RESULTIS H2!def ]
+	OR   RESULTIS 0
+     ]
+
+  SWITCHON H1!def INTO
+   [ CASE UPLUMP:
+      [uplump
+	LET m = v!0
+	LET n = m*2+1
+	v!(n+1) = def
+	v!0 = v!0 + 1
+	n = n + 2
+	v!n = 0
+	LET s = TraceStructName(name, H2!def, v)
+	IF s eq 0 DO v!0 = m
+	RESULTIS s
+      ]uplump
+     CASE FIELDLIST: CASE OVERLAYLIST:
+      [list
+	LET m = v!0
+	LET n = m*2+1
+	LET l = v!n
+	FOR i = 1 TO H2!def DO
+	 [  LET y = (H2+i)!def
+	    LET s = TraceStructName(name, y, v)
+	    IF s ne 0 RESULTIS s
+	    IF H1!def eq FIELDLIST DO v!n = v!n + StructSize(y)
+	 ]
+	v!n = l
+      ]list
+     CASE BLANK:
+	RESULTIS 0
+     CASE BIT: CASE BYTE: CASE WORD:
+	RESULTIS 0
+     DEFAULT:
+	SAEreport(-25)
+  ]
+]
+
+AND StructSize(def) = valof
+[ IF (H1!def & NameBit) ne 0 RESULTIS StructSize(H2!def)
+  SWITCHON H1!def INTO
+   [ CASE UPLUMP:
+	RESULTIS (H4!def - H3!def + 1) * StructSize(H2!def)
+     CASE FIELDLIST:
+      [	LET s = 0
+	FOR i = 1 TO H2!def DO
+	    s = s + StructSize((H2+i)!def)
+	RESULTIS s
+      ]
+     CASE OVERLAYLIST:
+      [	LET s = 0
+	FOR i = 1 TO H2!def DO
+	 [  LET t = StructSize((H2+i)!def)
+	    IF t gr s DO s = t
+	 ]
+	RESULTIS s
+      ]
+     CASE BLANK:
+	RESULTIS StructSize(H2!def)
+     CASE BIT:
+	RESULTIS H2!def
+     CASE BYTE:
+	RESULTIS H2!def * ByteSizeOb
+     CASE WORD:
+	RESULTIS H2!def * WordSizeOb
+     DEFAULT:
+	SAEreport(-26)
+   ]
+]
+
+AND CheckStruct(def, B) = valof
+[ IF def eq 0 RESULTIS 0
+  LET err = 0
+  TEST (H1!def & NameBit) ne 0
+  THEN [ Curname = H1!def
+	 err = CheckStruct(H2!def, B)
+	]
+  OR SWITCHON H1!def INTO
+       [ CASE FIELDLIST:
+	    FOR i = 1 TO H2!def DO
+		[ err = CheckStruct((H2+i)!def, B)
+		  UNLESS err eq 0 RESULTIS err
+		  B = B + StructSize((H2+i)!def)
+		]
+	    ENDCASE
+	 CASE OVERLAYLIST:
+	    FOR i = 1 TO H2!def DO
+		[ err = CheckStruct((H2+i)!def, B)
+		  UNLESS err eq 0 RESULTIS err
+		]
+	    ENDCASE
+	 CASE UPLUMP:
+	    FOR i = H3!def TO H4!def DO
+		[ err = CheckStruct(H2!def, B)
+		  UNLESS err eq 0 RESULTIS err
+		  B = B + StructSize(H2!def)
+		]
+	    ENDCASE
+	 CASE BLANK:
+	    ENDCASE
+	 CASE WORD:
+	    UNLESS B rem WordSizeOb eq 0 DO err = 19
+	    ENDCASE
+	 CASE BYTE:
+	    UNLESS B rem ByteSizeOb eq 0 DO err = 20
+	    ENDCASE
+	 CASE BIT:
+	    UNLESS (B+StructSize(def)-1)/WordSizeOb eq B/WordSizeOb DO err = 21
+	    ENDCASE
+	 DEFAULT:
+	    SAEreport(-27)
+       ]
+  RESULTIS err
+]

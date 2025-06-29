@@ -29,12 +29,55 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > hello.bcpl
 
 ## 🏗️ Build Requirements
 
+### Local Development
 - **CMake** 3.20 or later
 - **Clang** with C23 support (recommended) or GCC 9+
 - **Platform-specific tools**:
   - Linux: build-essential
   - macOS: Xcode Command Line Tools
   - Windows: Visual Studio 2022
+
+### 🐳 Development Containers (Recommended)
+
+For the best development experience, use the provided dev containers:
+
+#### 🛡️ Ubuntu 24.04 LTS (Stable) - Recommended
+```bash
+# Select Ubuntu container
+./select-devcontainer.sh ubuntu
+
+# Open in VS Code
+code .  # Then "Reopen in Container"
+```
+
+- **Stability**: High reliability for production development
+- **C23 Support**: Good support with GCC/Clang
+- **Team Development**: Consistent environment across teams
+- **Tools**: GCC, Clang, CMake, Ninja, debugging tools
+
+#### 🧪 Debian Sid (Bleeding Edge) - For Advanced Users
+```bash
+# Select Debian Sid container
+./select-devcontainer.sh debian
+
+# Open in VS Code
+code .  # Then "Reopen in Container"
+```
+
+- **Latest Packages**: GCC 14, latest Clang, cutting-edge tools
+- **Full C23/C++23**: Complete support for modern standards
+- **Experimental Features**: Access to bleeding-edge development tools
+- **Multiple Compilers**: Test with various toolchains
+
+#### Container Features
+Both containers include:
+- **Complete toolchain**: Compilers, debuggers, analyzers
+- **Cross-compilation**: ARM, AARCH64, RISC-V support
+- **Package managers**: Conan 2.x, vcpkg
+- **VS Code integration**: Full debugging and IntelliSense
+- **Useful aliases**: `bcpl-build`, `cmake-configure`, `project_info`
+
+See the [Development Container Guide](.devcontainer/README.md) for detailed setup instructions.
 
 ## 🔧 Building
 

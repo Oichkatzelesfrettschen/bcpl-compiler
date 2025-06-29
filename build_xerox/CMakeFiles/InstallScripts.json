@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/ericj/OneDrive/Documents/GitHub/bcpl-compiler/build_xerox/cmake_install.cmake",
+		"C:/Users/ericj/OneDrive/Documents/GitHub/bcpl-compiler/build_xerox/src/cmake_install.cmake",
+		"C:/Users/ericj/OneDrive/Documents/GitHub/bcpl-compiler/build_xerox/tests/cmake_install.cmake",
+		"C:/Users/ericj/OneDrive/Documents/GitHub/bcpl-compiler/build_xerox/docs/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

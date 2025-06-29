@@ -1,0 +1,254 @@
+
+// BCPLRDOS.bcpl - BCPL RDOS-specific functions
+// Copyright Xerox Corporation 1980
+// Swinehart, 6 May 77, file lengths -> statics
+// * denotes declarations OR functions different from DOS BCPL.
+
+GET "bcplx"
+
+external[ 
+bufferio
+displaystream
+ReadchKLUDGE
+streamvec
+syscall
+WritechKLUDGE
+InitToRead
+openfile
+]
+
+MANIFEST [
+	zframemax = #335
+	zframenext = #336
+	zframefirst = #337
+	zreturn = #366
+	    ]
+
+// system-dependent manifests, used throughout
+
+
+MANIFEST [
+  maxwordindex = 5
+  maxbyteindex = maxwordindex*2 + 1
+  maxstreambytes = maxbyteindex + 1
+  readact = 0
+  writeact = 1
+  ]
+
+STRUCTURE STREAM[
+    channel word
+    action word
+    count word
+    max word
+    [ bytebuffer^0,maxbyteindex byte 1] =
+    [ wordbuffer^0,maxwordindex word 1]
+]
+STRUCTURE [ LEFTHALF byte 1; RIGHTHALF byte 1 ]
+
+// *
+MANIFEST
+[ sysgchar = 17b8
+  syspchar = 20b8
+  sysopen  = 30b8+#77
+  sysclose = 31b8+#77
+  syscreate= 16b8
+  sysdelete= 1b8
+  sysrds   = 32b8+#77
+  syswrs   = 35b8+#77
+  sysrename =2b8
+  sysgchn  = 42b8+#77
+  sysspos  = 47b8+#77
+  sysgpos  = 50b8+#77
+]
+
+
+// *
+MANIFEST [
+ syscallproc = #100436
+ sysdebugproc = #100437
+ sysac  = #440
+ systemp1 = #444
+ systemp2 = #445
+   ]
+
+// system-dependent manifests, used BY InitBCPL
+
+MANIFEST
+   [
+   STREAMsize = ((size STREAM + 15)/16)
+   streamvecsize = 7
+   ]
+STRUCTURE [ blank bit 15; ODDBIT bit 1 ]
+
+LET InitBCPL(paramvec) BE
+  [
+  Version = (2 LSHIFT 8) + 0
+  SWAlto = false // DEFAULT -- compile NOVA code
+
+  TTOstream = OpenOutput(0)
+  TTIstream = OpenInput(0)
+  Ostream = TTOstream; Istream = TTIstream;
+
+  LET v = VEC streamvecsize
+  streamvec = v
+  LET streamtables = VEC (streamvecsize+1)*STREAMsize
+
+  FreeMax = paramvec!#37-1
+ // Limits are Max"\1"T DELETE FILE *""); WriteS(name)
+    WriteS("*"*n")
+    finish
+  ]
+  LET createerr = syscall(syscreate, sysac)
+  IF createerr DO
+    [  Ostream = TTOstream
+       WriteS("ERROR : CAN"\1"t open ")
+      WriteS(bcplname)
+      Error("--out of streams")
+      ]
+  s>>STREAM.channel = channel
+  s>>STREAM.max = maxbyteindex
+
+RESULTIS s
+]
+
+AND closechannel(stream) BE
+[
+  IF stream eq -1 RETURN
+  flushbuffer(stream)
+  sysac!2 = stream>>STREAM.channel
+  LET err = syscall(sysclose, sysac)
+  IF err DO
+    syscallerror(sysclose, sysac, stream)
+  returnstream(stream)
+]
+
+AND newstream(name, action) = valof
+[
+  LET s = openfile(name)
+  IF s>>STREAM.channel gr #1000 DO
+    [
+    Ostream = TTOstream
+    LET m = s>>STREAM.channel eq #1012 ?
+      "ERROR : NO FILE NAMED *"" ,
+         s>>STREAM.channel eq #1021 ?
+          "ERROR : NO FREE CHANNEL FOR *"" ,
+            "ERROR : CAN"\1"t RETURN stream")
+]
+
+AND flushbuffer(stream) BE
+[
+  IF stream>>STREAM.action eq writeact THEN 
+        [
+        IF (stream>>STREAM.count ne 0) THEN 
+        bufferio(stream, syswrs, stream>>STREAM.count )
+        ]
+  stream>>STREAM.count = 0
+  stream>>STREAM.max = maxbyteindex
+]
+AND readbuffer(stream) BE
+[
+  bufferio(stream, sysrds, maxstreambytes)
+  stream>>STREAM.max =  sysac!1 -1
+  stream>>STREAM.count =  0
+  stream>>STREAM.action = readact
+]
+
+AND displaystream(s) BE
+[
+  WriteS("*NDisplay a stream...*N")
+  FOR i = 0 TO (offset STREAM.bytebuffer+15)/16 DO WriteO(s!i)
+  WriteS("*N")
+]
+
+AND Overlay(name, loc) BE
+[
+  LET s = openfile(name) //circumvent "OpenInput" because we don't
+//  want io buffered FOR us
+  LET ch = s>>STREAM.channel
+  LET h = VEC 15
+  sysac!0 = h LSHIFT 1
+  sysac!1 = 32
+  sysac!2 = ch
+  syscall(sysrds, sysac)
+  sysac!0 = loc LSHIFT 1
+  sysac!1 = h!1 LSHIFT 1
+  sysac!2 = ch
+  syscall(sysrds, sysac)
+  LET n = nil
+  sysac!0 = lv n LSHIFT 1
+  sysac!1 = 2
+  sysac!2 = ch
+  syscall(sysrds, sysac)
+  LET p =VEC 1
+  FOR i = 1 TO n DO
+  [ sysac!0 = p LSHIFT 1
+    sysac!1 = 4
+    sysac!2 = ch
+    syscall(sysrds, sysac)
+    @(p!0) = p!1 + loc
+  ]
+  closechannel(s)
+]
+
+AND ReadCOMCM() BE
+[	//read the next name AND switch list from COM.CM
+  STATIC [ cstream = #100000 ]
+  IF cstream eq #100000 DO cstream = OpenInput("COM.CM")
+  LET i = 1
+  [	Readch(cstream, lv filename!i)
+	IF filename!i eq 0 BREAK
+	IF i gr FileNameLength DO Error("BAD FILE NAME")
+	IF filename!i eq #377 DO
+	  [	CloseInput(cstream)
+		filename!0 = -1
+		cstream = #100000 /// DCS* so can re-read in LEX
+		RETURN
+	    ]
+	i = i + 1
+  ] REPEAT
+  filename!0 = i-1
+
+  LET s = nil
+  LET i, j = 0, 0
+  FOR k = 1 TO 4 DO
+    [	Readch(cstream, lv s)
+	FOR l = 1 TO 8 DO
+	  [	IF (s & #200) ne 0 DO
+		  [	j = j + 1
+			sw!j = i + $A
+		    ]
+		i = i + 1
+		s = s LSHIFT 1
+	    ]
+      ]
+  sw!0 = j
+ ]
+
+AND InitFree(max) BE
+[ FreelistP = max
+  rv zframemax = max
+]
+
+AND Newvec(n) = valof
+[ LET v = FreelistP - n
+  IF v ls lv v DO
+	[ rv zframemax = rv zframemax + 1000
+	  Error("OUT OF FREE STORAGE -- PROGRAM IS TOO BIG")
+	]
+  FreelistP = v - 1
+  rv zframemax = v
+  RESULTIS v
+]
+
+
+AND Dvec(rout,lvN) BE
+[ LET rslt = (lv rout)-4
+  LET FSO() BE [ LET v = VEC 31000; v = v ]
+  LET newMax = rslt + @lvN + 1
+  IF newMax > @zframemax THEN FSO()
+  @zframenext = newMax
+  @lvN = rslt
+// **!!! This will stop working IF RETURN code is changed
+  rslt = (@zreturn)+1 // bypass resetting zframenext
+  rslt() // returns
+]

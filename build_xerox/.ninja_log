@@ -1,0 +1,16 @@
+# ninja log v6
+37	95	7729259079285095	src/CMakeFiles/cg.dir/oc.c.obj	2371225dc64d324a
+53	247	7729259079439275	tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.obj	8a5d1164737a337a
+41	136	7729259079326412	src/CMakeFiles/op.dir/op.c.obj	161cb7a5890a299d
+24	182	7729259079154818	src/CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.obj	6a664a9a77641ef1
+18	191	7729259079088516	src/CMakeFiles/bcpl_runtime.dir/runtime/io.c.obj	282ac4c5f52d9ff0
+33	197	7729259079251094	src/CMakeFiles/cg.dir/cg.c.obj	44f16a4b5b93bbbb
+64	143	7729259079561803	tests/CMakeFiles/test_platform_compatibility.dir/test_architecture.c.obj	c6fe52eb9acbd448
+45	164	7729259079365418	src/CMakeFiles/op.dir/pt.c.obj	fa11b2905773e72b
+57	237	7729259079476789	tests/CMakeFiles/test_runtime_modernization.dir/test_memory_safety.c.obj	d7d52faaca960840
+20	220	7729259079119421	src/CMakeFiles/bcpl_runtime.dir/runtime/strings.c.obj	5f45435acf8ee0dc
+15	226	7729259079054168	src/CMakeFiles/bcpl_runtime.dir/runtime/memory.c.obj	3248cbf73df36dc0
+12	232	7729259079029366	src/CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.obj	17c393ea9f504a46
+49	252	7729259079402232	tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.obj	e39f47229c1b6be0
+72	284	7729259079632474	tests/CMakeFiles/test_no_assembly.dir/test_assembly_elimination.c.obj	54bf4cc7882d3ef8
+60	1286	7729259079516783	tests/CMakeFiles/test_platform_compatibility.dir/test_cross_platform.c.obj	9063680ad6198f8d

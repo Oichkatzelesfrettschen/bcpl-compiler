@@ -1,0 +1,319 @@
+// BSAE1.bcpl - BCPL Compiler -- SAE part 1 - Declaration handling
+// Copyright Xerox Corporation 1980
+//  Last modified on Sun 29 Oct 72 0345.20 BY  jec.
+//  Swinehart, 5-10-77: docase exp, merge Declvars activities
+
+//  last modified BY Butterfield, January 31, 1979  12:59 PM
+//  - Scanlabels AND Declvars, ThinDVec on END - 1/25/79
+
+//      Decllabels	Declare all the labels at the top level in a block.
+// ScanLabels	DO the work FOR Decllabels.
+//      Declvars	Declare all the rest of the names in a block.
+// ThinDVec	Squeeze out names with excessive Dictionary indexes.
+//  local TO this file.
+
+
+GET "bsaex"
+//  This routine is called FOR all blocks TO declare all labels reachable at the top level
+//  in the block.  It uses ScanLabels TO DO the work.
+
+LET Decllabels(x) BE
+ [  LET DS = DvecS
+    LET L = Curline
+    ScanLabels(x)
+    CheckDistinct(DS, DvecS)
+    Curline = L
+    DvecE = DvecS
+  ]
+
+
+//  This routine does the work FOR Decllabels just above.  All labels are declared.
+
+AND ScanLabels(x) BE
+ [  IF x eq 0 RETURN
+    SWITCHON H1!x INTO
+     [  DEFAULT:
+	    RETURN
+
+	CASE COLON:
+	 [  H5!x = Nextentry()
+	    H2!(H2!x) = H5!x
+	    LET d = DeclStatic(H2!x, LENTRY)
+	    H4!x = d!1
+	    ScanLabels(H3!x)
+	    RETURN
+	  ]
+
+	CASE IF: CASE UNLESS:
+	CASE UNTIL: CASE WHILE:
+	    ScanLabels(H3!x)
+	    RETURN
+
+	CASE REPEAT:
+	CASE REPEATWHILE: CASE REPEATUNTIL:
+	    ScanLabels(H2!x)
+	    RETURN
+
+	CASE TEST:
+	    ScanLabels(H3!x)
+	    ScanLabels(H4!x)
+	    RETURN
+
+	CASE LINE:
+	    Curline = H2!x
+	    IF SWList DO WriteLine(Curline)
+	    ScanLabels(H3!x)
+	    RETURN
+
+	CASE END:
+	    ThinDVec(H2!x)
+	    ScanLabels(H3!x)
+	    RETURN
+
+	CASE SWITCHON: CASE CASE:
+	    ScanLabels(H3!x)
+	    RETURN
+
+	CASE CASETO:
+	    ScanLabels(H4!x)
+	    RETURN
+
+	CASE DEFAULT:
+	    ScanLabels(H2!x)
+	    RETURN
+
+	CASE SEQ:
+	    ScanLabels(H2!x)
+	    ScanLabels(H3!x)
+	    RETURN
+
+/// DCS* conditional compilation, choose one
+	CASE COMPILEIF:
+	    [
+	    H1!x = COMPILETEST
+	    LET B = EvalConst(H3+x)
+	    /// 0 => want ifnot (no code IF COMPILEIF)
+	    LET res = B? H4!x, H5!x
+	    IF res THEN
+	      [
+        LET rest = H2!x
+        H2!x = res
+        Compileifsplice(x,H2+x,rest)
+        ]
+	    ScanLabels(H2!x) // rest of block body
+	    RETURN
+	    ]
+   ]
+  ]
+
+
+AND Declvars(x) BE
+ [  IF x eq 0 RETURN
+    SWITCHON H1!x INTO
+     [  CASE LET:
+	    DeclareLet(x)
+	    RETURN
+
+  	CASE EXT:
+  	CASE MANIFEST:
+	CASE STATIC:
+	CASE STRUCTURE:
+	 [  LET DE, DS = DvecE, DvecS
+
+	 L:  TEST H1!x eq STRUCTURE
+	    THEN
+	    [struct
+		DeclStruct(lv H3!x, H3!x, true)
+		LET err = CheckStruct(H3!x, 0)
+		UNLESS err eq 0 DO SAEreport(err, -1)
+	    ]struct
+	    OR
+	    [var
+	    LET p = lv H4!x
+	    UNTIL p ge lv H4!x + H3!x DO
+	     [scan
+		Curname = p!0
+		SWITCHON H1!x INTO
+		 [  CASE EXT:
+			DeclExt(p)
+			ENDCASE
+
+		    CASE STATIC:
+			p!1 = EvalConst(lv p!1)
+			DeclStatic(p, STATIC)
+			ENDCASE
+
+		    CASE MANIFEST:
+			p!1 = EvalConst(lv p!1)
+			NewName(p)
+			ENDCASE
+
+	          ]
+		 DvecE = DvecS
+		 p = p + 2
+	      ]scan
+	    ]var
+
+	    Curname = -1
+	    LET t = x
+	    x = H2!x
+	M:  SWITCHON H1!x INTO
+		[ CASE LINE:	Curline = H2!x
+				IF SWList DO WriteLine(Curline)
+				x = H3!x
+				GOTO M
+		  CASE END:	ThinDVec(H2!x)
+				x = H3!x
+				GOTO M
+		  CASE EXT:
+		  CASE MANIFEST:
+		  CASE STATIC:
+		  CASE STRUCTURE:
+				GOTO L
+
+		  DEFAULT:	ENDCASE
+		]
+	    x = t
+
+	    CheckDistinct(DS, DvecS)
+	    DvecE = DvecS
+	    Decllabels(H2!x)
+	    Declvars(H2!x)
+	    DvecE, DvecS = DE, DS
+	    RETURN
+	  ]
+
+	CASE LINE:
+	    Curline = H2!x
+	    IF SWList DO WriteLine(Curline)
+	    Declvars(H3!x)
+	    RETURN
+
+	CASE END:
+	    ThinDVec(H2!x)
+	    Declvars(H3!x)
+	    RETURN
+
+	CASE ASS: CASE RTAP:
+	    Lookat(H2+x); Lookat(H3+x)
+	    RETURN
+
+	CASE GOTO: CASE RESULTIS: CASE DOCASE:
+ 	    Lookat(H2+x)
+	    RETURN
+
+	CASE IF:
+	CASE UNLESS:
+	CASE WHILE:
+	CASE UNTIL:
+	CASE CASE:
+	CASE SWITCHON:
+	    Lookat(H2+x)
+	CASE COLON:
+	    Declvars(H3!x)
+	    RETURN
+
+	CASE TEST:
+	    Lookat(H2+x)
+	    Declvars(H3!x)
+	    Declvars(H4!x)
+	    RETURN
+
+	CASE REPEATWHILE:
+	CASE REPEATUNTIL:
+	    Lookat(H3+x)
+	CASE REPEAT:
+	CASE DEFAULT:
+	CASE COMPILETEST:
+	    Declvars(H2!x)
+	    RETURN
+
+	CASE CASETO:   //  CASE label with limits.
+	    Lookat(H2+x); Lookat(H3+x)
+	    Declvars(H4!x)
+	    RETURN
+
+	CASE FOR:
+	 [  Lookat(H3+x)
+	    Lookat(H4+x)   
+	    UNLESS H5!x eq 0 DO Lookat(H5+x)
+	    LET DE, DS = DvecE, DvecS
+	    DeclLocal(H2!x)
+	    DvecE = DvecS   
+	    Decllabels(H6!x)   
+	    Declvars(H6!x)		
+	    DvecE, DvecS = DE, DS
+	    RETURN
+	  ]
+
+	CASE SEQ:
+	    Declvars(H2!x)
+	    Declvars(H3!x)
+	    RETURN
+
+ CASE COMPILEIF:
+      SAEreport(-20)    // Conditional compilation out of place
+
+	CASE BREAK:
+	CASE LOOP:
+	CASE RETURN:
+	CASE FINISH:
+	CASE ABORT:
+	CASE ENDCASE:
+	    RETURN
+
+	DEFAULT:
+	    SAEreport(-1)   //  Error report.
+      ]
+  ]
+
+AND Compileifsplice(x,lvsome,rest) BE
+   [
+   LET some = @lvsome
+   UNLESS some DO
+      [
+      @lvsome = rest
+      RETURN
+      ]
+   LET idx = selecton H1!some INTO
+      [
+      CASE MANIFEST:
+      CASE EXT:
+      CASE STATIC:
+      CASE COMPILEIF:
+      CASE STRUCTURE: H2
+      CASE LINE:
+      CASE AND:
+      CASE LET:
+      CASE SEQ: H3
+      DEFAULT: -1
+      ]
+   TEST idx < 0
+      ifso
+         [
+         H3!x = SEQ
+         H4!x = some
+         H5!x = rest
+         @lvsome = H3+x
+         ]
+      ifnot
+         Compileifsplice(x,idx+some,rest)
+   ]
+         
+//----------------------------------------------------------------------------
+AND ThinDVec(newEnd) BE
+//----------------------------------------------------------------------------
+[
+MANIFEST [ signBit = #100000; goodSign = signBit; badSign = 0; ]
+LET NextName(index, sign, newEnd) = valof
+   [
+   IF index ge DvecS RESULTIS DvecS  //don"\1"s unused error entry AND ERRORNAME entry; cf. BSAE0) 
+WHILE bad ls DvecS DO
+   [
+   LET good = NextName(bad + DvecN, goodSign, newEnd);
+   bad = NextName(good + DvecN, badSign, newEnd);
+   FOR i = 0 TO bad - good - 1 DO DVec!(new+i) = DVec!(good+i);
+   new = new + bad - good;
+   ]
+DvecS = new;
+]

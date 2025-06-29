@@ -1,0 +1,185 @@
+// BTRN4.bcpl - BCPL Compiler -- Part 4 of Trans.
+// Copyright Xerox Corporation 1980
+//  Last modified on Tue 24 Oct 72 2324.20 BY  jec.
+//  Swinehart, 5-10-77: docase exp
+
+//	Transswitch	Translate a "SWITCHON" OR a "branchon".
+//	*Simpass		Process an individual assignment - called BY Assign.
+//	Assign		Translate an assignment statement.
+//  local TO this file.
+
+GET "btrnx"
+
+LET Transswitch(x) BE
+ [  LET P = CaseP   //  Save the current pointer INTO the CASE TABLE.
+    AND DL, EL, DCL = Defaultlabel, Endcaselabel, Docaselabel
+    LET SB = SwitchBlock   //  Were we in a switch block?
+    SwitchBlock = true   //  Now we are.
+
+    LET L = Nextparam()   //  Label FOR the switching code.
+    Endcaselabel = Nextparam()   //  Label FOR exiting from the whole thing.
+
+    Compjump(L)   //  Jump TO the switching code.
+    Defaultlabel, Docaselabel = 0,0   //  There is as yet no DEFAULT OR docase.
+    Trans(H3!x)   //  Translate the body.
+    Compjump(Endcaselabel)   //  Jump TO the next peice of code.
+    Complab(L)   //  Place the label FOR the switch.
+    SwitchBlock = false
+    Load(H2!x)   //  That on which we are about TO switch.
+    IF Defaultlabel eq 0 DO Defaultlabel = Endcaselabel
+    LET C = (CaseP - P) / CaseN   //  The number of CASE labels.
+    IF C eq 0 DO [ TRNreport(9); RETURN ]   //  We can"t DO switches without cases.
+    Out1(SWITCHLOAD)
+    IF Docaselabel THEN Complab(Docaselabel) // home docase jumps
+    Out3P(SWITCHON, C, Defaultlabel)
+
+    FOR i = P step CaseN TO CaseP - CaseN DO
+     [	OutN(Casetable!i); OutL(Casetable!(i+1))
+	FOR j = i + CaseN step CaseN TO CaseP - CaseN DO
+	 [  IF Casetable!j eq Casetable!i DO
+		[ Curline = Casetable!(j+2); TRNreport(11) ]
+	 ]
+      ]
+
+    SSP = SSP - 1
+    Complab(Endcaselabel)   //  Place the label TO leave the whole thing.
+    Endcaselabel, Defaultlabel, Docaselabel = EL, DL, DCL
+    SwitchBlock = SB
+    CaseP = P
+  ]
+
+AND Simpass(x, y) BE   //  Assign y TO x
+ [  IF (x & NameBit) ne 0 DO
+	 [  UNLESS y eq 0 DO [ Load(y); SSP = SSP - 1 ]   //  Load the right side.
+	    LET d = x & PtrMask
+	    LET N = d!1		//  The datum associated with the name.
+	    LET n = d!0 & NameMask
+	    SWITCHON d!0 & TypeMask INTO   //  What sort of name is it?
+	     [  DEFAULT:
+		    TRNreport(14)   //  Bad sort of name.
+		    RETURN
+
+		CASE LOCAL:
+		    Out2(SP, N); OutL(n)
+		    RETURN
+
+  		CASE EXTLABEL: CASE INTLABEL:   //  Storing INTO an external.
+		CASE LABEL:   //  Storing INTO a label.
+		    Out2P(SL, N); OutL(n)
+		    RETURN
+
+		CASE ZEXTLABEL: CASE ZINTLABEL:
+		CASE ZLABEL:
+		    Out2P(SZ, N); OutL(n)
+		    RETURN
+
+
+	      ]
+	  ]
+
+    //  branch on the principal operator on the left side.
+    SWITCHON H1!x INTO
+     [	CASE RV:
+	    UNLESS y eq 0 DO Load(y)
+	    Load(H2!x)
+	    Out1(STIND)
+	    SSP  =  SSP - (y eq 0 ? 1, 2)
+	    RETURN
+
+	CASE VECAP:
+	 [  UNLESS y eq 0 DO Load(y)
+	    LET A, B = H2!x, H3!x
+	    TEST (A & NameBit) ne 0
+	    THEN [ LET t = A & PtrMask
+		   IF (t!0 & TypeMask) eq CONSTANT DO A, B = H3!x, H2!x
+		  ]
+	    OR IF H1!A eq NUMBER DO A, B = H3!x, H2!x
+	    Load(A); Load(B); Out1(STVECAP)
+	    SSP = SSP - (y eq 0 ? 2, 3)
+	    RETURN
+	  ]
+
+	CASE COND:   //  A conditional on the left side.
+	 [  LET L, M = Nextparam(), Nextparam()   //  Label exit, false arm.
+	    AND S = SSP
+	    UNLESS y eq 0 DO Load(y)
+	    Jumpcond(H2!x, false, M)   //  Jump IF the boolean is false.
+	    Simpass(H3!x, 0)   //  Compile the store FOR the true arm.
+	    Compjump(L)   //  Hop out.
+	    SSP = y eq 0 ? S, S+1
+	    Complab(M)
+	    Simpass(H4!x, 0)   //  The store FOR the false arm.
+	    Complab(L)
+	    SSP = S
+	    RETURN
+	  ]
+
+	CASE LEFTLUMP:
+	CASE RIGHTLUMP:
+	 [  LET S = SSP
+	    UNLESS y eq 0 DO Load(y)
+	    TEST H1!x eq RIGHTLUMP
+	    THEN Load(H2!x)
+	    OR	[ LET d = H3!x
+		  LET t = H2!x
+		  TEST H1!t eq LEFTLUMP % H1!t eq RIGHTLUMP THEN TRNreport(17)
+		  OR IF d!0 ge WordSizeOb % (d!0+d!1-1) ge WordSizeOb % d!2 gr 0 DO
+		    UNLESS H1!t eq VECAP % H1!t eq RV DO TRNreport(14)
+		  LoadLV(H2!x)
+	         ]
+	    LET qualvec = VEC 3
+	    DoQual(H3!x, qualvec, true)
+	    SWITCHON qualvec!0 INTO
+	     [	CASE WQUAL:
+			TEST qualvec!2 eq 0 & qualvec!3 eq WordSizeOb
+			THEN qualvec!0 = STWQUAL
+			OR [ Out2(LN, qualvec!1); OutL(0)
+			     Out1(PLUS)
+			     qualvec!1 = 0
+			     qualvec!0 = STNQUAL
+			   ]
+			ENDCASE
+		CASE XQUAL:
+			qualvec!0 = STXQUAL
+			ENDCASE
+		CASE YQUAL:
+			qualvec!0 = STYQUAL
+			ENDCASE
+		CASE WBQUAL:
+			qualvec!0 = STWBQUAL
+			ENDCASE
+	      ]
+	    OutQual(qualvec)
+	    SSP = S
+	    RETURN
+	  ]
+
+	DEFAULT:
+	    TRNreport(14)
+      ]
+  ]
+
+
+AND Assign(x, y) = valof
+ [  IF x eq 0 % y eq 0 DO
+     [  UNLESS x eq 0 & y eq 0 DO TRNreport(3)
+	RESULTIS 0
+      ]
+    UNLESS (y & NameBit) ne 0 DO
+    [ IF H1!y eq COMMA DO
+     [  UNLESS H1!x eq COMMA DO
+	 [  TRNreport(3)
+	    RESULTIS 0
+	  ]
+	RESULTIS Assign(Assign(x, H2!y), H3!y)
+      ]
+    ]
+    UNLESS (x & NameBit) ne 0 DO
+    [ IF H1!x eq COMMA DO
+     [  Simpass(H2!x, y)
+	RESULTIS H3!x
+      ]
+    ]
+    Simpass(x, y)
+    RESULTIS 0
+  ]
