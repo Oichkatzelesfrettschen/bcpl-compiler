@@ -13,7 +13,14 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/mman.h>
 #include <unistd.h>
+#include <stdint.h>
+#include <time.h>
+
+#include "../include/bcpl_types.h"
+#include "../include/platform.h"
+#include "../include/universal_platform.h"
 
 #ifdef BCPL_PLATFORM_LINUX
 
@@ -107,6 +114,70 @@ int bcpl_chdir(const char *path) {
   return chdir(path);
 }
 
+// =============================================================================
+// FILE OPERATIONS
+// =============================================================================
+
+bcpl_file_handle_t *bcpl_platform_fopen(const char *filename, char mode,
+                                        bool binary) {
+  bcpl_file_handle_t *handle = malloc(sizeof(bcpl_file_handle_t));
+  if (!handle)
+    return NULL;
+
+  const char *fmode = NULL;
+  switch (mode) {
+  case 'r':
+    fmode = binary ? "rb" : "r";
+    break;
+  case 'w':
+    fmode = binary ? "wb" : "w";
+    break;
+  case 'a':
+    fmode = binary ? "ab" : "a";
+    break;
+  default:
+    free(handle);
+    return NULL;
+  }
+
+  handle->native_handle = fopen(filename, fmode);
+  if (!handle->native_handle) {
+    free(handle);
+    return NULL;
+  }
+
+  handle->flags = 0;
+  handle->buffer = NULL;
+  handle->buffer_size = 0;
+  handle->is_binary = binary;
+  return handle;
+}
+
+int bcpl_platform_fclose(bcpl_file_handle_t *handle) {
+  if (!handle)
+    return -1;
+  int result = 0;
+  if (handle->native_handle)
+    result = fclose(handle->native_handle);
+  free(handle->buffer);
+  free(handle);
+  return result;
+}
+
+int bcpl_platform_fgetc(bcpl_file_handle_t *handle) {
+  if (!handle || !handle->native_handle)
+    return -1;
+  return fgetc(handle->native_handle);
+}
+
+int bcpl_platform_fputc(int ch, bcpl_file_handle_t *handle) {
+  if (!handle || !handle->native_handle)
+    return -1;
+  return fputc(ch, handle->native_handle);
+}
+
+int bcpl_platform_remove(const char *filename) { return unlink(filename); }
+
 /*
  * Platform-specific initialization
  */
@@ -148,6 +219,111 @@ uint64_t bcpl_nano_time(void) {
     return 0;
   }
   return (uint64_t)ts.tv_sec * 1000000000ULL + (uint64_t)ts.tv_nsec;
+}
+
+// =============================================================================
+// UNIVERSAL PLATFORM INTERFACE IMPLEMENTATION
+// =============================================================================
+
+void *bcpl_platform_aligned_alloc(size_t size, size_t alignment) {
+  void *ptr = NULL;
+  if (posix_memalign(&ptr, alignment, size) == 0)
+    return ptr;
+  return NULL;
+}
+
+void bcpl_platform_aligned_free(void *ptr) {
+  free(ptr);
+}
+
+size_t bcpl_platform_get_page_size(void) {
+  return bcpl_page_size();
+}
+
+void *bcpl_platform_alloc(size_t size) {
+  return malloc(size);
+}
+
+void bcpl_platform_free(void *ptr) {
+  free(ptr);
+}
+
+void *bcpl_platform_alloc_pages(size_t size) {
+  size_t page_size = bcpl_page_size();
+  size = (size + page_size - 1) & ~(page_size - 1);
+  void *mem = mmap(NULL, size, PROT_READ | PROT_WRITE,
+                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+  return mem == MAP_FAILED ? NULL : mem;
+}
+
+void bcpl_platform_free_pages(void *ptr, size_t size) {
+  if (!ptr)
+    return;
+  size_t page_size = bcpl_page_size();
+  size = (size + page_size - 1) & ~(page_size - 1);
+  munmap(ptr, size);
+}
+
+uint64_t bcpl_platform_get_timestamp(void) {
+  return bcpl_nano_time();
+}
+
+void bcpl_platform_sleep(uint64_t nanoseconds) {
+  struct timespec ts;
+  ts.tv_sec = nanoseconds / 1000000000ULL;
+  ts.tv_nsec = nanoseconds % 1000000000ULL;
+  nanosleep(&ts, NULL);
+}
+
+uint64_t bcpl_platform_get_time_ns(void) {
+  return bcpl_nano_time();
+}
+
+void bcpl_platform_sleep_ms(uint32_t milliseconds) {
+  bcpl_platform_sleep((uint64_t)milliseconds * 1000000ULL);
+}
+
+int bcpl_platform_get_cpu_count(void) {
+  return bcpl_cpu_count();
+}
+
+int bcpl_platform_get_last_error(void) {
+  return errno;
+}
+
+const char *bcpl_platform_getenv(const char *name) {
+  return getenv(name);
+}
+
+void bcpl_platform_print_stacktrace(FILE *file) {
+  (void)file;
+  fprintf(stderr, "Stack trace not available on Linux\n");
+}
+
+void bcpl_platform_memcpy(void *dest, const void *src, size_t size) {
+  memcpy(dest, src, size);
+}
+
+void bcpl_platform_memset(void *dest, int value, size_t size) {
+  memset(dest, value, size);
+}
+
+int bcpl_platform_memcmp(const void *ptr1, const void *ptr2, size_t size) {
+  return memcmp(ptr1, ptr2, size);
+}
+
+_Noreturn void bcpl_platform_exit(int code) {
+  exit(code);
+}
+
+bcpl_cpu_features_t bcpl_platform_get_cpu_features(void) {
+  bcpl_cpu_features_t features = {0};
+  strncpy(features.arch_name, "x86_64", sizeof(features.arch_name) - 1);
+  features.core_count = bcpl_cpu_count();
+  features.has_simd = true;
+  features.has_aes = false;
+  features.feature_flags = BCPL_CPU_FEATURE_SSE2;
+  return features;
 }
 
 #endif /* BCPL_PLATFORM_LINUX */

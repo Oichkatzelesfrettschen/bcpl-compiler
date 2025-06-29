@@ -13,7 +13,12 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/mman.h>
 #include <unistd.h>
+
+#include "../include/bcpl_types.h"
+#include "../include/platform.h"
+#include "../include/universal_platform.h"
 
 #ifdef BCPL_PLATFORM_GENERIC
 
