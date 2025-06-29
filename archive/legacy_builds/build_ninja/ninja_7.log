@@ -1,0 +1,19 @@
+[1/12] Building C object src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o
+[2/12] Linking C static library src/libbcpl_runtime.a
+[3/12] Linking C executable src/cg
+[4/12] Linking C executable tests/test_no_assembly
+[5/12] Linking C executable src/op
+[6/12] Linking C executable tests/test_performance
+[7/12] Linking C executable src/st_tmp
+[8/12] Linking C executable tests/test_runtime_modernization
+FAILED: [code=1] tests/test_runtime_modernization 
+: && /usr/bin/clang -std=c17 -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o tests/CMakeFiles/test_runtime_modernization.dir/test_memory_safety.c.o -o tests/test_runtime_modernization  src/libbcpl_runtime.a && :
+duplicate symbol '_main' in:
+    /Users/eirikr/Documents/GitHub/bcpl-compiler/build_ninja/tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o
+    /Users/eirikr/Documents/GitHub/bcpl-compiler/build_ninja/tests/CMakeFiles/test_runtime_modernization.dir/test_memory_safety.c.o
+    /Users/eirikr/Documents/GitHub/bcpl-compiler/build_ninja/tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o
+ld: 1 duplicate symbols
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+[9/12] Linking C executable tests/test_platform_compatibility
+[10/12] Compiling BCPL compiler front-end from OCODE
+ninja: build stopped: subcommand failed.

@@ -84,20 +84,8 @@ extern "C" {
 // UNIVERSAL TYPE DEFINITIONS
 // ============================================================================
 
-// BCPL word type - portable across all architectures
-#if BCPL_BITS == 64
-typedef int64_t bcpl_word_t;
-typedef uint64_t bcpl_uword_t;
-#define BCPL_WORD_SIZE 8
-#elif BCPL_BITS == 32
-typedef int32_t bcpl_word_t;
-typedef uint32_t bcpl_uword_t;
-#define BCPL_WORD_SIZE 4
-#else
-typedef int16_t bcpl_word_t;
-typedef uint16_t bcpl_uword_t;
-#define BCPL_WORD_SIZE 2
-#endif
+// Include BCPL type definitions to avoid conflicts
+#include "bcpl_types.h"
 
 // File handle abstraction
 typedef struct bcpl_file_handle {
@@ -235,6 +223,13 @@ _Noreturn void bcpl_platform_exit(int code);
  * @return Variable value or NULL
  */
 const char *bcpl_platform_getenv(const char *name);
+
+/**
+ * @brief Remove/delete a file
+ * @param filename Path to file
+ * @return 0 on success, -1 on failure
+ */
+int bcpl_platform_remove(const char *filename);
 
 // ============================================================================
 // TIME AND PERFORMANCE

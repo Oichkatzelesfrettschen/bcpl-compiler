@@ -4,10 +4,10 @@
  * @author BCPL Modernization Team
  * @date 2025
  * @copyright Open Source - Pure C23 Implementation
- * 
+ *
  * COMPLETE MODERNIZATION: This header provides a pure C23 implementation
  * of x86_64 code generation, eliminating all assembly dependencies.
- * 
+ *
  * REPLACES: Legacy assembly-based code generation
  * PROVIDES: Universal architecture support with C23 abstractions
  */
@@ -31,30 +31,30 @@ extern "C" {
  * @brief Target architecture enumeration
  */
 typedef enum {
-    ARCH_X86_64,
-    ARCH_ARM64,
-    ARCH_RISCV64,
-    ARCH_WASM32,
-    ARCH_GENERIC
+  ARCH_X86_64,
+  ARCH_ARM64,
+  ARCH_RISCV64,
+  ARCH_WASM32,
+  ARCH_GENERIC
 } target_arch_t;
 
 /**
  * @brief Register allocation context
  */
 typedef struct {
-    int allocated_registers[16];
-    int register_usage_count[16];
-    bool register_dirty[16];
+  int allocated_registers[16];
+  int register_usage_count[16];
+  bool register_dirty[16];
 } register_context_t;
 
 /**
  * @brief Code emission buffer
  */
 typedef struct {
-    char *buffer;
-    size_t size;
-    size_t capacity;
-    FILE *output_file;
+  char *buffer;
+  size_t size;
+  size_t capacity;
+  FILE *output_file;
 } code_buffer_t;
 
 // =============================================================================

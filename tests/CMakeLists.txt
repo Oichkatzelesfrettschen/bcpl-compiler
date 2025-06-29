@@ -4,6 +4,12 @@
 
 cmake_minimum_required(VERSION 3.20)
 
+# Ensure tests use the same native architecture as the main build
+if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+    message(STATUS "🏗️ Building tests for native ARM64 architecture")
+    # No architecture forcing - use native ARM64 for full modernization
+endif()
+
 message(STATUS "🧪 Building comprehensive modernization test suite...")
 
 # ============================================================================

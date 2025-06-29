@@ -3,7 +3,7 @@
  * @brief Full implementations of legacy code generation functions
  * @author BCPL Compiler Modernization Team
  * @date 2025
- * 
+ *
  * This file provides complete implementations of legacy functions like
  * defdata, codex, code, etc. that are needed for backward compatibility
  * with the original BCPL compiler code generation.
@@ -13,38 +13,36 @@
  */
 
 #include "cg_modern.h"
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include <string.h>
 
 // =============================================================================
 // LEGACY GLOBAL STATE IMPLEMENTATION
 // =============================================================================
 
 // Legacy load stack state (from original cg.c)
-int ltype[2] = {0, 0};    // Load stack types
-int ldata[2] = {0, 0};    // Load stack data
+int ltype[2] = {0, 0}; // Load stack types
+int ldata[2] = {0, 0}; // Load stack data
 
-// Legacy static data table (from original cg.c)  
-int sdata[SDSZ][2];       // Static data table
-int dt = 0;               // Data table pointer
+// Legacy static data table (from original cg.c)
+int sdata[SDSZ][2]; // Static data table
+int dt = 0;         // Data table pointer
 
 // Register names for x86 code generation
-static const char *reg[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
+static const char *reg[] = {"eax", "ecx", "edx", "ebx",
+                            "esp", "ebp", "esi", "edi"};
 
 // x86 instruction mnemonics
-static const char *xistr[] = {
-  "mov", "lea", "jmp", "call", "imul", "idiv", "sub", "cmp", 
-  "add", "neg", "not", "and", "or", "xor"
-};
+static const char *xistr[] = {"mov",  "lea", "jmp", "call", "imul",
+                              "idiv", "sub", "cmp", "add",  "neg",
+                              "not",  "and", "or",  "xor"};
 
 // x86 instruction properties (from original xitab)
-static const int xitab[] = {
-  0x03, 0x03, 0x01, 0x01, 0x02, 0x02, 0x02, 0x02, 
-  0x02, 0x01, 0x01, 0x02, 0x02, 0x02
-};
+static const int xitab[] = {0x03, 0x03, 0x01, 0x01, 0x02, 0x02, 0x02,
+                            0x02, 0x02, 0x01, 0x01, 0x02, 0x02, 0x02};
 
 // =============================================================================
 // LEGACY FUNCTION IMPLEMENTATIONS
@@ -100,15 +98,15 @@ static void outdata(int k, int n) {
 static void buf_append(char **s, size_t *rem, const char *format, ...) {
   va_list ap;
   int written;
-  
+
   if (*rem <= 1) {
-    return;  // No space left
+    return; // No space left
   }
-  
+
   va_start(ap, format);
   written = vsnprintf(*s, *rem, format, ap);
   va_end(ap);
-  
+
   if (written > 0 && (size_t)written < *rem) {
     *s += written;
     *rem -= (size_t)written;
@@ -132,7 +130,7 @@ void code(int xi, ...) {
   int cj, i1, na, x, i, t, d;
 
   // Validate instruction index
-  if (xi < 0 || xi >= (int)(sizeof(xistr)/sizeof(xistr[0]))) {
+  if (xi < 0 || xi >= (int)(sizeof(xistr) / sizeof(xistr[0]))) {
     error("Invalid instruction index: %d", xi);
     return;
   }
@@ -142,7 +140,7 @@ void code(int xi, ...) {
   cj = x & XCJ;
   i1 = x & XI1 ? 1 : 0;
   na = x & XNA;
-  
+
   // Extract operands
   for (i = 0; i < na; i++) {
     typ[i] = va_arg(ap, int);
@@ -153,7 +151,7 @@ void code(int xi, ...) {
   // Start building instruction string
   s = buf;
   buf_append(&s, &rem, "%s", xistr[xi]);
-  
+
   // Add operands
   for (i = na - 1; i >= i1; i--) {
     if (rem <= 1) {
@@ -162,29 +160,29 @@ void code(int xi, ...) {
     }
     *s++ = (i == na - 1) ? '\t' : ',';
     rem--;
-    
+
     t = typ[i];
     d = dat[i];
-    
+
     // Format operand based on type
     switch (t) {
-    case X_R:  // Register
-      if (d >= 0 && d < (int)(sizeof(reg)/sizeof(reg[0]))) {
+    case X_R: // Register
+      if (d >= 0 && d < (int)(sizeof(reg) / sizeof(reg[0]))) {
         buf_append(&s, &rem, "%%%s", reg[d]);
       } else {
         buf_append(&s, &rem, "%%r%d", d);
       }
       break;
-    case X_N:  // Immediate number
+    case X_N: // Immediate number
       buf_append(&s, &rem, "$%d", d);
       break;
-    case X_P:  // Parameter
+    case X_P: // Parameter
       buf_append(&s, &rem, "%d(%%ebp)", (d + 2) * 4);
       break;
-    case X_G:  // Global
+    case X_G: // Global
       buf_append(&s, &rem, "g%d", d);
       break;
-    case X_L:  // Local
+    case X_L: // Local
       buf_append(&s, &rem, "%d(%%ebp)", -(d + 1) * 4);
       break;
     case X_LP: // Parameter pointer
@@ -201,13 +199,13 @@ void code(int xi, ...) {
       break;
     }
   }
-  
+
   // Handle conditional jumps
   if (cj) {
     // Add condition suffix for conditional jumps/moves
     // This would need more sophisticated condition tracking
   }
-  
+
   // Emit the completed instruction
   emit("%s", buf);
 }
@@ -216,9 +214,7 @@ void code(int xi, ...) {
  * @brief Generate x86 code with current load stack (full implementation)
  * @param xi x86 instruction index
  */
-void codex(int xi) { 
-  code(xi, ltype[0], ldata[0], ltype[1], ldata[1]); 
-}
+void codex(int xi) { code(xi, ltype[0], ldata[0], ltype[1], ldata[1]); }
 
 /**
  * @brief Load register utility (full implementation)
@@ -244,9 +240,7 @@ static void loadreg(int reg_index, int force_load) {
  * @brief Generate code label (full implementation)
  * @param label_id Label identifier
  */
-void codelab(int label_id) {
-  emit("L%d:", label_id);
-}
+void codelab(int label_id) { emit("L%d:", label_id); }
 
 /**
  * @brief Generate label string (full implementation)
@@ -277,7 +271,7 @@ void init_legacy_cg_state(void) {
   // Initialize load stack
   ltype[0] = ltype[1] = 0;
   ldata[0] = ldata[1] = 0;
-  
+
   // Initialize data table
   dt = 0;
   memset(sdata, 0, sizeof(sdata));
@@ -290,7 +284,7 @@ void flush_data_definitions(void) {
   for (int i = 0; i < dt; i++) {
     outdata(sdata[i][0], sdata[i][1]);
   }
-  dt = 0;  // Reset for next batch
+  dt = 0; // Reset for next batch
 }
 
 /**
@@ -305,7 +299,7 @@ void emit(const char *fmt, ...) {
   while (isupper(*fmt) || isdigit(*fmt) || *fmt == ':') {
     putchar(*fmt++);
   }
-  
+
   // Handle instruction output
   if (*fmt) {
     putchar('\t');
@@ -323,13 +317,13 @@ void emit(const char *fmt, ...) {
  */
 void error(const char *format, ...) {
   va_list ap;
-  
+
   fprintf(stderr, "ERROR: ");
   va_start(ap, format);
   vfprintf(stderr, format, ap);
   va_end(ap);
   fprintf(stderr, "\n");
-  
+
   // In the original, this would call exit(1)
   // For modern code, we might want to use setjmp/longjmp or exceptions
   exit(1);

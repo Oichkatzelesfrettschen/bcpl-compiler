@@ -1,0 +1,19 @@
+[1/14] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o
+FAILED: [code=1] tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o 
+/usr/bin/clang -DBCPL_MODERNIZED=1 -DBCPL_TEST_BUILD=1 -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime -std=c17 -arch arm64 -MD -MT tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o -MF tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o.d -o tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c:98:22: error: use of undeclared identifier 'bcpl_uword_t'
+   98 |   TEST_ASSERT(sizeof(bcpl_uword_t) == BCPL_WORD_SIZE,
+      |                      ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c:176:20: error: invalid operands to binary expression ('bcpl_cpu_features_t' and 'int')
+  176 |   if (cpu_features & BCPL_CPU_FEATURE_NEON) {
+      |       ~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~~
+2 errors generated.
+[2/14] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o
+FAILED: [code=1] tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o 
+/usr/bin/clang -DBCPL_MODERNIZED=1 -DBCPL_TEST_BUILD=1 -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime -std=c17 -arch arm64 -MD -MT tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o -MF tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o.d -o tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:134:3: error: call to undeclared function 'bcpl_platform_remove'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  134 |   bcpl_platform_remove(test_filename);
+      |   ^
+1 error generated.
+[3/14] Building C object src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o
+ninja: build stopped: subcommand failed.

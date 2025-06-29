@@ -1,0 +1,1 @@
+/usr/bin/clang -std=c17 -target i386-apple-macos10.12 -m32 -arch i386 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/op.dir/op.c.o CMakeFiles/op.dir/pt.c.o -o op  libbcpl_runtime.a

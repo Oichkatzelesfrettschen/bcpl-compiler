@@ -496,28 +496,27 @@ extern int ch;
 // =============================================================================
 
 // Legacy load stack state (ltype, ldata from original cg.c)
-static int ltype[2] = {0, 0};    ///< Load stack types
-static int ldata[2] = {0, 0};    ///< Load stack data
+static int ltype[2] = {0, 0}; ///< Load stack types
+static int ldata[2] = {0, 0}; ///< Load stack data
 
 // Legacy static data table (sdata, dt from original cg.c)
-static int sdata[SDSZ][2];       ///< Static data table
-static int dt = 0;               ///< Data table pointer
+static int sdata[SDSZ][2]; ///< Static data table
+static int dt = 0;         ///< Data table pointer
 
 // Legacy instruction tables and strings (from original cg.c)
-static const char *reg[] = {"eax", "ecx"};  ///< Register names
-static const char *xistr[] = {              ///< x86 instruction strings
-  "mov", "lea", "jmp", "call", "imul", "idiv", "sub", "cmp", "add", "neg", "not", "and", "or", "xor"
-};
+static const char *reg[] = {"eax", "ecx"}; ///< Register names
+static const char *xistr[] = {             ///< x86 instruction strings
+    "mov", "lea", "jmp", "call", "imul", "idiv", "sub",
+    "cmp", "add", "neg", "not",  "and",  "or",   "xor"};
 
 // x86 instruction properties table
-static const int xitab[] = {
-  0x03, 0x03, 0x01, 0x01, 0x02, 0x02, 0x02, 0x02, 0x02, 0x01, 0x01, 0x02, 0x02, 0x02
-};
+static const int xitab[] = {0x03, 0x03, 0x01, 0x01, 0x02, 0x02, 0x02,
+                            0x02, 0x02, 0x01, 0x01, 0x02, 0x02, 0x02};
 
 // Instruction property flags
-#define XCJ 0x01   ///< Conditional jump flag
-#define XI1 0x02   ///< One operand flag
-#define XNA 0x03   ///< Number of arguments mask
+#define XCJ 0x01 ///< Conditional jump flag
+#define XI1 0x02 ///< One operand flag
+#define XNA 0x03 ///< Number of arguments mask
 
 // Forward declarations for legacy functions
 extern void emit(const char *format, ...);

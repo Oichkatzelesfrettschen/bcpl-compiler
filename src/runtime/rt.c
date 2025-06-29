@@ -32,10 +32,10 @@
 // CONSTANTS AND CONFIGURATION
 // =============================================================================
 
-#define FCBCNT 8        ///< Number of File Control Blocks
-#define STRSIZ 256      ///< BCPL string size  
-#define FCBSIZ 20       ///< FCB size in words
-#define PGSZ 4096       ///< Memory page size
+#define FCBCNT 8   ///< Number of File Control Blocks
+#define STRSIZ 256 ///< BCPL string size
+#define FCBSIZ 20  ///< FCB size in words
+#define PGSZ 4096  ///< Memory page size
 
 // I/O constants
 #define IFLAGS O_RDONLY                       ///< Input file flags
@@ -66,9 +66,11 @@
 // GLOBAL RUNTIME STATE
 // =============================================================================
 
-static bcpl_fcb_t g_fcb_table[FCBCNT];       ///< Global FCB table
-static bcpl_context_t *g_runtime_ctx = NULL; ///< Global runtime context
-static bool g_runtime_initialized = false;   ///< Initialization flag
+static bcpl_fcb_t g_fcb_table[FCBCNT]; ///< Global FCB table
+// Note: g_runtime_ctx reserved for future runtime context management
+static bcpl_context_t *g_runtime_ctx __attribute__((unused)) =
+    NULL;                                  ///< Global runtime context
+static bool g_runtime_initialized = false; ///< Initialization flag
 
 // Standard stream FCB indices
 static const int STDIN_FCB = 0;  ///< Standard input FCB index
@@ -188,11 +190,10 @@ BCPL_EXPORT bcpl_word_t bcpl_findinput(bcpl_string_t *filename) {
     return 0;
   }
 
-  // Convert BCPL string to C string
+  // Convert BCPL string to C string with proper type casting
   char c_filename[STRSIZ];
-  // Temporary simple conversion until string functions are working
-  strncpy(c_filename, filename->data, STRSIZ-1);
-  c_filename[STRSIZ-1] = '\0';
+  strncpy(c_filename, (const char *)filename->data, STRSIZ - 1);
+  c_filename[STRSIZ - 1] = '\0';
 
   // Find free FCB
   int fcb_idx = find_free_fcb();
@@ -222,11 +223,10 @@ BCPL_EXPORT bcpl_word_t bcpl_findoutput(bcpl_string_t *filename) {
     return 0;
   }
 
-  // Convert BCPL string to C string
+  // Convert BCPL string to C string with proper type casting
   char c_filename[STRSIZ];
-  // Temporary simple conversion until string functions are working
-  strncpy(c_filename, filename->data, STRSIZ-1);
-  c_filename[STRSIZ-1] = '\0';
+  strncpy(c_filename, (const char *)filename->data, STRSIZ - 1);
+  c_filename[STRSIZ - 1] = '\0';
 
   // Find free FCB
   int fcb_idx = find_free_fcb();
@@ -343,7 +343,7 @@ BCPL_EXPORT void bcpl_wrch(bcpl_word_t ch, bcpl_word_t stream_idx) {
   fcb->buffer[fcb->pos++] = (char)(ch & 0xFF);
 
   // Flush if buffer is full or character is newline
-  if (fcb->pos >= sizeof(fcb->buffer) || ch == '\n') {
+  if ((size_t)fcb->pos >= sizeof(fcb->buffer) || ch == '\n') {
     write(fcb->fd, fcb->buffer, fcb->pos);
     fcb->pos = 0;
   }
@@ -406,8 +406,10 @@ BCPL_EXPORT void bcpl_freevec(bcpl_vector_t *vec) {
 // =============================================================================
 
 // String conversion functions (defined later in this file)
-BCPL_EXPORT void bcpl_string_to_c(const bcpl_string_t *bcpl_str, char *c_str, size_t max_len);
-BCPL_EXPORT void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str, size_t max_len);
+BCPL_EXPORT void bcpl_string_to_c(const bcpl_string_t *bcpl_str, char *c_str,
+                                  size_t max_len);
+BCPL_EXPORT void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str,
+                                  size_t max_len);
 
 // =============================================================================
 
@@ -419,13 +421,15 @@ BCPL_EXPORT void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str, si
  * @return Length of converted string
  */
 BCPL_EXPORT void bcpl_string_to_c(const bcpl_string_t *bcpl_str, char *c_str,
-                                    size_t max_len) {
-  if (!bcpl_str || !c_str || max_len == 0) return;
-  
+                                  size_t max_len) {
+  if (!bcpl_str || !c_str || max_len == 0)
+    return;
+
   // BCPL strings are length-prefixed
   size_t len = bcpl_str->length;
-  if (len > max_len - 1) len = max_len - 1;
-  
+  if (len > max_len - 1)
+    len = max_len - 1;
+
   memcpy(c_str, bcpl_str->data, len);
   c_str[len] = '\0';
 }
@@ -437,15 +441,19 @@ BCPL_EXPORT void bcpl_string_to_c(const bcpl_string_t *bcpl_str, char *c_str,
  * @param max_len Maximum BCPL string length
  * @return Length of converted string
  */
-BCPL_EXPORT void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str, size_t max_len) {
-  if (!c_str || !bcpl_str || max_len == 0) return;
-  
+BCPL_EXPORT void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str,
+                                  size_t max_len) {
+  if (!c_str || !bcpl_str || max_len == 0)
+    return;
+
   size_t len = strlen(c_str);
-  if (len > max_len - 1) len = max_len - 1;
-  
+  if (len > max_len - 1)
+    len = max_len - 1;
+
   bcpl_str->length = len;
   memcpy(bcpl_str->data, c_str, len);
-  if (len < max_len) bcpl_str->data[len] = '\0';
+  if (len < max_len)
+    bcpl_str->data[len] = '\0';
 }
 
 /**

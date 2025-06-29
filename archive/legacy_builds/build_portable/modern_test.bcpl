@@ -1,0 +1,5 @@
+GET "LIB.B"
+$( writef("HELLO FROM MODERN BCPL*N")
+   writef("This is running on native ARM64!*N")
+   STOP
+$)

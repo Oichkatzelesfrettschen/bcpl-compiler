@@ -1,0 +1,86 @@
+[
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/bcpl_runtime.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/bcpl_runtime.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/runtime/universal_startup.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/universal_startup.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/universal_startup.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/universal_startup.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/runtime/memory.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/memory.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/memory.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/memory.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/runtime/io.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/io.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/io.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/io.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/runtime/strings.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/strings.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/strings.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/strings.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/vectors.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/vectors.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/runtime/startup.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/startup.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/startup.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/startup.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/runtime/rt.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/rt.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/bcpl_runtime.dir/platform/macos.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/macos.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/macos.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/cg.dir/cg.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/cg.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/cg.c",
+  "output": "src/CMakeFiles/cg.dir/cg.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/cg.dir/oc.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
+  "output": "src/CMakeFiles/cg.dir/oc.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/op.dir/op.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/op.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/op.c",
+  "output": "src/CMakeFiles/op.dir/op.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/op.dir/pt.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/pt.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/pt.c",
+  "output": "src/CMakeFiles/op.dir/pt.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -target x86_64-apple-macos11 -std=c2x -arch x86_64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -o CMakeFiles/st_tmp.dir/bootstrap_main.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/bootstrap_main.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/bootstrap_main.c",
+  "output": "src/CMakeFiles/st_tmp.dir/bootstrap_main.c.o"
+}
+]

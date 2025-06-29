@@ -1,0 +1,62 @@
+[1/22] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/memory.c.o
+[2/22] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/strings.c.o
+[3/22] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/bcpl_runtime.c:33:13: warning: incompatible pointer types assigning to 'char **' from 'bcpl_string_t **' (aka 'struct bcpl_string **') [-Wincompatible-pointer-types]
+   33 |   ctx->argv = (bcpl_string_t **)argv; // Note: This is a type conversion
+      |             ^ ~~~~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/bcpl_runtime.c:19:65: warning: unused parameter 'envp' [-Wunused-parameter]
+   19 | bcpl_context_t *bcpl_runtime_init(int argc, char **argv, char **envp) {
+      |                                                                 ^
+2 warnings generated.
+[4/22] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o
+[5/22] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/io.c.o
+[6/22] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.o
+[7/22] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/universal_startup.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/universal_startup.c:169:21: warning: requested alignment is not a power of 2 [-Wnon-power-of-two-alignment]
+  169 |       aligned_alloc(sizeof(bcpl_context_t), sizeof(bcpl_context_t));
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/universal_startup.c:161:60: warning: unused parameter 'envp' [-Wunused-parameter]
+  161 | bcpl_context_t *bcpl_startup(int argc, char **argv, char **envp) {
+      |                                                            ^
+2 warnings generated.
+[8/22] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/startup.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/startup.c:271:23: warning: incompatible pointer types assigning to 'char **' from 'bcpl_string_t **' (aka 'struct bcpl_string **') [-Wincompatible-pointer-types]
+  271 |   g_startup_ctx->argv = (bcpl_string_t **)g_bcpl_argv;
+      |                       ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+[9/22] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/rt.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c:194:23: warning: passing 'bcpl_char_t[]' (aka 'unsigned char[]') to parameter of type 'const char *' converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Wpointer-sign]
+  194 |   strncpy(c_filename, filename->data, STRSIZ-1);
+      |                       ^~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h:259:42: note: expanded from macro 'strncpy'
+  259 | #define strncpy(...) __strncpy_chk_func (__VA_ARGS__)
+      |                                          ^~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h:147:34: note: expanded from macro '__strncpy_chk_func'
+  147 |                 __builtin___strncpy_chk (dest, __VA_ARGS__, __darwin_obsz (dest))
+      |                                                ^~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c:228:23: warning: passing 'bcpl_char_t[]' (aka 'unsigned char[]') to parameter of type 'const char *' converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Wpointer-sign]
+  228 |   strncpy(c_filename, filename->data, STRSIZ-1);
+      |                       ^~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h:259:42: note: expanded from macro 'strncpy'
+  259 | #define strncpy(...) __strncpy_chk_func (__VA_ARGS__)
+      |                                          ^~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h:147:34: note: expanded from macro '__strncpy_chk_func'
+  147 |                 __builtin___strncpy_chk (dest, __VA_ARGS__, __darwin_obsz (dest))
+      |                                                ^~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c:346:16: warning: comparison of integers of different signs: 'int' and 'unsigned long' [-Wsign-compare]
+  346 |   if (fcb->pos >= sizeof(fcb->buffer) || ch == '\n') {
+      |       ~~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c:70:24: warning: unused variable 'g_runtime_ctx' [-Wunused-variable]
+   70 | static bcpl_context_t *g_runtime_ctx = NULL; ///< Global runtime context
+      |                        ^~~~~~~~~~~~~
+4 warnings generated.
+[10/22] Building C object src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o
+[11/22] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o
+FAILED: [code=1] tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o 
+/usr/bin/clang -DBCPL_MODERNIZED=1 -DBCPL_TEST_BUILD=1 -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime -std=c17 -arch arm64 -MD -MT tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o -MF tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o.d -o tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:134:3: error: call to undeclared function 'bcpl_platform_remove'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  134 |   bcpl_platform_remove(test_filename);
+      |   ^
+1 error generated.
+[12/22] Linking C static library src/libbcpl_runtime.a
+ninja: build stopped: subcommand failed.

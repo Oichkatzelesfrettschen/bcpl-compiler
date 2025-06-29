@@ -17,6 +17,8 @@ static bcpl_context_t *g_bcpl_ctx = NULL;
  * @brief Initialize the BCPL runtime system
  */
 bcpl_context_t *bcpl_runtime_init(int argc, char **argv, char **envp) {
+  (void)envp; // Suppress unused parameter warning
+
   if (g_bcpl_ctx != NULL) {
     return g_bcpl_ctx; // Already initialized
   }
@@ -30,8 +32,8 @@ bcpl_context_t *bcpl_runtime_init(int argc, char **argv, char **envp) {
 
   // Initialize basic context
   ctx->argc = argc;
-  ctx->argv = (bcpl_string_t **)argv; // Note: This is a type conversion
-  ctx->global_size = 1000;            // Default global vector size
+  ctx->argv = argv;        // Direct assignment - types match
+  ctx->global_size = 1000; // Default global vector size
 
   // Initialize platform-specific components
   if (bcpl_platform_init() != 0) {

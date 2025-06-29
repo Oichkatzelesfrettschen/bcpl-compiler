@@ -29,11 +29,14 @@
 #include <unistd.h>
 
 // Forward declarations for string conversion functions
-BCPL_EXPORT void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str, size_t max_len);
+BCPL_EXPORT void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str,
+                                  size_t max_len);
 
 // Forward declarations for functions defined in rt.c
-extern void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str, size_t max_len);
-extern void bcpl_string_to_c(const bcpl_string_t *bcpl_str, char *c_str, size_t max_len);
+extern void bcpl_c_to_string(const char *c_str, bcpl_string_t *bcpl_str,
+                             size_t max_len);
+extern void bcpl_string_to_c(const bcpl_string_t *bcpl_str, char *c_str,
+                             size_t max_len);
 extern bcpl_word_t bcpl_findfail(bcpl_word_t stream_idx);
 
 // =============================================================================
@@ -136,7 +139,8 @@ int main(int argc, char **argv) {
 
   // Call the BCPL START function with parameter string
   bcpl_word_t param_word = 0; // Empty parameter for now
-  exit_status = start_func(&param_word);
+  bcpl_word_t bcpl_result = start_func(&param_word);
+  exit_status = (int)bcpl_result;
 
   // Cleanup and exit
   startup_cleanup();
@@ -235,8 +239,12 @@ static int setup_arguments(int argc, char **argv) {
     argc = BCPL_MAX_ARGS;
   }
 
-  // Allocate BCPL argument vector
-  size_t argv_size = argc * sizeof(bcpl_word_t);
+  // Allocate BCPL argument vector - convert argc to unsigned for size
+  // calculation
+  if (argc < 0) {
+    return -1; // Invalid argument count
+  }
+  size_t argv_size = (size_t)argc * sizeof(bcpl_word_t);
   g_bcpl_argv = malloc(argv_size);
   if (!g_bcpl_argv) {
     return -1;
@@ -256,19 +264,32 @@ static int setup_arguments(int argc, char **argv) {
     }
 
     // Convert to BCPL string format (manual conversion for now)
-    bcpl_arg->length = arg_len;
-    strncpy((char*)bcpl_arg->data, argv[i], arg_len);
-    if (arg_len < 255) bcpl_arg->data[arg_len] = '\0';
+    // Cast to bcpl_strlen_t for length assignment - check bounds first
+    if (arg_len > UINT32_MAX) {
+      arg_len = 255; // Fallback to BCPL string limit
+    }
+    bcpl_arg->length = (bcpl_strlen_t)arg_len;
+    strncpy((char *)bcpl_arg->data, argv[i], arg_len);
+    if (arg_len < 255)
+      bcpl_arg->data[arg_len] = '\0';
     g_bcpl_argv[i] = (bcpl_word_t)bcpl_arg;
   }
 
-  // Set up global vector entries for arguments
-  g_global_vector[G_ARGC] = argc;
+  // Set up global vector entries for arguments - cast argc to unsigned
+  g_global_vector[G_ARGC] = (bcpl_word_t)argc;
   g_global_vector[G_ARGV] = (bcpl_word_t)g_bcpl_argv;
 
   // Store argument information in context
   g_startup_ctx->argc = argc;
-  g_startup_ctx->argv = (bcpl_string_t **)g_bcpl_argv;
+  // Convert BCPL argument vector to char** - allocate separate array
+  char **c_argv = malloc((size_t)argc * sizeof(char *));
+  if (!c_argv) {
+    return -1;
+  }
+  for (int i = 0; i < argc; i++) {
+    c_argv[i] = argv[i]; // Copy original string pointers
+  }
+  g_startup_ctx->argv = c_argv;
 
   return 0;
 }
@@ -317,6 +338,12 @@ static void startup_cleanup(void) {
     }
     free(g_bcpl_argv);
     g_bcpl_argv = NULL;
+
+    // Free the c_argv array we allocated
+    if (g_startup_ctx->argv) {
+      free(g_startup_ctx->argv);
+      g_startup_ctx->argv = NULL;
+    }
   }
 
   // Free BCPL stack

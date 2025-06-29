@@ -31,7 +31,7 @@
 #include <string.h>
 
 // ============================================================================
-// MODERN BCPL CONTEXT MANAGEMENT - REPLACES su.s GLOBALS  
+// MODERN BCPL CONTEXT MANAGEMENT - REPLACES su.s GLOBALS
 // ============================================================================
 
 // Use the bcpl_context_t from bcpl_types.h
@@ -88,15 +88,15 @@ static int bcpl_init_globals(bcpl_context_t *ctx, size_t global_size) {
   }
 
   // Clear global vector
-  memset(ctx->global_vector, 0, global_size * sizeof(int32_t));
+  memset(ctx->global_vector, 0, global_size * sizeof(bcpl_word_t));
 
   // Set standard BCPL globals (replaces assembly initialization)
   ctx->global_vector[1] = 0; // START (will be set by BCPL program)
-  ctx->global_vector[95] = (int32_t)(uintptr_t)ctx->stack_base;   // STACKBASE
-  ctx->global_vector[96] = (int32_t)(uintptr_t)ctx->stack_end;    // STACKEND
-  ctx->global_vector[97] = ctx->argc;                             // ARGC
-  ctx->global_vector[98] = (int32_t)(uintptr_t)ctx->argv;         // ARGV
-  ctx->global_vector[99] = (int32_t)(uintptr_t)ctx->param_string; // PARAM
+  ctx->global_vector[95] = (bcpl_word_t)(uintptr_t)ctx->stack_base; // STACKBASE
+  ctx->global_vector[96] = (bcpl_word_t)(uintptr_t)ctx->stack_end;  // STACKEND
+  ctx->global_vector[97] = (bcpl_word_t)ctx->argc;                  // ARGC
+  ctx->global_vector[98] = (bcpl_word_t)(uintptr_t)ctx->argv;       // ARGV
+  ctx->global_vector[99] = (bcpl_word_t)(uintptr_t)ctx->param_string; // PARAM
 
   return 0;
 }
@@ -159,14 +159,17 @@ static int bcpl_process_args(bcpl_context_t *ctx, int argc, char **argv) {
  * all modern architectures.
  */
 bcpl_context_t *bcpl_startup(int argc, char **argv, char **envp) {
+  (void)envp; // Suppress unused parameter warning
   // Thread-safe initialization
   if (atomic_exchange(&global_initialized, 1)) {
     return current_context; // Already initialized
   }
 
-  // Allocate context
-  bcpl_context_t *ctx =
-      aligned_alloc(sizeof(bcpl_context_t), sizeof(bcpl_context_t));
+  // Allocate context with proper alignment
+  size_t alignment = 64; // Use cache line alignment (power of 2)
+  bcpl_context_t *ctx = aligned_alloc(
+      alignment,
+      ((sizeof(bcpl_context_t) + alignment - 1) / alignment) * alignment);
   if (!ctx) {
     fprintf(stderr, "BCPL Fatal: Cannot allocate context\n");
     exit(1);
@@ -248,7 +251,7 @@ bcpl_context_t *bcpl_get_context(void) { return current_context; }
 /**
  * @brief Get global vector value
  */
-int32_t bcpl_get_global(bcpl_context_t *ctx, size_t index) {
+bcpl_word_t bcpl_get_global(bcpl_context_t *ctx, size_t index) {
   if (!ctx || index >= ctx->global_size)
     return 0;
   return ctx->global_vector[index];
@@ -257,7 +260,7 @@ int32_t bcpl_get_global(bcpl_context_t *ctx, size_t index) {
 /**
  * @brief Set global vector value
  */
-void bcpl_set_global(bcpl_context_t *ctx, size_t index, int32_t value) {
+void bcpl_set_global(bcpl_context_t *ctx, size_t index, bcpl_word_t value) {
   if (!ctx || index >= ctx->global_size)
     return;
   ctx->global_vector[index] = value;

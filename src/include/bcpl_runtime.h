@@ -70,7 +70,7 @@ BCPL_EXPORT void bcpl_cleanup(bcpl_context_t *ctx);
 BCPL_EXPORT int bcpl_rt_init(void);
 
 /**
- * @brief Clean up the BCPL runtime system  
+ * @brief Clean up the BCPL runtime system
  */
 BCPL_EXPORT void bcpl_rt_cleanup(void);
 

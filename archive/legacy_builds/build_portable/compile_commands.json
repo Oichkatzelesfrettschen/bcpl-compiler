@@ -1,0 +1,86 @@
+[
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/bcpl_runtime.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/bcpl_runtime.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/runtime/universal_startup.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/universal_startup.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/universal_startup.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/universal_startup.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/runtime/memory.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/memory.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/memory.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/memory.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/runtime/io.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/io.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/io.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/io.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/runtime/strings.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/strings.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/strings.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/strings.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/vectors.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/vectors.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/runtime/startup.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/startup.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/startup.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/startup.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/runtime/rt.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/runtime/rt.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/bcpl_runtime.dir/platform/macos.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/macos.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/macos.c",
+  "output": "src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/cg.dir/cg.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/cg.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/cg.c",
+  "output": "src/CMakeFiles/cg.dir/cg.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/cg.dir/oc.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/oc.c",
+  "output": "src/CMakeFiles/cg.dir/oc.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/op.dir/op.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/op.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/op.c",
+  "output": "src/CMakeFiles/op.dir/op.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -o CMakeFiles/op.dir/pt.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/pt.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/src/pt.c",
+  "output": "src/CMakeFiles/op.dir/pt.c.o"
+},
+{
+  "directory": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src",
+  "command": "/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -O3 -DNDEBUG -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_ARCH_BITS=64 -DBCPL_PLATFORM_MACOS=1 -DBCPL_MODERNIZED=1 -Werror -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wunreachable-code -Wunused -Wno-unused-label -Wno-unused-function -Wno-unused-variable -Wno-unreachable-code -o CMakeFiles/st.dir/st_from_ocode.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src/st_from_ocode.c",
+  "file": "/Users/eirikr/Documents/GitHub/bcpl-compiler/build_portable/src/st_from_ocode.c",
+  "output": "src/CMakeFiles/st.dir/st_from_ocode.c.o"
+}
+]

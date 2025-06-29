@@ -1,51 +1,43 @@
+# =============================================================================
+# BCPL Multi-Architecture Source Build Configuration
+# =============================================================================
+
 cmake_minimum_required(VERSION 3.20)
 
-# Modern BCPL Compiler Build System
-project(BCPL 
-    VERSION 2025.1.0
-    DESCRIPTION "Modernized BCPL Compiler with C23 Runtime"
-    LANGUAGES C ASM
-)
+# This file expects architecture variables to be set by ArchitectureConfig.cmake
+# Variables used: BCPL_RESOLVED_ARCH, BCPL_ARCH_BITS, BCPL_ARCH_SOURCES, etc.
 
-# Compiler Requirements - Accept AppleClang and Clang
-if(NOT CMAKE_C_COMPILER_ID MATCHES ".*Clang.*")
-    message(FATAL_ERROR "Clang is required to build the modernized BCPL compiler")
-endif()
-
-# C23 Standard with Enhanced Features
-set(CMAKE_C_STANDARD 23)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
-
-# Build Configuration
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+message(STATUS "🔧 Configuring BCPL source build for ${BCPL_RESOLVED_ARCH}")
 
 # =============================================================================
-# PLATFORM AND ARCHITECTURE DETECTION
+# PLATFORM CONFIGURATION
 # =============================================================================
 
-if(NOT DEFINED BITS)
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(BITS 64)
-    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-        set(BITS 32)
-    else()
-        set(BITS 16)
-    endif()
-endif()
-
-message(STATUS "Building BCPL for ${BITS}-bit architecture on ${CMAKE_SYSTEM_NAME}")
+# Map architecture to TARGET_ARCH variable for compatibility
+set(TARGET_ARCH ${BCPL_RESOLVED_ARCH})
 
 # Platform-specific settings
 if(APPLE)
     set(BCPL_PLATFORM "MACOS")
     set(BCPL_PLATFORM_SOURCES platform/macos.c)
+    
+    # Enable Universal Binary support if requested
+    if(DEFINED CMAKE_OSX_ARCHITECTURES)
+        message(STATUS "Universal Binary: ${CMAKE_OSX_ARCHITECTURES}")
+    elseif(TARGET_ARCH STREQUAL "arm64")
+        set(CMAKE_OSX_ARCHITECTURES "arm64")
+    elseif(TARGET_ARCH STREQUAL "x86_64")
+        set(CMAKE_OSX_ARCHITECTURES "x86_64")
+    endif()
+    
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(BCPL_PLATFORM "LINUX")
     set(BCPL_PLATFORM_SOURCES platform/linux.c)
+    
 elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
     set(BCPL_PLATFORM "FREEBSD")
     set(BCPL_PLATFORM_SOURCES platform/freebsd.c)
+    
 else()
     set(BCPL_PLATFORM "GENERIC")
     set(BCPL_PLATFORM_SOURCES platform/generic.c)
@@ -62,108 +54,115 @@ include_directories(
 # =============================================================================
 
 set(BCPL_C_FLAGS
-    -std=c23
-    -Wall -Wextra -Wpedantic
-    -DBITS=${BITS}
+    ${BCPL_BASE_C_FLAGS}  # From main CMakeLists.txt
+    ${BCPL_ARCH_FLAGS}    # From ArchitectureConfig.cmake
+    -DBITS=${BCPL_ARCH_BITS}
     -DBCPL_PLATFORM_${BCPL_PLATFORM}=1
+    -DTARGET_ARCH_${TARGET_ARCH}=1
 )
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    list(APPEND BCPL_C_FLAGS -g3 -O0 -DDEBUG=1)
-else()
-    list(APPEND BCPL_C_FLAGS -O2 -g)
+# Add platform-specific flags
+if(APPLE)
+    list(APPEND BCPL_C_FLAGS -D_DARWIN_C_SOURCE)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    list(APPEND BCPL_C_FLAGS -D_GNU_SOURCE)
 endif()
 
 # =============================================================================
-# MODERNIZED BCPL RUNTIME LIBRARY
+# ARCHITECTURE-SPECIFIC RUNTIME SOURCES
 # =============================================================================
 
-set(BCPL_RUNTIME_SOURCES
+# Use architecture-specific runtime if available
+set(RUNTIME_SOURCES)
+set(ARCH_RUNTIME_FILE "${CMAKE_CURRENT_SOURCE_DIR}/arch/${TARGET_ARCH}/runtime_${TARGET_ARCH}.c")
+if(EXISTS ${ARCH_RUNTIME_FILE})
+    list(APPEND RUNTIME_SOURCES ${ARCH_RUNTIME_FILE})
+    message(STATUS "Using architecture-specific runtime: ${ARCH_RUNTIME_FILE}")
+else()
+    # Fallback to generic runtime
+    list(APPEND RUNTIME_SOURCES runtime/generic_runtime.c)
+    message(STATUS "Using generic runtime (arch-specific not found)")
+endif()
+
+# Add platform sources
+if(BCPL_PLATFORM_SOURCES AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${BCPL_PLATFORM_SOURCES}")
+    list(APPEND RUNTIME_SOURCES ${BCPL_PLATFORM_SOURCES})
+endif()
+
+# =============================================================================
+# BCPL RUNTIME LIBRARY
+# =============================================================================
+
+add_library(bcpl_runtime STATIC
+    ${RUNTIME_SOURCES}
     runtime/bcpl_runtime.c
-    runtime/universal_startup.c
     runtime/memory.c
     runtime/io.c
     runtime/strings.c
     runtime/vectors.c
     runtime/startup.c
     runtime/rt.c
-    ${BCPL_PLATFORM_SOURCES}
 )
 
-# Create the modern runtime library
-add_library(bcpl_runtime STATIC ${BCPL_RUNTIME_SOURCES})
 target_compile_options(bcpl_runtime PRIVATE ${BCPL_C_FLAGS})
+target_include_directories(bcpl_runtime PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/arch/${TARGET_ARCH}
+)
+
+# Set output name with architecture suffix
+set_target_properties(bcpl_runtime PROPERTIES 
+    OUTPUT_NAME "bcpl_runtime_${TARGET_ARCH}"
+    VERSION ${PROJECT_VERSION}
+)
+
+# Apply tooling flags from Options.cmake
 apply_tooling_flags(bcpl_runtime)
 
 # =============================================================================
-# COMPILER BACKEND TOOLS
+# BCPL CODE GENERATOR
 # =============================================================================
 
-# Code Generator
 add_executable(cg cg.c oc.c)
 target_compile_options(cg PRIVATE ${BCPL_C_FLAGS})
 target_link_libraries(cg PRIVATE bcpl_runtime)
 apply_tooling_flags(cg)
+set_target_properties(cg PROPERTIES OUTPUT_NAME "cg_${TARGET_ARCH}")
 
-# Optimizer
+# =============================================================================
+# BCPL OPTIMIZER
+# =============================================================================
+
 add_executable(op op.c pt.c)
 target_compile_options(op PRIVATE ${BCPL_C_FLAGS})
 target_link_libraries(op PRIVATE bcpl_runtime)
 apply_tooling_flags(op)
+set_target_properties(op PROPERTIES OUTPUT_NAME "op_${TARGET_ARCH}")
 
 # =============================================================================
-# BCPL COMPILER FRONT-END (st) - SIMPLIFIED C BOOTSTRAP
+# SYMBOL TABLE GENERATION
 # =============================================================================
 
-# Use a C-based bootstrap approach that works on all platforms
-message(STATUS "Building BCPL compiler front-end with C bootstrap")
-
-# Generate assembly from OCODE using cg and op
+# Generate architecture-specific symbol table
 add_custom_command(
-    OUTPUT st.s
-    COMMAND $<TARGET_FILE:cg> < ${CMAKE_CURRENT_SOURCE_DIR}/st.O | $<TARGET_FILE:op> > st.s
-    DEPENDS cg op
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Compiling BCPL compiler front-end from OCODE"
-    VERBATIM
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
+    COMMAND $<TARGET_FILE:cg> -o ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH} 
+            ${CMAKE_CURRENT_SOURCE_DIR}/st.bcpl
+    DEPENDS cg ${CMAKE_CURRENT_SOURCE_DIR}/st.bcpl
+    COMMENT "Generating symbol table for ${TARGET_ARCH}"
 )
 
-# Assemble the BCPL-generated code (using C compiler as assembler)
-add_custom_command(
-    OUTPUT st_bcpl.o
-    COMMAND ${CMAKE_C_COMPILER} -c -o st_bcpl.o st.s
-    DEPENDS st.s
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Assembling BCPL compiler front-end"
-    VERBATIM
+add_custom_target(st_gen_${TARGET_ARCH} ALL
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
 )
-
-# Create the st executable by linking BCPL object with C bootstrap and runtime
-add_executable(st_tmp bootstrap_main.c)
-target_compile_options(st_tmp PRIVATE ${BCPL_C_FLAGS})
-target_link_libraries(st_tmp PRIVATE bcpl_runtime)
-apply_tooling_flags(st_tmp)
-
-# Create the final st executable with both C bootstrap and BCPL code
-add_custom_command(
-    OUTPUT st
-    COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/bootstrap_main.c st_bcpl.o -I${CMAKE_CURRENT_SOURCE_DIR}/include -L${CMAKE_CURRENT_BINARY_DIR} -lbcpl_runtime -o st
-    DEPENDS st_bcpl.o bcpl_runtime bootstrap_main.c
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Creating BCPL compiler executable"
-    VERBATIM
-)
-
-# Create a target that other targets can depend on
-add_custom_target(st_executable ALL DEPENDS st)
 
 # =============================================================================
-# ENHANCED LLVM BACKEND
+# LLVM BACKEND (OPTIONAL)
 # =============================================================================
 
 find_package(LLVM QUIET CONFIG)
 if(LLVM_FOUND)
-    message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+    message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION} - enabling LLVM backend")
     
     include_directories(${LLVM_INCLUDE_DIRS})
     separate_arguments(LLVM_DEFINITIONS_LIST UNIX_COMMAND "${LLVM_DEFINITIONS}")
@@ -177,6 +176,11 @@ if(LLVM_FOUND)
     target_compile_options(llcg PRIVATE ${BCPL_CXX_FLAGS})
     target_link_libraries(llcg PRIVATE ${LLCG_LIBS} bcpl_runtime)
     apply_tooling_flags(llcg)
+    set_target_properties(llcg PROPERTIES OUTPUT_NAME "llcg_${TARGET_ARCH}")
+    set(LLVM_AVAILABLE ON)
+else()
+    set(LLVM_AVAILABLE OFF)
+    message(STATUS "LLVM not found - LLVM backend disabled")
 endif()
 
 # =============================================================================
@@ -193,23 +197,41 @@ if(LLVM_AVAILABLE)
     install(TARGETS llcg RUNTIME DESTINATION bin)
 endif()
 
-# Install the BCPL compiler components
-install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/st DESTINATION bin)
+# Install the symbol table with architecture suffix
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH} DESTINATION bin)
 
-# Install the bcplc driver script
-install(PROGRAMS bcplc DESTINATION bin)
+# Install architecture-neutral wrapper script as bcplc
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bcplc)
+    install(PROGRAMS bcplc DESTINATION bin)
+endif()
 
+# Install headers
 install(DIRECTORY include/ DESTINATION include/bcpl)
 
+# Install architecture-specific headers
+install(FILES 
+    arch/${TARGET_ARCH}/runtime_${TARGET_ARCH}.c
+    DESTINATION include/bcpl/arch/${TARGET_ARCH}
+    OPTIONAL
+)
+
 # =============================================================================
-# SUMMARY
+# BUILD SUMMARY
 # =============================================================================
 
-message(STATUS "=== BCPL Compiler Build Configuration ===")
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "")
+message(STATUS "🏗️  ===== BCPL Source Build Configuration =====")
+message(STATUS "Target Architecture: ${TARGET_ARCH} (${BCPL_ARCH_BITS}-bit)")
 message(STATUS "Platform: ${BCPL_PLATFORM}")
-message(STATUS "Architecture: ${BITS}-bit")
 message(STATUS "C Compiler: ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}")
+message(STATUS "Runtime Sources: ${RUNTIME_SOURCES}")
 message(STATUS "LLVM Backend: ${LLVM_AVAILABLE}")
-message(STATUS "Runtime: Pure C23 implementation")
-message(STATUS "==========================================")
+message(STATUS "Output Binaries:")
+message(STATUS "  - cg_${TARGET_ARCH}")
+message(STATUS "  - op_${TARGET_ARCH}")
+message(STATUS "  - bcpl_runtime_${TARGET_ARCH}")
+if(LLVM_AVAILABLE)
+    message(STATUS "  - llcg_${TARGET_ARCH}")
+endif()
+message(STATUS "===============================================")
+message(STATUS "")

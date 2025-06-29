@@ -26,11 +26,11 @@
 #define BCPL_TYPES_H
 
 #include <limits.h>
+#include <setjmp.h>
+#include <stdatomic.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <setjmp.h>
-#include <stdatomic.h>
 
 // C23 feature detection and compatibility
 #if __STDC_VERSION__ >= 202311L
@@ -123,11 +123,13 @@
 #if BCPL_ARCH_BITS == 64
 typedef uint64_t bcpl_word_t;
 typedef int64_t bcpl_sword_t;
+typedef uint64_t bcpl_uword_t;
 #define BCPL_WORD_SIZE 8
 #define BCPL_WORD_BITS 64
 #else
 typedef uint32_t bcpl_word_t;
 typedef int32_t bcpl_sword_t;
+typedef uint32_t bcpl_uword_t;
 #define BCPL_WORD_SIZE 4
 #define BCPL_WORD_BITS 32
 #endif
@@ -163,16 +165,16 @@ typedef bcpl_word_t (*bcpl_function_t)(bcpl_word_t *args);
  * @brief Runtime configuration constants
  */
 enum bcpl_constants {
-  BCPL_STKSIZ = 0x400000,   ///< BCPL stack size (4MB)
-  BCPL_PGSZ = 4096,         ///< Page size for memory allocation
-  BCPL_FCBCNT = 8,          ///< Number of file control blocks
-  BCPL_BUFSIZ = 512,        ///< I/O buffer size
-  BCPL_STRSIZ = 256,        ///< BCPL string size limit
-  BCPL_FCBSIZ = 20,         ///< File control block size
-  BCPL_GLOBVEC_SIZE = 1000, ///< Default global vector size
-  BCPL_ENDSTREAMCH = -1,    ///< End of stream character
+  BCPL_STKSIZ = 0x400000,         ///< BCPL stack size (4MB)
+  BCPL_PGSZ = 4096,               ///< Page size for memory allocation
+  BCPL_FCBCNT = 8,                ///< Number of file control blocks
+  BCPL_BUFSIZ = 512,              ///< I/O buffer size
+  BCPL_STRSIZ = 256,              ///< BCPL string size limit
+  BCPL_FCBSIZ = 20,               ///< File control block size
+  BCPL_GLOBVEC_SIZE = 1000,       ///< Default global vector size
+  BCPL_ENDSTREAMCH = -1,          ///< End of stream character
   BCPL_MAX_VECTOR_SIZE = 1000000, ///< Maximum vector size
-  BCPL_VECTOR_MAGIC = 0x42434056,  ///< Magic number for vectors ('BCPV')
+  BCPL_VECTOR_MAGIC = 0x42434056, ///< Magic number for vectors ('BCPV')
 };
 
 /**
@@ -247,13 +249,13 @@ typedef struct bcpl_string {
  * @brief File control block structure
  */
 typedef struct bcpl_fcb {
-  int status;                      ///< FCB status (FREE, INPUT, OUTPUT, ERROR)
-  int fd;                          ///< System file descriptor
-  int pos;                         ///< Current position in buffer
-  int count;                       ///< Number of valid bytes in buffer
-  int error;                       ///< Error code (0 = no error)
-  char buffer[BCPL_BUFSIZ];        ///< I/O buffer
-  char *filename;                  ///< Associated filename (for error reporting)
+  int status;               ///< FCB status (FREE, INPUT, OUTPUT, ERROR)
+  int fd;                   ///< System file descriptor
+  int pos;                  ///< Current position in buffer
+  int count;                ///< Number of valid bytes in buffer
+  int error;                ///< Error code (0 = no error)
+  char buffer[BCPL_BUFSIZ]; ///< I/O buffer
+  char *filename;           ///< Associated filename (for error reporting)
 } bcpl_fcb_t;
 
 /**
@@ -262,22 +264,22 @@ typedef struct bcpl_fcb {
  * Maintains the complete runtime state for a BCPL program.
  */
 typedef struct bcpl_context {
-  bcpl_word_t *global_vector;      ///< Global vector
-  size_t global_size;              ///< Global vector size  
-  bcpl_word_t *stack_base;         ///< BCPL stack base
-  bcpl_word_t *stack_end;          ///< BCPL stack end
-  bcpl_word_t *stack_pointer;      ///< Current stack pointer
-  size_t stack_size;               ///< Stack size in words
-  int argc;                        ///< Command line argument count
-  char **argv;                     ///< Command line arguments
-  char *param_string;              ///< Parameter string
-  jmp_buf error_context;           ///< Error handling context
-  atomic_int initialized;          ///< Thread-safe initialization flag
-  bcpl_fcb_t *fcb_table;           ///< File control block table
-  bcpl_word_t current_input;       ///< Current input stream
-  bcpl_word_t current_output;      ///< Current output stream
-  void *heap_base;                 ///< Heap base pointer
-  size_t heap_size;                ///< Current heap size
+  bcpl_word_t *global_vector; ///< Global vector
+  size_t global_size;         ///< Global vector size
+  bcpl_word_t *stack_base;    ///< BCPL stack base
+  bcpl_word_t *stack_end;     ///< BCPL stack end
+  bcpl_word_t *stack_pointer; ///< Current stack pointer
+  size_t stack_size;          ///< Stack size in words
+  int argc;                   ///< Command line argument count
+  char **argv;                ///< Command line arguments
+  char *param_string;         ///< Parameter string
+  jmp_buf error_context;      ///< Error handling context
+  atomic_int initialized;     ///< Thread-safe initialization flag
+  bcpl_fcb_t *fcb_table;      ///< File control block table
+  bcpl_word_t current_input;  ///< Current input stream
+  bcpl_word_t current_output; ///< Current output stream
+  void *heap_base;            ///< Heap base pointer
+  size_t heap_size;           ///< Current heap size
 } bcpl_context_t;
 
 /**

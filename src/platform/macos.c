@@ -19,6 +19,7 @@
 
 #include "../include/bcpl_types.h"
 #include "../include/platform.h"
+#include "../include/universal_platform.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <mach/mach_time.h>
@@ -31,6 +32,9 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+// For posix_memalign, sysconf, etc.
+#include <limits.h>
 
 // Forward declarations for internal functions
 int platform_read_char(int fd);
@@ -330,6 +334,33 @@ int bcpl_platform_error_convert(int sys_error) {
   }
 }
 
+/**
+ * @brief Get high-resolution timestamp
+ * @return Timestamp in nanoseconds
+ */
+uint64_t bcpl_platform_get_timestamp(void) {
+  static mach_timebase_info_data_t timebase = {0};
+
+  if (timebase.denom == 0) {
+    mach_timebase_info(&timebase);
+  }
+
+  uint64_t mach_time = mach_absolute_time();
+  return (mach_time * timebase.numer) / timebase.denom;
+}
+
+/**
+ * @brief Sleep for specified duration
+ * @param nanoseconds Sleep duration in nanoseconds
+ */
+void bcpl_platform_sleep(uint64_t nanoseconds) {
+  // Convert nanoseconds to microseconds for usleep
+  uint32_t microseconds = (uint32_t)(nanoseconds / 1000);
+  if (microseconds > 0) {
+    usleep(microseconds);
+  }
+}
+
 // =============================================================================
 // MEMORY ALLOCATION FUNCTIONS (MISSING IMPLEMENTATIONS)
 // =============================================================================
@@ -339,9 +370,7 @@ int bcpl_platform_error_convert(int sys_error) {
  * @param size Size in bytes
  * @return Allocated memory pointer or NULL on failure
  */
-void *bcpl_platform_alloc(size_t size) {
-  return malloc(size);
-}
+void *bcpl_platform_alloc(size_t size) { return malloc(size); }
 
 /**
  * @brief Free memory allocated by bcpl_platform_alloc
@@ -397,9 +426,7 @@ int bcpl_platform_memcmp(const void *ptr1, const void *ptr2, size_t size) {
  * @param filename Path to file to remove
  * @return 0 on success, -1 on failure
  */
-int bcpl_platform_remove(const char *filename) {
-  return unlink(filename);
-}
+int bcpl_platform_remove(const char *filename) { return unlink(filename); }
 
 /**
  * @brief Get high-resolution time in nanoseconds
@@ -414,23 +441,70 @@ uint64_t bcpl_platform_get_time_ns(void) {
  * @param milliseconds Sleep duration in milliseconds
  */
 void bcpl_platform_sleep_ms(uint32_t milliseconds) {
-  bcpl_platform_sleep((uint64_t)milliseconds * 1000000); // Convert to nanoseconds
+  bcpl_platform_sleep((uint64_t)milliseconds *
+                      1000000); // Convert to nanoseconds
 }
 
-// =============================================================================
-// CPU FEATURE DETECTION AND SYSTEM INFO
-// =============================================================================
+/**
+ * @brief Allocate aligned memory
+ * @param size Size in bytes
+ * @param alignment Alignment requirement
+ * @return Aligned memory pointer or NULL
+ */
+void *bcpl_platform_aligned_alloc(size_t size, size_t alignment) {
+  // Use posix_memalign for aligned allocation
+  void *ptr = NULL;
+  if (posix_memalign(&ptr, alignment, size) == 0) {
+    return ptr;
+  }
+  return NULL;
+}
 
 /**
- * @brief CPU features structure
+ * @brief Free aligned memory
+ * @param ptr Memory to free
  */
-typedef struct {
-  char arch_name[32];
-  int core_count;
-  bool has_simd;
-  bool has_aes;
-  uint32_t feature_flags;
-} bcpl_cpu_features_t;
+void bcpl_platform_aligned_free(void *ptr) {
+  if (ptr) {
+    free(ptr);
+  }
+}
+
+/**
+ * @brief Get page size for the platform
+ * @return Page size in bytes
+ */
+size_t bcpl_platform_get_page_size(void) { return (size_t)getpagesize(); }
+
+/**
+ * @brief Get number of CPU cores
+ * @return Number of logical CPU cores
+ */
+int bcpl_platform_get_cpu_count(void) {
+  return (int)sysconf(_SC_NPROCESSORS_ONLN);
+}
+
+/**
+ * @brief Get last system error
+ * @return Error code
+ */
+int bcpl_platform_get_last_error(void) { return errno; }
+
+/**
+ * @brief Print stack trace (if available)
+ * @param file Output file
+ */
+void bcpl_platform_print_stacktrace(FILE *file) {
+  // macOS doesn't have easy backtrace without additional frameworks
+  fprintf(file, "Stack trace not available on this platform\n");
+}
+
+/**
+ * @brief Get environment variable
+ * @param name Variable name
+ * @return Variable value or NULL
+ */
+const char *bcpl_platform_getenv(const char *name) { return getenv(name); }
 
 /**
  * @brief Get comprehensive CPU feature information
@@ -442,13 +516,13 @@ bcpl_cpu_features_t bcpl_platform_get_cpu_features(void) {
   // Get architecture name
 #if defined(__aarch64__)
   strncpy(features.arch_name, "ARM64", sizeof(features.arch_name) - 1);
-  features.has_simd = true;  // ARM64 always has NEON
-  features.has_aes = true;   // Most ARM64 CPUs have AES
+  features.has_simd = true; // ARM64 always has NEON
+  features.has_aes = true;  // Most ARM64 CPUs have AES
   features.feature_flags = BCPL_CPU_FEATURE_NEON;
 #elif defined(__x86_64__)
   strncpy(features.arch_name, "x86_64", sizeof(features.arch_name) - 1);
-  features.has_simd = true;  // Assume SSE2 at minimum
-  features.has_aes = false;  // Conservative assumption
+  features.has_simd = true; // Assume SSE2 at minimum
+  features.has_aes = false; // Conservative assumption
   features.feature_flags = BCPL_CPU_FEATURE_SSE2;
 #else
   strncpy(features.arch_name, "unknown", sizeof(features.arch_name) - 1);
@@ -461,4 +535,122 @@ bcpl_cpu_features_t bcpl_platform_get_cpu_features(void) {
   features.core_count = bcpl_platform_get_cpu_count();
 
   return features;
+}
+
+// =============================================================================
+// FILE OPERATIONS (MISSING IMPLEMENTATIONS)
+// =============================================================================
+
+/**
+ * @brief Open file with BCPL semantics
+ * @param filename Path to file
+ * @param mode Access mode ('r', 'w', 'a')
+ * @param binary True for binary mode
+ * @return File handle or NULL on failure
+ */
+bcpl_file_handle_t *bcpl_platform_fopen(const char *filename, char mode,
+                                        bool binary) {
+  bcpl_file_handle_t *handle = malloc(sizeof(bcpl_file_handle_t));
+  if (!handle) {
+    return NULL;
+  }
+
+  const char *fmode;
+  switch (mode) {
+  case 'r':
+    fmode = binary ? "rb" : "r";
+    break;
+  case 'w':
+    fmode = binary ? "wb" : "w";
+    break;
+  case 'a':
+    fmode = binary ? "ab" : "a";
+    break;
+  default:
+    free(handle);
+    return NULL;
+  }
+
+  handle->native_handle = fopen(filename, fmode);
+  if (!handle->native_handle) {
+    free(handle);
+    return NULL;
+  }
+
+  handle->is_binary = binary;
+  handle->flags = 0;
+  handle->buffer = NULL;
+  handle->buffer_size = 0;
+
+  return handle;
+}
+
+/**
+ * @brief Close file handle
+ * @param handle File handle to close
+ * @return 0 on success, -1 on failure
+ */
+int bcpl_platform_fclose(bcpl_file_handle_t *handle) {
+  if (!handle) {
+    return -1;
+  }
+
+  int result = 0;
+  if (handle->native_handle) {
+    result = fclose(handle->native_handle);
+  }
+
+  if (handle->buffer) {
+    free(handle->buffer);
+  }
+
+  free(handle);
+  return result;
+}
+
+/**
+ * @brief Read character from file
+ * @param handle File handle
+ * @return Character read or -1 on EOF/error
+ */
+int bcpl_platform_fgetc(bcpl_file_handle_t *handle) {
+  if (!handle || !handle->native_handle) {
+    return -1;
+  }
+
+  return fgetc(handle->native_handle);
+}
+
+/**
+ * @brief Write character to file
+ * @param ch Character to write
+ * @param handle File handle
+ * @return Character written or -1 on error
+ */
+int bcpl_platform_fputc(int ch, bcpl_file_handle_t *handle) {
+  if (!handle || !handle->native_handle) {
+    return -1;
+  }
+
+  return fputc(ch, handle->native_handle);
+}
+
+/**
+ * @brief Fast memory copy optimized for platform
+ * @param dest Destination buffer
+ * @param src Source buffer
+ * @param size Number of bytes
+ */
+void bcpl_platform_memcpy(void *dest, const void *src, size_t size) {
+  memcpy(dest, src, size);
+}
+
+/**
+ * @brief Fast memory set optimized for platform
+ * @param dest Destination buffer
+ * @param value Value to set
+ * @param size Number of bytes
+ */
+void bcpl_platform_memset(void *dest, int value, size_t size) {
+  memset(dest, value, size);
 }
