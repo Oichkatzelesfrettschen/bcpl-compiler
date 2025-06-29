@@ -146,10 +146,9 @@ set_target_properties(op PROPERTIES OUTPUT_NAME "op_${TARGET_ARCH}")
 # Generate architecture-specific symbol table
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
-    COMMAND $<TARGET_FILE:cg> -o ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH} 
-            ${CMAKE_CURRENT_SOURCE_DIR}/st.bcpl
-    DEPENDS cg ${CMAKE_CURRENT_SOURCE_DIR}/st.bcpl
-    COMMENT "Generating symbol table for ${TARGET_ARCH}"
+    COMMAND $<TARGET_FILE:cg> -o ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH} < ${CMAKE_CURRENT_SOURCE_DIR}/st.O
+    DEPENDS cg ${CMAKE_CURRENT_SOURCE_DIR}/st.O
+    COMMENT "Generating symbol table for ${TARGET_ARCH} (using prebuilt OCODE)"
 )
 
 add_custom_target(st_gen_${TARGET_ARCH} ALL
