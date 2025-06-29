@@ -17,8 +17,8 @@
  * - **Platform Support**: Universal cross-platform compatibility
  */
 
-#include "../include/bcpl_runtime.h"
-#include "../include/platform.h"
+#include "bcpl_runtime.h"
+#include "platform.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>

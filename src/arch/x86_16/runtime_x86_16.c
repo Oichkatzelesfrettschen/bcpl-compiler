@@ -3,7 +3,7 @@
  * Optimized for 16-bit x86 architecture - legacy support
  */
 
-#include "../runtime/bcpl_runtime.h"
+#include "bcpl_runtime.h"
 #include <stdint.h>
 
 #ifdef BCPL_X86_16

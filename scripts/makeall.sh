@@ -44,7 +44,7 @@ do
     (cd ${dir} && ${MAKE} ${target})
 done
 
-if [ "$target" = "all" ]; then
+if [ "$target" = "all" ] && [ -z "$SKIP_TESTS" ]; then
     echo "===== tool tests ====="
     if command -v bcplc >/dev/null 2>&1; then
         BC=bcplc

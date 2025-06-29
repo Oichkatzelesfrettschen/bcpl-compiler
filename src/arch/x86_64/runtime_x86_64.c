@@ -3,7 +3,7 @@
  * Optimized for x86-64 architecture with SSE/AVX support
  */
 
-#include "../runtime/bcpl_runtime.h"
+#include "bcpl_runtime.h"
 #include <cpuid.h>
 #include <stdint.h>
 #include <sys/mman.h>

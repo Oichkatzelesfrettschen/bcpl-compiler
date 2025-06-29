@@ -3,7 +3,7 @@
  * Optimized for ARMv7-A and ARMv8-A (32-bit mode)
  */
 
-#include "../runtime/bcpl_runtime.h"
+#include "bcpl_runtime.h"
 #include <stdint.h>
 #include <sys/mman.h>
 
