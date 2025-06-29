@@ -11,6 +11,9 @@ CROSS_PREFIX?=
 CC = clang
 CFLAGS += -std=c23 -Wall -Wextra -Wpedantic -g
 CFLAGS += -DBITS=$(BITS)
+# Allow callers to inject additional compiler flags via CFLAGS_EXTRA without
+# overriding the defaults above.
+CFLAGS += $(CFLAGS_EXTRA)
 
 # Detect OS for assembler flags
 UNAME_S := $(shell uname -s)
