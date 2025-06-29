@@ -17,8 +17,8 @@
  * - **Cross-Platform**: Works on all supported platforms
  */
 
-#include "../include/bcpl_runtime.h"
-#include "../include/platform.h"
+#include "bcpl_runtime.h"
+#include "platform.h"
 #include <setjmp.h>
 #include <signal.h>
 #include <stdbool.h>
