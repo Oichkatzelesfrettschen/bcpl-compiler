@@ -5,8 +5,8 @@
  * @date 2025
  */
 
-#include "../include/bcpl_runtime.h"
-#include "../include/platform.h"
+#include "bcpl_runtime.h"
+#include "platform.h"
 #include <stdlib.h>
 #include <string.h>
 

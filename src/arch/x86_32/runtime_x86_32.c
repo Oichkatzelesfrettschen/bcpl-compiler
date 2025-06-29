@@ -3,7 +3,7 @@
  * Optimized for 32-bit x86 architecture
  */
 
-#include "../runtime/bcpl_runtime.h"
+#include "bcpl_runtime.h"
 #include <stdint.h>
 #include <sys/mman.h>
 

@@ -5,7 +5,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_DIR="$SCRIPT_DIR"
+# Repository root is the parent directory of this script
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Colors for output
 RED='\033[0;31m'
@@ -102,31 +103,38 @@ test_build() {
     
     # Validate outputs
     log_info "Validating build outputs..."
-    local required_outputs=("src/cg" "src/op" "src/libbcpl_runtime.a")
-    for output in "${required_outputs[@]}"; do
-        if [[ ! -f "$output" ]]; then
-            log_error "Missing build output: $output"
+    local required_outputs=(src/cg* src/op* src/libbcpl_runtime*.a)
+    shopt -s nullglob
+    for pattern in "${required_outputs[@]}"; do
+        local matches=($pattern)
+        if [[ ${#matches[@]} -eq 0 ]]; then
+            log_error "Missing build output pattern: $pattern"
+            shopt -u nullglob
             return 1
         fi
-        
-        # Check if it's executable (for binaries)
-        if [[ "$output" != *.a && ! -x "$output" ]]; then
-            log_error "Output not executable: $output"
-            return 1
-        fi
+        for file in "${matches[@]}"; do
+            if [[ "$file" != *.a && ! -x "$file" ]]; then
+                log_error "Output not executable: $file"
+                shopt -u nullglob
+                return 1
+            fi
+        done
     done
+    shopt -u nullglob
     
     # Test binary functionality
     log_info "Testing binary functionality..."
     
     # Test cg and op with minimal input
-    if echo 'quit;' | timeout 5 ./src/cg >/dev/null 2>&1; then
+    local cg_bin=$(ls src/cg* 2>/dev/null | head -n1)
+    local op_bin=$(ls src/op* 2>/dev/null | head -n1)
+    if echo 'quit;' | timeout 5 ./$cg_bin >/dev/null 2>&1; then
         log_success "cg binary functional"
     else
         log_warning "cg binary test inconclusive"
     fi
-    
-    if echo 'quit;' | timeout 5 ./src/op >/dev/null 2>&1; then
+
+    if echo 'quit;' | timeout 5 ./$op_bin >/dev/null 2>&1; then
         log_success "op binary functional"
     else
         log_warning "op binary test inconclusive"
@@ -207,7 +215,7 @@ validate_bootstrap() {
 
 # Installation test
 test_install() {
-    local build_dir="$REPO_DIR/build_release"
+    local build_dir="$REPO_DIR/build_Release"
     local install_dir="$REPO_DIR/install_test"
     
     log_info "Testing installation..."

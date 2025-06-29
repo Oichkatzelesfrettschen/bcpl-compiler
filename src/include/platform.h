@@ -113,16 +113,8 @@ enum bcpl_std_fd {
 // PLATFORM-SPECIFIC IMPLEMENTATIONS
 // =============================================================================
 
-#if defined(BCPL_PLATFORM_LINUX)
-#include "platform/linux.h"
-#elif defined(BCPL_PLATFORM_MACOS)
+#if defined(BCPL_PLATFORM_MACOS)
 #include "platform/macos.h"
-#elif defined(BCPL_PLATFORM_FREEBSD)
-#include "platform/freebsd.h"
-#elif defined(BCPL_PLATFORM_WINDOWS)
-#include "platform/windows.h"
-#else
-#include "platform/generic.h"
 #endif
 
 // =============================================================================
