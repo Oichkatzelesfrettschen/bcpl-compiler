@@ -1,0 +1,335 @@
+// BSAE3.bcpl - BCPL Compiler -- SAE Part 3 - Expression scanning
+// Copyright Xerox Corporation 1980
+//  Last modified on Sun 29 Oct 72 0245.41 BY  jec.
+// gmcd 18 sept 74
+
+// last modified BY Butterfield, May 9, 1979  1:15 PM
+// - EvalBinop, restore unsigned compares - 5/9
+// - EvalBinop, comment out unsigned compares TO bootstrap - 5/8
+// - incorporate Paxton's unsigned compares - 5/8/79
+
+//	Lookat		Attempt TO evaluate a piece of tree at compile time.
+//	*EvalBinop	Evaluate a binary operator, at compile time.
+//	*EvalUnop	Evaluate a unary operator, at compile time.
+//	EvalConst	Evaluate a constant expression.
+//  local TO this compilation.
+
+
+GET "bsaex"
+
+
+//  Lookat is applied TO the address of a tree node (i.e., with   Lookat(H2+x)   ).
+//  LET LVX BE Lookat"s argument, AND LET  x = rv LVX .  There are three cases...
+//   1.	The node can BE evaluated at compile time.  THEN replace  rv LVX  BY a NUMBER node 
+//	 AND RETURN the address of a word containing the computed value
+//   2.	The node can BE simplified, as FOR a  COND  with constant condition OR a TABLE subscripted
+//	BY a constant.  THEN replace  rv LVX  BY the simpler node AND RETURN Lookat(node)
+//   3.	No simplification is possible.  Lookat has been applied recursively TO all sons of
+//	the node that might BE part of an expression.
+
+//  Lookat also does the declarations FOR VALOF blocks 
+//    AND looks up all names in the tree,replacing the name with 
+//    a pointer TO its declaration node
+
+LET Lookat(LVX) = valof
+ [  LET x = rv LVX   //  The usual sort of node.
+    IF x eq 0 RESULTIS 0   //  Nothing TO DO.
+
+    LET Value = nil		//  Put a computed value here IF we get one.
+    AND Node = 0		//  Put a new node here IF we get one.
+    AND LValue = 0		//  Put the addr of the value of a new node here 
+				//   IF we know its value
+    IF (x & NameBit) ne 0 DO
+      [	Node = CellWithName(x)
+	IF Node eq 0 DO
+	[ LET xname = x & NameMask
+	  LET p = UvecN
+	  WHILE p le UvecP DO
+	  [ IF (Uvec!p & NameMask) eq xname BREAK
+	    p = p + UvecN
+	  ]
+	  IF p gr UvecP DO
+	  [ SAEreport(10, xname)
+	    TEST p ls UvecT
+	    ifnot p = 0
+	    ifso  [ Uvec!p = xname + LABEL; Uvec!(p+1) = 0; UvecP = p ]
+	  ]
+	  Uvec!(p+1) = Uvec!(p+1) + 1
+	  Node = lv Uvec!p
+	]
+	rv LVX = Node + NameBit
+	LValue = Node!0 & TypeMask
+	IF LValue eq LOCAL DO
+	  [ IF DvecLoc ls DvecP DO
+		[ SAEreport(8, x & NameMask)
+		  RESULTIS 0
+		 ]
+	    ]
+	IF LValue eq EXTLABEL % LValue eq ZEXTLABEL DO
+	  [ IF Node!1 eq 0 DO
+		[ Node!1 = Nextstatic()
+		  OutputStatic(Node)
+		  RESULTIS 0
+		 ]
+	   ]
+	TEST LValue eq CONSTANT
+	ifso RESULTIS lv Node!1
+	ifnot RESULTIS 0
+     ]
+
+    LET Op = H1!x
+    SWITCHON Op INTO
+     [  CASE NUMBER: CASE CHARCONST:
+	CASE TRUE: CASE FALSE:
+	CASE NIL:
+	    RESULTIS H2+x	//  It is a simple constant
+
+	CASE PLUS: CASE MINUS: CASE MULT:
+	CASE EQ: CASE NE: CASE GR: CASE LS: CASE GE: CASE LE:
+	CASE UGR: CASE ULS: CASE UGE: CASE ULE:
+	CASE LSHIFT: CASE RSHIFT:
+	CASE LOGAND: CASE LOGOR: CASE EQV: CASE NEQV:
+	CASE DIV: CASE REM:
+	 [  LET L, R = Lookat(H2+x), Lookat(H3+x)    //  Look at the two sons.
+	    UNLESS L > 0 % R > 0 RESULTIS 0   //  RETURN IF neither was evaluated.
+	    IF L > 0 & R > 0 DO   //  Both were evaluated.
+	     [  Value = EvalBinop(Op, rv L, rv R)   //  Compute the value.
+		ENDCASE
+	      ]
+	    LET LC, RC = L > 0, R > 0   //  Switches FOR L AND R being constant.
+	    AND LX, RX = nil, nil   //  FOR the values.
+	    AND L0, L1, LT, LF, R0, R1, RT, RF =
+		false,false,false,false,false,false,false,false
+	    IF LC DO   //  Left operand has been evaluated.
+	     [  LX = rv L   //  Value of the operand.
+		IF LX eq 0 DO L0 = true   //  L0 is true IF LX is +0 OR -0
+		IF LX eq 1 DO L1 = true   //  LX is 1
+		IF LX eq true DO LT = true   //  LX is true
+		IF LX eq false DO LF = true   //  LX is false
+	      ]
+	    IF RC DO   //  Right operand has been evaluated.
+	     [  RX = rv R   //  The value of the operand.
+		IF RX eq 0 DO R0 = true   //  R0 is true IF RX is +0 OR -0
+		IF RX eq 1 DO R1 = true
+		IF RX eq true DO RT = true
+		IF RX eq false DO RF = true
+	      ]
+
+	    SWITCHON Op INTO
+	     [  CASE PLUS:
+		    IF L0 DO [ Node = H3!x; ENDCASE ]   //  0+x ? x
+		    IF R0 DO [ Node = H2!x; ENDCASE ]   //  x+0 ? x
+		    RESULTIS 0
+
+		CASE MINUS:
+		    IF L0 DO [ Node = x; H1!Node = NEG
+		    H2!Node = H3!x; ENDCASE  
+		    ]   //   0-x ? neg x
+		    IF R0 DO [ Node = H2!x; ENDCASE ]   //  x-0 ? x
+		    RESULTIS 0
+
+		CASE MULT:
+		    IF L0 % R0 DO [ Value = 0; ENDCASE ]   //  0*x ? 0,. x*0 ? 0
+		    IF L1 DO [ Node = H3!x; ENDCASE ]   //  1*x ? x
+		    IF R1 DO [ Node = H2!x; ENDCASE ]   //  x*1 ? x
+		    RESULTIS 0
+
+		CASE DIV:
+		    IF L0 DO [ Value = 0; ENDCASE ]   //  0/x ? 0
+		    IF R1 DO [ Node = H2!x; ENDCASE ]   //  x/1 ? x
+		    //  IF SCALE ocode ever exists, check FOR RX = 2n AND replace BY shift.
+		    RESULTIS 0
+
+		CASE LOGAND:
+		    IF LF % RF DO [ Value = false; ENDCASE ]   //  false&x ? false,. x&false ? false
+		    IF LT DO [ Node = H3!x; ENDCASE ]   //  true&x ? x
+		    IF RT DO [ Node = H2!x; ENDCASE ]   //  x&true ? x
+		    RESULTIS 0
+
+		CASE LOGOR:
+		    IF LT % RT DO [ Value = true; ENDCASE ]   //  true%x ? true   x%true ? true
+		    IF LF DO [ Node = H3!x; ENDCASE ]   //  false%x ? x
+		    IF RF DO [ Node = H2!x; ENDCASE ]   //  x%false ? x
+		    RESULTIS 0
+
+		CASE LSHIFT: CASE RSHIFT:
+		    IF R0 DO [ Node = H2!x; ENDCASE ]   //  Don"t shift BY zero.
+		    RESULTIS 0
+
+		CASE EQV:
+		    IF LF DO [ Node = x; H1!Node = NOT
+		     H2!Node = H3!x; ENDCASE ]   //  false EQV x ? NOT x
+		    IF RF DO [ Node = x; H1!Node = NOT
+		     H2!Node = H2!x; ENDCASE ]   //  x EQV false ? NOT x
+		    IF LT DO [ Node = H3!x; ENDCASE ]   //  true EQV x ? x
+		    IF RT DO [ Node = H2!x; ENDCASE ]   //  x EQV true ? x
+		    RESULTIS 0
+
+		CASE NEQV:
+		    IF LF DO [ Node = H3!x; ENDCASE ]   //  false NEQV x ? x
+		    IF RF DO [ Node = H2!x; ENDCASE ]   //  x NEQV false ? x
+		    IF LT DO [ Node = x; H1!Node = NOT
+		     H2!Node = H3!x; ENDCASE ]   //  true NEQV x ? NOT x
+		    IF RT DO [ Node = x; H1!Node = NOT
+		     H2!Node = H2!x; ENDCASE ]   //  x NEQV true ? NOT x
+		    RESULTIS 0
+
+		DEFAULT:
+		    RESULTIS 0
+	      ]
+	    ENDCASE   //  Take all above "ENDCASE"s TO the end of this function.
+	  ]
+
+	CASE NEG: CASE NOT:
+	 [  LET L = Lookat(H2+x)   //  Examine the son.
+	    UNLESS L > 0 RESULTIS 0   //  Done IF NOT evaluated.
+	    Value = EvalUnop(Op, rv L)
+	    ENDCASE
+	  ]
+
+	CASE COND:
+	 [  LET B = Lookat(H2+x)   //  Examine the conditional arm.
+	    UNLESS B > 0 DO [ Lookat(H3+x); Lookat(H4+x); RESULTIS 0 ]
+	    Node = (rv B ? H3, H4)!x   //  The selected arm.
+	    LValue = Lookat(lv Node)
+	    ENDCASE
+	  ]
+
+	CASE VECAP:
+	 [  LET A, B, LA, LB = nil,nil,nil,nil
+	    LA = Lookat(H2+x); LB = Lookat(H3+x)
+	    A = H2!x; B = H3!x
+	    IF LA > 0 DO [ LET t, Lt = A, LA; A = B; LA = LB; B, LB = t, Lt ]   
+	    RESULTIS 0
+	  ]
+
+	CASE LV:
+	 [  LET y = H2!x
+
+	    UNLESS (y & NameBit) ne 0
+	    DO
+	    [
+	    IF H1!y eq RV DO 
+		[ Node=H2!y; LValue=Lookat(lv Node); ENDCASE ]
+	    IF H1!y eq VECAP DO 
+		[ Node=y; H1!Node = PLUS; H2!Node = H2!y; H3!Node = H3!y
+		  LValue=Lookat(lv Node); ENDCASE ]
+	    ]
+
+	    Lookat(H2+x)
+	    RESULTIS 0
+	  ]
+
+	CASE RV:
+	    Lookat(H2+x)
+	    RESULTIS 0
+
+	CASE VALOF:
+	 [  LET DE, DS = DvecE, DvecS
+	    Decllabels(H2!x)
+	    Declvars(H2!x)
+	    DvecE, DvecS = DE, DS
+	    RESULTIS 0
+	  ]
+
+	CASE TABLE:
+	 [  LET n = H2!x
+	    FOR i = 1 TO n DO (H2+i)!x = EvalConst(H2+i+x)
+	    RESULTIS 0
+	  ]
+
+	CASE SIZE:
+	 [  LET L = LookatQual(H3+x)
+	    RESULTIS lv H2!L
+	  ]
+
+	CASE OFFSET:
+	 [  LET L = LookatQual(H3+x)
+	    UNLESS H3!L eq 0 RESULTIS 0
+	    RESULTIS lv H1!L
+	  ]
+
+	CASE LEFTLUMP:
+	CASE RIGHTLUMP:
+	 [  LET LA = Lookat(H2+x)
+	    LET L = LookatQual(H4+x)
+	    RESULTIS 0
+	  ]
+
+	CASE FNAP:
+	CASE COMMA:
+	    Lookat(H2+x)
+	    Lookat(H3+x)
+	    RESULTIS 0
+
+	CASE VEC:
+	    Lookat(H2+x)
+	    RESULTIS 0
+
+	CASE STRINGCONST:
+	    RESULTIS 0
+
+	DEFAULT:
+	    SAEreport(-5)
+	    RESULTIS 0
+      ]
+
+    //  Come here FOR all the above ""ENDCASE""s.
+    //  We have either a new Node OR a Value
+    IF Node ne 0 DO
+     [  rv LVX = Node	//  A new Node--replace the tree node with it
+	RESULTIS LValue	//   AND RETURN the addr of its value IF we have it
+      ]
+    Node = x; H1!Node = NUMBER; H2!Node = Value	//  A Value
+    rv LVX = Node	//   so replace the tree node with a NUMBER node
+	RESULTIS H2 + Node	//   AND RETURN the addr of its value
+  ]
+
+
+AND EvalBinop(Op, a, b) = valof
+    SWITCHON Op INTO
+     [  CASE PLUS:	RESULTIS a + b
+	CASE MINUS:	RESULTIS a - b
+	CASE EQ:	RESULTIS a eq b
+	CASE NE:	RESULTIS a ne b
+	CASE LS:	RESULTIS a < b
+	CASE GR:	RESULTIS a > b
+	CASE LE:	RESULTIS a le b
+	CASE GE:	RESULTIS a ge b
+	CASE ULS:	RESULTIS a uls b
+	CASE UGR:	RESULTIS a ugr b
+	CASE ULE:	RESULTIS a ule b
+	CASE UGE:	RESULTIS a uge b
+	CASE MULT:	RESULTIS a * b
+	CASE DIV:	RESULTIS a / b
+	CASE REM:	RESULTIS a rem b
+	CASE LSHIFT:	RESULTIS a LSHIFT b
+	CASE RSHIFT:	RESULTIS a RSHIFT b
+	CASE LOGAND:	RESULTIS a & b
+	CASE LOGOR:	RESULTIS a % b
+	CASE EQV:	RESULTIS a EQV b
+	CASE NEQV:	RESULTIS a NEQV b
+	DEFAULT:	SAEreport(-6); RESULTIS 0
+      ]
+
+AND EvalUnop(Op, a) = valof
+    SWITCHON Op INTO
+     [  CASE NEG:	RESULTIS - a
+	CASE NOT:	RESULTIS NOT a
+	DEFAULT:	SAEreport(-7); RESULTIS 0
+      ]
+
+
+//  This routine is used when the node MUST BE evaluable at compile time.
+
+AND EvalConst(LVX) = valof
+ [  LET x = rv LVX
+    LET lx = nil
+    lx = Lookat(LVX)
+    x = rv LVX
+    IF lx > 0 RESULTIS rv lx
+    SAEreport(9, -1)
+    rv LVX = ZERONODE
+    RESULTIS 0
+  ]
+ 

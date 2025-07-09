@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BCPL Compiler Documentation &mdash; BCPL Compiler 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            BCPL Compiler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-frontend.html">Compiler Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-backend.html">Compiler Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime-system.html">Runtime System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-utilities.html">Tools and Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building-installing.html">Building and Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">BCPL Compiler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">BCPL Compiler Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bcpl-compiler-documentation">
+<h1>BCPL Compiler Documentation<a class="headerlink" href="#bcpl-compiler-documentation" title="Link to this heading"></a></h1>
+<p>Welcome to the comprehensive documentation for the BCPL Compiler, a complete implementation
+of the BCPL programming language compiler with runtime system.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-is-bcpl">What is BCPL?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#this-implementation">This Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#history">History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#getting-started">Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#compilation-pipeline">Compilation Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#frontend-components">Frontend Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#backend-components">Backend Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#runtime-system">Runtime System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#build-system">Build System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-frontend.html">Compiler Frontend</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compiler-frontend.html#lexical-analysis">Lexical Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-frontend.html#syntax-analysis">Syntax Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-frontend.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-frontend.html#symbol-table">Symbol Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-frontend.html#integration">Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-backend.html">Compiler Backend</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#code-generation">Code Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#translation-phases">Translation Phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#ocode-intermediate-representation">OCODE Intermediate Representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#optimization">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#register-allocation">Register Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#target-support">Target Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#output-generation">Output Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#runtime-interface">Runtime Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler-backend.html#backend-integration">Backend Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="runtime-system.html">Runtime System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#startup-code">Startup Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#memory-management">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#system-interface">System Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#standard-library">Standard Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#global-variables">Global Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#stream-system">Stream System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#process-model">Process Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#debugging-support">Debugging Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#platform-portability">Platform Portability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime-system.html#runtime-initialization">Runtime Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools-utilities.html">Tools and Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#compiler-tools">Compiler Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#build-system">Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#development-scripts">Development Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#testing-framework">Testing Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#debugging-tools">Debugging Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#documentation-tools">Documentation Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#code-quality-tools">Code Quality Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#distribution-tools">Distribution Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#usage-examples">Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools-utilities.html#tool-configuration">Tool Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.SDSZ"><code class="docutils literal notranslate"><span class="pre">SDSZ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_R"><code class="docutils literal notranslate"><span class="pre">X_R</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_P"><code class="docutils literal notranslate"><span class="pre">X_P</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_G"><code class="docutils literal notranslate"><span class="pre">X_G</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_L"><code class="docutils literal notranslate"><span class="pre">X_L</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_N"><code class="docutils literal notranslate"><span class="pre">X_N</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_LP"><code class="docutils literal notranslate"><span class="pre">X_LP</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_LG"><code class="docutils literal notranslate"><span class="pre">X_LG</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_LL"><code class="docutils literal notranslate"><span class="pre">X_LL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_MOV"><code class="docutils literal notranslate"><span class="pre">X_MOV</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_LEA"><code class="docutils literal notranslate"><span class="pre">X_LEA</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_JMP"><code class="docutils literal notranslate"><span class="pre">X_JMP</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_CALL"><code class="docutils literal notranslate"><span class="pre">X_CALL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_IMUL"><code class="docutils literal notranslate"><span class="pre">X_IMUL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_IDIV"><code class="docutils literal notranslate"><span class="pre">X_IDIV</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_SUB"><code class="docutils literal notranslate"><span class="pre">X_SUB</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_CMP"><code class="docutils literal notranslate"><span class="pre">X_CMP</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_ADD"><code class="docutils literal notranslate"><span class="pre">X_ADD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_NEG"><code class="docutils literal notranslate"><span class="pre">X_NEG</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_NOT"><code class="docutils literal notranslate"><span class="pre">X_NOT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_AND"><code class="docutils literal notranslate"><span class="pre">X_AND</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_OR"><code class="docutils literal notranslate"><span class="pre">X_OR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.X_XOR"><code class="docutils literal notranslate"><span class="pre">X_XOR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.XCJ"><code class="docutils literal notranslate"><span class="pre">XCJ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.XI1"><code class="docutils literal notranslate"><span class="pre">XI1</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.XNA"><code class="docutils literal notranslate"><span class="pre">XNA</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv47gencodev"><code class="docutils literal notranslate"><span class="pre">gencode()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv44loadii"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv44saveii"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45forcei"><code class="docutils literal notranslate"><span class="pre">force()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv47loadregii"><code class="docutils literal notranslate"><span class="pre">loadreg()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45codexi"><code class="docutils literal notranslate"><span class="pre">codex()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv44codeiz"><code class="docutils literal notranslate"><span class="pre">code()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv47defdataii"><code class="docutils literal notranslate"><span class="pre">defdata()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv47outdataii"><code class="docutils literal notranslate"><span class="pre">outdata()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv47codelabi"><code class="docutils literal notranslate"><span class="pre">codelab()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv44emitPKcz"><code class="docutils literal notranslate"><span class="pre">emit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45labeli"><code class="docutils literal notranslate"><span class="pre">label()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv44rdopi"><code class="docutils literal notranslate"><span class="pre">rdop()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43rdnv"><code class="docutils literal notranslate"><span class="pre">rdn()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45errorPKcz"><code class="docutils literal notranslate"><span class="pre">error()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv410buf_appendPPcP6size_tPKcz"><code class="docutils literal notranslate"><span class="pre">buf_append()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv44mainv"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45xistr"><code class="docutils literal notranslate"><span class="pre">xistr</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45xitab"><code class="docutils literal notranslate"><span class="pre">xitab</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43reg"><code class="docutils literal notranslate"><span class="pre">reg</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv46relstr"><code class="docutils literal notranslate"><span class="pre">relstr</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45sdata"><code class="docutils literal notranslate"><span class="pre">sdata</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv42dt"><code class="docutils literal notranslate"><span class="pre">dt</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv42sp"><code class="docutils literal notranslate"><span class="pre">sp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45ltype"><code class="docutils literal notranslate"><span class="pre">ltype</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45ldata"><code class="docutils literal notranslate"><span class="pre">ldata</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv42lp"><code class="docutils literal notranslate"><span class="pre">lp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45labno"><code class="docutils literal notranslate"><span class="pre">labno</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv44loff"><code class="docutils literal notranslate"><span class="pre">loff</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv42ch"><code class="docutils literal notranslate"><span class="pre">ch</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv413finish_modulev"><code class="docutils literal notranslate"><span class="pre">finish_module()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv49translateP4FILE"><code class="docutils literal notranslate"><span class="pre">translate()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv46module"><code class="docutils literal notranslate"><span class="pre">module</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv47builder"><code class="docutils literal notranslate"><span class="pre">builder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv44func"><code class="docutils literal notranslate"><span class="pre">func</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45optab"><code class="docutils literal notranslate"><span class="pre">optab</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.OPATTR"><code class="docutils literal notranslate"><span class="pre">OPATTR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.optab1"><code class="docutils literal notranslate"><span class="pre">optab1</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.optab2"><code class="docutils literal notranslate"><span class="pre">optab2</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.optab3"><code class="docutils literal notranslate"><span class="pre">optab3</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv48ocode_op"><code class="docutils literal notranslate"><span class="pre">ocode_op</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv4N19PhonyNameDueToError5OPMAXE"><code class="docutils literal notranslate"><span class="pre">OPMAX</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.SZ"><code class="docutils literal notranslate"><span class="pre">SZ</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#c.LN"><code class="docutils literal notranslate"><span class="pre">LN</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45matchPKcPKc"><code class="docutils literal notranslate"><span class="pre">match()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv45generPKcPc"><code class="docutils literal notranslate"><span class="pre">gener()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43pat"><code class="docutils literal notranslate"><span class="pre">pat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p00"><code class="docutils literal notranslate"><span class="pre">p00</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p01"><code class="docutils literal notranslate"><span class="pre">p01</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p02"><code class="docutils literal notranslate"><span class="pre">p02</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p03"><code class="docutils literal notranslate"><span class="pre">p03</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p04"><code class="docutils literal notranslate"><span class="pre">p04</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p05"><code class="docutils literal notranslate"><span class="pre">p05</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p06"><code class="docutils literal notranslate"><span class="pre">p06</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p07"><code class="docutils literal notranslate"><span class="pre">p07</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p08"><code class="docutils literal notranslate"><span class="pre">p08</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p09"><code class="docutils literal notranslate"><span class="pre">p09</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p10"><code class="docutils literal notranslate"><span class="pre">p10</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p11"><code class="docutils literal notranslate"><span class="pre">p11</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p16"><code class="docutils literal notranslate"><span class="pre">p16</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p17"><code class="docutils literal notranslate"><span class="pre">p17</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p18"><code class="docutils literal notranslate"><span class="pre">p18</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p19"><code class="docutils literal notranslate"><span class="pre">p19</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p20"><code class="docutils literal notranslate"><span class="pre">p20</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p21"><code class="docutils literal notranslate"><span class="pre">p21</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p22"><code class="docutils literal notranslate"><span class="pre">p22</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p23"><code class="docutils literal notranslate"><span class="pre">p23</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p24"><code class="docutils literal notranslate"><span class="pre">p24</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p25"><code class="docutils literal notranslate"><span class="pre">p25</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p26"><code class="docutils literal notranslate"><span class="pre">p26</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p27"><code class="docutils literal notranslate"><span class="pre">p27</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p28"><code class="docutils literal notranslate"><span class="pre">p28</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p29"><code class="docutils literal notranslate"><span class="pre">p29</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p30"><code class="docutils literal notranslate"><span class="pre">p30</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p31"><code class="docutils literal notranslate"><span class="pre">p31</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p32"><code class="docutils literal notranslate"><span class="pre">p32</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p33"><code class="docutils literal notranslate"><span class="pre">p33</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p34"><code class="docutils literal notranslate"><span class="pre">p34</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p35"><code class="docutils literal notranslate"><span class="pre">p35</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p36"><code class="docutils literal notranslate"><span class="pre">p36</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p37"><code class="docutils literal notranslate"><span class="pre">p37</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p38"><code class="docutils literal notranslate"><span class="pre">p38</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p39"><code class="docutils literal notranslate"><span class="pre">p39</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p40"><code class="docutils literal notranslate"><span class="pre">p40</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43p41"><code class="docutils literal notranslate"><span class="pre">p41</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43VAL"><code class="docutils literal notranslate"><span class="pre">VAL</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43SET"><code class="docutils literal notranslate"><span class="pre">SET</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43BIN"><code class="docutils literal notranslate"><span class="pre">BIN</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#_CPPv43DEC"><code class="docutils literal notranslate"><span class="pre">DEC</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#core-components">Core Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#runtime-system">Runtime System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#development-tools">Development Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="building-installing.html">Building and Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="building-installing.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-installing.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-installing.html#manual-build-process">Manual Build Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-installing.html#build-configuration">Build Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-installing.html#testing-the-installation">Testing the Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-installing.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-installing.html#advanced-configuration">Advanced Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building-installing.html#documentation-generation">Documentation Generation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#hello-world">Hello World</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#basic-i-o">Basic I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#factorial-calculation">Factorial Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#data-structures">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#file-processing">File Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#string-processing">String Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#command-line-processing">Command Line Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#debugging-examples">Debugging Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#compilation-examples">Compilation Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#performance-examples">Performance Examples</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<p>BCPL (Basic Combined Programming Language) is a programming language designed by Martin Richards
+at the University of Cambridge in 1966. This compiler implementation provides a complete
+BCPL development environment including:</p>
+<ul class="simple">
+<li><p><strong>Compiler Frontend</strong>: Lexical analysis, parsing, and OCODE generation</p></li>
+<li><p><strong>Compiler Backend</strong>: Multiple backends including x86 assembly and experimental LLVM IR generation</p></li>
+<li><p><strong>Runtime System</strong>: Complete runtime environment with garbage collection and I/O facilities</p></li>
+<li><p><strong>Standard Library</strong>: Comprehensive library of standard BCPL functions and utilities</p></li>
+<li><p><strong>Development Tools</strong>: Testing, cross-referencing, and debugging utilities</p></li>
+</ul>
+</section>
+<section id="architecture-overview">
+<h1>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Link to this heading"></a></h1>
+<p>The BCPL compiler consists of several key components:</p>
+<section id="frontend-components">
+<h2>Frontend Components<a class="headerlink" href="#frontend-components" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>ST (Scanner/Translator)</strong>: The main compiler frontend written in BCPL</p></li>
+<li><p><strong>Lexical Analysis</strong>: Tokenization and preprocessing</p></li>
+<li><p><strong>Parser</strong>: Syntax analysis and AST construction</p></li>
+<li><p><strong>OCODE Generation</strong>: Intermediate representation generation</p></li>
+</ul>
+</section>
+<section id="backend-components">
+<h2>Backend Components<a class="headerlink" href="#backend-components" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>CG (Code Generator)</strong>: x86 assembly code generation</p></li>
+<li><p><strong>OP (Optimizer)</strong>: Peephole optimization</p></li>
+<li><p><strong>LLCG (LLVM Code Generator)</strong>: Experimental LLVM IR backend</p></li>
+</ul>
+</section>
+<section id="runtime-system">
+<h2>Runtime System<a class="headerlink" href="#runtime-system" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>BLIB</strong>: Standard library functions written in BCPL</p></li>
+<li><p><strong>Runtime Support</strong>: Assembly language runtime components</p></li>
+<li><p><strong>System Interface</strong>: Platform-specific system call wrappers</p></li>
+<li><p><strong>Memory Management</strong>: Stack and heap management</p></li>
+</ul>
+</section>
+<section id="build-system">
+<h2>Build System<a class="headerlink" href="#build-system" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Make/CMake</strong>: Traditional and modern build systems</p></li>
+<li><p><strong>Driver Scripts</strong>: Compiler driver programs for easy invocation</p></li>
+</ul>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BCPL Compiler Documentation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

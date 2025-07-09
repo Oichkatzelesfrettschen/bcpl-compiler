@@ -1,0 +1,921 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="oc_8h" kind="file" language="C++">
+    <compoundname>oc.h</compoundname>
+    <includedby refid="cg_8c" local="yes">src/cg.c</includedby>
+    <includedby refid="oc_8c" local="yes">src/oc.c</includedby>
+    <invincdepgraph>
+      <node id="2">
+        <label>src/cg.c</label>
+        <link refid="cg_8c"/>
+      </node>
+      <node id="3">
+        <label>src/oc.c</label>
+        <link refid="oc_8c"/>
+      </node>
+      <node id="1">
+        <label>src/oc.h</label>
+        <link refid="oc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="oc_8h_1a0fd179dceddd3489cdfcb14ec957c584" prot="public" static="no">
+        <name>OPATTR</name>
+        <initializer>4</initializer>
+        <briefdescription>
+<para>Number of attributes per operation in the optab table. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.h" line="180" column="9" bodyfile="src/oc.h" bodystart="180" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="oc_8h_1a2403e8776cbd43a13244753094b78112" prot="public" static="no">
+        <name>optab1</name>
+        <param><defname>x</defname></param>
+        <initializer>(<ref refid="oc_8c_1a0b22913edcaaca9e7fde63d0c4d38b7d" kindref="member">optab</ref>[x][1])</initializer>
+        <briefdescription>
+<para>Macro to access the first attribute of an OCODE operation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The OCODE operation </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first attribute value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.h" line="187" column="9" bodyfile="src/oc.h" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="oc_8h_1abd69503dfd1468d60a7997507c9f777d" prot="public" static="no">
+        <name>optab2</name>
+        <param><defname>x</defname></param>
+        <initializer>(<ref refid="oc_8c_1a0b22913edcaaca9e7fde63d0c4d38b7d" kindref="member">optab</ref>[x][2])</initializer>
+        <briefdescription>
+<para>Macro to access the second attribute of an OCODE operation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The OCODE operation </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The second attribute value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.h" line="194" column="9" bodyfile="src/oc.h" bodystart="194" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="oc_8h_1aa2207628d097838e402d670583e15418" prot="public" static="no">
+        <name>optab3</name>
+        <param><defname>x</defname></param>
+        <initializer>(<ref refid="oc_8c_1a0b22913edcaaca9e7fde63d0c4d38b7d" kindref="member">optab</ref>[x][3])</initializer>
+        <briefdescription>
+<para>Macro to access the third attribute of an OCODE operation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The OCODE operation </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The third attribute value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.h" line="201" column="9" bodyfile="src/oc.h" bodystart="201" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2" prot="public" static="no" strong="no">
+        <type>int</type>
+        <name>ocode_op</name>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a634340f260a88ae2889c4cf0502cc08b" prot="public">
+          <name>S_TRUE</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+<para>Constant true value. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a68f36740ce22fa7b0a5500578751c4df" prot="public">
+          <name>S_FALSE</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+<para>Constant false value. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a9911548c6defff3dfabde126245dbfb1" prot="public">
+          <name>S_RV</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+<para>Right-hand value (load from address) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1e16e0eab473aa07ad290083d72ed891" prot="public">
+          <name>S_FNAP</name>
+          <initializer>= 10</initializer>
+          <briefdescription>
+<para>Function application (call function) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ab9e7ffe62eebebec72c08e8b9996c70a" prot="public">
+          <name>S_MULT</name>
+          <initializer>= 11</initializer>
+          <briefdescription>
+<para>Multiplication operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae15c297f19edcc0536fbcc294c8c572a" prot="public">
+          <name>S_DIV</name>
+          <initializer>= 12</initializer>
+          <briefdescription>
+<para>Division operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a17b321e52dd2aeb1a47409921a84a3fe" prot="public">
+          <name>S_REM</name>
+          <initializer>= 13</initializer>
+          <briefdescription>
+<para>Remainder (modulo) operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2acee792d8135868160e57a6d3286eea45" prot="public">
+          <name>S_PLUS</name>
+          <initializer>= 14</initializer>
+          <briefdescription>
+<para>Addition operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa32610e28caffb91a697d4245fb6cf0c" prot="public">
+          <name>S_MINUS</name>
+          <initializer>= 15</initializer>
+          <briefdescription>
+<para>Subtraction operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6134c07aec3c25b810423fe882ec35ed" prot="public">
+          <name>S_QUERY</name>
+          <initializer>= 16</initializer>
+          <briefdescription>
+<para>Query operator (used in conditional expressions) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aab5e0b881d0fc5a78ae7dfbf455e42f1" prot="public">
+          <name>S_NEG</name>
+          <initializer>= 17</initializer>
+          <briefdescription>
+<para>Unary negation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1c4f9325b9f19bf8d3b16a738cfaa173" prot="public">
+          <name>S_ABS</name>
+          <initializer>= 19</initializer>
+          <briefdescription>
+<para>Absolute value. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a78f2fe04c8d2e52b1488b9f85ac2f7fe" prot="public">
+          <name>S_EQ</name>
+          <initializer>= 20</initializer>
+          <briefdescription>
+<para>Equality comparison. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a33c544162eea8f966c3bdec29d7c77a8" prot="public">
+          <name>S_NE</name>
+          <initializer>= 21</initializer>
+          <briefdescription>
+<para>Inequality comparison. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1fd3330d39fc4eebcae5821e92b66598" prot="public">
+          <name>S_LS</name>
+          <initializer>= 22</initializer>
+          <briefdescription>
+<para>Less than comparison. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a2b552341bfe83ffddd206855c8d716bb" prot="public">
+          <name>S_GR</name>
+          <initializer>= 23</initializer>
+          <briefdescription>
+<para>Greater than comparison. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a196c4ad49ae2e87a6fae7076375f4402" prot="public">
+          <name>S_LE</name>
+          <initializer>= 24</initializer>
+          <briefdescription>
+<para>Less than or equal comparison. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8f5f3124892e608ef7c74bf81ac4b8a0" prot="public">
+          <name>S_GE</name>
+          <initializer>= 25</initializer>
+          <briefdescription>
+<para>Greater than or equal comparison. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2af48ddd6122fa1c3452214914dc57bcb9" prot="public">
+          <name>S_NOT</name>
+          <initializer>= 30</initializer>
+          <briefdescription>
+<para>Logical NOT operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac22d82662e0ff9a1fbabd92f72de4996" prot="public">
+          <name>S_LSHIFT</name>
+          <initializer>= 31</initializer>
+          <briefdescription>
+<para>Left bit shift operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a56464d161402eb08aabc5552f5099150" prot="public">
+          <name>S_RSHIFT</name>
+          <initializer>= 32</initializer>
+          <briefdescription>
+<para>Right bit shift operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ab6175d153db4d2ec96a3ce5240b644cf" prot="public">
+          <name>S_LOGAND</name>
+          <initializer>= 33</initializer>
+          <briefdescription>
+<para>Logical AND operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8ebdb8177a8ae90e46dff6a4a5b840f1" prot="public">
+          <name>S_LOGOR</name>
+          <initializer>= 34</initializer>
+          <briefdescription>
+<para>Logical OR operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2abc5748e7c7bc97c9d0b1e112ac2731d9" prot="public">
+          <name>S_EQV</name>
+          <initializer>= 35</initializer>
+          <briefdescription>
+<para>Equivalence operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aac99459530c763b2e72f8a5188c31782" prot="public">
+          <name>S_NEQV</name>
+          <initializer>= 36</initializer>
+          <briefdescription>
+<para>Non-equivalence operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac9c54cf4768da84e5e5f248e4880baa3" prot="public">
+          <name>S_COND</name>
+          <initializer>= 37</initializer>
+          <briefdescription>
+<para>Conditional operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa6fca1794f1375f63a7578ebebb33624" prot="public">
+          <name>S_LP</name>
+          <initializer>= 40</initializer>
+          <briefdescription>
+<para>Load parameter (stack-relative addressing) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a680a504bc6909b07fc1cdbacb15c9ca5" prot="public">
+          <name>S_LG</name>
+          <initializer>= 41</initializer>
+          <briefdescription>
+<para>Load global variable. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa691425faf78380c94bea0165b400627" prot="public">
+          <name>S_LN</name>
+          <initializer>= 42</initializer>
+          <briefdescription>
+<para>Load number (constant) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac29d80754ddd534a99ab4fb1fea02393" prot="public">
+          <name>S_LSTR</name>
+          <initializer>= 43</initializer>
+          <briefdescription>
+<para>Load string constant. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3c180b1dfe97df28a52065ab2bc119d3" prot="public">
+          <name>S_LL</name>
+          <initializer>= 44</initializer>
+          <briefdescription>
+<para>Load local variable. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a7c84abef1a8b83513700f9951dd75838" prot="public">
+          <name>S_LLP</name>
+          <initializer>= 45</initializer>
+          <briefdescription>
+<para>Load parameter pointer. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3ba41710113e01b556a4ce9a7726e894" prot="public">
+          <name>S_LLG</name>
+          <initializer>= 46</initializer>
+          <briefdescription>
+<para>Load global pointer. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a5e603d85ebc292a128d18b76f752f717" prot="public">
+          <name>S_LLL</name>
+          <initializer>= 47</initializer>
+          <briefdescription>
+<para>Load local pointer. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac4dda0b13bd3d88c9cb0d37cb289ee9a" prot="public">
+          <name>S_NEEDS</name>
+          <initializer>= 48</initializer>
+          <briefdescription>
+<para>Module dependency declaration. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ada73e9a7184ddbe9df5136844aa5be79" prot="public">
+          <name>S_SECTION</name>
+          <initializer>= 49</initializer>
+          <briefdescription>
+<para>Module section declaration. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae5c9b9fe1ee4d1c396f204f9cce0cb2a" prot="public">
+          <name>S_RTAP</name>
+          <initializer>= 51</initializer>
+          <briefdescription>
+<para>Return from function application. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a7baf990810b336be711b13f1578eeaaf" prot="public">
+          <name>S_GOTO</name>
+          <initializer>= 52</initializer>
+          <briefdescription>
+<para>Unconditional jump (goto) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8c72b61e5d6473b6c67a2b2630035d3f" prot="public">
+          <name>S_RETURN</name>
+          <initializer>= 67</initializer>
+          <briefdescription>
+<para>Return from function. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a93dbd7e7f36df21b1d9ea359d1497415" prot="public">
+          <name>S_FINISH</name>
+          <initializer>= 68</initializer>
+          <briefdescription>
+<para>Program termination. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a17a3bf3b8e491d16ec77b7fe28e78806" prot="public">
+          <name>S_SWITCHON</name>
+          <initializer>= 70</initializer>
+          <briefdescription>
+<para>Switch statement. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a32764092d14740914081f3bc5a999b80" prot="public">
+          <name>S_GLOBAL</name>
+          <initializer>= 76</initializer>
+          <briefdescription>
+<para>Global variable declaration. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a97ba549e605c21a54f220cf80da3143f" prot="public">
+          <name>S_SP</name>
+          <initializer>= 80</initializer>
+          <briefdescription>
+<para>Store to parameter. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1012b32ebc27518c152db503d3aebbbf" prot="public">
+          <name>S_SG</name>
+          <initializer>= 81</initializer>
+          <briefdescription>
+<para>Store to global variable. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac58ce269340e5667c8f98ec14742a5bb" prot="public">
+          <name>S_SL</name>
+          <initializer>= 82</initializer>
+          <briefdescription>
+<para>Store to local variable. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a89dcbf099fa46617ccb1b3b6755ddb53" prot="public">
+          <name>S_STIND</name>
+          <initializer>= 83</initializer>
+          <briefdescription>
+<para>Store indirect (store through pointer) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a0b232e8ca907492eeca61af964b3662e" prot="public">
+          <name>S_JUMP</name>
+          <initializer>= 85</initializer>
+          <briefdescription>
+<para>Jump instruction. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a01fe1e9655e8adecf7c3babb9aefd5ae" prot="public">
+          <name>S_JT</name>
+          <initializer>= 86</initializer>
+          <briefdescription>
+<para>Jump if true. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae93e35a28a60c87d989fae1c0e0ffcf2" prot="public">
+          <name>S_JF</name>
+          <initializer>= 87</initializer>
+          <briefdescription>
+<para>Jump if false. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a236c1cf5aba4e9fe6c2281bfc63635b6" prot="public">
+          <name>S_ENDFOR</name>
+          <initializer>= 88</initializer>
+          <briefdescription>
+<para>End of for loop. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ade7e31c90f3fad9b49aae7dfde4e5418" prot="public">
+          <name>S_BLAB</name>
+          <initializer>= 89</initializer>
+          <briefdescription>
+<para>Branch label. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2add7056b44f4e2f374b7215f630e5b358" prot="public">
+          <name>S_LAB</name>
+          <initializer>= 90</initializer>
+          <briefdescription>
+<para>Label definition. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6b42c9f855452714873f637c7b4a9d24" prot="public">
+          <name>S_STACK</name>
+          <initializer>= 91</initializer>
+          <briefdescription>
+<para>Stack operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa4970f4da86922cead96193a2c78333f" prot="public">
+          <name>S_STORE</name>
+          <initializer>= 92</initializer>
+          <briefdescription>
+<para>Store operation. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a80856e372853e84b5c21526b42d604ae" prot="public">
+          <name>S_RSTACK</name>
+          <initializer>= 93</initializer>
+          <briefdescription>
+<para>Restore stack. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac2f6981b229c21af11bb782949906459" prot="public">
+          <name>S_ENTRY</name>
+          <initializer>= 94</initializer>
+          <briefdescription>
+<para>Function entry point. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2acbb1fbbb0b04d18a572d51c86f4171a4" prot="public">
+          <name>S_SAVE</name>
+          <initializer>= 95</initializer>
+          <briefdescription>
+<para>Save context. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6dc17fd37cb546efe4684179dde0098e" prot="public">
+          <name>S_FNRN</name>
+          <initializer>= 96</initializer>
+          <briefdescription>
+<para>Function return with value. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa0082239e9d6c8df802da1cbeb343530" prot="public">
+          <name>S_RTRN</name>
+          <initializer>= 97</initializer>
+          <briefdescription>
+<para>Return instruction. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a02764266298970f3d4e60ac6c769be23" prot="public">
+          <name>S_RES</name>
+          <initializer>= 98</initializer>
+          <briefdescription>
+<para>Result instruction. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae897b16ecb2d0661625cfff2d06300a0" prot="public">
+          <name>S_RESLAB</name>
+          <initializer>= 99</initializer>
+          <briefdescription>
+<para>Result with label. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a19939ebe56152ac25b56f7ec3f124d83" prot="public">
+          <name>S_DATALAB</name>
+          <initializer>= 100</initializer>
+          <briefdescription>
+<para>Data label. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a88b95186baf642dac8325277d101804f" prot="public">
+          <name>S_ITEML</name>
+          <initializer>= 101</initializer>
+          <briefdescription>
+<para>Data item (label) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3d7935bd73c07c22528f4f3e43e143e5" prot="public">
+          <name>S_ITEMN</name>
+          <initializer>= 102</initializer>
+          <briefdescription>
+<para>Data item (number) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2af3cef75e455b219dd12e685c4adb987c" prot="public">
+          <name>S_ENDPROC</name>
+          <initializer>= 103</initializer>
+          <briefdescription>
+<para>End of procedure. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a38165d93da431da6482d755a4b65fc4f" prot="public">
+          <name>S_END</name>
+          <initializer>= 104</initializer>
+          <briefdescription>
+<para>End marker. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a978e83eb525cec05f735b462494d36c2" prot="public">
+          <name>S_GETBYTE</name>
+          <initializer>= 120</initializer>
+          <briefdescription>
+<para>Get byte from string. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae8a71542cb05fa1c29e166402442cef4" prot="public">
+          <name>S_PUTBYTE</name>
+          <initializer>= 121</initializer>
+          <briefdescription>
+<para>Put byte into string. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>OCODE operation codes enumeration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This enumeration defines all the operation codes used in the OCODE intermediate representation. Each operation represents a specific computation, control flow, or data manipulation instruction.</para>
+<para>The operations are organized into several categories:<itemizedlist>
+<listitem><para>Arithmetic operations (MULT, DIV, PLUS, MINUS, etc.)</para>
+</listitem><listitem><para>Logical operations (LOGAND, LOGOR, NOT, etc.)</para>
+</listitem><listitem><para>Comparison operations (EQ, NE, LS, GR, etc.)</para>
+</listitem><listitem><para>Control flow operations (GOTO, JUMP, JT, JF, etc.)</para>
+</listitem><listitem><para>Memory operations (LG, SG, LP, SP, etc.)</para>
+</listitem><listitem><para>Function operations (FNAP, RETURN, etc.)</para>
+</listitem><listitem><para>Data operations (GETBYTE, PUTBYTE, etc.) </para>
+</listitem></itemizedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.h" line="37" column="1" bodyfile="src/oc.h" bodystart="37" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="enum" id="oc_8h_1a051edd0275ace34838a250db05c85be5" prot="public" static="no" strong="no">
+        <type></type>
+        <name></name>
+        <enumvalue id="oc_8h_1a051edd0275ace34838a250db05c85be5a7b9f8b8a0de2cfa508bb3bb675f939d0" prot="public">
+          <name>OPMAX</name>
+          <initializer>= S_PUTBYTE</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Maximum OCODE operation value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.h" line="177" column="1" bodyfile="src/oc.h" bodystart="177" bodyend="177"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="oc_8h_1aefd9e19ce24648599b196c648caed9a0" prot="public" static="no">
+        <type>enum <ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2" kindref="member">ocode_op</ref></type>
+        <definition>typedef enum ocode_op ocode_op</definition>
+        <argsstring></argsstring>
+        <name>ocode_op</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.h" line="174" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="oc_8h_1a0b22913edcaaca9e7fde63d0c4d38b7d" prot="public" static="no" extern="yes" mutable="no">
+        <type>const char</type>
+        <definition>const char optab[][OPATTR]</definition>
+        <argsstring>[][OPATTR]</argsstring>
+        <name>optab</name>
+        <briefdescription>
+<para>OCODE operation attributes table. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This table contains attributes for each OCODE operation, including stack effects, operand types, and other code generation hints. The table is indexed by the OCODE operation number and contains OPATTR attributes per operation.</para>
+<para>This table defines the attributes for each OCODE operation. The attributes control code generation behavior including:</para>
+<para><itemizedlist>
+<listitem><para>Stack manipulation (pops/pushes)</para>
+</listitem><listitem><para>Register allocation hints</para>
+</listitem><listitem><para>Operation categorization</para>
+</listitem></itemizedlist>
+</para>
+<para>Byte Layout:<itemizedlist>
+<listitem><para>Byte 0: Unused (reserved)</para>
+</listitem><listitem><para>Byte 1: Pops from stack (0, 1, 2) <linebreak/>
+</para>
+</listitem><listitem><para>Byte 2: Pushes onto stack (0, 1, 2 = set to n, 3 = set to n + 1)</para>
+</listitem><listitem><para>Byte 3: Code generation hints (0-7: force; 1-7: loadreg; 8: load op; 9: data op) </para>
+</listitem></itemizedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.h" line="211" column="19" bodyfile="src/oc.c" bodystart="53" bodyend="177" declfile="src/oc.h" declline="211" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>OCODE (Object Code) definitions and enumerations for the BCPL compiler. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>Robert Nordier </para>
+</simplesect>
+<simplesect kind="copyright"><para>Copyright (c) 2012 Robert Nordier. All rights reserved.</para>
+</simplesect>
+This header file defines the OCODE instruction set used as an intermediate representation in the BCPL compiler. OCODE is generated by the compiler frontend (<ref refid="st_8bcpl" kindref="compound">st.bcpl</ref>) and consumed by the various backends (<ref refid="cg_8c" kindref="compound">cg.c</ref>, <ref refid="llcg_8c" kindref="compound">llcg.c</ref>, etc.).</para>
+<para>OCODE provides a platform-independent intermediate representation that abstracts the BCPL language constructs into a simpler instruction set suitable for code generation and optimization. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Copyright<sp/>(c)<sp/>2012<sp/>Robert<sp/>Nordier.<sp/>All<sp/>rights<sp/>reserved.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2" kindref="member">ocode_op</ref><sp/>:<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="39" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a634340f260a88ae2889c4cf0502cc08b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a634340f260a88ae2889c4cf0502cc08b" kindref="member">S_TRUE</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>4,</highlight></codeline>
+<codeline lineno="41" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a68f36740ce22fa7b0a5500578751c4df" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a68f36740ce22fa7b0a5500578751c4df" kindref="member">S_FALSE</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>5,</highlight></codeline>
+<codeline lineno="43" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a9911548c6defff3dfabde126245dbfb1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a9911548c6defff3dfabde126245dbfb1" kindref="member">S_RV</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>8,</highlight></codeline>
+<codeline lineno="45" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1e16e0eab473aa07ad290083d72ed891" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1e16e0eab473aa07ad290083d72ed891" kindref="member">S_FNAP</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>10,</highlight></codeline>
+<codeline lineno="47" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ab9e7ffe62eebebec72c08e8b9996c70a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ab9e7ffe62eebebec72c08e8b9996c70a" kindref="member">S_MULT</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>11,</highlight></codeline>
+<codeline lineno="49" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae15c297f19edcc0536fbcc294c8c572a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae15c297f19edcc0536fbcc294c8c572a" kindref="member">S_DIV</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>12,</highlight></codeline>
+<codeline lineno="51" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a17b321e52dd2aeb1a47409921a84a3fe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a17b321e52dd2aeb1a47409921a84a3fe" kindref="member">S_REM</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>13,</highlight></codeline>
+<codeline lineno="53" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2acee792d8135868160e57a6d3286eea45" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2acee792d8135868160e57a6d3286eea45" kindref="member">S_PLUS</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>14,</highlight></codeline>
+<codeline lineno="55" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa32610e28caffb91a697d4245fb6cf0c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa32610e28caffb91a697d4245fb6cf0c" kindref="member">S_MINUS</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>15,</highlight></codeline>
+<codeline lineno="57" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6134c07aec3c25b810423fe882ec35ed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6134c07aec3c25b810423fe882ec35ed" kindref="member">S_QUERY</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>16,</highlight></codeline>
+<codeline lineno="59" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aab5e0b881d0fc5a78ae7dfbf455e42f1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aab5e0b881d0fc5a78ae7dfbf455e42f1" kindref="member">S_NEG</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>17,</highlight></codeline>
+<codeline lineno="61" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1c4f9325b9f19bf8d3b16a738cfaa173" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1c4f9325b9f19bf8d3b16a738cfaa173" kindref="member">S_ABS</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>19,</highlight></codeline>
+<codeline lineno="63" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a78f2fe04c8d2e52b1488b9f85ac2f7fe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a78f2fe04c8d2e52b1488b9f85ac2f7fe" kindref="member">S_EQ</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>20,</highlight></codeline>
+<codeline lineno="65" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a33c544162eea8f966c3bdec29d7c77a8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a33c544162eea8f966c3bdec29d7c77a8" kindref="member">S_NE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>21,</highlight></codeline>
+<codeline lineno="67" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1fd3330d39fc4eebcae5821e92b66598" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1fd3330d39fc4eebcae5821e92b66598" kindref="member">S_LS</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>22,</highlight></codeline>
+<codeline lineno="69" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a2b552341bfe83ffddd206855c8d716bb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a2b552341bfe83ffddd206855c8d716bb" kindref="member">S_GR</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>23,</highlight></codeline>
+<codeline lineno="71" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a196c4ad49ae2e87a6fae7076375f4402" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a196c4ad49ae2e87a6fae7076375f4402" kindref="member">S_LE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>24,</highlight></codeline>
+<codeline lineno="73" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8f5f3124892e608ef7c74bf81ac4b8a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8f5f3124892e608ef7c74bf81ac4b8a0" kindref="member">S_GE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>25,</highlight></codeline>
+<codeline lineno="75" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2af48ddd6122fa1c3452214914dc57bcb9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2af48ddd6122fa1c3452214914dc57bcb9" kindref="member">S_NOT</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>30,</highlight></codeline>
+<codeline lineno="77" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac22d82662e0ff9a1fbabd92f72de4996" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac22d82662e0ff9a1fbabd92f72de4996" kindref="member">S_LSHIFT</ref><sp/><sp/><sp/><sp/>=<sp/>31,</highlight></codeline>
+<codeline lineno="79" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a56464d161402eb08aabc5552f5099150" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a56464d161402eb08aabc5552f5099150" kindref="member">S_RSHIFT</ref><sp/><sp/><sp/><sp/>=<sp/>32,</highlight></codeline>
+<codeline lineno="81" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ab6175d153db4d2ec96a3ce5240b644cf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ab6175d153db4d2ec96a3ce5240b644cf" kindref="member">S_LOGAND</ref><sp/><sp/><sp/><sp/>=<sp/>33,</highlight></codeline>
+<codeline lineno="83" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8ebdb8177a8ae90e46dff6a4a5b840f1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8ebdb8177a8ae90e46dff6a4a5b840f1" kindref="member">S_LOGOR</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>34,</highlight></codeline>
+<codeline lineno="85" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2abc5748e7c7bc97c9d0b1e112ac2731d9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2abc5748e7c7bc97c9d0b1e112ac2731d9" kindref="member">S_EQV</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>35,</highlight></codeline>
+<codeline lineno="87" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aac99459530c763b2e72f8a5188c31782" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aac99459530c763b2e72f8a5188c31782" kindref="member">S_NEQV</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>36,</highlight></codeline>
+<codeline lineno="89" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac9c54cf4768da84e5e5f248e4880baa3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac9c54cf4768da84e5e5f248e4880baa3" kindref="member">S_COND</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>37,</highlight></codeline>
+<codeline lineno="91" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa6fca1794f1375f63a7578ebebb33624" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa6fca1794f1375f63a7578ebebb33624" kindref="member">S_LP</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>40,</highlight></codeline>
+<codeline lineno="93" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a680a504bc6909b07fc1cdbacb15c9ca5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a680a504bc6909b07fc1cdbacb15c9ca5" kindref="member">S_LG</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>41,</highlight></codeline>
+<codeline lineno="95" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa691425faf78380c94bea0165b400627" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa691425faf78380c94bea0165b400627" kindref="member">S_LN</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>42,</highlight></codeline>
+<codeline lineno="97" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac29d80754ddd534a99ab4fb1fea02393" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac29d80754ddd534a99ab4fb1fea02393" kindref="member">S_LSTR</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>43,</highlight></codeline>
+<codeline lineno="99" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3c180b1dfe97df28a52065ab2bc119d3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3c180b1dfe97df28a52065ab2bc119d3" kindref="member">S_LL</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>44,</highlight></codeline>
+<codeline lineno="101" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a7c84abef1a8b83513700f9951dd75838" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a7c84abef1a8b83513700f9951dd75838" kindref="member">S_LLP</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>45,</highlight></codeline>
+<codeline lineno="103" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3ba41710113e01b556a4ce9a7726e894" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3ba41710113e01b556a4ce9a7726e894" kindref="member">S_LLG</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>46,</highlight></codeline>
+<codeline lineno="105" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a5e603d85ebc292a128d18b76f752f717" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a5e603d85ebc292a128d18b76f752f717" kindref="member">S_LLL</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>47,</highlight></codeline>
+<codeline lineno="107" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac4dda0b13bd3d88c9cb0d37cb289ee9a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac4dda0b13bd3d88c9cb0d37cb289ee9a" kindref="member">S_NEEDS</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>48,</highlight></codeline>
+<codeline lineno="109" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ada73e9a7184ddbe9df5136844aa5be79" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ada73e9a7184ddbe9df5136844aa5be79" kindref="member">S_SECTION</ref><sp/><sp/><sp/>=<sp/>49,</highlight></codeline>
+<codeline lineno="111" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae5c9b9fe1ee4d1c396f204f9cce0cb2a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae5c9b9fe1ee4d1c396f204f9cce0cb2a" kindref="member">S_RTAP</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>51,</highlight></codeline>
+<codeline lineno="113" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a7baf990810b336be711b13f1578eeaaf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a7baf990810b336be711b13f1578eeaaf" kindref="member">S_GOTO</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>52,</highlight></codeline>
+<codeline lineno="115" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8c72b61e5d6473b6c67a2b2630035d3f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a8c72b61e5d6473b6c67a2b2630035d3f" kindref="member">S_RETURN</ref><sp/><sp/><sp/><sp/>=<sp/>67,</highlight></codeline>
+<codeline lineno="117" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a93dbd7e7f36df21b1d9ea359d1497415" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a93dbd7e7f36df21b1d9ea359d1497415" kindref="member">S_FINISH</ref><sp/><sp/><sp/><sp/>=<sp/>68,</highlight></codeline>
+<codeline lineno="119" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a17a3bf3b8e491d16ec77b7fe28e78806" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a17a3bf3b8e491d16ec77b7fe28e78806" kindref="member">S_SWITCHON</ref><sp/><sp/>=<sp/>70,</highlight></codeline>
+<codeline lineno="121" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a32764092d14740914081f3bc5a999b80" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a32764092d14740914081f3bc5a999b80" kindref="member">S_GLOBAL</ref><sp/><sp/><sp/><sp/>=<sp/>76,</highlight></codeline>
+<codeline lineno="123" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a97ba549e605c21a54f220cf80da3143f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a97ba549e605c21a54f220cf80da3143f" kindref="member">S_SP</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>80,</highlight></codeline>
+<codeline lineno="125" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1012b32ebc27518c152db503d3aebbbf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a1012b32ebc27518c152db503d3aebbbf" kindref="member">S_SG</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>81,</highlight></codeline>
+<codeline lineno="127" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac58ce269340e5667c8f98ec14742a5bb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac58ce269340e5667c8f98ec14742a5bb" kindref="member">S_SL</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>82,</highlight></codeline>
+<codeline lineno="129" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a89dcbf099fa46617ccb1b3b6755ddb53" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a89dcbf099fa46617ccb1b3b6755ddb53" kindref="member">S_STIND</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>83,</highlight></codeline>
+<codeline lineno="131" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a0b232e8ca907492eeca61af964b3662e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a0b232e8ca907492eeca61af964b3662e" kindref="member">S_JUMP</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>85,</highlight></codeline>
+<codeline lineno="133" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a01fe1e9655e8adecf7c3babb9aefd5ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a01fe1e9655e8adecf7c3babb9aefd5ae" kindref="member">S_JT</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>86,</highlight></codeline>
+<codeline lineno="135" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae93e35a28a60c87d989fae1c0e0ffcf2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae93e35a28a60c87d989fae1c0e0ffcf2" kindref="member">S_JF</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>87,</highlight></codeline>
+<codeline lineno="137" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a236c1cf5aba4e9fe6c2281bfc63635b6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a236c1cf5aba4e9fe6c2281bfc63635b6" kindref="member">S_ENDFOR</ref><sp/><sp/><sp/><sp/>=<sp/>88,</highlight></codeline>
+<codeline lineno="139" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ade7e31c90f3fad9b49aae7dfde4e5418" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ade7e31c90f3fad9b49aae7dfde4e5418" kindref="member">S_BLAB</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>89,</highlight></codeline>
+<codeline lineno="141" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2add7056b44f4e2f374b7215f630e5b358" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2add7056b44f4e2f374b7215f630e5b358" kindref="member">S_LAB</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>90,</highlight></codeline>
+<codeline lineno="143" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6b42c9f855452714873f637c7b4a9d24" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6b42c9f855452714873f637c7b4a9d24" kindref="member">S_STACK</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>91,</highlight></codeline>
+<codeline lineno="145" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa4970f4da86922cead96193a2c78333f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa4970f4da86922cead96193a2c78333f" kindref="member">S_STORE</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>92,</highlight></codeline>
+<codeline lineno="147" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a80856e372853e84b5c21526b42d604ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a80856e372853e84b5c21526b42d604ae" kindref="member">S_RSTACK</ref><sp/><sp/><sp/><sp/>=<sp/>93,</highlight></codeline>
+<codeline lineno="149" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac2f6981b229c21af11bb782949906459" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ac2f6981b229c21af11bb782949906459" kindref="member">S_ENTRY</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>94,</highlight></codeline>
+<codeline lineno="151" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2acbb1fbbb0b04d18a572d51c86f4171a4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2acbb1fbbb0b04d18a572d51c86f4171a4" kindref="member">S_SAVE</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>95,</highlight></codeline>
+<codeline lineno="153" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6dc17fd37cb546efe4684179dde0098e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a6dc17fd37cb546efe4684179dde0098e" kindref="member">S_FNRN</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>96,</highlight></codeline>
+<codeline lineno="155" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa0082239e9d6c8df802da1cbeb343530" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2aa0082239e9d6c8df802da1cbeb343530" kindref="member">S_RTRN</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>97,</highlight></codeline>
+<codeline lineno="157" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a02764266298970f3d4e60ac6c769be23" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a02764266298970f3d4e60ac6c769be23" kindref="member">S_RES</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>98,</highlight></codeline>
+<codeline lineno="159" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae897b16ecb2d0661625cfff2d06300a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae897b16ecb2d0661625cfff2d06300a0" kindref="member">S_RESLAB</ref><sp/><sp/><sp/><sp/>=<sp/>99,</highlight></codeline>
+<codeline lineno="161" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a19939ebe56152ac25b56f7ec3f124d83" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a19939ebe56152ac25b56f7ec3f124d83" kindref="member">S_DATALAB</ref><sp/><sp/><sp/>=<sp/>100,</highlight></codeline>
+<codeline lineno="163" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a88b95186baf642dac8325277d101804f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a88b95186baf642dac8325277d101804f" kindref="member">S_ITEML</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>101,</highlight></codeline>
+<codeline lineno="165" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3d7935bd73c07c22528f4f3e43e143e5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a3d7935bd73c07c22528f4f3e43e143e5" kindref="member">S_ITEMN</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>102,</highlight></codeline>
+<codeline lineno="167" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2af3cef75e455b219dd12e685c4adb987c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2af3cef75e455b219dd12e685c4adb987c" kindref="member">S_ENDPROC</ref><sp/><sp/><sp/>=<sp/>103,</highlight></codeline>
+<codeline lineno="169" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a38165d93da431da6482d755a4b65fc4f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a38165d93da431da6482d755a4b65fc4f" kindref="member">S_END</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>104,</highlight></codeline>
+<codeline lineno="171" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a978e83eb525cec05f735b462494d36c2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2a978e83eb525cec05f735b462494d36c2" kindref="member">S_GETBYTE</ref><sp/><sp/><sp/>=<sp/>120,</highlight></codeline>
+<codeline lineno="173" refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae8a71542cb05fa1c29e166402442cef4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae8a71542cb05fa1c29e166402442cef4" kindref="member">S_PUTBYTE</ref><sp/><sp/><sp/>=<sp/>121</highlight></codeline>
+<codeline lineno="174" refid="oc_8h_1aefd9e19ce24648599b196c648caed9a0" refkind="member"><highlight class="normal">}<sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2" kindref="member">ocode_op</ref>;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177" refid="oc_8h_1a051edd0275ace34838a250db05c85be5a7b9f8b8a0de2cfa508bb3bb675f939d0" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{<sp/><ref refid="oc_8h_1a051edd0275ace34838a250db05c85be5a7b9f8b8a0de2cfa508bb3bb675f939d0" kindref="member">OPMAX</ref><sp/>=<sp/><ref refid="oc_8h_1a3313a37bfa8f0101c193281a70b362a2ae8a71542cb05fa1c29e166402442cef4" kindref="member">S_PUTBYTE</ref><sp/>};</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180" refid="oc_8h_1a0fd179dceddd3489cdfcb14ec957c584" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>OPATTR<sp/><sp/><sp/><sp/><sp/><sp/>4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187" refid="oc_8h_1a2403e8776cbd43a13244753094b78112" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>optab1(x)<sp/>(optab[x][1])</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194" refid="oc_8h_1abd69503dfd1468d60a7997507c9f777d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>optab2(x)<sp/>(optab[x][2])</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201" refid="oc_8h_1aa2207628d097838e402d670583e15418" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>optab3(x)<sp/>(optab[x][3])</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="oc_8c_1a0b22913edcaaca9e7fde63d0c4d38b7d" kindref="member">optab</ref>[][<ref refid="oc_8h_1a0fd179dceddd3489cdfcb14ec957c584" kindref="member">OPATTR</ref>];</highlight></codeline>
+    </programlisting>
+    <location file="src/oc.h"/>
+  </compounddef>
+</doxygen>

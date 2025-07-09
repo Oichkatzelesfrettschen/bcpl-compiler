@@ -1,0 +1,321 @@
+// =============================================================================
+// Modernized Xerox Alto BCPL Source: BNCG0.bcpl
+// Original: Xerox PARC Alto BCPL Compiler
+// Modernized FOR: Modern BCPL Compiler with C23 Runtime
+// Date: 2025-06-29
+// =============================================================================
+
+GET "LIBHDR"
+GET "BCPLX"
+
+// BNCG0.bcpl - BCPL Compiler -- Nova Code Generator, Main program
+// Copyright Xerox Corporation 1980
+/// DCS* BNCG Symbol TABLE Compaction
+
+GET "bncgx"
+external InitToRead
+
+STATIC
+ [  PassTwo = false
+    LabelDef = false
+    Cparameter = 32
+    PCparameter = 16
+    plabdefvec = nil
+    pchainvec = nil
+    plabelt = 0
+    lchainvec = nil
+    llabelt = 0
+    elabelvec = nil
+    eaddrvec = nil
+    elabelt = 0
+    vlabelt = 0
+    zlabelt = 0
+    ctypetable = nil
+    cdatatable = nil
+    caddrtable = nil
+    cnametable = nil
+    ctablep = 0
+    constcount = 0
+    constreflimit = #77777
+    casev = nil
+    casel = nil
+    argvec = nil
+    arg1 = nil
+    arg2 = nil
+    arg3 = nil
+    framestack = nil
+    framestackp = 0
+    Dict = nil
+   /// DCS*
+    DictPtr = nil
+     VirginSym = 0
+    PC = nil
+    PCmax = nil
+  
+  ]
+
+/// DCS*
+STRUCTURE SYMPTR:
+   [
+   Virgin bit 1 ///  IF on, symbol useless 
+   link bit 15  ///  => next symbol, no longer needed.
+   ]
+
+MANIFEST
+  [
+  Vsymsize = 64
+  ]
+
+LET GenerateCode() BE
+ [  IF SWDebug DO WriteS("NCG*n")
+
+    Code = Newvec(Codelimit)
+    PC, PCmax = 1, Codelimit
+
+    vlabelt = 0
+    zlabelt = 0
+
+    plabelt = Nextparam() - 1
+    pchainvec = Newvec(plabelt)
+
+    plabdefvec = Newvec(plabelt)
+    FOR i = 0 TO plabelt DO plabdefvec!i = 0
+
+    llabelt = Nextstatic() - 1
+    lchainvec = Newvec(llabelt)
+
+    elabelt = Nextentry() - 1
+    elabelvec = Newvec(elabelt)
+    eaddrvec = Newvec(elabelt)
+    FOR i = 0 TO elabelt DO elabelvec!i, eaddrvec!i = 0, 0
+
+    ctypetable = Newvec(ctablesize)
+    cdatatable = Newvec(ctablesize)
+    caddrtable = Newvec(ctablesize)
+    cnametable = Newvec(ctablesize)
+
+    argvec = Newvec(argvecsize)
+
+    framestack = Newvec(framestacksize)
+
+    Reposition(DictStream, 0)
+    InitToRead(DictStream)
+   /// DCS*	  Dict = Newvec(DictLength) ///* old code
+   /// 	 FOR i = 0 TO DictLength-1 DO Readword(DictStream, lv Dict!i)
+   ///  Look at each Symbol.  There exist virgin symbols (entered,
+   ///  but never referenced) AND others.  Virgin symbols have the 
+   ///  virgin bit on in the now unused pointer word (word 0).  Read 
+   ///  in only non-virgin symbols.  Record their file indices in the
+   ///  DictPtr TABLE, FOR use BY binary search.
+   Dict = Newvec(RealSymSize) // Size of non-virgin symbols
+   DictPtr = Newvec(RealSymCount) // Number of same
+   ///  dump first letter dispatch TABLE
+   LET symptr, symct, onewd = 0, 0, nil
+   FOR i = 0 TO ($z-$a+1)*2+1-1 DO Readword(DictStream,lv onewd)
+   FOR i = ($z-$a+1)*2+1 TO DictLength-1 DO
+      [readasymbol
+      Readword(DictStream, lv onewd) ///  link word, w/virgin bit
+      Readword(DictStream, lv Dict!(symptr+1)) ///  1st word, w/count
+      ///  sz is index rel symptr of last word in symbol
+      LET sz = (((Dict!(symptr+1)) RSHIFT 8)/Bytesperword)+1
+      FOR j=2 TO sz DO
+         Readword(DictStream, lv Dict!(symptr+j))
+      UNLESS onewd<<SYMPTR.Virgin DO
+         [
+         DictPtr!symct = symptr
+         symct = symct + 1
+         Dict!symptr = i+1 ///  the internal rep. of this symbol
+         symptr = symptr+sz+1
+         IF symct eq RealSymCount THEN BREAK
+         ]
+      i = i + sz
+      ]readasymbol
+   /// DCS* End of Modified Symbol TABLE Read
+
+    FOR p = Code TO Code + Codelimit DO rv p = 0
+
+    Writeword(CodeStream, Version)
+
+    LET head = VEC #16
+    LET headpos = Position(CodeStream)
+    FOR i = 0 TO #16-1 DO [ head!i = 0; Writeword(CodeStream, head!i) ]
+    head!2 = BP()
+
+    SWList = SWPassOneList
+    SWCode = SWPassOneCode
+    PassTwo = false
+
+    ResetStream(OcodeStream, $c)
+    InitToRead(OcodeStream)
+    LET ocodepos = Position(OcodeStream)
+
+ [  FOR i = 0 TO plabelt DO pchainvec!i = 0
+    FOR i = 0 TO llabelt DO lchainvec!i = 0
+
+    FOR i = 0 TO ctablesize DO 
+	ctypetable!i, cdatatable!i, caddrtable!i, cnametable!i = 0, 0, 0, 0
+    ctablep = 0
+    constreflimit = #77777
+    constcount = 0
+
+    FOR i = 0 TO argvecsize DO argvec!i = 0
+    SSP = 1
+    MaxSSP, MaxVecSSP = SSP, SSP
+    Initstack(SSP)
+    FOR i = 0 TO framestacksize DO framestack!i = 0
+    framestackp = 0
+
+    PC, PCmax = 1, Codelimit
+
+    vlabelt = 0
+    zlabelt = 0
+
+    ScanImpures()
+
+    ScanPures()
+
+    IF PassTwo BREAK
+    PassTwo, SWList, SWCode = true, SWPassTwoList, SWPassTwoCode
+    Reposition(OcodeStream, ocodepos)
+
+  ] REPEAT
+
+    CloseTemp(OcodeStream, $c)
+
+    head!4 = BP()
+    IF PassTwo DO WB(elabelt)
+    FOR i = 1 TO elabelt DO
+	 [ IF PassTwo DO WB(elabelvec!i); IF PassTwo DO WB(eaddrvec!i) ]
+
+    head!6 = BP()
+    IF PassTwo DO WB(PC)
+    Code!0 = PC
+    FOR i = 0 TO PC-1 DO IF PassTwo DO WB(Code!i)
+
+    head!#10 = BP()
+    IF PassTwo DO WB(llabelt)
+    FOR i = 1 TO llabelt DO IF PassTwo DO WB(lchainvec!i)
+
+    head!#12 = BP()
+    IF PassTwo DO WB(zlabelt)
+    LET p = lv Code!PCmax
+    FOR i = 1 TO zlabelt DO IF PassTwo DO
+     [	WB(p!0); WB(p!1); p = p + 2 ]
+
+    head!0 = BP()
+    LET endpos = Position(CodeStream)
+    Reposition(CodeStream, headpos)
+    FOR i = 0 TO #16-1 DO IF PassTwo DO WB(head!i)
+    Reposition(CodeStream, endpos)
+    CloseTemp(DictStream, $d)
+]
+
+/// DCS* Binary Search FOR symbol N
+AND LookForSym(N) = valof
+   [
+   LET pos = RealSymCount RSHIFT 1
+   LET inc = pos
+   ///  REPEAT
+      [
+      LET ptr = Dict+(DictPtr!pos)
+      LET val = @ptr
+      IF val eq N THEN RESULTIS ptr+1
+      IF inc eq 1 THEN BREAK ///  No more chances
+      inc = (inc+1) RSHIFT 1
+      TEST val gr N
+         ifso
+            [
+            pos = pos-inc
+            IF pos ls 0 THEN pos = 0
+            ]
+         ifnot
+            [
+            pos = pos+inc
+            IF pos ge RealSymCount THEN pos = RealSymCount-1
+            ]
+      ] REPEAT
+   IF N eq Dict!0 THEN RESULTIS Dict+1 ///  Special TEST FOR 0
+   ///  Referenced but once -- Go get from Complete Dictionary
+   RESULTIS SymFromDict(N)
+   ]
+
+AND SymFromDict(N) = valof
+   [
+   IF VirginSym eq 0 THEN
+      VirginSym = Newvec(Vsymsize)
+   Reposition(DictStream, N*Bytesperword)
+   Readword(DictStream, lv VirginSym!0)
+   FOR i = 1 TO Length(VirginSym)/Bytesperword DO 
+      Readword(DictStream, lv VirginSym!i)
+   RESULTIS VirginSym
+   ]
+     
+AND CGreport(n) BE
+ [  Ostream = ErrorStream
+    WW($*n)
+    WriteLine(Curline)
+    LET m = selecton n INTO
+      [	DEFAULT: 0
+	CASE 0: "TOO MUCH CODE GENERATED"
+	CASE 1: "BAD FRAME REFERENCE -- PROBABLY A COMPILER BUG"
+	CASE 2: "STATEMENT TOO BIG"
+      ]
+    BCPLreport(n, m)
+    IF SWHelp DO Help("NCG REPORT")
+    GOTO Abort
+  ]
+
+AND Readop() = valof
+ [  LET op = nil
+    Readch(OcodeStream, lv op)
+//WriteS("Readop="); WW(op);WriteO(op);WW($*N)
+    RESULTIS op
+  ]
+
+AND ReadC() = valof
+ [  LET c = nil
+    Readch(OcodeStream, lv c)
+//WriteS("ReadC="); WW(c);WriteO(c);WW($*N)
+    RESULTIS c
+  ]
+
+AND ReadL() = valof
+ [  LET l = nil
+    Readaddr(OcodeStream, lv l)
+//WriteS("ReadL="); WW(l);WriteO(l);WW($*N)
+    RESULTIS l
+  ]
+
+AND ReadN() = valof
+ [  LET n = nil
+    Readword(OcodeStream, lv n)
+//WriteS("ReadN="); WW(n);WriteO(n);WW($*N)
+    RESULTIS n
+  ]
+
+
+AND WriteOct(n) BE
+ [  LET zsw = true
+    FOR i = 15 TO 3 BY -3 DO
+     [	LET d = (n RSHIFT i) & #7
+	UNLESS zsw & (d eq 0) DO
+	 [ WW(d+$0); zsw = false ]
+      ]
+    WW((n & #7)+$0)
+  ]
+
+AND WB(n) BE  Writeword(CodeStream, n) 
+
+AND BP()  = Position(CodeStream)/2
+
+AND Nval(n) = n
+
+AND Bval(n) = n & #377
+
+AND Wval(n) = (n & #200) eq 0 ? n, n % #177400
+
+AND STRval(u, p) = valof
+    [ Packstring(u, p); RESULTIS u!0/2 ]
+
+
+ 

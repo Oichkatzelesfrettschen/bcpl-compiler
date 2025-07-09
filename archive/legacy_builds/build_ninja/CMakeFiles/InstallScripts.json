@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/eirikr/Documents/GitHub/bcpl-compiler/build_ninja/cmake_install.cmake",
+		"/Users/eirikr/Documents/GitHub/bcpl-compiler/build_ninja/src/cmake_install.cmake",
+		"/Users/eirikr/Documents/GitHub/bcpl-compiler/build_ninja/tests/cmake_install.cmake",
+		"/Users/eirikr/Documents/GitHub/bcpl-compiler/build_ninja/docs/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

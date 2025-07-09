@@ -1,0 +1,18 @@
+// Simple Hello World test for BCPL compiler
+get "LIBHDR"
+
+let start() = valof {
+    writes("Hello, BCPL World!*n")
+    writes("Testing arithmetic: 2 + 3 = ")
+    writef("%n*n", 2 + 3)
+    
+    // Test a simple loop
+    writes("Counting to 5: ")
+    for i = 1 to 5 do {
+        writef("%n ", i)
+    }
+    writes("*n")
+    
+    writes("BCPL compiler test completed successfully!*n")
+    resultis 0
+}

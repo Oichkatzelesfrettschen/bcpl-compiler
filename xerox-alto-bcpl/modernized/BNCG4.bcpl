@@ -1,0 +1,466 @@
+// BNCG4.bcpl - BCPL Compiler
+// Nova Code Generator, Instruction generation routines
+// Copyright Xerox Corporation 1980
+//   Last modified on Sat 28 Oct 72 0246.15 BY  jec.
+
+GET "bncgx"
+
+LET CGlda(reg, arg) BE
+ [  CGmemref(Ilda + (reg LSHIFT 11), arg)
+  ]
+
+AND CGsta(reg, arg) BE
+ [  CGmemref(Ista + (reg LSHIFT 11), arg)
+  ]
+
+AND CGmemref(op, arg) BE
+ [  LET addr = 0
+    TEST ref!arg ne 0
+    THEN [ UNLESS type!arg eq XR DO
+	    [	LET a = VEC argsize-1
+		type!a, ref!a, loc!a, name!a = type!arg, 0, loc!arg, name!arg
+		CGlda(X, a)
+	     ]
+	   IF (ref!arg & #100000) ne 0 DO addr = addr + Ideferbit
+	   addr = addr + (X LSHIFT 8) + (ref!arg & #377)
+          ]
+    OR SWITCHON type!arg INTO
+	[ CASE RVNUMBER:
+		IF (loc!arg & #177400) eq 0 DO
+		  [ addr = addr + loc!arg
+		    ENDCASE
+		  ]
+		IF (NOT SWAlto)&(loc!arg & #177400) eq #100000 DO
+		  [ addr = addr + (loc!arg & #377) + Ideferbit
+		    ENDCASE
+		  ]
+		addr = addr + Ideferbit
+	  CASE NUMBER:
+		addr = addr + (R LSHIFT 8) + CGconst(Nconst, loc!arg, name!arg)
+		ENDCASE
+	   CASE RVLOCAL:
+		addr = addr + Ideferbit
+	   CASE LOCAL:
+		addr = addr + (P LSHIFT 8) + Bval(loc!arg + SSPoffset)
+		IF loc!arg gr MaxSSP DO CGreport(1)
+		ENDCASE
+	   CASE LABEL:
+		addr = addr + Ideferbit
+	   CASE LVLABEL:
+		addr = addr + (R LSHIFT 8) + CGconst(Lconst, loc!arg, name!arg)
+		ENDCASE
+	   CASE RVLABEL:
+		IF SWAlto DO CGreport(-99)
+		addr = addr + Ideferbit + (R LSHIFT 8) + CGconst(Dconst, loc!arg, name!arg)
+		ENDCASE
+	   CASE LVCOMMON:
+		addr = addr + (R LSHIFT 8) + CGconst(Zconst, loc!arg, name!arg)
+		ENDCASE
+	   CASE RVCOMMON:
+		addr = addr + Ideferbit
+	   CASE COMMON:
+		addr = addr + (Z LSHIFT 8) + CGzchain(loc!arg)
+		ENDCASE
+	   DEFAULT:	CGreport(-3)
+	  ]
+    CG(op + addr)
+
+    UNLESS SWCode RETURN
+
+    IF ref!arg ne 0 RETURN
+    TEST (addr & Ideferbit) eq 0 THEN WriteS("   ") 
+    OR TEST type!arg eq LABEL THEN WriteS("   ")
+    OR WriteS("  @")
+    WW($()
+    SWITCHON type!arg INTO
+     [	CASE RVNUMBER:
+	CASE NUMBER:
+	  IF name!arg ne 0 DO [ WriteName(name!arg); WriteS(" = ") ]
+	  WW($#); WriteOct(loc!arg)
+	  ENDCASE
+	CASE RVLOCAL:
+	CASE LOCAL:
+	  TEST name!arg eq 0
+	  THEN [ WriteS("TEMP")
+		 WriteOct(loc!arg)
+		]
+	  OR WriteName(name!arg)
+	  ENDCASE
+	CASE LVLABEL:
+	  WriteS("lv ")
+	CASE RVLABEL:
+	CASE LABEL:
+	  WriteName(name!arg)
+	  ENDCASE
+	CASE LVCOMMON:
+	  WriteS("lv ")
+	CASE RVCOMMON:
+	CASE COMMON:
+	  WriteName(name!arg)
+	  ENDCASE
+     ]
+    WW($))
+  ]
+
+AND CGjumpandsave() BE
+ [  
+    IF SWAlto & (type!arg1 eq RVCOMMON & ref!arg1 eq 0) DO
+	// @<common> becomes <common>!0 on Alto
+	//    (CGrv() already does this FOR non-common <STATIC> )
+	[ type!arg1 = COMMON
+	  ref!arg1  = #40000
+	]
+    IF SWNoxios & SWAlto
+     & (type!arg1 ne XR & ref!arg1 eq #40000) DO
+	// @<STATIC> OR <simple-expression>!0 on Alto should generate
+	//      JSRII temp,2    FOR Noxios.
+	[ ref!arg1 = 0	//remove the indirection
+	  UNLESS type!arg1 eq LOCAL DO CGstoreintemp(arg1) //store in frame
+	  type!arg1 = RVLOCAL	//restore the indirection
+	]
+    UNLESS ref!arg1 eq 0 DO
+	// Other complex things are done normally
+	[ CGrv()
+	  CGmemref(Ijsr, arg1)
+	  RETURN
+	]
+    IF type!arg1 eq RVNUMBER & (loc!arg1 & #177400) eq 0 DO
+	// @<constant page-zero address> is special
+	[ CGmemref(Ijsr+Ideferbit, arg1)
+	  RETURN
+	]
+    UNLESS SWAlto &
+     (type!arg1 eq RVNUMBER % type!arg1 eq LABEL
+       % (SWNoxios & type!arg1 eq RVLOCAL)) DO
+	// UNLESS we can DO a JSRII, DO it normally
+	// (JSRII .+n FOR any Alto IF <STATIC> OR <constant>
+	//  JSRII n,2 FOR Noxios only)
+	[ CGrv()
+	  CGmemref(Ijsr, arg1)
+	  RETURN
+	]
+
+    LET op = type!arg1 eq RVLOCAL ? Ajsr2, Ajsr1
+    LET addr = type!arg1 eq LABEL ? CGconst(Lconst, loc!arg1, name!arg1),
+		type!arg1 eq RVNUMBER ? CGconst(Nconst, loc!arg1, name!arg1),
+					loc!arg1
+    CG(op+addr)
+    IF SWCode DO
+	[ WriteS("   @(")
+	  UNLESS name!arg1 eq 0 DO [ WriteName(name!arg1); WW($*s) ]
+	  IF type!arg1 eq RVNUMBER DO
+		[ WW($#); WriteOct(loc!arg1) ]
+	  WW($))
+	]
+ ]
+
+AND CGmakememref(arg) BE
+ [  IF type!arg eq AC DO CGreport(-9)
+    IF ref!arg ne 0 DO
+       UNLESS type!arg eq XR DO
+	[ LET r = ref!arg
+	  ref!arg = 0
+	  CGloadxr(arg)
+	  ref!arg = r
+	 ]
+  ]
+
+AND CGae(op, reg1, reg2) BE
+ [  reg1 = reg1 LSHIFT 13
+    reg2 = reg2 LSHIFT 11
+    CG(op + reg1 + reg2)
+  ]
+
+AND CGconst(ctype, cdata, cname) = valof
+ [  LET p = 0
+    WHILE p ls ctablep DO
+	[ IF ctypetable!p eq ctype & cdatatable!p eq cdata DO
+	    UNLESS (caddrtable!p & #100000) eq 0 & PC - caddrtable!p ge #200 BREAK
+	  p = p + 1
+	 ]
+    TEST p eq ctablep
+    THEN [ ctypetable!p = ctype
+	   cdatatable!p = cdata
+	   caddrtable!p  = PC + #100000
+	   cnametable!p = cname
+	   ctablep = ctablep + 1
+	   IF ctablep ge ctablesize DO CGreport(-5)
+	   constcount = constcount + (ctype eq Jconst ? 2, 1)
+	   IF constreflimit gr PC DO constreflimit = PC
+	    RESULTIS 0
+	  ]
+    OR TEST (caddrtable!p & #100000) eq 0
+    THEN [ RESULTIS Bval(caddrtable!p - PC)
+	  ]
+    OR   [ LET pc = caddrtable!p & #77777
+	    [	IF PassTwo BREAK
+		LET t = Code!pc & #377
+		IF t eq 0 BREAK
+		pc = pc + Wval(t)
+	     ] REPEAT
+	   UNLESS PassTwo DO Code!pc = (Code!pc & #177400) + Bval(PC - pc)
+	   RESULTIS 0
+	  ]
+  ]
+
+AND CGoutconstants(n) BE
+ [  IF constcount eq 0 RETURN
+    IF n eq 0 DO n = PCparameter
+    LET l = PC + constcount + 1 + n
+    constreflimit = #77777
+    LET firstconst = true
+    LET p = 0
+    WHILE p ls ctablep DO
+     [	IF (caddrtable!p & #100000) ne 0 DO
+	  [ LET pc = caddrtable!p & #77777
+	    IF l - pc le #177 - Cparameter DO
+	      [ IF constreflimit gr pc DO constreflimit = pc
+		p = p + 1; LOOP
+	       ]
+	    [	IF PassTwo BREAK
+		LET t = Code!pc & #377
+		Code!pc = (Code!pc & #177400) + Bval(PC - pc)
+		IF t eq 0 BREAK
+		pc = pc + Wval(t)
+	     ] REPEAT
+	    caddrtable!p = PC
+
+	    IF SWCode & firstconst DO WriteS("*n*n*t// literals // n")
+	    firstconst = false
+
+	    TEST ctypetable!p eq Nconst
+	    THEN [ CGn(cdatatable!p)
+		   IF SWCode DO
+		     [	WriteS(" = ")
+			IF cnametable!p ne 0 DO [ WriteName(cnametable!p); WriteS(" = ") ]
+			WW($#); WriteOct(cdatatable!p)
+		      ]
+		 ]
+	    OR TEST ctypetable!p eq Lconst
+	    THEN [ CGn(CGlchain(cdatatable!p))
+		   IF SWCode DO
+			[ WriteS(" = "); WriteName(cnametable!p) ]
+		 ]
+	    OR TEST ctypetable!p eq Dconst
+	    THEN [ CGn(CGlchain(cdatatable!p) + #100000)
+		   IF SWAlto DO CGreport(-98)
+		   IF SWCode DO
+			[ WriteS(" ="); WW($@); WriteName(cnametable!p) ]
+		 ]
+	    OR TEST ctypetable!p eq Zconst
+	    THEN [ CGn(CGzchain(cdatatable!p))
+		   IF SWCode DO
+			[ WriteS(" = "); WriteName(cnametable!p) ]
+		 ]
+	    OR TEST ctypetable!p eq Jconst
+	    THEN [ CG(Ilongjump)
+		   IF SWCode DO 
+			[ WriteS(" = LONGJUMP TO LAB")
+			  WriteOct(plabdefvec!(cdatatable!p)) 
+			 ]
+		   CGn(CGpchain(cdatatable!p))
+		  ]
+	    OR CGreport(-4)
+	    constcount = constcount - (ctypetable!p eq Jconst ? 2, 1)
+	   ]
+	p = p + 1
+      ]
+    IF SWCode DO WW($*n)
+    p = 0
+    WHILE (caddrtable!p & #100000) eq 0 & PC - caddrtable!p gr #200 DO p = p + 1
+    UNLESS p eq 0 DO
+     [	FOR q = p TO ctablep-1 DO
+	 [ ctypetable!(q-p) = ctypetable!q
+	   cdatatable!(q-p) = cdatatable!q
+	   caddrtable!(q-p) = caddrtable!q
+	   cnametable!(q-p) = cnametable!q
+	  ]
+	ctablep = ctablep - p
+      ]
+  ]
+
+AND CGcheckconstants(n) BE
+ [  IF constcount eq 0 RETURN
+    IF constreflimit eq #77777 DO CGreport(-6)
+    IF n eq 0 DO n = PCparameter
+    LET l = PC + constcount + 1 + n
+    IF l - constreflimit le #177 RETURN
+    LET pc = PC
+    CG(Ijmp + (R LSHIFT 8) + 0)
+    CGoutconstants(n)
+    UNLESS PassTwo DO Code!pc = Code!pc + Bval(PC - pc)
+  ]
+
+AND CGjmp(l) BE
+ [  IF PassTwo DO
+     [	IF -#200 le (plabdefvec!l - PC) & (plabdefvec!l - PC) le #177 DO
+		Code!PC = (Code!PC & #177400) + Bval(plabdefvec!l - PC)
+       ]
+    TEST pchainvec!l ne 0 & (pchainvec!l & #100000) eq 0 & PC-pchainvec!l le #200
+    THEN [ CG(Ijmp + (R LSHIFT 8) + Bval(pchainvec!l - PC))
+	  ]
+    OR   [ CG(Ijmp + (R LSHIFT 8) + CGconst(Jconst, l, 0))
+	  ]
+    IF SWCode DO WriteLabel(l)
+  ]
+
+AND CGtest(skip, ac1, ac2, l) BE
+ [  CGae(skip, ac1, ac2)
+    IF SWCode DO WriteSkip(Code!(PC-1))
+    CGjmp(l)
+  ]
+
+AND CGlabdef(l) BE
+ [  IF pchainvec!l ne 0 & (pchainvec!l & #100000) ne 0 DO
+     [	UNLESS PassTwo DO
+	 [  LET pc = pchainvec!l & #77777
+	    [	LET t = Code!pc
+		Code!pc = Nval(PC - pc)
+		IF t eq 0 BREAK
+		pc = t
+	     ] REPEAT
+	  ]
+       ]
+    pchainvec!l = PC
+    plabdefvec!l = PC
+    IF constcount eq 0 RETURN
+    LET p = 0
+    WHILE p ls ctablep DO
+      [ IF ctypetable!p eq Jconst & cdatatable!p eq l DO
+	  IF (caddrtable!p & #100000) ne 0 DO
+	  [ LET pc = caddrtable!p & #77777
+	    [	IF PassTwo BREAK
+		LET t = Code!pc & #377
+		Code!pc = (Code!pc & #177400) + Bval(PC - pc)
+		IF t eq 0 BREAK
+		pc = pc + Wval(t)
+	     ] REPEAT
+	    ctablep = ctablep - 1
+	    FOR q = p TO ctablep - 1 DO
+	     [	ctypetable!q = ctypetable!(q+1)
+		cdatatable!q = cdatatable!(q+1)
+		caddrtable!q = caddrtable!(q+1)
+		cnametable!q = cnametable!(q+1)
+	      ]
+	    constcount = constcount - 2
+	    constreflimit = #77777
+	    FOR q = 0 TO ctablep-1 DO
+	     [	IF (caddrtable!q & #100000) eq 0 LOOP
+		IF (caddrtable!q & #77777)  ls constreflimit DO
+		    [ constreflimit = caddrtable!q & #77777 ]
+	      ]
+	    BREAK
+	   ]
+        p = p + 1
+      ]
+  ]
+
+AND CGpchain(l) = valof
+ [  IF pchainvec!l eq 0 DO
+     [	pchainvec!l = PC+ #100000
+	RESULTIS 0
+      ]
+    IF (pchainvec!l & #100000) ne 0 DO
+     [	LET pc = pchainvec!l & #77777
+	pchainvec!l = PC + #100000
+	RESULTIS pc
+      ]
+    RESULTIS Nval(pchainvec!l - PC)
+  ]
+
+AND CGlchain(l) = valof
+ [  LET pc = lchainvec!l
+    lchainvec!l = PC
+    RESULTIS pc
+  ]
+
+AND CGzchain(l) = valof
+ [  IF lchainvec!l eq 0 DO
+     [	lchainvec!l = PC + #100000
+	RESULTIS 0
+      ]
+    LET n = PC - (lchainvec!l & #77777)
+    IF n le #377 DO
+     [	lchainvec!l = PC + #100000
+	RESULTIS n
+      ]
+    PCmax = PCmax - 2
+    IF PCmax le PC DO CGreport(0)
+    zlabelt = zlabelt + 1
+    Code!PCmax = l
+    Code!(PCmax+1) = lchainvec!l
+    lchainvec!l = PC + #100000
+    RESULTIS 0
+  ]
+
+AND CGrv() BE
+ [  UNLESS type!arg1 eq AC DO
+      [	IF ref!arg1 eq 0 DO
+	  SWITCHON type!arg1 INTO
+	    [ CASE LVLABEL:      type!arg1 = LABEL; RETURN
+	      CASE LVCOMMON:     type!arg1 = COMMON; RETURN
+	      CASE NUMBER:       type!arg1 = RVNUMBER; RETURN
+	      CASE LOCAL:        type!arg1 = RVLOCAL; RETURN
+	      CASE COMMON:       type!arg1 = RVCOMMON; RETURN
+	      CASE LABEL:	 TEST SWAlto
+				 THEN ref!arg1 = #40000
+				 OR   type!arg1 = RVLABEL
+				 RETURN
+	      DEFAULT:
+	     ]
+	IF (ref!arg1 & #140000) eq #40000 DO
+	  [ ref!arg1 = ref!arg1 + #100000; RETURN ]
+       ]
+    CGstoreintemp(arg1)
+    type!arg1 = RVLOCAL
+  ]
+
+AND CGsubscr(j) BE
+ [  IF j eq 0 DO
+    IF type!arg1 eq NUMBER DO
+    IF (loc!arg1 & #177600) eq 0 % (loc!arg1 & #177600) eq #177600 DO
+     [	LET i = (loc!arg1 & #377) + #40000
+	IF ref!arg2 eq 0 DO SWITCHON type!arg2 INTO
+	  [ CASE RVLABEL:	IF SWAlto DO CGreport(-97)
+	    CASE RVNUMBER:
+	    CASE LOCAL:
+	    CASE RVLOCAL:
+	    CASE LVLABEL:
+	    CASE LABEL:
+	    CASE LVCOMMON:
+	    CASE COMMON:
+	    CASE RVCOMMON:
+		Pop1()
+		ref!arg1 = i
+		RETURN
+	    CASE NUMBER:
+		[ LET a = loc!arg1 + loc!arg2
+		  IF SWAlto % (a & #100000) eq 0 DO
+			[ Pop1()
+			  type!arg1 = RVNUMBER
+			  loc!arg1 = a
+			  RETURN
+			]
+		 ]
+	    DEFAULT:
+	   ]
+	CGloadxr(arg2)
+	Pop1()
+	ref!arg1 = i
+	RETURN
+      ]
+    TEST type!arg2 eq AC
+    THEN
+    [ CGloadxr(arg1)
+      CGae(Iadd, loc!arg2, X)
+    ]
+    OR
+    [ CGloadac(arg1)
+      CGloadxr(arg2)
+      CGae(Iadd, loc!arg1, X)
+    ]
+    Pop2()
+    Push(XR, (j eq 0 ? #40000, j), X)
+  ]
+
+  

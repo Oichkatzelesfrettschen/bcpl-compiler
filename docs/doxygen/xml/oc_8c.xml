@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="oc_8c" kind="file" language="C++">
+    <compoundname>oc.c</compoundname>
+    <includes refid="oc_8h" local="yes">oc.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>src/oc.c</label>
+        <link refid="oc_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>oc.h</label>
+        <link refid="oc_8h"/>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="oc_8c_1a0b22913edcaaca9e7fde63d0c4d38b7d" prot="public" static="no" mutable="no">
+        <type>const char</type>
+        <definition>const char optab[][OPATTR]</definition>
+        <argsstring>[][OPATTR]</argsstring>
+        <name>optab</name>
+        <briefdescription>
+<para>OCODE operation attributes table. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This table defines the attributes for each OCODE operation. The attributes control code generation behavior including:</para>
+<para><itemizedlist>
+<listitem><para>Stack manipulation (pops/pushes)</para>
+</listitem><listitem><para>Register allocation hints</para>
+</listitem><listitem><para>Operation categorization</para>
+</listitem></itemizedlist>
+</para>
+<para>Byte Layout:<itemizedlist>
+<listitem><para>Byte 0: Unused (reserved)</para>
+</listitem><listitem><para>Byte 1: Pops from stack (0, 1, 2) <linebreak/>
+</para>
+</listitem><listitem><para>Byte 2: Pushes onto stack (0, 1, 2 = set to n, 3 = set to n + 1)</para>
+</listitem><listitem><para>Byte 3: Code generation hints (0-7: force; 1-7: loadreg; 8: load op; 9: data op) </para>
+</listitem></itemizedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/oc.c" line="53" column="12" bodyfile="src/oc.c" bodystart="53" bodyend="177"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>OCODE operation attributes table implementation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>Robert Nordier </para>
+</simplesect>
+<simplesect kind="copyright"><para>Copyright (c) 2012 Robert Nordier. All rights reserved.</para>
+</simplesect>
+This file contains the operation attributes table for OCODE instructions. The table provides metadata about each OCODE operation including stack effects, operand requirements, and code generation hints.</para>
+<sect1 id="oc_8c_1autotoc_md9_1s1"><sect2 id="oc_8c_1autotoc_md9">
+<title>Table Format</title><para>Each OCODE operation has a 4-byte attribute entry:<itemizedlist>
+<listitem><para><bold>Byte 0</bold>: Currently unused, reserved for future extensions</para>
+</listitem><listitem><para><bold>Byte 1</bold>: Number of values popped from the load stack (0, 1, or 2)</para>
+</listitem><listitem><para><bold>Byte 2</bold>: Stack push behavior:<itemizedlist>
+<listitem><para>0: Nothing pushed</para>
+</listitem><listitem><para>1: One value pushed <linebreak/>
+</para>
+</listitem><listitem><para>2: Set stack to specific size n</para>
+</listitem><listitem><para>3: Set stack to size n + 1</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><bold>Byte 3</bold>: Code generation hints:<itemizedlist>
+<listitem><para>0-7: Force load stack entry into register</para>
+</listitem><listitem><para>1-7: Load into specific register</para>
+</listitem><listitem><para>8: Load operation</para>
+</listitem><listitem><para>9: Data operation</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2></sect1>
+<sect1 id="oc_8c_1autotoc_md10_1s1"><sect2 id="oc_8c_1autotoc_md10">
+<title>Usage</title><para>The code generator uses this table to determine how to process each OCODE instruction, including register allocation, stack management, and instruction selection. </para>
+</sect2></sect1>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Copyright<sp/>(c)<sp/>2012<sp/>Robert<sp/>Nordier.<sp/>All<sp/>rights<sp/>reserved.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="oc_8h" kindref="compound">oc.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="oc_8c_1a0b22913edcaaca9e7fde63d0c4d38b7d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="oc_8c_1a0b22913edcaaca9e7fde63d0c4d38b7d" kindref="member">optab</ref>[][<ref refid="oc_8h_1a0fd179dceddd3489cdfcb14ec957c584" kindref="member">OPATTR</ref>]<sp/>=</highlight></codeline>
+<codeline lineno="54"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>0:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>1:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>2:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>3:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>4:<sp/>S_TRUE<sp/>-<sp/>Load<sp/>constant<sp/>true<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>5:<sp/>S_FALSE<sp/>-<sp/>Load<sp/>constant<sp/>false<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>6:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>7:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>1,<sp/>1,<sp/>3<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>8:<sp/>S_RV<sp/>-<sp/>Right-hand<sp/>value<sp/>(dereference)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>9:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>1,<sp/>3,<sp/>1<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>10:<sp/>S_FNAP<sp/>-<sp/>Function<sp/>application<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>5<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>11:<sp/>S_MULT<sp/>-<sp/>Multiplication<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>5<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>12:<sp/>S_DIV<sp/>-<sp/>Division<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>5<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>13:<sp/>S_REM<sp/>-<sp/>Remainder<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>14:<sp/>S_PLUS<sp/>-<sp/>Addition<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>15:<sp/>S_MINUS<sp/>-<sp/>Subtraction<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>16:<sp/>S_QUERY<sp/>-<sp/>Query<sp/>operator<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>1,<sp/>1,<sp/>3<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>17:<sp/>S_NEG<sp/>-<sp/>Negation<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>18:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>1,<sp/>1,<sp/>3<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>19:<sp/>S_ABS<sp/>-<sp/>Absolute<sp/>value<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>20:<sp/>S_EQ<sp/>-<sp/>Equality<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>21:<sp/>S_NE<sp/>-<sp/>Inequality<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>22:<sp/>S_LS<sp/>-<sp/>Less<sp/>than<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>23:<sp/>S_GR<sp/>-<sp/>Greater<sp/>than<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>24:<sp/>S_LE<sp/>-<sp/>Less<sp/>or<sp/>equal<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>25:<sp/>S_GE<sp/>-<sp/>Greater<sp/>or<sp/>equal<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>26:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>27:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>28:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>29:<sp/>Unused<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>1,<sp/>1,<sp/>3<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>30:<sp/>S_NOT<sp/>-<sp/>Logical<sp/>NOT<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>6<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>31:<sp/>S_LSHIFT<sp/>-<sp/>Left<sp/>shift<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>6<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>32:<sp/>S_RSHIFT<sp/>-<sp/>Right<sp/>shift<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>33:<sp/>S_LOGAND<sp/>-<sp/>Logical<sp/>AND<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>34:<sp/>S_LOGOR<sp/>-<sp/>Logical<sp/>OR<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>35:<sp/>S_EQV<sp/>-<sp/>Equivalence<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/><sp/></highlight><highlight class="comment">/*<sp/>36:<sp/>S_NEQV<sp/>-<sp/>Non-equivalence<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LG<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LN<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>4,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LSTR<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LLP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LLG<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>0,<sp/>1,<sp/>8<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LLL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>4,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>SECTION<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>1,<sp/>2,<sp/>1<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>RTAP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>1,<sp/>0,<sp/>1<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>GOTO<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>FINISH<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>7,<sp/>1,<sp/>0,<sp/>3<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>SWITCHON<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>6,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>GLOBAL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>1,<sp/>0,<sp/>2<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>SP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>1,<sp/>0,<sp/>2<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>SG<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>1,<sp/>0,<sp/>2<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>SL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>0,<sp/>6<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>STIND<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>JUMP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>1,<sp/>0,<sp/>3<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>JT<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>1,<sp/>0,<sp/>3<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>JF<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>2,<sp/>0,<sp/>4<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>ENDFOR<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>BLAB<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>LAB<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>2,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>STACK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>STORE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>3,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>RSTACK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>5,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>ENTRY<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>2,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>SAVE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>1,<sp/>0,<sp/>3<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>FNRN<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>RTRN<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>1,<sp/>0,<sp/>3<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>RES<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>0,<sp/>0,<sp/>9<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>DATALAB<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>3,<sp/>0,<sp/>0,<sp/>9<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>ITEML<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>0,<sp/>9<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>ITEMN<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>2,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>ENDPROC<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>0,<sp/>0,<sp/>0<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>END<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>0,<sp/>0,<sp/>0,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>1,<sp/>4<sp/>},<sp/></highlight><highlight class="comment">/*<sp/>GETBYTE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>1,<sp/>2,<sp/>0,<sp/>4<sp/>}<sp/><sp/></highlight><highlight class="comment">/*<sp/>PUTBYTE<sp/>(actually<sp/>3<sp/>args)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal">};</highlight></codeline>
+    </programlisting>
+    <location file="src/oc.c"/>
+  </compounddef>
+</doxygen>

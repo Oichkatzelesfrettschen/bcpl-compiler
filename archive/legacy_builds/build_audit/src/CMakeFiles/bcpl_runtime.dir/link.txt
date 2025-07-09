@@ -1,0 +1,2 @@
+"/usr/bin/ar" qc libbcpl_runtime.a CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.o CMakeFiles/bcpl_runtime.dir/runtime/memory.c.o CMakeFiles/bcpl_runtime.dir/runtime/io.c.o CMakeFiles/bcpl_runtime.dir/runtime/strings.c.o CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.o CMakeFiles/bcpl_runtime.dir/platform/macos.c.o
+"/usr/bin/ranlib" libbcpl_runtime.a

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir">
+    <compoundname>src</compoundname>
+    <innerfile refid="blib_8bcpl">blib.bcpl</innerfile>
+    <innerfile refid="cg_8c">cg.c</innerfile>
+    <innerfile refid="global_8s">global.s</innerfile>
+    <innerfile refid="llcg_8c">llcg.c</innerfile>
+    <innerfile refid="oc_8c">oc.c</innerfile>
+    <innerfile refid="oc_8h">oc.h</innerfile>
+    <innerfile refid="op_8c">op.c</innerfile>
+    <innerfile refid="pt_8c">pt.c</innerfile>
+    <innerfile refid="rt_8s">rt.s</innerfile>
+    <innerfile refid="st_8bcpl">st.bcpl</innerfile>
+    <innerfile refid="su_8s">su.s</innerfile>
+    <innerfile refid="su16_8s">su16.s</innerfile>
+    <innerfile refid="sys_8s">sys.s</innerfile>
+    <innerfile refid="sys__freebsd_8s">sys_freebsd.s</innerfile>
+    <innerfile refid="sys__ia16_8s">sys_ia16.s</innerfile>
+    <innerfile refid="sys__linux_8s">sys_linux.s</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/"/>
+  </compounddef>
+</doxygen>

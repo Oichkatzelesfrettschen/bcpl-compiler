@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="sys__freebsd_8s" kind="file" language="C++">
+    <compoundname>sys_freebsd.s</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">//<sp/>Copyright<sp/>(c)<sp/>2004,<sp/>2012<sp/>Robert<sp/>Nordier.<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>BCPL<sp/>compiler<sp/>x86<sp/>runtime</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>System<sp/>interface:<sp/>FreeBSD</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>RESULT2,91<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>BCPL<sp/>RESULT2</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>_exit</highlight></codeline>
+<codeline><highlight class="normal">_exit:<sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$1,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/><sp/>$0x80</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>read</highlight></codeline>
+<codeline><highlight class="normal">read:<sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$3,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/><sp/>$0x80</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>error</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>write</highlight></codeline>
+<codeline><highlight class="normal">write:<sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$4,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/><sp/>$0x80</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>error</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>open</highlight></codeline>
+<codeline><highlight class="normal">open:<sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$5,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/><sp/>$0x80</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>error</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>close</highlight></codeline>
+<codeline><highlight class="normal">close:<sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$6,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/><sp/>$0x80</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>error</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>break</highlight></codeline>
+<codeline><highlight class="normal">break:<sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$0x11,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/><sp/>$0x80</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>error</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>olseek</highlight></codeline>
+<codeline><highlight class="normal">olseek:<sp/>mov<sp/><sp/><sp/><sp/><sp/>$0x13,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/><sp/>$0x80</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>error</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>ioctl</highlight></codeline>
+<codeline><highlight class="normal">ioctl:<sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$0x36,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/><sp/><sp/><sp/><sp/>$0x80</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>error</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">error:<sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,G+RESULT2*4<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>error<sp/>code</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$-1,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>sbrk</highlight></codeline>
+<codeline><highlight class="normal">sbrk:<sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>curbrk,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>4(%esp),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>push<sp/><sp/><sp/><sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>break</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pop<sp/><sp/><sp/><sp/><sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>curbrk,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,curbrk</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>TERMIOSZ,0x40</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>TIOCGETA,0x402c7413</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>isatty</highlight></codeline>
+<codeline><highlight class="normal">isatty:<sp/>sub<sp/><sp/><sp/><sp/><sp/>$TERMIOSZ,%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>push<sp/><sp/><sp/><sp/>%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>push<sp/><sp/><sp/><sp/>$TIOCGETA</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>push<sp/><sp/><sp/><sp/>0xc+TERMIOSZ(%esp)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>ioctl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$0,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jc<sp/><sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$0xc+TERMIOSZ,%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Set<sp/>to<sp/>the<sp/>value<sp/>of<sp/>O_TRUNC<sp/>|<sp/>O_CREAT<sp/>|<sp/>O_WRONLY<sp/>in<sp/>&lt;fcntl.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>oflags</highlight></codeline>
+<codeline><highlight class="normal">oflags:<sp/>.long<sp/>0x601</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.data</highlight></codeline>
+<codeline><highlight class="normal">curbrk:<sp/>.long<sp/><sp/><sp/>_end</highlight></codeline>
+    </programlisting>
+    <location file="src/sys_freebsd.s"/>
+  </compounddef>
+</doxygen>

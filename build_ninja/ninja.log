@@ -1,0 +1,193 @@
+[1/32] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/memory.c.o
+[2/32] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/strings.c.o
+[3/32] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/bcpl_runtime.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/bcpl_runtime.c:33:13: warning: incompatible pointer types assigning to 'char **' from 'bcpl_string_t **' (aka 'struct bcpl_string **') [-Wincompatible-pointer-types]
+   33 |   ctx->argv = (bcpl_string_t **)argv; // Note: This is a type conversion
+      |             ^ ~~~~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/bcpl_runtime.c:19:65: warning: unused parameter 'envp' [-Wunused-parameter]
+   19 | bcpl_context_t *bcpl_runtime_init(int argc, char **argv, char **envp) {
+      |                                                                 ^
+2 warnings generated.
+[4/32] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/vectors.c.o
+[5/32] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/io.c.o
+[6/32] Building C object src/CMakeFiles/cg.dir/oc.c.o
+[7/32] Building C object src/CMakeFiles/op.dir/pt.c.o
+[8/32] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/startup.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/startup.c:271:23: warning: incompatible pointer types assigning to 'char **' from 'bcpl_string_t **' (aka 'struct bcpl_string **') [-Wincompatible-pointer-types]
+  271 |   g_startup_ctx->argv = (bcpl_string_t **)g_bcpl_argv;
+      |                       ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+[9/32] Building C object src/CMakeFiles/st_tmp.dir/bootstrap_main.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/bootstrap_main.c:23:14: warning: unused parameter 'argc' [-Wunused-parameter]
+   23 | int main(int argc, char *argv[]) {
+      |              ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/bootstrap_main.c:23:26: warning: unused parameter 'argv' [-Wunused-parameter]
+   23 | int main(int argc, char *argv[]) {
+      |                          ^
+2 warnings generated.
+[10/32] Building C object src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o
+[11/32] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_memory_safety.c.o
+[12/32] Building C object tests/CMakeFiles/test_platform_compatibility.dir/test_cross_platform.c.o
+[13/32] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/universal_startup.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/universal_startup.c:169:21: warning: requested alignment is not a power of 2 [-Wnon-power-of-two-alignment]
+  169 |       aligned_alloc(sizeof(bcpl_context_t), sizeof(bcpl_context_t));
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/universal_startup.c:161:60: warning: unused parameter 'envp' [-Wunused-parameter]
+  161 | bcpl_context_t *bcpl_startup(int argc, char **argv, char **envp) {
+      |                                                            ^
+2 warnings generated.
+[14/32] Building C object src/CMakeFiles/bcpl_runtime.dir/runtime/rt.c.o
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c:194:23: warning: passing 'bcpl_char_t[]' (aka 'unsigned char[]') to parameter of type 'const char *' converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Wpointer-sign]
+  194 |   strncpy(c_filename, filename->data, STRSIZ-1);
+      |                       ^~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h:259:42: note: expanded from macro 'strncpy'
+  259 | #define strncpy(...) __strncpy_chk_func (__VA_ARGS__)
+      |                                          ^~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h:147:34: note: expanded from macro '__strncpy_chk_func'
+  147 |                 __builtin___strncpy_chk (dest, __VA_ARGS__, __darwin_obsz (dest))
+      |                                                ^~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c:228:23: warning: passing 'bcpl_char_t[]' (aka 'unsigned char[]') to parameter of type 'const char *' converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Wpointer-sign]
+  228 |   strncpy(c_filename, filename->data, STRSIZ-1);
+      |                       ^~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h:259:42: note: expanded from macro 'strncpy'
+  259 | #define strncpy(...) __strncpy_chk_func (__VA_ARGS__)
+      |                                          ^~~~~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h:147:34: note: expanded from macro '__strncpy_chk_func'
+  147 |                 __builtin___strncpy_chk (dest, __VA_ARGS__, __darwin_obsz (dest))
+      |                                                ^~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c:346:16: warning: comparison of integers of different signs: 'int' and 'unsigned long' [-Wsign-compare]
+  346 |   if (fcb->pos >= sizeof(fcb->buffer) || ch == '\n') {
+      |       ~~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime/rt.c:70:24: warning: unused variable 'g_runtime_ctx' [-Wunused-variable]
+   70 | static bcpl_context_t *g_runtime_ctx = NULL; ///< Global runtime context
+      |                        ^~~~~~~~~~~~~
+4 warnings generated.
+[15/32] Building C object tests/CMakeFiles/test_platform_compatibility.dir/test_architecture.c.o
+[16/32] Building C object src/CMakeFiles/op.dir/op.c.o
+[17/32] Building C object tests/CMakeFiles/test_no_assembly.dir/test_assembly_elimination.c.o
+FAILED: [code=1] tests/CMakeFiles/test_no_assembly.dir/test_assembly_elimination.c.o 
+/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -std=c17 -arch arm64 -MD -MT tests/CMakeFiles/test_no_assembly.dir/test_assembly_elimination.c.o -MF tests/CMakeFiles/test_no_assembly.dir/test_assembly_elimination.c.o.d -o tests/CMakeFiles/test_no_assembly.dir/test_assembly_elimination.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_assembly_elimination.c
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_assembly_elimination.c:256:3: error: use of undeclared identifier 'clock_t'
+  256 |   clock_t start = clock();
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_assembly_elimination.c:285:3: error: use of undeclared identifier 'clock_t'
+  285 |   clock_t end = clock();
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_assembly_elimination.c:286:31: error: use of undeclared identifier 'end'
+  286 |   double cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
+      |                               ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_assembly_elimination.c:286:37: error: use of undeclared identifier 'start'
+  286 |   double cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
+      |                                     ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_assembly_elimination.c:286:47: error: use of undeclared identifier 'CLOCKS_PER_SEC'
+  286 |   double cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
+      |                                               ^
+5 errors generated.
+[18/32] Building C object tests/CMakeFiles/test_performance.dir/test_performance.c.o
+[19/32] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o
+FAILED: [code=1] tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o 
+/usr/bin/clang -DBCPL_MODERNIZED=1 -DBCPL_TEST_BUILD=1 -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime -std=c17 -arch arm64 -MD -MT tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o -MF tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o.d -o tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c:139:17: error: call to undeclared function 'bcpl_platform_alloc_pages'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  139 |   void *pages = bcpl_platform_alloc_pages(page_size * 2);
+      |                 ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c:139:9: error: incompatible integer to pointer conversion initializing 'void *' with an expression of type 'int' [-Wint-conversion]
+  139 |   void *pages = bcpl_platform_alloc_pages(page_size * 2);
+      |         ^       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c:143:3: error: call to undeclared function 'bcpl_platform_free_pages'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  143 |   bcpl_platform_free_pages(pages, page_size * 2);
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c:239:21: error: call to undeclared function 'bcpl_platform_memcmp'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  239 |   int cmp_result1 = bcpl_platform_memcmp(buffer1, buffer2, test_size);
+      |                     ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c:239:21: note: did you mean 'bcpl_platform_memcpy'?
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include/universal_platform.h:229:6: note: 'bcpl_platform_memcpy' declared here
+  229 | void bcpl_platform_memcpy(void *dest, const void *src, size_t size);
+      |      ^
+4 errors generated.
+[20/32] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o
+FAILED: [code=1] tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o 
+/usr/bin/clang -DBCPL_MODERNIZED=1 -DBCPL_TEST_BUILD=1 -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime -std=c17 -arch arm64 -MD -MT tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o -MF tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o.d -o tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:52:17: error: call to undeclared function 'bcpl_platform_alloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   52 |     void *ptr = bcpl_platform_alloc(test_sizes[i]);
+      |                 ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:52:11: error: incompatible integer to pointer conversion initializing 'void *' with an expression of type 'int' [-Wint-conversion]
+   52 |     void *ptr = bcpl_platform_alloc(test_sizes[i]);
+      |           ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:66:9: error: call to undeclared function 'bcpl_platform_free'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   66 |         bcpl_platform_free(ptr);
+      |         ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:71:5: error: call to undeclared function 'bcpl_platform_free'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   71 |     bcpl_platform_free(ptr);
+      |     ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:91:54: error: too few arguments to function call, expected 3, have 2
+   91 |   FILE *file = bcpl_platform_fopen(test_filename, "w");
+      |                ~~~~~~~~~~~~~~~~~~~                   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include/universal_platform.h:137:21: note: 'bcpl_platform_fopen' declared here
+  137 | bcpl_file_handle_t *bcpl_platform_fopen(const char *filename, char mode,
+      |                     ^                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  138 |                                         bool binary);
+      |                                         ~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:108:48: error: too few arguments to function call, expected 3, have 2
+  108 |   file = bcpl_platform_fopen(test_filename, "r");
+      |          ~~~~~~~~~~~~~~~~~~~                   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include/universal_platform.h:137:21: note: 'bcpl_platform_fopen' declared here
+  137 | bcpl_file_handle_t *bcpl_platform_fopen(const char *filename, char mode,
+      |                     ^                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  138 |                                         bool binary);
+      |                                         ~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:128:3: error: call to undeclared function 'bcpl_platform_remove'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  128 |   bcpl_platform_remove(test_filename);
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:141:25: error: call to undeclared function 'bcpl_platform_get_time_ns'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  141 |   uint64_t start_time = bcpl_platform_get_time_ns();
+      |                         ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:141:25: note: did you mean 'bcpl_platform_get_timestamp'?
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include/universal_platform.h:211:10: note: 'bcpl_platform_get_timestamp' declared here
+  211 | uint64_t bcpl_platform_get_timestamp(void);
+      |          ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:162:3: error: call to undeclared function 'bcpl_platform_sleep_ms'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  162 |   bcpl_platform_sleep_ms(10); // Sleep for 10ms
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:162:3: note: did you mean 'bcpl_platform_sleep'?
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include/universal_platform.h:217:6: note: 'bcpl_platform_sleep' declared here
+  217 | void bcpl_platform_sleep(uint64_t nanoseconds);
+      |      ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:187:3: error: unknown type name 'bcpl_cpu_features_t'; did you mean 'bcpl_cpu_feature_t'?
+  187 |   bcpl_cpu_features_t features = bcpl_platform_get_cpu_features();
+      |   ^~~~~~~~~~~~~~~~~~~
+      |   bcpl_cpu_feature_t
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include/universal_platform.h:267:3: note: 'bcpl_cpu_feature_t' declared here
+  267 | } bcpl_cpu_feature_t;
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:189:48: error: member reference base type 'bcpl_cpu_feature_t' is not a structure or union
+  189 |   printf("✅ CPU Architecture: %s\n", features.arch_name);
+      |                                       ~~~~~~~~^~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:190:41: error: member reference base type 'bcpl_cpu_feature_t' is not a structure or union
+  190 |   printf("✅ CPU Cores: %d\n", features.core_count);
+      |                                ~~~~~~~~^~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:191:44: error: member reference base type 'bcpl_cpu_feature_t' is not a structure or union
+  191 |   printf("✅ SIMD Support: %s\n", features.has_simd ? "Yes" : "No");
+      |                                   ~~~~~~~~^~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:192:43: error: member reference base type 'bcpl_cpu_feature_t' is not a structure or union
+  192 |   printf("✅ AES Support: %s\n", features.has_aes ? "Yes" : "No");
+      |                                  ~~~~~~~~^~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:196:15: error: call to undeclared function 'bcpl_platform_alloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  196 |   void *src = bcpl_platform_alloc(test_size);
+      |               ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:196:9: error: incompatible integer to pointer conversion initializing 'void *' with an expression of type 'int' [-Wint-conversion]
+  196 |   void *src = bcpl_platform_alloc(test_size);
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:197:9: error: incompatible integer to pointer conversion initializing 'void *' with an expression of type 'int' [-Wint-conversion]
+  197 |   void *dst = bcpl_platform_alloc(test_size);
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:201:5: error: call to undeclared function 'bcpl_platform_free'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  201 |     bcpl_platform_free(src);
+      |     ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:212:20: error: call to undeclared function 'bcpl_platform_get_time_ns'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  212 |   uint64_t start = bcpl_platform_get_time_ns();
+      |                    ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+[21/32] Linking C static library src/libbcpl_runtime.a
+[22/32] Building C object src/CMakeFiles/cg.dir/cg.c.o
+ninja: build stopped: subcommand failed.

@@ -1,28 +1,27 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Use BC environment variable or locate bcplc in PATH
-if(DEFINED ENV{BC} AND NOT "$ENV{BC}" STREQUAL "")
-    set(BC_TOOL "$ENV{BC}")
-else()
-    find_program(BC_TOOL bcplc)
+# This CMakeLists builds BCPL tools using the just-built compiler
+# We depend on the complete BCPL toolchain being built first
+
+# Ensure that we have the required tools from the src build
+if(NOT TARGET cg OR NOT TARGET op OR NOT TARGET st_executable)
+    message(FATAL_ERROR "cg, op, and st_executable targets must be built before tools")
 endif()
 
-if(NOT BC_TOOL)
-    message(WARNING "bcplc driver not found. Targets may fail to build")
-    set(BC_TOOL bcplc)
-endif()
-
+# Use the bcplc script directly but set PREFIX to point to our src build directory
+# The bcplc script checks for PREFIX environment variable first
+set(BCPLC_SCRIPT "${CMAKE_SOURCE_DIR}/src/bcplc")
 set(BFLAGS -O)
 
 function(add_bcpl_program name)
     add_custom_command(
         OUTPUT ${name}
-        COMMAND ${BC_TOOL} ${BFLAGS} ${CMAKE_CURRENT_SOURCE_DIR}/${name}.bcpl
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${name}.bcpl
+        COMMAND env PREFIX="${CMAKE_BINARY_DIR}/src" ${BCPLC_SCRIPT} ${BFLAGS} ${CMAKE_CURRENT_SOURCE_DIR}/${name}.bcpl
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${name}.bcpl cg op st_executable
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         VERBATIM
     )
-    add_custom_target(${name} DEPENDS ${name})
+    add_custom_target(${name} ALL DEPENDS ${name})
 endfunction()
 
 add_bcpl_program(cmpltest)
@@ -38,8 +37,8 @@ install(
     DESTINATION bin
 )
 
-# Optional test target equivalent to "make test" in util
-add_custom_target(test
+# Optional test target (renamed from "test" to avoid CTest conflict)
+add_custom_target(test_utilities
     COMMAND ./cmpltest
     DEPENDS cmpltest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

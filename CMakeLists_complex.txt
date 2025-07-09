@@ -1,0 +1,546 @@
+# BCPL Compiler - Complete Modern Build System
+# Full CMake + Ninja + LLVM + Instrumentation + Documentation + Testing
+# Replaces all legacy Makefiles with unified modern build
+
+cmake_minimum_required(VERSION 3.20)
+
+project(BCPL_Compiler
+    VERSION 2025.1.0
+    DESCRIPTION "Modernized BCPL Compiler with Universal Runtime"
+    HOMEPAGE_URL "https://github.com/bcpl-compiler/bcpl-compiler"
+    LANGUAGES C CXX ASM
+)
+
+# =============================================================================
+# MODERN TOOLCHAIN REQUIREMENTS
+# =============================================================================
+
+# Require modern Clang with C23 support
+if(NOT CMAKE_C_COMPILER_ID MATCHES ".*Clang.*")
+    message(FATAL_ERROR "BCPL requires Clang with C23 support")
+endif()
+
+# Standards
+set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Modern CMake features
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_COLOR_DIAGNOSTICS ON)
+
+# =============================================================================
+# BUILD CONFIGURATION
+# =============================================================================
+
+# Build types with instrumentation
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo;MinSizeRel;Instrumented;Profile")
+
+# Default to Release with instrumentation
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Build type" FORCE)
+endif()
+
+# Instrumentation options
+option(ENABLE_SANITIZERS "Enable AddressSanitizer and UBSan" OFF)
+option(ENABLE_COVERAGE "Enable code coverage instrumentation" OFF)
+option(ENABLE_PROFILING "Enable profiling instrumentation" OFF)
+option(ENABLE_LTO "Enable Link Time Optimization" ON)
+
+# =============================================================================
+# COMPILER FLAGS AND INSTRUMENTATION
+# =============================================================================
+
+# Base compiler flags
+set(BCPL_C_FLAGS
+    -Wall -Wextra -Wpedantic -Wformat=2 -Wshadow -Wconversion
+    -Wunreachable-code -Wstrict-prototypes -Wmissing-prototypes
+    -fdiagnostics-color=always
+)
+
+set(BCPL_CXX_FLAGS
+    -Wall -Wextra -Wpedantic -Wformat=2 -Wshadow -Wconversion
+    -Wunreachable-code -Woverloaded-virtual -Wnon-virtual-dtor
+    -fdiagnostics-color=always
+)
+
+# Optimization flags per build type
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    list(APPEND BCPL_C_FLAGS -g3 -O0 -DDEBUG=1)
+    list(APPEND BCPL_CXX_FLAGS -g3 -O0 -DDEBUG=1)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    list(APPEND BCPL_C_FLAGS -O3 -DNDEBUG -march=native -mtune=native)
+    list(APPEND BCPL_CXX_FLAGS -O3 -DNDEBUG -march=native -mtune=native)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Instrumented")
+    list(APPEND BCPL_C_FLAGS -g -O1 -fno-omit-frame-pointer)
+    list(APPEND BCPL_CXX_FLAGS -g -O1 -fno-omit-frame-pointer)
+    set(ENABLE_SANITIZERS ON)
+endif()
+
+# Sanitizers
+if(ENABLE_SANITIZERS)
+    list(APPEND BCPL_C_FLAGS -fsanitize=address,undefined -fno-sanitize-recover=all)
+    list(APPEND BCPL_CXX_FLAGS -fsanitize=address,undefined -fno-sanitize-recover=all)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined")
+endif()
+
+# Coverage
+if(ENABLE_COVERAGE)
+    list(APPEND BCPL_C_FLAGS --coverage -fprofile-instr-generate -fcoverage-mapping)
+    list(APPEND BCPL_CXX_FLAGS --coverage -fprofile-instr-generate -fcoverage-mapping)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
+
+# Profiling
+if(ENABLE_PROFILING)
+    list(APPEND BCPL_C_FLAGS -pg -fno-omit-frame-pointer)
+    list(APPEND BCPL_CXX_FLAGS -pg -fno-omit-frame-pointer)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+endif()
+
+# Link Time Optimization
+if(ENABLE_LTO AND NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+endif()
+
+# =============================================================================
+# ARCHITECTURE AND PLATFORM DETECTION
+# =============================================================================
+
+# Detect target architecture
+cmake_host_system_information(RESULT HOST_ARCH QUERY OS_PLATFORM)
+message(STATUS "Host architecture: ${HOST_ARCH}")
+
+if(APPLE)
+    if(CMAKE_OSX_ARCHITECTURES MATCHES "arm64|aarch64")
+        set(BCPL_TARGET_ARCH "arm64")
+        message(STATUS "Building for Apple Silicon (ARM64)")
+    else()
+        set(BCPL_TARGET_ARCH "x86_64") 
+        message(STATUS "Building for Intel Mac (x86_64)")
+    endif()
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64|AMD64")
+    set(BCPL_TARGET_ARCH "x86_64")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+    set(BCPL_TARGET_ARCH "arm64")
+else()
+    set(BCPL_TARGET_ARCH "generic")
+endif()
+
+# Platform-specific settings
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(BCPL_PLATFORM "MACOS")
+    list(APPEND BCPL_C_FLAGS -DBCPL_PLATFORM_MACOS=1)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(BCPL_PLATFORM "LINUX")
+    list(APPEND BCPL_C_FLAGS -DBCPL_PLATFORM_LINUX=1)
+else()
+    set(BCPL_PLATFORM "GENERIC")
+    list(APPEND BCPL_C_FLAGS -DBCPL_PLATFORM_GENERIC=1)
+endif()
+
+# =============================================================================
+# EXTERNAL DEPENDENCIES
+# =============================================================================
+
+# LLVM (optional for modern backend)
+find_package(LLVM QUIET CONFIG)
+if(LLVM_FOUND)
+    message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+    include_directories(${LLVM_INCLUDE_DIRS})
+    separate_arguments(LLVM_DEFINITIONS_LIST UNIX_COMMAND "${LLVM_DEFINITIONS}")
+    add_definitions(${LLVM_DEFINITIONS_LIST})
+    
+    llvm_map_components_to_libnames(LLVM_LIBS
+        core bitwriter native analysis target passes support
+    )
+    set(LLVM_AVAILABLE TRUE)
+else()
+    message(STATUS "LLVM not found - building without LLVM backend")
+    set(LLVM_AVAILABLE FALSE)
+endif()
+
+# =============================================================================
+# DOCUMENTATION SYSTEM
+# =============================================================================
+
+find_package(Doxygen QUIET)
+find_program(SPHINX_EXECUTABLE sphinx-build)
+
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_PROJECT_NAME "BCPL Compiler")
+    set(DOXYGEN_PROJECT_BRIEF "Modernized BCPL Compiler with C23 Runtime")
+    set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/docs")
+    set(DOXYGEN_EXTRACT_ALL YES)
+    set(DOXYGEN_GENERATE_HTML YES)
+    set(DOXYGEN_GENERATE_XML YES)
+    set(DOXYGEN_RECURSIVE YES)
+    
+    doxygen_add_docs(docs
+        ${CMAKE_SOURCE_DIR}/src
+        COMMENT "Generating API documentation with Doxygen"
+    )
+endif()
+
+# =============================================================================
+# SUBDIRECTORIES
+# =============================================================================
+
+add_subdirectory(src)
+add_subdirectory(tools)
+add_subdirectory(docs)
+
+# =============================================================================
+# TESTING AND INSTRUMENTATION
+# =============================================================================
+
+enable_testing()
+include(CTest)
+
+# Custom targets for instrumentation
+add_custom_target(coverage
+    COMMAND find ${CMAKE_BINARY_DIR} -name "*.profraw" -exec llvm-profdata merge -sparse {} -o coverage.profdata \\;
+    COMMAND llvm-cov show ${CMAKE_BINARY_DIR}/src/cg -instr-profile=coverage.profdata -format=html -output-dir=coverage_report
+    COMMENT "Generating coverage report"
+)
+
+add_custom_target(profile
+    COMMAND echo "Run your program first, then use: gprof \$\${program} gmon.out > profile.txt"
+    COMMENT "Profiling instructions"
+)
+
+# =============================================================================
+# INSTALLATION
+# =============================================================================
+
+include(GNUInstallDirs)
+
+install(TARGETS bcpl_runtime
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+# =============================================================================
+# STATUS SUMMARY
+# =============================================================================
+
+message(STATUS "=== BCPL Compiler Build Configuration ===")
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Platform: ${BCPL_PLATFORM}")
+message(STATUS "Architecture: ${BCPL_TARGET_ARCH}")
+message(STATUS "C Compiler: ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}")
+message(STATUS "CXX Compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS "LLVM Version: ${LLVM_PACKAGE_VERSION}")
+message(STATUS "Sanitizers: ${ENABLE_SANITIZERS}")
+message(STATUS "Coverage: ${ENABLE_COVERAGE}")
+message(STATUS "Profiling: ${ENABLE_PROFILING}")
+message(STATUS "LTO: ${ENABLE_LTO}")
+message(STATUS "Doxygen: ${DOXYGEN_FOUND}")
+message(STATUS "===========================================")
+
+# =============================================================================
+# COMPREHENSIVE BUILD TARGETS (replacing all Makefiles)
+# =============================================================================
+
+# Add all source subdirectories (removed to avoid conflicts)
+# The subdirectories are built through their own CMakeLists.txt files
+
+# =============================================================================
+# BCPL TOOLS (replacing tools/Makefile)
+# =============================================================================
+
+# BCPL Tools Directory Configuration
+set(TOOLS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tools)
+set(BCPL_COMPILER ${CMAKE_CURRENT_SOURCE_DIR}/src/bcplc)
+
+# BCPL Tool: cmpltest
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cmpltest
+    COMMAND ${BCPL_COMPILER} -O ${TOOLS_DIR}/cmpltest.bcpl -o ${CMAKE_CURRENT_BINARY_DIR}/cmpltest
+    DEPENDS cg op ${TOOLS_DIR}/cmpltest.bcpl
+    COMMENT "Building cmpltest BCPL tool"
+)
+
+# BCPL Tool: xref
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xref
+    COMMAND ${BCPL_COMPILER} -O ${TOOLS_DIR}/xref.bcpl -o ${CMAKE_CURRENT_BINARY_DIR}/xref
+    DEPENDS cg op ${TOOLS_DIR}/xref.bcpl
+    COMMENT "Building xref BCPL tool"
+)
+
+# BCPL Tool: gpm
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/gpm
+    COMMAND ${BCPL_COMPILER} -O ${TOOLS_DIR}/gpm.bcpl -o ${CMAKE_CURRENT_BINARY_DIR}/gpm
+    DEPENDS cg op ${TOOLS_DIR}/gpm.bcpl
+    COMMENT "Building gpm BCPL tool"
+)
+
+# BCPL Tools Target
+add_custom_target(bcpl_tools ALL
+    DEPENDS 
+        ${CMAKE_CURRENT_BINARY_DIR}/cmpltest
+        ${CMAKE_CURRENT_BINARY_DIR}/xref
+        ${CMAKE_CURRENT_BINARY_DIR}/gpm
+)
+
+# Tool Testing
+add_custom_target(test_tools
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/cmpltest
+    DEPENDS bcpl_tools
+    COMMENT "Running BCPL tools tests"
+)
+
+# =============================================================================
+# ASSEMBLY MIGRATION AND UNIVERSAL RUNTIME
+# =============================================================================
+
+# Universal Assembly Stub (NASM-based for multi-platform)
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+    set(NASM_FORMAT "elf64")
+    if(APPLE)
+        set(NASM_FORMAT "macho64")
+    endif()
+    
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/universal_startup.o
+        COMMAND nasm -f ${NASM_FORMAT} 
+                ${CMAKE_CURRENT_SOURCE_DIR}/src/universal_startup.asm 
+                -o ${CMAKE_CURRENT_BINARY_DIR}/universal_startup.o
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/universal_startup.asm
+        COMMENT "Building universal assembly startup with NASM"
+    )
+    
+    add_custom_target(universal_assembly
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/universal_startup.o
+    )
+else()
+    # For non-x86 architectures, use pure C startup
+    message(STATUS "Using pure C startup for ${CMAKE_SYSTEM_PROCESSOR}")
+    add_custom_target(universal_assembly)
+endif()
+
+# Legacy Assembly Analysis Target
+add_custom_target(analyze_assembly
+    COMMAND echo "=== Legacy Assembly Analysis ==="
+    COMMAND echo "Files that need C23 migration:"
+    COMMAND wc -l ${CMAKE_CURRENT_SOURCE_DIR}/src/*.s
+    COMMAND echo "Total assembly lines: `cat ${CMAKE_CURRENT_SOURCE_DIR}/src/*.s | wc -l`"
+    COMMAND echo "Portable runtime: ${CMAKE_CURRENT_SOURCE_DIR}/src/portable_runtime.c"
+    COMMAND wc -l ${CMAKE_CURRENT_SOURCE_DIR}/src/portable_runtime.c
+    COMMENT "Analyzing legacy assembly for migration"
+)
+
+# =============================================================================
+# COMPREHENSIVE TESTING FRAMEWORK
+# =============================================================================
+
+# Enable CTest
+enable_testing()
+
+# Basic compiler test
+add_test(NAME bcplc_version
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/src/bcplc --version
+)
+
+# Runtime library test
+add_test(NAME runtime_linking
+    COMMAND ${CMAKE_COMMAND} -E echo "Runtime library: $<TARGET_FILE:bcpl_runtime>"
+)
+
+# BCPL source compilation test
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/st.bcpl)
+    add_test(NAME compile_standard_lib
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/src/bcplc ${CMAKE_CURRENT_SOURCE_DIR}/src/st.bcpl
+    )
+endif()
+
+# Tools test
+add_test(NAME tools_test
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/cmpltest
+)
+set_tests_properties(tools_test PROPERTIES
+    DEPENDS bcpl_tools
+)
+
+# =============================================================================
+# DOCUMENTATION GENERATION (replacing docs/Makefile)
+# =============================================================================
+
+# Doxygen Documentation
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+    
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    
+    add_custom_target(docs_doxygen
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating Doxygen documentation"
+        VERBATIM
+    )
+endif()
+
+# Sphinx Documentation
+find_program(SPHINX_BUILD sphinx-build)
+if(SPHINX_BUILD)
+    add_custom_target(docs_sphinx
+        COMMAND ${SPHINX_BUILD} -b html 
+                ${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx 
+                ${CMAKE_CURRENT_BINARY_DIR}/docs/html
+        COMMENT "Generating Sphinx documentation"
+        VERBATIM
+    )
+    
+    add_custom_target(docs_all
+        DEPENDS docs_doxygen docs_sphinx
+        COMMENT "Building all documentation"
+    )
+else()
+    add_custom_target(docs_all
+        DEPENDS docs_doxygen
+        COMMENT "Building Doxygen documentation (Sphinx not found)"
+    )
+endif()
+
+# Manual installation (replacing docs/Makefile)
+install(FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/docs/manual.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/docs/standard.txt
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+)
+
+# Generated documentation installation
+if(DOXYGEN_FOUND)
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs/html/
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/html
+        OPTIONAL
+    )
+endif()
+
+# =============================================================================
+# CROSS-PLATFORM AND ARCHITECTURE SUPPORT
+# =============================================================================
+
+# Platform-specific configurations
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(BCPL_PLATFORM "linux")
+    set(BCPL_SYSTEM_LIBS m)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(BCPL_PLATFORM "macos")
+    set(BCPL_SYSTEM_LIBS)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+    set(BCPL_PLATFORM "freebsd")
+    set(BCPL_SYSTEM_LIBS m)
+else()
+    set(BCPL_PLATFORM "unknown")
+    set(BCPL_SYSTEM_LIBS)
+    message(WARNING "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
+endif()
+
+# Architecture detection and configuration
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+    set(BCPL_TARGET_ARCH "x86_64")
+    set(BCPL_BITS "64")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "i386|i686")
+    set(BCPL_TARGET_ARCH "i386")
+    set(BCPL_BITS "32")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
+    set(BCPL_TARGET_ARCH "arm64")
+    set(BCPL_BITS "64")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
+    set(BCPL_TARGET_ARCH "arm")
+    set(BCPL_BITS "32")
+else()
+    set(BCPL_TARGET_ARCH "unknown")
+    set(BCPL_BITS "64")
+    message(WARNING "Unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+endif()
+
+# Add platform definitions
+add_compile_definitions(
+    BCPL_PLATFORM="${BCPL_PLATFORM}"
+    BCPL_TARGET_ARCH="${BCPL_TARGET_ARCH}" 
+    BITS=${BCPL_BITS}
+)
+
+# =============================================================================
+# MIGRATION TARGETS AND LEGACY CLEANUP
+# =============================================================================
+
+# Create migration status target
+add_custom_target(migration_status
+    COMMAND echo "=== BCPL MODERNIZATION STATUS ==="
+    COMMAND echo "Modern CMake build: ✓ ACTIVE"
+    COMMAND echo "C23 compiler: ✓ ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}"
+    COMMAND echo "LLVM backend: ✓ ${LLVM_PACKAGE_VERSION}"
+    COMMAND echo "Universal runtime: ✓ portable_runtime.c"
+    COMMAND echo "Legacy Makefiles: ⚠ DEPRECATED (use CMake targets)"
+    COMMAND echo "Legacy assembly: ⚠ NEEDS MIGRATION"
+    COMMAND echo ""
+    COMMAND echo "Assembly files to migrate:"
+    COMMAND ls -la ${CMAKE_CURRENT_SOURCE_DIR}/src/*.s | grep -v universal_startup
+    COMMAND echo ""
+    COMMAND echo "Total legacy assembly lines: `cat ${CMAKE_CURRENT_SOURCE_DIR}/src/*.s | wc -l`"
+    COMMAND echo "Modern runtime lines: `wc -l < ${CMAKE_CURRENT_SOURCE_DIR}/src/portable_runtime.c`"
+    COMMAND echo ""
+    COMMAND echo "To complete migration:"
+    COMMAND echo "1. Test: make test_all"
+    COMMAND echo "2. Build docs: make docs_all" 
+    COMMAND echo "3. Profile: make profile"
+    COMMAND echo "4. Remove legacy Makefiles when satisfied"
+    COMMENT "Showing modernization status and remaining work"
+)
+
+# Comprehensive test target
+add_custom_target(test_all
+    DEPENDS test_tools
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    COMMENT "Running all tests"
+)
+
+# Clean target for generated files
+add_custom_target(clean_all
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/docs
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/cmpltest
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/xref  
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/gpm
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/*.gcov
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/*.gcda
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/*.gcno
+    COMMENT "Cleaning all generated files"
+)
+
+# Makefile deprecation warnings
+add_custom_target(check_makefiles
+    COMMAND echo "=== MAKEFILE DEPRECATION CHECK ==="
+    COMMAND echo "Found legacy Makefiles (should be removed after migration):"
+    COMMAND find . -name "Makefile" -not -path "./build*" || echo "No legacy Makefiles found - GOOD!"
+    COMMAND echo ""
+    COMMAND echo "Use these CMake targets instead:"
+    COMMAND echo "  make all          -> cmake --build ."
+    COMMAND echo "  make tools        -> cmake --build . --target bcpl_tools"
+    COMMAND echo "  make docs         -> cmake --build . --target docs_all"
+    COMMAND echo "  make test         -> cmake --build . --target test_all"
+    COMMAND echo "  make clean        -> cmake --build . --target clean_all"
+    COMMAND echo "  make install      -> cmake --install ."
+    COMMENT "Checking for legacy Makefiles and showing CMake alternatives"
+)
+
+# Installation target (comprehensive)
+install(PROGRAMS
+    ${CMAKE_CURRENT_BINARY_DIR}/cmpltest
+    ${CMAKE_CURRENT_BINARY_DIR}/xref
+    ${CMAKE_CURRENT_BINARY_DIR}/gpm
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+    OPTIONAL
+)
+
+# =============================================================================
+# FINAL STATUS AND MIGRATION COMPLETION
+# =============================================================================

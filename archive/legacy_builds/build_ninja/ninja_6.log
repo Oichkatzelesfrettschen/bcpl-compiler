@@ -1,0 +1,27 @@
+[1/12] Building C object src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o
+[2/12] Linking C static library src/libbcpl_runtime.a
+[3/12] Linking C executable tests/test_performance
+[4/12] Linking C executable tests/test_runtime_modernization
+FAILED: [code=1] tests/test_runtime_modernization 
+: && /usr/bin/clang -std=c17 -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o tests/CMakeFiles/test_runtime_modernization.dir/test_memory_safety.c.o -o tests/test_runtime_modernization  src/libbcpl_runtime.a && :
+Undefined symbols for architecture arm64:
+  "_bcpl_platform_get_timestamp", referenced from:
+      _test_platform_abstraction in test_runtime.c.o
+      _test_platform_abstraction in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+      _bcpl_platform_get_time_ns in libbcpl_runtime.a[10](macos.c.o)
+      ...
+  "_bcpl_platform_sleep", referenced from:
+      _test_platform_abstraction in test_runtime.c.o
+      _bcpl_platform_sleep_ms in libbcpl_runtime.a[10](macos.c.o)
+ld: symbol(s) not found for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+[5/12] Linking C executable tests/test_no_assembly
+[6/12] Linking C executable tests/test_platform_compatibility
+[7/12] Linking C executable src/op
+[8/12] Linking C executable src/st_tmp
+[9/12] Linking C executable src/cg
+ninja: build stopped: subcommand failed.

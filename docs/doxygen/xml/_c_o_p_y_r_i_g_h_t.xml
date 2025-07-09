@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_c_o_p_y_r_i_g_h_t" kind="file" language="C++">
+    <compoundname>COPYRIGHT</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">BCPLC<sp/>COPYRIGHT</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Most<sp/>of<sp/>the<sp/>files<sp/>here<sp/>are<sp/>taken<sp/>from<sp/>a<sp/>BCPL<sp/>compiler<sp/>distribution</highlight></codeline>
+<codeline><highlight class="normal">dating<sp/>from<sp/>the<sp/>early<sp/>1980s.<sp/><sp/>None<sp/>of<sp/>the<sp/>files<sp/>bears<sp/>a<sp/>copyright</highlight></codeline>
+<codeline><highlight class="normal">notice<sp/>in<sp/>the<sp/>original,<sp/>but<sp/>--<sp/>on<sp/>the<sp/>basis<sp/>of<sp/>other<sp/>files<sp/>in<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">distribution<sp/>--<sp/>it<sp/>seems<sp/>reasonable<sp/>to<sp/>assume<sp/>that<sp/>the<sp/>bulk<sp/>of<sp/>these</highlight></codeline>
+<codeline><highlight class="normal">are</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>(c)<sp/>Copyright<sp/>1978-1980<sp/>Tripos<sp/>Research<sp/>Group</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>University<sp/>of<sp/>Cambridge</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Computer<sp/>Laboratory</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Changes<sp/>and<sp/>additions<sp/>are</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>(c)<sp/>Copyright<sp/>2004,<sp/>2012<sp/>Robert<sp/>Nordier</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">and<sp/>are<sp/>freely<sp/>redistributable.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Robert<sp/>Nordier</highlight></codeline>
+<codeline><highlight class="normal">www.nordier.com</highlight></codeline>
+    </programlisting>
+    <location file="COPYRIGHT"/>
+  </compounddef>
+</doxygen>

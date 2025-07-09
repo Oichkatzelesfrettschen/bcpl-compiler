@@ -1,0 +1,356 @@
+// BLEX2.bcpl - BCPL Complier -- Lexical Analyzer,part 2
+// Copyright Xerox Corporation 1980
+// Swinehart, 5-10-77: docase exp, remove wenn, dann, sonst, probieren
+
+// last modified BY Butterfield, May 8, 1979  7:24 PM
+// - incorporate Paxton's unsigned compares under SWUnsignedCompares - 5/8
+// - LexWrite, formatting AND write symbol information with END - 1/24
+// - add from FOR use BY get a, b, ... from "file" - 1/23/79
+
+//  Paxton, 9-14-78: unsigned compares
+
+//   ReservedWord	//  Look up string as a reserved word
+// veq		//  TEST FOR string equality
+//  local TO this file
+
+GET "blexx"
+
+STATIC [ W = nil	//pointer TO the string that veq compares its argument with
+         N = nil	//length of this string
+       ]
+
+LET ReservedWord(Name) = valof
+ [ UNLESS V!0 gr 1 RESULTIS 0	//  All reserved words have at least two letters
+
+   LET w = VEC (NAMELENGTH/Bytesperword); W = w
+   LET ch = V!1	//  The first char of the word
+   V!1 = V!0 - 1; Packstring(V+1,W); N = V!1/Bytesperword	//  The rest of the word
+   V!1 = ch		//  Restore V FOR use in Readsymb
+
+   RESULTIS selecton ch INTO	//  Look up the word
+    [	DEFAULT:	0
+
+	CASE $a: (	veq("nd"	)?AND,
+		 (	veq("bort"	)?ABORT,
+		  0))
+	CASE $b: (	veq("e"		)?BE,
+		 (	veq("y"		)?BY,
+		 (	veq("reak"	)?BREAK,
+		 (	veq("it"	)?BIT,
+		 (	veq("yte"	)?BYTE,
+		 (	veq("lank"	)?BLANK,
+		  0))))))
+	CASE $c: (	veq("ase"	)?CASE,
+		 (	veq("ompileif"	)?COMPILEIF,
+		 (	veq("ompiletest")?COMPILETEST,
+		  0)))
+
+/// DCS* add compileif, compiletest
+	CASE $d: (	veq("efault"	)?DEFAULT,
+		 (	veq("o"		)?DO,
+		 (	veq("ocase"	)?DOCASE,
+		  0)))
+	CASE $e: (	veq("q"		)?EQ,
+		 (	veq("qv"	)?EQV,
+		 (	veq("xternal"	)?EXT,
+		 (	veq("ndcase"	)?ENDCASE,
+		  0))))
+	CASE $f: (	veq("OR"	)?FOR,
+		 (	veq("alse"	)?FALSE,
+		 (	veq("inish"	)?FINISH,
+		 (	veq("rom"	)?FROM,
+		  0))))
+	CASE $g: (	veq("e"		)?GE,
+		 (	veq("r"		)?GR,
+		 (	veq("et"	)?GET,
+		 (	veq("oto"	)?GOTO,
+		  0))))
+	CASE $h: (0)
+	CASE $i: (	veq("f"		)?IF,
+		 (	veq("fso"	)?IFSO,
+		 (	veq("fnot"	)?IFNOT,
+		 (	veq("nto"	)?INTO,
+		  0))))
+	CASE $j: (0)
+	CASE $k: (0)
+	CASE $l: (	veq("et"	)?LET,
+		 (	veq("e"		)?LE,
+		 (	veq("s"		)?LS,
+		 (	veq("v"		)?LV,
+		 (	veq("oop"	)?LOOP,
+		 (	veq("ogand"	)?LOGAND,
+		 (	veq("ogor"	)?LOGOR,
+		 (	veq("ogeqv"	)?EQV,
+		 (	veq("ogxor"	)?NEQV,
+		 (	veq("shift"	)?LSHIFT,
+		  0))))))))))
+	CASE $m: (	veq("anifest"	)?MANIFEST,
+		  0)
+	CASE $n: (	veq("e"		)?NE,
+		 (	veq("eg"	)?NEG,
+		 (	veq("il"	)?NIL,
+		 (	veq("ot"	)?NOT,
+		 (	veq("EQV"	)?NEQV,
+		 (	veq("umargs"	)?NUMARGS,
+		 (	veq("ewname"	)?NEWNAME,
+		  0)))))))
+	CASE $o: (	veq("r"		)?OR,
+		 (	veq("ffset"	)?OFFSET,
+		  0))
+	CASE $p: (0)
+	CASE $q: (0)
+	CASE $r: (	veq("v"		)?RV,
+		 (	veq("eturn"	)?RETURN,
+		 (	veq("esultis"	)?RESULTIS,
+		 (	veq("epeat"	)?REPEAT,
+		 (	veq("epeatwhile"	)?REPEATWHILE,
+		 (	veq("epeatuntil"	)?REPEATUNTIL,
+		 (	veq("em"	)?REM,
+		 (	veq("shift"	)?RSHIFT,
+		  0))))))))
+	CASE $s: (	veq("witchon"	)?SWITCHON,
+		 (	veq("tatic"	)?STATIC,
+		 (	veq("ize"	)?SIZE,
+		 (	veq("tep"	)?BY,
+		 (	veq("electon"	)?SELECTON,
+		 (	veq("tructure"	)?STRUCTURE,
+		  0))))))
+	CASE $t: (	veq("o"		)?TO,
+		 (	veq("est"	)?TEST,
+		 (	veq("rue"	)?TRUE,
+		 (	veq("hen"	)?DO,
+		 (	veq("able"	)?TABLE,
+		  0)))))
+	CASE $u: (	veq("nless"	)?UNLESS,
+		 (	veq("ntil"	)?UNTIL,
+		 (SWUnsignedCompares & veq("ls"	)?ULS,
+		 (SWUnsignedCompares & veq("le"	)?ULE,
+		 (SWUnsignedCompares & veq("gr"	)?UGR,
+		 (SWUnsignedCompares & veq("ge"	)?UGE,
+		  0))))))
+	CASE $v: (	veq("ec"	)?VEC,
+		 (	veq("alof"	)?VALOF,
+		  0))
+	CASE $w: (	veq("hile"	)?WHILE,
+		 (	veq("ord"	)?WORD,
+		  0))
+	CASE $x: (	veq("OR"	)?NEQV,
+		  0)
+	CASE $y: (0)
+	CASE $z: (0)
+    ]
+ ]
+
+AND veq(s) = valof	//  Compare the arg TO W
+ [ UNLESS rv W eq rv s RESULTIS false	//  Quick TEST on first words (including length)
+   LET w = W + 1
+       s = s + 1
+   FOR i = 1 TO N DO
+	[ UNLESS rv w eq rv s RESULTIS false
+	  w = w + 1; s = s + 1
+	]
+   RESULTIS true
+ ]
+
+//  The parameter Item of the following routine contains a lexeme AND the data FOR insertion
+//  of SEMICOLON OR DO, packed like this...
+//	bits 2-3	(0 ? never, 1 ? may, 2 ? must) begin a command
+//	bits 4-5	(0 ? never, 1 ? may, 2 ? must) end a command
+//	bits 8-15	the numeric lexeme itself.
+//  Two kinds of processing are done...
+//   1.IF last item may OR must end a command AND this item may begin a command AND a NEWLINE
+//	has intervened between them, insert a SEMICOLON before this item.
+//   2. IF last item may end a command AND this one must begin one, insert a DO before this one.
+//  The lexeme is written on the LEX file (one byte)
+//    followed BY the V information,IF any 
+//    followed BY the line pointer
+
+AND LexOut(Item) BE		//  Include canonic symbol Item in the lexical stream.
+  [  Symb = Item	//  Unpack the lexeme fields
+     LET Beg = (Item & #1400) RSHIFT 8	//  (this item) doesn"t, may, does begin a command
+     AND End = (LastItem & #6000) RSHIFT 10	//  (the last item) doesn"t, may, does end a command
+     TEST NLPending
+	ifso IF Beg>0 & End>0 DO	//  We have a carr.ret. between commands
+	  [  ReadAhead, ExtraItem = true, Item	//  Remember this item
+	     Symb = SEMICOLON; LexWrite(Symb)	//  AND output a SEMICOLON
+	  ]
+	ifnot IF Beg eq 2 & End eq 1 DO	//  We are at the start of a command AND need a DO
+	  [  ReadAhead, ExtraItem = true, Item	//  Remember this item
+	     Symb = DO; LexWrite(Symb)	//  AND output a DO
+	  ]
+    IF NLPending DO LexWrite(LINE)
+     UNLESS ReadAhead DO LexWrite(Item)	//  IF no extra item, output the lexeme
+     LastItem = Item	//  Remember this item FOR next time
+     NLPending = false //  Reset NLPending
+  ]
+
+//----------------------------------------------------------------------------
+AND LexWrite(item) BE	//  Write the lexeme, perhaps with info from V
+//----------------------------------------------------------------------------
+[
+SWITCHON item INTO
+   [
+   CASE AND: CASE DO: CASE OR: CASE IFSO: CASE IFNOT: CASE INTO:
+    LexWrite(SEMICOLON);
+   ]
+Writech(LexStream, item & #377); LexLength = LexLength + 1;
+IF SWLexTrace DO [ WriteS("*t*******s"); ]
+SWITCHON item INTO
+   [
+   CASE NAME:
+      [
+      Writeaddr(LexStream, V!0); LexLength = LexLength + 2;
+      IF SWLexTrace THEN
+       [ WriteS("NAME "); WriteS(lv (Dictionary!(V!0))); WriteO(V!0); ]
+      ENDCASE
+      ]
+   CASE LINE:
+      [
+      Writeaddr(LexStream, NewLineptr+1); LexLength = LexLength + 2;
+      IF SWLexTrace THEN
+       [ WriteS("LINE "); WriteO(NewLineptr+1); ]
+      ENDCASE
+      ]
+   CASE END:
+      [
+      Writeaddr(LexStream, V!0); LexLength = LexLength + 2;
+      IF SWLexTrace THEN [ WriteS("END "); WriteO(V!0); ]
+      ENDCASE
+      ]
+   CASE CHARCONST: CASE NUMBER:
+      [
+      Writeword(LexStream, V!0); LexLength = LexLength + 2;
+      IF SWLexTrace THEN [ WriteN(item & #377); WW($*s); WriteO(V!0); ]
+      ENDCASE
+      ]
+   CASE NAMEBRA: CASE NAMEKET: CASE STRINGCONST:
+      [
+      FOR i = 0 TO Length(V)/Bytesperword DO
+       [ Writeword(LexStream, V!i); LexLength = LexLength + 2; ]
+      IF SWLexTrace THEN [ WriteN(item & #377); WW($*s); WriteS(V); ]
+      ENDCASE
+      ]
+   DEFAULT: IF SWLexTrace THEN WriteN(item & #377);
+   ]
+IF SWLexTrace THEN WW($*n);
+]
+
+AND DoString() BE
+	 [  LET Type = Ch   //  Remember what it was.
+	    AND Vp = 0		//  A counter
+	    AND VV = VEC StringLength   //  A place TO put the characters of the string.
+	     [  Rch()
+		IF Ch eq Type & Type eq $*" DO   //  Just read the end of a string.
+		 [  VV!0 = Vp; Packstring(VV, V)   //  Pack the string INTO V.
+		    LexOut(STRINGCONST)
+		    RETURN
+		  ]
+		IF Vp > StringLength % Ch eq #777 % Ch eq $*n DO
+		 [  LEXreport(9)
+		    V!0 = "?"!0
+		    LexOut(STRINGCONST)
+		    RETURN
+		  ]
+		IF Ch eq $** DO
+		 [  Rch()
+		    Ch = valof
+		     [  SWITCHON Ch INTO
+			 [  DEFAULT:  LEXreport(10); RESULTIS Ch
+			    CASE $*":	RESULTIS #42
+			    CASE $**:	RESULTIS #52
+			    CASE $C: CASE $c:	RESULTIS #15
+			    CASE $L: CASE $l:	RESULTIS #12
+			    CASE $S: CASE $s:  RESULTIS #40	//  space
+			    CASE $T: CASE $t:	RESULTIS #11
+			    CASE $N: CASE $n:  RESULTIS #15	//  new line
+			    CASE $0: CASE $1: CASE $2: CASE $3:   //  Octal escape.
+			    CASE $4: CASE $5: CASE $6: CASE $7:
+			     [  LET t = Ch & 7
+				Rch()
+				t = (t LSHIFT 3) + (Ch&7)
+				Rch()
+				t = (t LSHIFT 3) + (Ch&7)
+				UNLESS t le #377 DO LEXreport(6)
+				RESULTIS t
+			      ]
+			  ]
+		      ]
+		  ]
+
+		Vp = Vp + 1; VV!Vp = Ch		//  Store the character.
+		IF Type eq $*" LOOP		//  Keep reading a string constant.
+		V!0 = Ch; LexOut(CHARCONST)
+		RETURN
+	      ]
+	    REPEAT
+	  ]
+
+AND Kind(Chr) = valof
+     [  IF Chr ge $a & Chr le $z RESULTIS		Small
+	IF Chr ge $A & Chr le $Z RESULTIS		Capital
+	IF Chr ge $0 & Chr le $9 RESULTIS		Digit
+	IF Chr eq $*s % Chr eq $*t % Chr eq 0 RESULTIS Ignorable
+	IF Chr eq #32 RESULTIS		BravoTail  // ^Z
+	RESULTIS Simple
+      ]
+
+AND DoNumber(radix) = valof
+ [  LET n = 0
+/// DCS* FOR command line manifests -- see LEX0
+    LET flag = false
+    IF radix < 0 THEN
+       [
+       flag = true
+       radix = -radix
+       ]
+    V!0 = 0
+    WHILE $0 le Ch & Ch ls ($0 + radix) DO
+	[ V!0 = V!0 + 1; V!(V!0) = Ch; Rch() ]
+    IF V!0 gr 6 DO LEXreport(6)
+    TEST Ch eq $B % Ch eq $b
+    ifnot TEST radix eq 8
+	  THEN n = Ovalue(V) OR n = Dvalue(V)
+    ifso  [	n = Ovalue(V)
+		LET m = 0
+		Rch()
+		IF $0 le Ch & Ch le $9 DO
+		  [ m = Ch-$0
+		    Rch()
+		    IF $0 le Ch & Ch le $9 DO
+			[ m = m*10 + (Ch-$0)
+			  Rch()
+			]
+		  ]
+		UNLESS m le 15 DO LEXreport(6)
+		LET t = n LSHIFT m
+		UNLESS (t RSHIFT m) eq n DO LEXreport(6)
+		n = t
+	    ]
+/// DCS* flag TEST FOR command line manifests
+    V!0 = n; UNLESS flag DO LexOut(NUMBER)
+    Chkind = Kind(Ch)
+    RESULTIS n
+   ]
+
+AND Ovalue(v) = valof
+ [  LET n = 0
+    FOR i = 1 TO v!0 DO
+     [	UNLESS $0 le v!i & v!i le $7 DO [ LEXreport(6); RESULTIS n ]
+	LET t = (n LSHIFT 3) + (v!i-$0)
+	UNLESS (t RSHIFT 3) eq n DO [ LEXreport(6); RESULTIS t ]
+	n = t
+      ]
+    RESULTIS n
+  ]
+
+AND Dvalue(v) = valof
+ [  LET n = 0
+    FOR i = 1 TO v!0 DO
+     [	UNLESS $0 le v!i & v!i le $9 DO [ LEXreport(6); RESULTIS n ]
+	LET t = n*10 + (v!i-$0)
+	UNLESS t/10 eq n DO [ LEXreport(6); RESULTIS t ]
+	n = t
+      ]
+    RESULTIS n
+  ]
+

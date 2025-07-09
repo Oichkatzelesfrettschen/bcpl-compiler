@@ -1,0 +1,187 @@
+// =============================================================================
+// LIBHDR - Modern BCPL Library Header
+// Compatible with Xerox Alto BCPL Sources
+// =============================================================================
+
+// Standard BCPL constants and declarations
+MANIFEST 
+[
+    // Boolean values
+    TRUE = -1,
+    FALSE = 0,
+    
+    // Character constants
+    CHAR_NEWLINE = 10,
+    CHAR_RETURN = 13,
+    CHAR_TAB = 9,
+    CHAR_SPACE = 32,
+    CHAR_NULL = 0,
+    
+    // Word size and byte operations
+    BYTESPERWORD = 4,
+    BITSPERWORD = 32,
+    BYTESHIFT = 2,
+    
+    // Maximum values
+    MAXINT = #X7FFFFFFF,
+    MININT = #X80000000,
+    
+    // Stream operations
+    ENDSTREAM = -1,
+    
+    // File operations
+    INPUT = 0,
+    OUTPUT = 1,
+    
+    // Standard vectors
+    MAXNAMELEN = 256
+]
+
+// Standard BCPL library functions
+EXTERNAL
+[
+    // Memory management
+    GETVEC: 1,
+    FREEVEC: 1,
+    
+    // String operations
+    COMPSTRING: 2,
+    COPYSTRING: 2,
+    LENGTH: 1,
+    
+    // Character I/O
+    READCH: 0,
+    WRCH: 1,
+    UNRDCH: 0,
+    
+    // Formatted I/O
+    WRITES: 1,
+    WRITED: 2,
+    WRITEF: 2,
+    WRITEHEX: 2,
+    WRITEOCT: 2,
+    NEWLINE: 0,
+    
+    // File I/O
+    FINDINPUT: 1,
+    FINDOUTPUT: 1,
+    ENDREAD: 0,
+    ENDWRITE: 0,
+    INPUT: 0,
+    OUTPUT: 0,
+    SELECTINPUT: 1,
+    SELECTOUTPUT: 1,
+    
+    // System functions
+    STOP: 1,
+    ABORT: 1,
+    
+    // Mathematical functions
+    ABS: 1,
+    SIGN: 1,
+    
+    // Bit operations
+    LSHIFT: 2,
+    RSHIFT: 2,
+    
+    // Random numbers
+    RANDOM: 1,
+    RANDSET: 1
+]
+
+// Modern BCPL runtime system
+EXTERNAL
+[
+    // Memory allocation
+    NEWVEC: 1,
+    DISPOSE: 1,
+    
+    // Enhanced string operations
+    PACKSTRING: 2,
+    UNPACKSTRING: 2,
+    STRINGCOMPARE: 2,
+    STRINGCOPY: 2,
+    STRINGLENGTH: 1,
+    
+    // File system
+    OPENFILE: 2,
+    CLOSEFILE: 1,
+    FILESIZE: 1,
+    FILEPOSITION: 1,
+    SETFILEPOSITION: 2,
+    
+    // Error handling
+    SETERRORHANDLER: 1,
+    GETERROR: 0,
+    CLEARERROR: 0,
+    
+    // Time and date
+    GETTIME: 0,
+    GETDATE: 0,
+    
+    // System information
+    GETSYSTEMINFO: 1,
+    GETVERSION: 0
+]
+
+// Type definitions for modern BCPL
+GLOBAL
+[
+    // Type constants
+    TYPE_UNDEFINED = 0,
+    TYPE_NUMBER = 1,
+    TYPE_STRING = 2,
+    TYPE_VECTOR = 3,
+    TYPE_FUNCTION = 4,
+    TYPE_STRUCTURE = 5,
+    
+    // Standard global variables
+    STDERR: 200,
+    STDOUT: 201,
+    STDIN: 202,
+    
+    // Error codes
+    ERROR_NONE = 0,
+    ERROR_MEMORY = 1,
+    ERROR_FILE = 2,
+    ERROR_ARGUMENT = 3,
+    ERROR_OVERFLOW = 4,
+    ERROR_UNDERFLOW = 5
+]
+
+// Compatibility macros for Alto BCPL
+MANIFEST
+[
+    // Alto-specific constants
+    ALTOBYTESPERWORD = 2,  // Alto was 16-bit
+    ALTOWORDSIZE = 16,
+    
+    // File name handling
+    MAXFILENAME = 40,
+    FILENAMESIZE = 40,
+    
+    // Stream handling
+    MAXSTREAM = 16,
+    
+    // Memory sizes (adjust for modern systems)
+    DEFAULTVECSIZE = 1000,
+    MAXVECSIZE = 1000000
+]
+
+// Forward declarations for Alto BCPL compatibility
+EXTERNAL
+[
+    // Alto-specific I/O
+    READSECTOR: 2,
+    WRITESECTOR: 2,
+    
+    // Alto display functions (stubs for modern systems)
+    SETCURSOR: 2,
+    DRAWLINE: 4,
+    SETPIXEL: 2,
+    GETPIXEL: 2,
+    
+    // Alto keyboard/mouse (modern equivalents)
+    GETKEY: 0,
+    GETMOUSE: 1
+]

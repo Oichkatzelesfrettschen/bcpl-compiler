@@ -1,0 +1,249 @@
+// BCAE2.bcpl - BCPL Compiler -- Part 2 of CAE.
+// Copyright Xerox Corporation 1980
+//  Last modified on Sat 28 Oct 72 0028.04 BY  jec.
+//  Paxton, 9-14-78: unsigned compares
+
+//	Rexp	The main expression reader.
+
+GET "bcaex"
+
+LET Rexp(n) = valof
+ [  LET A, B, C, Op = nil, nil, nil, nil
+
+    IF Symb eq NAME DO   // This is the usual CASE, so give it fast service.
+     [  A = V!0 + NameBit; Nextsymb()
+	GOTO L
+      ]
+
+    //  Read the next operand, AND store it INTO A.
+    SWITCHON Symb INTO   //  Branch on the leading operand of the expression.
+     [  DEFAULT:
+	    CAEskip(2)
+	    RESULTIS List2(NUMBER, 0)
+
+	CASE STRINGCONST:
+	    A = Newvec(1 + Length(V)/Bytesperword)
+	    A!0 = STRINGCONST
+	    FOR k = 0 TO Length(V)/Bytesperword DO A!(k+1) = V!k
+	    Nextsymb()
+	    ENDCASE
+
+	CASE CHARCONST:
+	    A = List2(CHARCONST, V!0)
+	    Nextsymb()
+	    ENDCASE
+
+	CASE NUMBER:
+	    A = List2(NUMBER, V!0)
+	    Nextsymb()
+	    ENDCASE
+
+	CASE NIL:
+	    A = NILNODE; Nextsymb(); ENDCASE
+	CASE TRUE:
+	    A = TRUENODE; Nextsymb(); ENDCASE
+	CASE FALSE:
+	    A = FALSENODE; Nextsymb(); ENDCASE
+
+	CASE RBRA:
+	    Nextsymb()
+	    A = Rexp(0)
+	    TEST Symb eq RKET THEN Nextsymb()
+	    OR [ CAEskip(2)
+		 RESULTIS A
+		]
+	    ENDCASE
+
+	CASE VALOF:
+	    Nextsymb()
+	    A = Rcom(Rcom)
+	    A = List2(VALOF, A)
+	    ENDCASE  
+
+	CASE TABLE:
+	 [  Nextsymb()
+	    A = Rtable()
+	    ENDCASE
+	  ]
+
+	CASE SELECTON:
+	 [  Nextsymb()
+	    A = Rexp(0)
+	    WHILE Symb eq SEMICOLON DO Nextsymb()
+	    TEST Symb eq INTO 
+	    THEN Nextsymb()
+	    OR   CAEskip(11)
+	    LET V1 = 0
+	    WHILE Symb eq SEMICOLON DO Nextsymb()
+	    TEST Symb eq SECTBRA
+	    ifnot CAEskip(12)
+	    ifso  [  IF V!0 ne 0 DO
+			[ V1 = Newvec(Length(V)/Bytesperword)
+		          FOR k = 0 TO Length(V)/Bytesperword DO V1!k = V!k
+			]
+		      Nextsymb()
+		    ]
+	    B = Rselect(false)
+	    TEST  Symb eq SECTKET
+	    ifso  IF EqVec(V1) DO Nextsymb()
+	    ifnot CAEskip(7)
+	    A = List3(SWITCHON, A, B)
+	    A = List2(VALOF, A)
+	    ENDCASE
+	  ]
+
+	CASE SIZE:   //  Size of a STRUCTURE item.
+	CASE OFFSET:   //  Offset of a STRUCTURE item
+	    Op = Symb
+	    A = Rqualname(2)
+	    H1!A = Op
+	    H2!A = 0
+	    ENDCASE
+
+	CASE LV: CASE RV:
+	    Op = Symb
+	    Nextsymb()
+	    A = Rexp(35)
+	    A = List2(Op, A)
+	    ENDCASE
+
+	CASE PLUS:
+	    Nextsymb()
+	    A = Rexp(35)
+	    ENDCASE
+
+	CASE MINUS:
+	    Nextsymb()
+	    A = Rexp(35)
+	    A = List2(NEG, A)
+	    ENDCASE
+
+	CASE VEC:
+	    Nextsymb()
+	    A = Rexp(12)
+	    A = List2(VEC, A)
+	    ENDCASE
+
+	CASE NOT:
+	    Nextsymb()
+	    A = Rexp(25)
+	    A = List2(NOT, A)
+	    ENDCASE
+
+     ]
+
+  L:  //  An operand has been read.  Now look at the next operator.
+
+    SWITCHON Symb INTO
+     [  DEFAULT:
+	    RESULTIS A
+
+	CASE RBRA:
+	    Nextsymb()
+	    TEST  Symb eq RKET   //  Have empty parentheses been scanned?
+	    ifso  [ B = 0; Nextsymb() ]   //  Yes.
+	    ifnot [ B = Rexp(0)
+		    TEST Symb eq RKET
+		    THEN Nextsymb()
+		    OR   [ CAEskip(13)
+			   RESULTIS List3(FNAP, A, B)
+			 ]
+		  ]
+	    A = List3(FNAP, A, B)
+	    GOTO L
+
+	CASE VECAP:
+	    IF n ge 40 RESULTIS A
+	    Nextsymb()
+	    B = Rexp(40)
+	    A = List3(VECAP, A, B)
+	    GOTO L
+
+	CASE HEFALUMP:
+	    A = List2(RV, A)
+	    Symb = RIGHTLUMP
+	CASE LEFTLUMP:
+	CASE RIGHTLUMP:
+	    IF n ge 38 RESULTIS A
+	    Op = Symb
+	    B = Rqualname(3)
+	    H1!B = Op
+	    H2!B = A
+	    H3!B = 0
+	    A = B
+	    GOTO L
+
+	CASE DIV:  CASE REM:
+	CASE MULT:
+	CASE LSHIFT: CASE RSHIFT:
+	    IF n ge 35 RESULTIS A
+	    Op = Symb
+	    Nextsymb()
+	    B = Rexp(34)
+	    A = List3(Op, A, B)
+	    GOTO L
+
+	CASE PLUS:
+	CASE MINUS:
+	    IF n ge 34 RESULTIS A
+	    Op = Symb
+	    Nextsymb()
+	    B = Rexp(34)
+	    A = List3(Op, A, B)
+	    GOTO L
+
+	CASE EQ: CASE NE:
+	CASE LS: CASE LE:
+	CASE GR: CASE GE:
+	CASE ULS: CASE ULE:
+	CASE UGR: CASE UGE:
+	    IF n ge 30 RESULTIS A
+	    Op = Symb
+	    Nextsymb()
+	    B = Rexp(30)
+	    A = List3(Op, A, B)
+	    GOTO L
+
+	CASE LOGAND:
+	    IF n ge 24 RESULTIS A
+	    Nextsymb()
+	    B = Rexp(23)
+	    A = List3(LOGAND, A, B)
+	    GOTO L
+
+	CASE LOGOR:
+	    IF n ge 23 RESULTIS A
+	    Nextsymb()
+	    B = Rexp(22)
+	    A = List3(LOGOR, A, B)
+	    GOTO L
+
+	CASE EQV:
+	CASE NEQV:
+	    IF n ge 22 RESULTIS A
+	    Op = Symb
+	    Nextsymb()
+	    B = Rexp(22)
+	    A = List3(Op, A, B)
+	    GOTO L
+
+	CASE COND:
+	    IF n ge 13 RESULTIS A
+	    Nextsymb()
+	    B = Rexp(12)
+	    TEST Symb eq COMMA THEN Nextsymb()
+	    OR   [ CAEskip(14)
+		   RESULTIS A
+		 ]
+	    C = Rexp(12)
+	    A = List4(COND, A, B, C)
+	    GOTO L
+
+	CASE COMMA:
+	    IF n ge 12 RESULTIS A
+	    Nextsymb()
+	    B = Rexp(11)
+	    A = List3(COMMA, A, B)
+	    GOTO L
+      ]
+  ]

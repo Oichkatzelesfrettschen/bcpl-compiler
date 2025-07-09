@@ -1,0 +1,96 @@
+// BNCG1.bcpl - BCPL Compiler -- Nova Code Generator, Impure stream processor
+// Copyright Xerox Corporation 1980
+//   Last modified on Wed 01 Nov 72 0141.31 BY  jec.
+
+GET "bncgx"
+
+LET ScanImpures() BE
+ [  
+    LET Op = nil
+    /// DCS* More complex lookup
+    LET N, Nameptr = nil, nil
+    LET v = VEC NAMELENGTH
+
+    IF PassTwo DO WB(llabelt)
+
+ Next:
+    Op = Readop()
+    IF Op eq ENDSTATIC DO
+     [	
+	RETURN
+      ]
+    N = ReadL()
+    /// DCS* new
+    Nameptr = LookForSym(N)
+    Unpackstring(Nameptr, v)
+    LET val, valtype, ext, com = 0, 0, 0, 0
+    SWITCHON Op INTO
+     [
+	DEFAULT:	CGreport(-1)
+
+	CASE ZEXT:
+	    com = 1
+	CASE EXT:
+	    GOTO Out
+
+	CASE ZINT:
+	    com = 1
+	CASE INT:
+	    GOTO Val
+
+	CASE ZLOC:
+	    com = 1
+	CASE LOC:
+	    ext = 1
+	    GOTO Val
+
+     ]
+Val:
+    Op = Readop()
+    val = Nval(ReadN())
+    vlabelt = vlabelt + 1
+    SWITCHON Op INTO
+     [	CASE STATIC:
+	    valtype = 1
+	    GOTO Out
+
+	CASE ENTRY:
+	    valtype = 2
+	    GOTO Out
+
+	CASE LENTRY:
+	    valtype = 3
+	    GOTO Out
+
+	DEFAULT:	CGreport(-1)
+
+      ]
+Out:
+    LET t = (valtype LSHIFT 5) + (com LSHIFT 4) + ext
+    LET n = VEC NAMELENGTH/2
+    LET k = STRval(v, n)
+    IF PassTwo DO WB(t)
+    IF PassTwo DO WB(val)
+    FOR i = 0 TO k DO IF PassTwo DO WB(n!i)
+
+    UNLESS SWCode GOTO Next
+    WW(com eq 0 ? $*s, $z)
+    TEST valtype eq 0 THEN WriteS("EXT")
+    OR TEST ext eq 0 THEN WriteS("INT")
+    OR			  WriteS("LOC")
+    WW($*t)
+    WriteO(vlabelt)
+    WW($*t)
+    /// DCS* changed
+    WriteName(N)
+    IF valtype ne 0 DO
+         [ WW($*t)
+    /// DCS* changed
+	   IF Length(Nameptr) ls 8 DO WW($*t)
+	   TEST valtype eq 1 THEN WriteOct(val)
+	   OR [ WriteS("LAB"); WriteOct(eaddrvec!val) ]
+	  ]
+    WW($*n)
+
+    GOTO Next
+  ]

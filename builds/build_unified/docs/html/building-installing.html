@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building and Installing &mdash; BCPL Compiler 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="API Reference" href="api-reference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BCPL Compiler
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-frontend.html">Compiler Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-backend.html">Compiler Backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime-system.html">Runtime System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools-utilities.html">Tools and Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Building and Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manual-build-process">Manual Build Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-make">Using Make</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-cmake">Using CMake</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#build-configuration">Build Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#target-architecture">Target Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cross-compilation">Cross Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation-paths">Installation Paths</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-installation">Testing the Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-build-issues">Common Build Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#runtime-issues">Runtime Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-configuration">Advanced Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-builds">Debugging Builds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-runtime-configuration">Custom Runtime Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-generation">Documentation Generation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BCPL Compiler</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Building and Installing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/building-installing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="building-and-installing">
+<h1>Building and Installing<a class="headerlink" href="#building-and-installing" title="Link to this heading"></a></h1>
+<p>This section describes how to build and install the BCPL compiler
+on supported platforms.</p>
+<section id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Link to this heading"></a></h2>
+<p>The BCPL compiler requires:</p>
+<ul class="simple">
+<li><p><strong>Operating System</strong>: Linux, FreeBSD, or macOS</p></li>
+<li><p><strong>Architecture</strong>: x86-32, x86-64, or x86-16 (IA-16)</p></li>
+<li><p><strong>C Compiler</strong>: Clang (required for C23 features)</p></li>
+<li><p><strong>Assembler</strong>: GNU binutils (as)</p></li>
+<li><p><strong>Linker</strong>: GNU binutils (ld)</p></li>
+</ul>
+<p>Optional dependencies:</p>
+<ul class="simple">
+<li><p><strong>LLVM</strong>: For experimental LLVM backend (version 10 or later)</p></li>
+<li><p><strong>CMake</strong>: For modern build system (version 3.10 or later)</p></li>
+<li><p><strong>Doxygen</strong>: For API documentation generation</p></li>
+<li><p><strong>Sphinx</strong>: For user documentation</p></li>
+</ul>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<p>For automated installation on supported platforms:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/example/bcpl-compiler.git
+<span class="nb">cd</span><span class="w"> </span>bcpl-compiler
+
+<span class="c1"># Automated build and install</span>
+./scripts/makeall.sh
+sudo<span class="w"> </span>./scripts/makeall.sh<span class="w"> </span>install
+</pre></div>
+</div>
+</section>
+<section id="manual-build-process">
+<h2>Manual Build Process<a class="headerlink" href="#manual-build-process" title="Link to this heading"></a></h2>
+<section id="using-make">
+<h3>Using Make<a class="headerlink" href="#using-make" title="Link to this heading"></a></h3>
+<p>The traditional build system uses Make:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build the compiler</span>
+<span class="nb">cd</span><span class="w"> </span>src
+make
+
+<span class="c1"># Build development tools</span>
+<span class="nb">cd</span><span class="w"> </span>../tools
+make
+
+<span class="c1"># Run tests</span>
+make<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># Install (as root)</span>
+<span class="nb">cd</span><span class="w"> </span>../src
+make<span class="w"> </span>install
+</pre></div>
+</div>
+</section>
+<section id="using-cmake">
+<h3>Using CMake<a class="headerlink" href="#using-cmake" title="Link to this heading"></a></h3>
+<p>The modern build system uses CMake:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configure build</span>
+mkdir<span class="w"> </span>build
+<span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>..
+
+<span class="c1"># Build</span>
+make
+
+<span class="c1"># Test</span>
+ctest
+
+<span class="c1"># Install</span>
+make<span class="w"> </span>install
+</pre></div>
+</div>
+</section>
+</section>
+<section id="build-configuration">
+<h2>Build Configuration<a class="headerlink" href="#build-configuration" title="Link to this heading"></a></h2>
+<section id="target-architecture">
+<h3>Target Architecture<a class="headerlink" href="#target-architecture" title="Link to this heading"></a></h3>
+<p>The target architecture is controlled by the <code class="docutils literal notranslate"><span class="pre">BITS</span></code> variable:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 32-bit target</span>
+make<span class="w"> </span><span class="nv">BITS</span><span class="o">=</span><span class="m">32</span>
+
+<span class="c1"># 64-bit target (default)</span>
+make<span class="w"> </span><span class="nv">BITS</span><span class="o">=</span><span class="m">64</span>
+
+<span class="c1"># 16-bit target (IA-16)</span>
+make<span class="w"> </span><span class="nv">BITS</span><span class="o">=</span><span class="m">16</span>
+</pre></div>
+</div>
+</section>
+<section id="cross-compilation">
+<h3>Cross Compilation<a class="headerlink" href="#cross-compilation" title="Link to this heading"></a></h3>
+<p>For cross compilation, set the <code class="docutils literal notranslate"><span class="pre">CROSS_PREFIX</span></code> variable:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cross compile for i686 Linux</span>
+make<span class="w"> </span><span class="nv">CROSS_PREFIX</span><span class="o">=</span>i686-linux-gnu-
+
+<span class="c1"># Cross compile for Windows (MinGW)</span>
+make<span class="w"> </span><span class="nv">CROSS_PREFIX</span><span class="o">=</span>x86_64-w64-mingw32-
+</pre></div>
+</div>
+</section>
+<section id="installation-paths">
+<h3>Installation Paths<a class="headerlink" href="#installation-paths" title="Link to this heading"></a></h3>
+<p>Default installation paths:</p>
+<ul class="simple">
+<li><p><strong>Binaries</strong>: <code class="docutils literal notranslate"><span class="pre">/usr/local/bin/bcplc</span></code></p></li>
+<li><p><strong>Runtime</strong>: <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/bcplc/</span></code></p></li>
+<li><p><strong>Documentation</strong>: <code class="docutils literal notranslate"><span class="pre">/usr/local/share/doc/bcplc/</span></code></p></li>
+<li><p><strong>Man Pages</strong>: <code class="docutils literal notranslate"><span class="pre">/usr/local/man/man1/</span></code></p></li>
+</ul>
+<p>To change the installation prefix:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make-based build</span>
+make<span class="w"> </span><span class="nv">PREFIX</span><span class="o">=</span>/opt/bcpl<span class="w"> </span>install
+
+<span class="c1"># CMake-based build</span>
+cmake<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/opt/bcpl<span class="w"> </span>..
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing-the-installation">
+<h2>Testing the Installation<a class="headerlink" href="#testing-the-installation" title="Link to this heading"></a></h2>
+<p>Verify the installation works correctly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test the compiler</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;GET &quot;LIBHDR&quot; LET START() BE WRITES(&quot;Hello, BCPL!*N&quot;)&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>hello.bcpl
+bcplc<span class="w"> </span>hello.bcpl
+./hello
+
+<span class="c1"># Run the comprehensive test suite</span>
+<span class="nb">cd</span><span class="w"> </span>tools
+make<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+<p>Expected output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>119 TESTS COMPLETED, 0 FAILURE(S)
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-build-issues">
+<h3>Common Build Issues<a class="headerlink" href="#common-build-issues" title="Link to this heading"></a></h3>
+<p><strong>Clang not found</strong>:
+Ensure Clang is installed and in PATH. On Ubuntu/Debian:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>clang
+</pre></div>
+</div>
+<p><strong>Missing dependencies</strong>:
+Install required development packages:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ubuntu/Debian</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>clang<span class="w"> </span>binutils
+
+<span class="c1"># RedHat/CentOS</span>
+sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>clang<span class="w"> </span>binutils-devel
+</pre></div>
+</div>
+<p><strong>Cross compilation failures</strong>:
+Ensure cross-compilation toolchain is properly installed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install MinGW for Windows cross compilation</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gcc-mingw-w64
+</pre></div>
+</div>
+</section>
+<section id="runtime-issues">
+<h3>Runtime Issues<a class="headerlink" href="#runtime-issues" title="Link to this heading"></a></h3>
+<p><strong>Segmentation fault on startup</strong>:
+- Check that the correct runtime files are installed
+- Verify that BITS setting matches the target architecture
+- Ensure sufficient stack space is available</p>
+<p><strong>Missing runtime functions</strong>:
+- Verify that blib.o and related runtime files are properly installed
+- Check that the linker is finding the correct library files</p>
+</section>
+</section>
+<section id="advanced-configuration">
+<h2>Advanced Configuration<a class="headerlink" href="#advanced-configuration" title="Link to this heading"></a></h2>
+<section id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading"></a></h3>
+<p>The compiler recognizes several environment variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PREFIX</span></code>: Installation prefix override</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BITS</span></code>: Target architecture (16, 32, or 64)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CROSS_PREFIX</span></code>: Cross-compilation toolchain prefix</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CC</span></code>: C compiler override (must be Clang-compatible)</p></li>
+</ul>
+</section>
+<section id="debugging-builds">
+<h3>Debugging Builds<a class="headerlink" href="#debugging-builds" title="Link to this heading"></a></h3>
+<p>For debugging the compiler itself:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Debug build with symbols</span>
+make<span class="w"> </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&quot;-g -O0 -DDEBUG&quot;</span>
+
+<span class="c1"># Verbose compilation</span>
+make<span class="w"> </span><span class="nv">V</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-runtime-configuration">
+<h3>Custom Runtime Configuration<a class="headerlink" href="#custom-runtime-configuration" title="Link to this heading"></a></h3>
+<p>The runtime can be customized by modifying configuration in <code class="docutils literal notranslate"><span class="pre">src/su.s</span></code>:</p>
+<div class="highlight-asm notranslate"><div class="highlight"><pre><span></span><span class="na">.set</span><span class="w"> </span><span class="no">STKSIZ</span><span class="p">,</span><span class="mi">0x400000</span><span class="w">    </span><span class="c1"># BCPL stack size (4MB)</span>
+</pre></div>
+</div>
+<p>Rebuild the runtime after changes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>src
+make<span class="w"> </span>clean
+make
+</pre></div>
+</div>
+</section>
+</section>
+<section id="documentation-generation">
+<h2>Documentation Generation<a class="headerlink" href="#documentation-generation" title="Link to this heading"></a></h2>
+<p>Generate API documentation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate Doxygen documentation</span>
+doxygen<span class="w"> </span>Doxyfile
+
+<span class="c1"># Generate Sphinx documentation</span>
+<span class="nb">cd</span><span class="w"> </span>docs/sphinx
+make<span class="w"> </span>html
+</pre></div>
+</div>
+<p>The generated documentation will be in:</p>
+<ul class="simple">
+<li><p><strong>Doxygen</strong>: <code class="docutils literal notranslate"><span class="pre">docs/doxygen/html/index.html</span></code></p></li>
+<li><p><strong>Sphinx</strong>: <code class="docutils literal notranslate"><span class="pre">docs/sphinx/_build/html/index.html</span></code></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api-reference.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BCPL Compiler Documentation Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

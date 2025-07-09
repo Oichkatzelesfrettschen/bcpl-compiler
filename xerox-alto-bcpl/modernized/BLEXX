@@ -1,0 +1,168 @@
+// BLEXX - BCPL Compiler -- Declarations FOR the Lexical Analyzer.
+// Copyright Xerox Corporation 1980
+//  Paxton, 9-14-78: unsigned compares
+//  Swinehart, 5-10-77: docase exp
+
+// last modified BY Butterfield, May 8, 1979  7:13 PM
+// - incorporate Paxton's unsigned compares  5/8
+// - GetP no longer needed as external  1/24
+// - add from FOR use in get a, b, ... from "file"  1/23/79
+
+GET "bcplx"
+
+external	//stuff exp throughout LEX
+ [
+	OpenSource	//  open a new source file
+	CloseSource	//  close a source file
+	Readsymb	//  the routine that does the work
+	Symb		//  Readsymb leaves the last lexeme here
+	V		//    AND any extra information here
+	Rch		//  read the next source char
+	Ch		//      INTO here
+	Chline		//  	AND put its line pointer here
+	LEXreport	//  report errors detected in LEX
+	ReservedWord	//  look up a reserved word
+	DictionaryEntry	//  look up an identifier
+	LexOut; LexWrite
+	DoString; DoNumber; Kind
+	ReadAhead; ExtraItem; LastItem; NLPending; NewLineptr; Chkind
+/// DCS* Precompiled Declarations Functions
+  ReadDecl
+  ReadLex
+  WriteDecl
+  LexLength ///  # bytes in Lex File
+/// DCS* manifests in command line
+FirstName
+UpperCase // need TO BE cleared BY enterparams in lex0
+ ]
+
+MANIFEST [ BRACKETLENGTH = 24 ]
+
+MANIFEST
+ [	Vmax = 256	//length of the V vector
+ ]
+
+MANIFEST [ Empty=0; Simple=1; Ignorable=2; BravoTail=3; Digit=4; Capital=5; Small=6; ]
+
+MANIFEST   //  Declarations FOR lexemes.
+ [ b1 = #000400		//field values FOR th lexemes
+   b2 = #001000
+   e1 = #002000
+   e2 = #004000
+
+    GET          = 1		//    1   get
+    FROM         = 2		//    2   from
+    NAMEBRA	 = 5+b1		//    5
+    NAMEKET	 = 6   +e1	//    6
+    NUMBER       = 8+b1+e1   	//    8
+    NAME         = 9+b1+e1   	//    9
+    STRINGCONST  = 10+b1+e1   	//   10
+    CHARCONST    = 11+b1+e1   	//   11
+    TRUE         = 12   +e1   	//   12   true
+    FALSE        = 13   +e1   	//   13   false
+    NIL          = 14+b1+e1   	//   14   nil
+    LV           = 15         	//   15   lv
+    RV           = 16+b1      	//   16   rv
+    NEG          = 17         	//   17   neg
+    NOT          = 18+b1      	//   18   NOT
+    HEFALUMP     = 19+b1        //   19   hefalump
+    ULS          = 20		//   20   uls
+    ULE          = 21		//   21   ule
+    UGE          = 22		//   22   uge
+    UGR          = 23		//   23   ugr
+    SIZE         = 25+b1      	//   25   size
+    OFFSET       = 26+b1      	//   26   offset
+    PLUS         = 35+b1	//   35
+    MINUS        = 36+b1	//   36
+    MULT         = 37		//   37
+    DIV          = 38		//   38
+    // = 39		//   39   rem
+    LOGAND       = 40		//   40   logand
+    LOGOR        = 41		//   41   logor
+    EQ           = 42		//   42   eq
+    NE           = 43		//   43   ne
+    LS           = 44		//   44   ls
+    LE           = 45		//   45   le
+    GE           = 46		//   46   ge
+    GR           = 47		//   47   gr
+    EQV          = 48		//   48   EQV logeqv
+    NEQV         = 49		//   49   NEQV xor logxor
+    LSHIFT       = 52		//   52   LSHIFT
+    RSHIFT       = 53		//   53   RSHIFT
+    VECAP        = 54		//   54
+    RIGHTLUMP    = 55		//   55
+    LEFTLUMP     = 56		//   56
+    COMMA        = 58		//   58
+    COND         = 59		//   59
+    ASS          = 60		//   60
+    NUMARGS	 = 61+b1	//   61   numargs
+    DOT          = 62		//   62
+    RBRA         = 63+b1      	//   63
+    RKET         = 64   +e1   	//   64
+    TABLE	 = 65		//   65   TABLE
+    VALOF        = 67+b1      	//   67   valof
+    RESULTIS     = 68+b2      	//   68   RESULTIS
+    SELECTON     = 71+b1      	//   71   selecton
+    STATIC       = 72+b1      	//   72   STATIC
+    EXT          = 73+b1	//   73   external
+    MANIFEST     = 74+b1	//   74   MANIFEST
+    STRUCTURE    = 77+b1	//   77   STRUCTURE
+    LET          = 78+b1	//   78   LET
+    AND          = 79		//   79   AND
+    BE           = 84		//   84   BE
+    VEC          = 85		//   85   VEC
+    SEMICOLON    = 88		//   88
+    END          = 89		//   89
+    GOTO         = 91+b2	//   91   GOTO
+    COLON        = 92		//   92
+    TEST         = 93+b2	//   93   TEST
+    IFSO         = 94		//   94   ifso
+    IFNOT        = 95		//   95   ifnot
+    DO           = 96		//   96   DO THEN
+    OR           = 97		//   97   OR
+    IF           = 98+b2	//   98   IF
+    UNLESS       = 99+b2	//   99   UNLESS
+    UNTIL        = 100+b2	//  100   UNTIL
+    WHILE        = 101+b2	//  101   WHILE
+    REPEAT       = 102   +e2    //  102   REPEAT
+    REPEATUNTIL  = 103		//  103   REPEATUNTIL
+    REPEATWHILE  = 104		//  104   REPEATWHILE
+    FOR          = 105+b2	//  105   FOR
+    TO           = 106		//  106   TO
+    BY           = 107		//  107   BY step
+    SWITCHON     = 108+b2	//  108   SWITCHON
+    INTO         = 110		//  110   INTO
+    CASE         = 111+b2	//  111   CASE
+    DEFAULT      = 113+b2	//  113   DEFAULT
+    ENDCASE      = 114+b2+e2	//  114   ENDCASE
+    LINE         = 115         //  115
+    BREAK        = 116+b2+e2	//  116   BREAK
+    LOOP         = 117+b2+e2	//  117   LOOP
+    RETURN       = 118+b2+e2	//  118   RETURN
+    FINISH       = 119+b2+e2	//  119   finish
+    ABORT        = 120+b2+e2	//  120   abort
+    SECTBRA      = 121+b1       //  121
+    SECTKET      = 122   +e1    //  122
+    BLANK        = 123+b1	//  123   blank
+    FIELDLIST    = 124
+    OVERLAYLIST  = 125
+    UPLUMP       = 126
+    BIT          = 127   +e1	//  127   bit
+    BYTE         = 128   +e1	//  128   byte
+    WORD         = 129   +e1	//  129   word
+
+/// DCS* Conditional Compilation
+    COMPILEIF    = 130   +b2	//  129   compileif
+    COMPILETEST  = 131   +b2	//  129   compiletest
+    DOCASE	    = 132   +b2  //   132  docase
+/// DCS* Conditional Compilation
+    NEWNAME       = 134      	//  129   newname
+  ]
+
+
+/// DCS* Symbol TABLE Compaction, NCG Phase
+STRUCTURE SYMPTR:
+   [
+   Virgin bit 1  // on IF symbol has been entered, NOT referenced
+   link   bit 15 // next symbol same initial letter, sorted Alph.
+   ]

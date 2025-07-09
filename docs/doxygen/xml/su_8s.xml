@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="su_8s" kind="file" language="C++">
+    <compoundname>su.s</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@file<sp/>su.s</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>BCPL<sp/>compiler<sp/>x86<sp/>startup<sp/>code</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@author<sp/>Robert<sp/>Nordier</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@copyright<sp/>Copyright<sp/>(c)<sp/>2004,<sp/>2012<sp/>Robert<sp/>Nordier.<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>This<sp/>file<sp/>provides<sp/>the<sp/>startup<sp/>and<sp/>initialization<sp/>code<sp/>for<sp/>BCPL<sp/>programs.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>It<sp/>sets<sp/>up<sp/>the<sp/>BCPL<sp/>runtime<sp/>environment,<sp/>initializes<sp/>the<sp/>global<sp/>vector,</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>allocates<sp/>the<sp/>BCPL<sp/>stack,<sp/>and<sp/>transfers<sp/>control<sp/>to<sp/>the<sp/>BCPL<sp/>program.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>##<sp/>Architecture<sp/>Support</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>The<sp/>startup<sp/>code<sp/>supports<sp/>both<sp/>32-bit<sp/>and<sp/>64-bit<sp/>x86<sp/>architectures</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>through<sp/>conditional<sp/>assembly<sp/>based<sp/>on<sp/>the<sp/>BITS<sp/>preprocessor<sp/>variable.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>##<sp/>BCPL<sp/>Runtime<sp/>Environment</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>The<sp/>startup<sp/>code<sp/>establishes:</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>-<sp/>Global<sp/>vector<sp/>for<sp/>inter-module<sp/>communication</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>-<sp/>BCPL<sp/>stack<sp/>separate<sp/>from<sp/>the<sp/>system<sp/>stack</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>-<sp/>Command-line<sp/>argument<sp/>processing</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>-<sp/>Standard<sp/>global<sp/>variables<sp/>(ARGC,<sp/>ARGV,<sp/>etc.)</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>##<sp/>Memory<sp/>Layout</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>-<sp/>System<sp/>stack:<sp/>Used<sp/>for<sp/>system<sp/>calls<sp/>and<sp/>startup</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>-<sp/>BCPL<sp/>stack:<sp/>Separate<sp/>stack<sp/>for<sp/>BCPL<sp/>program<sp/>execution</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>-<sp/>Global<sp/>vector:<sp/>Fixed-size<sp/>array<sp/>for<sp/>global<sp/>variables</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>-<sp/>Heap:<sp/>Managed<sp/>separately<sp/>by<sp/>the<sp/>BCPL<sp/>runtime</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Copyright<sp/>(c)<sp/>2004,<sp/>2012<sp/>Robert<sp/>Nordier.<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>BCPL<sp/>compiler<sp/>x86<sp/>startup<sp/>code</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Architecture<sp/>configuration</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>Default<sp/>to<sp/>32-bit<sp/>if<sp/>BITS<sp/>is<sp/>not<sp/>defined</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">.ifndef<sp/>BITS</highlight></codeline>
+<codeline><highlight class="normal">.set<sp/>BITS,32</highlight></codeline>
+<codeline><highlight class="normal">.endif</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>BCPL<sp/>stack<sp/>size<sp/>configuration</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>The<sp/>BCPL<sp/>stack<sp/>is<sp/>separate<sp/>from<sp/>the<sp/>system<sp/>stack<sp/>and<sp/>is<sp/>used</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>for<sp/>all<sp/>BCPL<sp/>program<sp/>execution.<sp/>This<sp/>can<sp/>be<sp/>adjusted<sp/>based<sp/>on</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>program<sp/>requirements.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>STKSIZ,0x400000<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>BCPL<sp/>stack<sp/>size<sp/>(4MB<sp/>default)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>BCPL<sp/>global<sp/>vector<sp/>slot<sp/>assignments</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>These<sp/>constants<sp/>define<sp/>the<sp/>standard<sp/>global<sp/>vector<sp/>slots<sp/>used</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>by<sp/>the<sp/>BCPL<sp/>runtime<sp/>system.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>START,1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Entry<sp/>point<sp/>function<sp/>(global<sp/>1)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>STACKBASE,95<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Base<sp/>of<sp/>BCPL<sp/>stack</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>STACKEND,96<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>End<sp/>of<sp/>BCPL<sp/>stack<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>ARGC,97<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Command<sp/>line<sp/>argument<sp/>count</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>ARGV,98<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Command<sp/>line<sp/>argument<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.set<sp/><sp/><sp/><sp/>PARAM,99<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Parameter<sp/>string</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Exported<sp/>symbols<sp/>for<sp/>linker</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>These<sp/>symbols<sp/>are<sp/>referenced<sp/>by<sp/>the<sp/>BCPL<sp/>runtime<sp/>and<sp/>linker</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.global<sp/>_start,<sp/>_stop,<sp/>finish</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Program<sp/>entry<sp/>point</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>This<sp/>is<sp/>the<sp/>main<sp/>entry<sp/>point<sp/>called<sp/>by<sp/>the<sp/>operating<sp/>system.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>It<sp/>performs<sp/>the<sp/>following<sp/>initialization:</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>1.<sp/>Sets<sp/>up<sp/>the<sp/>BCPL<sp/>global<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>2.<sp/>Processes<sp/>command-line<sp/>arguments</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>3.<sp/>Allocates<sp/>and<sp/>initializes<sp/>the<sp/>BCPL<sp/>stack</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>4.<sp/>Transfers<sp/>control<sp/>to<sp/>the<sp/>BCPL<sp/>START<sp/>function</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">_start:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cld</highlight></codeline>
+<codeline><highlight class="normal">.if<sp/>BITS==64</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$G,%rdi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Global<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(%rsp),%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>argc</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lea<sp/><sp/><sp/><sp/><sp/>8(%rsp),%rbx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>argv</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%rsp,%rax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shr<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,STACKEND*4(%rdi)<sp/><sp/><sp/>#<sp/>Define<sp/>STACKEND</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>$STKSIZ,%rsp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%rsp,%rbp<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>BCPL<sp/>stack</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>$STKSIZ&gt;&gt;2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,STACKBASE*4(%rdi)<sp/><sp/>#<sp/>Define<sp/>STACKBASE</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,ARGC*4(%rdi)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Define<sp/>ARGC</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%ecx,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,ARGV*4(%rdi)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Define<sp/>ARGV</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%rcx,%rsp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%rsp,%rdx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>BCPL<sp/>argv</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%ecx,%ecx</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(%rbx),%rsi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Get<sp/>UNIX<sp/>arg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>test<sp/><sp/><sp/><sp/>%rsi,%rsi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>NULL?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jz<sp/><sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%eax,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,-4(%rsp)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Zero<sp/>last<sp/>cell</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%rsi,%rdi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%ch</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>repne<sp/><sp/><sp/>scasb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>$255,%cl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>String<sp/>length</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>or<sp/><sp/><sp/><sp/><sp/><sp/>$3,%al</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%rax,%rsp<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Allocate<sp/>space</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%rsp,%rdi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%rdi,%rax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shr<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,(%rdx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>BCPL<sp/>pointer</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%cl,(%rdi)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Convert<sp/>string</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%rdi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rep<sp/><sp/><sp/><sp/><sp/>movsb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$8,%rbx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Bump<sp/>for<sp/>next<sp/>arg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$4,%rdx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%esi,(%rdx)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>rtinit<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Runtime<sp/>setup</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$G,%rdi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Global<sp/>vector</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>ARGV*4(%rdi),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(,%rax,4),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jecxz<sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,%eax</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,PARAM*4(%rdi)<sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Define<sp/>PARAM</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,8(%rbp)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>As<sp/>arg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%rbp,%rcx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>START*4(%rdi),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>*%rax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>To<sp/>BCPL<sp/>start</highlight></codeline>
+<codeline><highlight class="normal">.else</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$G,%edi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Global<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(%esp),%ecx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>argc</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lea<sp/><sp/><sp/><sp/><sp/>4(%esp),%ebx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>UNIX<sp/>argv</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%esp,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shr<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,STACKEND*4(%edi)<sp/><sp/><sp/>#<sp/>Define<sp/>STACKEND</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>$STKSIZ,%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%esp,%ebp<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Set<sp/>BCPL<sp/>stack</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>$STKSIZ&gt;&gt;2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,STACKBASE*4(%edi)<sp/><sp/>#<sp/>Define<sp/>STACKBASE</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,ARGC*4(%edi)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Define<sp/>ARGC</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%ecx,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,ARGV*4(%edi)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Define<sp/>ARGV</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shl<sp/><sp/><sp/><sp/><sp/>$2,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%ecx,%esp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%esp,%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>BCPL<sp/>argv</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%ecx,%ecx</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(%ebx),%esi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Get<sp/>UNIX<sp/>arg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>test<sp/><sp/><sp/><sp/>%esi,%esi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>NULL?</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jz<sp/><sp/><sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%eax,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,-4(%esp)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Zero<sp/>last<sp/>cell</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%esi,%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%ch</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>repne<sp/><sp/><sp/>scasb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>$255,%cl</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>String<sp/>length</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>or<sp/><sp/><sp/><sp/><sp/><sp/>$3,%al</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sub<sp/><sp/><sp/><sp/><sp/>%eax,%esp<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Allocate<sp/>space</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%esp,%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%edi,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shr<sp/><sp/><sp/><sp/><sp/>$2,%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,(%edx)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>BCPL<sp/>pointer</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%cl,(%edi)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Convert<sp/>string</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rep<sp/><sp/><sp/><sp/><sp/>movsb</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$4,%ebx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Bump<sp/>for</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add<sp/><sp/><sp/><sp/><sp/>$4,%edx<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/><sp/>next<sp/>arg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jmp<sp/><sp/><sp/><sp/><sp/>1b</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%esi,(%edx)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>rtinit<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Runtime<sp/>setup</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>$G,%edi<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Global<sp/>vector</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>ARGV*4(%edi),%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc<sp/><sp/><sp/><sp/><sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>(,%eax,4),%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jecxz<sp/><sp/><sp/><sp/>1f</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ecx,%eax</highlight></codeline>
+<codeline><highlight class="normal">1:<sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,PARAM*4(%edi)<sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Define<sp/>PARAM</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,8(%ebp)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>As<sp/>arg</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%ebp,%ecx</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>*START*4(%edi)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>To<sp/>BCPL<sp/>start</highlight></codeline>
+<codeline><highlight class="normal">.endif</highlight></codeline>
+<codeline><highlight class="normal">finish:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>xor<sp/><sp/><sp/><sp/><sp/>%eax,%eax<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Exit<sp/>code</highlight></codeline>
+<codeline><highlight class="normal">_stop:</highlight></codeline>
+<codeline><highlight class="normal">.if<sp/>BITS==64</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mov<sp/><sp/><sp/><sp/><sp/>%eax,%edi</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>rtexit<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Runtime<sp/>cleanup</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>_exit<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Terminate</highlight></codeline>
+<codeline><highlight class="normal">.else</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>push<sp/><sp/><sp/><sp/>%eax</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>rtexit<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Runtime<sp/>cleanup</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>call<sp/><sp/><sp/><sp/>_exit<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#<sp/>Terminate</highlight></codeline>
+<codeline><highlight class="normal">.endif</highlight></codeline>
+    </programlisting>
+    <location file="src/su.s"/>
+  </compounddef>
+</doxygen>

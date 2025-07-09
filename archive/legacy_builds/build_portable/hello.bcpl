@@ -1,0 +1,1 @@
+GET "LIB.B" $( writef("HELLO WORLD*N") STOP $)

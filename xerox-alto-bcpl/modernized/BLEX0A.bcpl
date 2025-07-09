@@ -1,0 +1,96 @@
+// BLEX0A.bcpl -  BCPL Compiler
+// DCS* Precompiled Declaration Files -- Read, Write Utilities
+// Copyright Xerox Corporation 1980
+
+   GET "blexx"
+   GET "bcpliox"
+   
+   external
+      [
+      syscall
+      openfile
+      ]
+      
+// Code
+
+   LET ReadDecl() BE
+      [
+      ///  DictStream file contains statics needed TO re-initialize
+      ///  LEX, some tables chronicling the file reading events which
+      ///   occurred during precompilation, AND the dictionary as
+      ///   normally written BY LEX FOR other passes.
+      ///  First, Read random statics
+      LET InStream = openfile(DICTName)
+      InStream>>STREAM.action = readact
+      LET nv = GetnameV!0
+      LexLength = ReadWord(InStream)
+      Chline = ReadWord(InStream)
+      LastItem = ReadWord(InStream)
+      NewLineptr = ReadWord(InStream)
+      NLPending = ReadWord(InStream)
+      ///  Read File TABLE Pointers, the Tables Themselves
+      GetnameP = ReadWord(InStream)
+      ReadSequential(InStream,
+         GetnameV, (GetnameP+GetnameN))
+      // Each file name is FileNameLength bytes long.  There are
+      // GetnameP/GetnameN+1 of them.
+      ReadSequential(InStream, (GetnameV!0),
+         (FileNameLength/2+1)*(GetnameP/GetnameN+1))
+      GetlineP = ReadWord(InStream)
+      IF GetlineP gr GetlineT THEN [ LEXreport(1) ]
+      ReadSequential(InStream,
+         GetlineV,GetlineP)
+      ///  Dictionary Related Statics
+      RealSymCount = ReadWord(InStream)
+      RealSymSize = ReadWord(InStream)
+      DictLength = ReadWord(InStream)
+      Dictionary!0 = DictLength
+      ///  The Partial Dictionary
+      ReadSequential(InStream,(Dictionary+1),
+         (DictLength-1) )
+      CloseInput(InStream)
+        ///  relocate pointers IF addresses differ
+      nv = nv - GetnameV!0
+      IF nv ne 0 THEN
+         FOR i = 0 TO GetnameT BY GetnameN DO
+            GetnameV!i = GetnameV!i + nv
+      ]
+   
+   AND ReadLex() BE
+      [
+      LET InStream = openfile(DECLName)
+      InStream>>STREAM.action = readact
+      LET buf = VEC 510 ///  two DOS buffers.
+      FOR i = LexLength/2 TO 0 BY -510 DO
+         IF i ne 0 THEN 
+            [
+            LET ct = i ls 510? i,510
+            ReadSequential(InStream,buf,ct)
+            WriteSequential(LexStream,buf,ct)
+            ]
+      CloseInput(InStream)
+      ]
+   
+   AND WriteDecl() BE
+      [
+      ///  See ReadDecl FOR description of DictStream contents
+      ///  First, Write random statics
+      WriteWord(DictStream, LexLength)
+      WriteWord(DictStream, Chline)
+      WriteWord(DictStream, LastItem)
+      WriteWord(DictStream, NewLineptr)
+      WriteWord(DictStream, NLPending)
+      ///  Write File TABLE Pointers, the Tables Themselves
+      WriteWord(DictStream, GetnameP)
+      WriteSequential(DictStream,
+         GetnameV, (GetnameP+GetnameN))
+      WriteSequential(DictStream, (GetnameV!0),
+         (FileNameLength/2+1)*(GetnameP/GetnameN+1))
+      WriteWord(DictStream, GetlineP)
+      WriteSequential(DictStream,
+         GetlineV,GetlineP)
+      ///  Dictionary Related Statics
+      WriteWord(DictStream,RealSymCount)
+      WriteWord(DictStream,RealSymSize)
+      ///  Partial Dictionary itself written BY lex0
+      ]

@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="_i_n_s_t_a_l_l" kind="file" language="C++">
+    <compoundname>INSTALL</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">BCPLC<sp/>INSTALL</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>is<sp/>an<sp/>x86<sp/>(IA-32)<sp/>port<sp/>of<sp/>an<sp/>old<sp/>BCPL<sp/>compiler<sp/>(see<sp/>README)</highlight></codeline>
+<codeline><highlight class="normal">and<sp/>should<sp/>build<sp/>cleanly<sp/>on<sp/>x86<sp/>FreeBSD<sp/>and<sp/>Linux.<sp/>Differences</highlight></codeline>
+<codeline><highlight class="normal">between<sp/>Linux<sp/>and<sp/>FreeBSD<sp/>versions<sp/>of<sp/>the<sp/>compiler<sp/>are<sp/>minor<sp/>and</highlight></codeline>
+<codeline><highlight class="normal">are<sp/>restricted<sp/>to<sp/>the<sp/>system<sp/>interface<sp/>file<sp/>&quot;sys.s&quot;<sp/>of<sp/>the<sp/>compiler</highlight></codeline>
+<codeline><highlight class="normal">runtime,<sp/>which<sp/>is<sp/>provided<sp/>in<sp/>&quot;sys_freebsd.s&quot;<sp/>and<sp/>&quot;sys_linux.s&quot;</highlight></codeline>
+<codeline><highlight class="normal">variants.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>compiler<sp/>sources,<sp/>together<sp/>with<sp/>object<sp/>files<sp/>needed<sp/>to<sp/>bootstrap</highlight></codeline>
+<codeline><highlight class="normal">the<sp/>compiler,<sp/>are<sp/>in<sp/>the<sp/>&quot;src&quot;<sp/>directory.<sp/>The<sp/>&quot;tools&quot;<sp/>directory</highlight></codeline>
+<codeline><highlight class="normal">contains<sp/>some<sp/>utility<sp/>programs,<sp/>and<sp/>one<sp/>in<sp/>particular,<sp/>&quot;cmpltest.bcpl&quot;,</highlight></codeline>
+<codeline><highlight class="normal">will<sp/>be<sp/>found<sp/>useful<sp/>should<sp/>you<sp/>wish<sp/>to<sp/>test<sp/>the<sp/>compiler<sp/>once<sp/>that</highlight></codeline>
+<codeline><highlight class="normal">has<sp/>been<sp/>built<sp/>and<sp/>installed.<sp/>The<sp/>&quot;docs&quot;<sp/>directory<sp/>contains</highlight></codeline>
+<codeline><highlight class="normal">relevant<sp/>documentation.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">To<sp/>build<sp/>and<sp/>install<sp/>the<sp/>compiler<sp/>in<sp/>automated<sp/>fashion<sp/>(assuming</highlight></codeline>
+<codeline><highlight class="normal">you&apos;re<sp/>on<sp/>a<sp/>supported<sp/>platform),<sp/>try</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./scripts/makeall.sh</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">followed<sp/>by<sp/>(as<sp/>root)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>./scripts/makeall.sh<sp/>install</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>project<sp/>now<sp/>mandates<sp/>Clang<sp/>as<sp/>the<sp/>C<sp/>compiler<sp/>and<sp/>makes<sp/>use<sp/>of<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">C23<sp/>language<sp/>standard.<sp/><sp/>Ensure<sp/>`clang`<sp/>is<sp/>installed<sp/>and<sp/>on<sp/>your<sp/>`PATH`</highlight></codeline>
+<codeline><highlight class="normal">before<sp/>building.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>build<sp/>defaults<sp/>to<sp/>a<sp/>64-bit<sp/>runtime.<sp/><sp/>Use<sp/>``BITS=32``<sp/>with</highlight></codeline>
+<codeline><highlight class="normal">``scripts/makeall.sh``<sp/>or<sp/>``make``<sp/>in<sp/>``src``<sp/>(or<sp/>``-DBITS=32``<sp/>when<sp/>using<sp/>CMake)</highlight></codeline>
+<codeline><highlight class="normal">to<sp/>create<sp/>32-bit<sp/>binaries<sp/>or<sp/>``BITS=16``<sp/>for<sp/>IA-16<sp/>targets.<sp/><sp/>Set</highlight></codeline>
+<codeline><highlight class="normal">``CROSS_PREFIX``<sp/>as<sp/>needed<sp/>for<sp/>cross<sp/>builds<sp/>(for<sp/>example</highlight></codeline>
+<codeline><highlight class="normal">``CROSS_PREFIX=i686-linux-gnu-``<sp/>or<sp/>``CROSS_PREFIX=ia16-elf-``).<sp/>``WORDSZ``<sp/>is</highlight></codeline>
+<codeline><highlight class="normal">derived<sp/>from<sp/>``BITS``<sp/>so<sp/>a<sp/>64-bit<sp/>runtime<sp/>uses<sp/>8-byte<sp/>words,<sp/>a<sp/>32-bit</highlight></codeline>
+<codeline><highlight class="normal">runtime<sp/>uses<sp/>4-byte<sp/>words<sp/>and<sp/>a<sp/>16-bit<sp/>runtime<sp/>uses<sp/>2-byte<sp/>words.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Otherwise,<sp/>change<sp/>to<sp/>the<sp/>&quot;src&quot;<sp/>directory.<sp/>Check<sp/>that<sp/>the<sp/>&quot;sys.s&quot;</highlight></codeline>
+<codeline><highlight class="normal">symbolic<sp/>link<sp/>points<sp/>to<sp/>either<sp/>&quot;sys_linux.s&quot;<sp/>or<sp/>&quot;sys_freebsd.s&quot;,</highlight></codeline>
+<codeline><highlight class="normal">as<sp/>appropriate<sp/>for<sp/>your<sp/>system.<sp/>Enter</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">to<sp/>build<sp/>the<sp/>compiler,<sp/>and</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make<sp/>install</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">to<sp/>install<sp/>the<sp/>components.<sp/>By<sp/>default,<sp/>these<sp/>mostly<sp/>go<sp/>in</highlight></codeline>
+<codeline><highlight class="normal">&quot;/usr/local/lib/bcplc&quot;.<sp/>You<sp/>can<sp/>also<sp/>change<sp/>to<sp/>the<sp/>&quot;docs&quot;<sp/>directory</highlight></codeline>
+<codeline><highlight class="normal">and</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make<sp/>install</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">to<sp/>install<sp/>documentation<sp/>to<sp/>&quot;/usr/local/share/doc/bcplc&quot;.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Should<sp/>you<sp/>wish<sp/>to<sp/>install<sp/>the<sp/>compiler<sp/>somewhere<sp/>other<sp/>than</highlight></codeline>
+<codeline><highlight class="normal">&quot;/usr/local/lib/bcplc&quot;,<sp/>be<sp/>sure<sp/>to<sp/>change<sp/>occurrences<sp/>of<sp/>this<sp/>path</highlight></codeline>
+<codeline><highlight class="normal">in<sp/>the<sp/>compiler<sp/>sources.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Once<sp/>the<sp/>compiler<sp/>is<sp/>built<sp/>you<sp/>can<sp/>run<sp/>the<sp/>&quot;cmpltest&quot;<sp/>utility<sp/>from<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">&quot;tools&quot;<sp/>directory<sp/>to<sp/>verify<sp/>the<sp/>build.<sp/><sp/>If<sp/>``bcplc``<sp/>is<sp/>not<sp/>yet<sp/>installed,</highlight></codeline>
+<codeline><highlight class="normal">use<sp/>the<sp/>driver<sp/>in<sp/>``src/``.<sp/><sp/>It<sp/>automatically<sp/>finds<sp/>the<sp/>runtime<sp/>files<sp/>in</highlight></codeline>
+<codeline><highlight class="normal">that<sp/>directory:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>make<sp/>-C<sp/>tools<sp/>BC=../src/bcplc<sp/>test</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">After<sp/>installation<sp/>simply<sp/>run<sp/>``make<sp/>test``<sp/>in<sp/>``tools``.<sp/><sp/>The<sp/>test</highlight></codeline>
+<codeline><highlight class="normal">should<sp/>conclude:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>119<sp/>TESTS<sp/>COMPLETED,<sp/>0<sp/>FAILURE(S)</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Robert<sp/>Nordier</highlight></codeline>
+<codeline><highlight class="normal">www.nordier.com</highlight></codeline>
+    </programlisting>
+    <location file="INSTALL"/>
+  </compounddef>
+</doxygen>

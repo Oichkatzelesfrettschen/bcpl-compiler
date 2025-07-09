@@ -1,53 +1,131 @@
-// BLIB
+/**
+ * @file blib.bcpl
+ * @brief BCPL Standard Library Implementation
+ * @author BCPL Compiler Team
+ * @copyright Copyright (c) BCPL Compiler Team. All rights reserved.
+ * 
+ * This file implements the core BCPL standard library functions that provide
+ * essential I/O, string manipulation, and utility operations. These functions
+ * form the foundation of the BCPL runtime environment and are available to
+ * all BCPL programs.
+ * 
+ * ## Library Categories
+ * - **I/O Functions**: Character and string output, formatted number output
+ * - **Numeric Functions**: Number parsing, different base output (octal, hex)
+ * - **String Functions**: String output and basic manipulation
+ * - **Utility Functions**: Page formatting, line breaks
+ * 
+ * ## Implementation Notes
+ * All functions in this library are written in BCPL itself, demonstrating
+ * the self-hosting nature of the BCPL system. The library depends on
+ * lower-level primitive functions (RDCH, WRCH) provided by the runtime.
+ */
+
+// BLIB - BCPL Standard Library
 
 GET "LIBHDR"
 
+/**
+ * @brief Write a string to the current output stream
+ * @param S String to write (byte-packed with length in first byte)
+ * 
+ * Outputs each character of the string to the current output stream.
+ * BCPL strings are stored with the length in the first byte (S%0)
+ * followed by the character data.
+ */
 LET WRITES(S) BE FOR I = 1 TO S % 0 DO WRCH(S % I)
 
+/**
+ * @brief Write a number with specified minimum field width
+ * @param N Number to write (can be negative)
+ * @param D Minimum field width (padded with spaces if needed)
+ * 
+ * Outputs a decimal number with proper sign handling and field width.
+ * If the number requires fewer digits than D, it is right-justified
+ * with leading spaces.
+ */
 AND WRITED(N, D) BE
 $(
-	LET T = VEC 20
-    AND I, K = 0, N
-    TEST N < 0 THEN D := D-1 ELSE K := -N
-    T!I, K, I := K REM 10, K / 10, I + 1 REPEATUNTIL K = 0
-    FOR J = I + 1 TO D DO WRCH('*S')
-    IF N < 0 DO WRCH('-')
-    FOR J = I-1 TO 0 BY -1 DO WRCH('0' - T!J)
+	LET T = VEC 20        // Temporary storage for digits
+    AND I, K = 0, N       // Digit index and working value
+    TEST N < 0 THEN D := D-1 ELSE K := -N  // Adjust width for sign
+    T!I, K, I := K REM 10, K / 10, I + 1 REPEATUNTIL K = 0  // Extract digits
+    FOR J = I + 1 TO D DO WRCH('*S')    // Output leading spaces
+    IF N < 0 DO WRCH('-')               // Output sign if negative
+    FOR J = I-1 TO 0 BY -1 DO WRCH('0' - T!J)  // Output digits
 $)
 
+/**
+ * @brief Write a number with no minimum field width
+ * @param N Number to write
+ * 
+ * Convenience function that outputs a number with no padding.
+ */
 AND WRITEN(N) BE WRITED(N, 0)
 
+/**
+ * @brief Output a newline character
+ * 
+ * Writes a newline character to move to the next line.
+ */
 AND NEWLINE() BE WRCH('*N')
 
+/**
+ * @brief Output a form feed (new page) character
+ * 
+ * Writes a form feed character to advance to the next page
+ * on printers that support it.
+ */
 AND NEWPAGE() BE WRCH('*P')
 
+/**
+ * @brief Read a decimal number from the input stream
+ * @return The number read from input
+ * 
+ * Reads a decimal number from the current input stream, handling:
+ * - Leading whitespace (spaces, tabs, newlines)
+ * - Optional sign (+ or -)
+ * - Decimal digits
+ * 
+ * The TERMINATOR global variable is set to the character that
+ * terminated the number (usually a space or other non-digit).
+ */
 AND READN() = VALOF
 $(
-	LET SUM = 0
-    AND NEG = FALSE
+	LET SUM = 0           // Accumulated number value
+    AND NEG = FALSE       // Sign flag
 L:
-	TERMINATOR := RDCH()
+	TERMINATOR := RDCH()  // Read next character
     SWITCHON TERMINATOR INTO
     $(
-		CASE '*S':
-        CASE '*T':
-        CASE '*N': GOTO L
-        CASE '-':  NEG := TRUE
-        CASE '+':  TERMINATOR := RDCH()
+		CASE '*S':        // Space
+        CASE '*T':        // Tab
+        CASE '*N': GOTO L // Newline - skip whitespace
+        CASE '-':  NEG := TRUE    // Negative sign
+        CASE '+':  TERMINATOR := RDCH()  // Positive sign
 	$)
-    WHILE '0' <= TERMINATOR <= '9' DO
+    WHILE '0' <= TERMINATOR <= '9' DO  // Process digits
 	$(
 		SUM := 10 * SUM + TERMINATOR - '0'
 		TERMINATOR := RDCH()
 	$)
-    IF NEG DO SUM := -SUM
+    IF NEG DO SUM := -SUM  // Apply sign
     RESULTIS SUM
 $)
 
+/**
+ * @brief Write a number in octal format
+ * @param N Number to write in octal
+ * @param D Minimum number of octal digits
+ * 
+ * Outputs a number in octal (base 8) format with the specified
+ * minimum number of digits. Leading zeros are added if necessary.
+ */
 AND WRITEOCT(N, D) BE
 $(
-	IF D > 1 DO WRITEOCT(N >> 3, D - 1)
-       WRCH((N&7) + '0')
+	IF D > 1 DO WRITEOCT(N >> 3, D - 1)  // Recursive digit output
+       WRCH((N&7) + '0')                     // Output current digit
+$)
 $)
 
 AND WRITEHEX(N, D) BE

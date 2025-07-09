@@ -1,0 +1,1 @@
+/usr/bin/clang -target x86_64-apple-macos11 -march=x86-64 -target x86_64-apple-macos11 -O3 -DNDEBUG -arch x86_64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/op.dir/op.c.o CMakeFiles/op.dir/pt.c.o -o op  libbcpl_runtime.a

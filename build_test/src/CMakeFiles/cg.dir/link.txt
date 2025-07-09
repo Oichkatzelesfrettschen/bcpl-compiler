@@ -1,0 +1,1 @@
+/usr/bin/clang -std=c17 -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cg.dir/cg.c.o CMakeFiles/cg.dir/oc.c.o CMakeFiles/cg.dir/ocode_64bit.c.o -o cg_arm64  libbcpl_runtime_arm64.a

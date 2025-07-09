@@ -1,0 +1,1 @@
+/usr/bin/clang -std=c17 -target i386-apple-macos10.12 -m32 -arch i386 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/st_tmp.dir/bootstrap_main.c.o -o st_tmp  libbcpl_runtime.a

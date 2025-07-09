@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="llcg_8c" kind="file" language="C++">
+    <compoundname>llcg.c</compoundname>
+    <includes local="no">llvm-c/Core.h</includes>
+    <includes local="no">llvm-c/Target.h</includes>
+    <includes local="no">llvm-c/TargetMachine.h</includes>
+    <includes local="no">llvm-c/Analysis.h</includes>
+    <includes local="no">stdio.h</includes>
+    <includes local="no">stdlib.h</includes>
+    <includes local="no">string.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>src/llcg.c</label>
+        <link refid="llcg_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>llvm-c/Analysis.h</label>
+      </node>
+      <node id="2">
+        <label>llvm-c/Core.h</label>
+      </node>
+      <node id="3">
+        <label>llvm-c/Target.h</label>
+      </node>
+      <node id="4">
+        <label>llvm-c/TargetMachine.h</label>
+      </node>
+      <node id="6">
+        <label>stdio.h</label>
+      </node>
+      <node id="7">
+        <label>stdlib.h</label>
+      </node>
+      <node id="8">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="llcg_8c_1a88d6d140a9c999eadfafaee19b645eae" prot="public" static="yes" mutable="no">
+        <type>LLVMModuleRef</type>
+        <definition>LLVMModuleRef module</definition>
+        <argsstring></argsstring>
+        <name>module</name>
+        <briefdescription>
+<para>Global LLVM context and code generation state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>These variables maintain the LLVM compilation context throughout the code generation process. LLVM module containing generated IR </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/llcg.c" line="46" column="22" bodyfile="src/llcg.c" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="llcg_8c_1a0c253a2247001b0ef27db5217e9caa2d" prot="public" static="yes" mutable="no">
+        <type>LLVMBuilderRef</type>
+        <definition>LLVMBuilderRef builder</definition>
+        <argsstring></argsstring>
+        <name>builder</name>
+        <briefdescription>
+<para>LLVM IR builder for instruction generation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/llcg.c" line="47" column="23" bodyfile="src/llcg.c" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="llcg_8c_1a706053bdc06a19bbc4961b94f60d9328" prot="public" static="yes" mutable="no">
+        <type>LLVMValueRef</type>
+        <definition>LLVMValueRef func</definition>
+        <argsstring></argsstring>
+        <name>func</name>
+        <briefdescription>
+<para>Current function being generated. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/llcg.c" line="48" column="21" bodyfile="src/llcg.c" bodystart="48" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="llcg_8c_1a101753194b45f104fb9e2448e38ad450" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void finish_module</definition>
+        <argsstring>(void)</argsstring>
+        <name>finish_module</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Initialize the LLVM module and compilation context. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets up the LLVM environment, creates a module, and initializes the IR builder. This function must be called before any code generation can occur.</para>
+<para>The initialization process:<orderedlist>
+<listitem><para>Initializes all LLVM targets and subsystems</para>
+</listitem><listitem><para>Creates a new LLVM module static void init_module(void) { LLVMInitializeAllTargets(); LLVMInitializeAllTargetMCs(); LLVMInitializeAllAsmPrinters(); LLVMInitializeAllAsmParsers(); module = LLVMModuleCreateWithName(&quot;bcpl_module&quot;); LLVMTypeRef fn_type = LLVMFunctionType(LLVMInt32Type(), NULL, 0, 0); func = LLVMAddFunction(module, &quot;main&quot;, fn_type); LLVMBasicBlockRef entry = LLVMAppendBasicBlock(func, &quot;entry&quot;); builder = LLVMCreateBuilder(); LLVMPositionBuilderAtEnd(builder, entry); }</para>
+</listitem></orderedlist>
+</para>
+<para>/**</para>
+<para>Finalize the LLVM module and clean up resources</para>
+<para>Completes the current function with a return statement and cleans up the IR builder. This function should be called after all OCODE has been processed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/llcg.c" line="81" column="13" bodyfile="src/llcg.c" bodystart="81" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="llcg_8c_1a14583798bbd37423c4446d982bbc3023" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void translate</definition>
+        <argsstring>(FILE *in)</argsstring>
+        <name>translate</name>
+        <param>
+          <type>FILE *</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Translate OCODE instructions to LLVM IR. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input stream containing OCODE instructions</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function reads OCODE instructions from the input stream and generates corresponding LLVM IR. Currently only a minimal subset of operations is implemented as a proof of concept.</para>
+<sect1 id="llcg_8c_1autotoc_md8_1s1"><sect2 id="llcg_8c_1autotoc_md8">
+<title>Implementation Notes</title><para><itemizedlist>
+<listitem><para>A complete implementation would maintain a value stack</para>
+</listitem><listitem><para>Each OCODE operation would manipulate LLVM Values</para>
+</listitem><listitem><para>Control flow would be handled with LLVM BasicBlocks</para>
+</listitem><listitem><para>Memory operations would use LLVM&apos;s memory model</para>
+<para><xrefsect id="todo_1_todo000001"><xreftitle>Todo</xreftitle><xrefdescription><para>Implement remaining OCODE operations </para>
+<para>Add proper error handling </para>
+<para>Implement BCPL calling conventions </para>
+</xrefdescription></xrefsect></para>
+</listitem></itemizedlist>
+</para>
+</sect2></sect1>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/llcg.c" line="105" column="13" bodyfile="src/llcg.c" bodystart="105" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="llcg_8c_1a840291bc02cba5474a4cb46a9b9566fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int main</definition>
+        <argsstring>(void)</argsstring>
+        <name>main</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Main entry point for the LLVM code generator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Exit status (0 for success)</para>
+</simplesect>
+This function orchestrates the LLVM IR generation process:<orderedlist>
+<listitem><para>Initializes the LLVM module and context</para>
+</listitem><listitem><para>Translates OCODE from stdin to LLVM IR</para>
+</listitem><listitem><para>Finalizes the module</para>
+</listitem><listitem><para>Outputs the generated IR to stdout</para>
+</listitem><listitem><para>Cleans up resources </para>
+</listitem></orderedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/llcg.c" line="128" column="5" bodyfile="src/llcg.c" bodystart="128" bodyend="138"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Experimental LLVM IR backend for the BCPL compiler. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="author"><para>BCPL Compiler Team </para>
+</simplesect>
+<simplesect kind="copyright"><para>Copyright (c) 2012 Robert Nordier. All rights reserved.</para>
+</simplesect>
+This file implements an experimental backend that generates LLVM IR (Intermediate Representation) from OCODE. This backend is a proof-of-concept demonstrating how the BCPL compiler can target modern compiler infrastructures.</para>
+<sect1 id="llcg_8c_1autotoc_md5_1s1"><sect2 id="llcg_8c_1autotoc_md5">
+<title>Current Status</title><para>This is an intentionally incomplete implementation that serves as:<itemizedlist>
+<listitem><para>A demonstration of the compiler&apos;s extensible backend architecture</para>
+</listitem><listitem><para>A foundation for future LLVM-based optimizations</para>
+</listitem><listitem><para>An example of integrating with the LLVM-C API</para>
+</listitem></itemizedlist>
+</para>
+</sect2></sect1>
+<sect1 id="llcg_8c_1autotoc_md6_1s1"><sect2 id="llcg_8c_1autotoc_md6">
+<title>Architecture</title><para>The backend processes OCODE instructions and translates them to LLVM IR, which can then be optimized by LLVM&apos;s optimization passes and compiled to native code for any target supported by LLVM.</para>
+</sect2></sect1>
+<sect1 id="llcg_8c_1autotoc_md7_1s1"><sect2 id="llcg_8c_1autotoc_md7">
+<title>Limitations</title><para>Currently only a minimal subset of OCODE is supported. A complete implementation would require:<itemizedlist>
+<listitem><para>Full OCODE instruction coverage</para>
+</listitem><listitem><para>BCPL runtime system integration</para>
+</listitem><listitem><para>Proper memory management</para>
+</listitem><listitem><para>Exception handling</para>
+</listitem><listitem><para>Debugging information generation </para>
+</listitem></itemizedlist>
+</para>
+</sect2></sect1>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;llvm-c/Core.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;llvm-c/Target.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;llvm-c/TargetMachine.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;llvm-c/Analysis.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="llcg_8c_1a88d6d140a9c999eadfafaee19b645eae" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>LLVMModuleRef<sp/><ref refid="llcg_8c_1a88d6d140a9c999eadfafaee19b645eae" kindref="member">module</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="47" refid="llcg_8c_1a0c253a2247001b0ef27db5217e9caa2d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>LLVMBuilderRef<sp/><ref refid="llcg_8c_1a0c253a2247001b0ef27db5217e9caa2d" kindref="member">builder</ref>;<sp/></highlight></codeline>
+<codeline lineno="48" refid="llcg_8c_1a706053bdc06a19bbc4961b94f60d9328" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>LLVMValueRef<sp/><ref refid="llcg_8c_1a706053bdc06a19bbc4961b94f60d9328" kindref="member">func</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="llcg_8c_1a101753194b45f104fb9e2448e38ad450" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="llcg_8c_1a101753194b45f104fb9e2448e38ad450" kindref="member">finish_module</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>LLVMBuildRet(<ref refid="llcg_8c_1a0c253a2247001b0ef27db5217e9caa2d" kindref="member">builder</ref>,<sp/>LLVMConstInt(LLVMInt32Type(),<sp/>0,<sp/>0));</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>LLVMDisposeBuilder(<ref refid="llcg_8c_1a0c253a2247001b0ef27db5217e9caa2d" kindref="member">builder</ref>);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="llcg_8c_1a14583798bbd37423c4446d982bbc3023" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="llcg_8c_1a14583798bbd37423c4446d982bbc3023" kindref="member">translate</ref>(FILE<sp/>*in)</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>buf[256];</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(fgets(buf,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(buf),<sp/>in))<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(strncmp(buf,<sp/></highlight><highlight class="stringliteral">&quot;S_MULT&quot;</highlight><highlight class="normal">,<sp/>6)<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>placeholder:<sp/>multiply<sp/>top<sp/>two<sp/>stack<sp/>values<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>real<sp/>implementation<sp/>would<sp/>manipulate<sp/>a<sp/>stack<sp/>of<sp/>LLVM<sp/>Values<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>many<sp/>opcodes<sp/>are<sp/>unimplemented<sp/>and<sp/>ignored<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="llcg_8c_1a840291bc02cba5474a4cb46a9b9566fe" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="llcg_8c_1a840291bc02cba5474a4cb46a9b9566fe" kindref="member">main</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>init_module();</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llcg_8c_1a14583798bbd37423c4446d982bbc3023" kindref="member">translate</ref>(stdin);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llcg_8c_1a101753194b45f104fb9e2448e38ad450" kindref="member">finish_module</ref>();</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*ir<sp/>=<sp/>LLVMPrintModuleToString(<ref refid="llcg_8c_1a88d6d140a9c999eadfafaee19b645eae" kindref="member">module</ref>);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>fputs(ir,<sp/>stdout);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>LLVMDisposeMessage(ir);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>LLVMDisposeModule(<ref refid="llcg_8c_1a88d6d140a9c999eadfafaee19b645eae" kindref="member">module</ref>);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="src/llcg.c"/>
+  </compounddef>
+</doxygen>

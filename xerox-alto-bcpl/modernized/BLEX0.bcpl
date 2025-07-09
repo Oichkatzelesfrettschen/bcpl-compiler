@@ -1,0 +1,73 @@
+// =============================================================================
+// Modernized Xerox Alto BCPL Source: BLEX0.bcpl
+// Original: Xerox PARC Alto BCPL Compiler
+// Modernized FOR: Modern BCPL Compiler with C23 Runtime
+// Date: 2025-06-29
+// =============================================================================
+
+GET "LIBHDR"
+GET "BCPLX"
+
+// BLEX0.bcpl - BCPL Compiler -- Lexical Analyzer,Main Program
+// Copyright Xerox Corporation 1980
+
+// Swinehart, 5-9-77 Fast getframe, RETURN
+
+//  last modified BY Butterfield, May 9, 1979  2:15 PM 
+//  - Rch, OpenSource, CloseSource, add -G switch (NOT SWGetLINEs) - 2/2
+//  - OpenSource, CloseSource, discardable symbols - 1/23
+//  - GetMax, increase TO 20 - 1/19/79
+
+// ReadSource	Main program of LEX
+// LEXreport	Report errors from LEX phase
+// Rch		Read the next source char from INPUT INTO Ch
+// OpenSource	Open a source stream AND remember any previous stream"\1"t swap!
+   LET orch = Rch
+   Rch = Getch
+   LET value = true //DEFAULT MANIFEST value
+   ReadCOMCM() // processor name, GLOBAL switches
+   ReadCOMCM() // first file name
+   WHILE filename!0 ne -1 DO
+      [
+      bp = 0
+      FOR i = 1 TO sw!0 DO SWITCHON sw!i INTO
+        [
+	 CASE $S: // DCS 5-9-77 value FOR fast getframe, RETURN
+	     Rch()
+	     SWFastFrame = DoNumber(-8) // get value (see just below)
+	     UNLESS SWAlto DO SWFastFrame = 0 // ignore on Nova
+	     ENDCASE
+        CASE $V:
+           Rch()
+           value = DoNumber(-10) // get value, don't write TO BL file
+           ENDCASE
+        CASE $M:
+           LexOut(MANIFEST)
+           IF ReadAhead THEN Readsymb() // force MANIFEST
+           Readsymb()
+           LexOut(ASS) // MANIFEST name = value
+           V!0 = value
+           LexOut(NUMBER)
+           LexOut(SEMICOLON)
+           NLPending = true // hedge bets, generate <cr>
+        DEFAULT:
+           ENDCASE
+        ]
+      ReadCOMCM()
+      ]
+   Rch = orch
+   IF fn THEN
+     [
+     FirstName = true
+     UpperCase = uc
+     SWUpperCase = swu
+     ]
+   ]
+
+//----------------------------------------------------------------------------
+AND Getch() BE
+//----------------------------------------------------------------------------
+   [
+   bp = bp + 1
+   Ch = bp>filename!0? 0, filename!bp
+   ]

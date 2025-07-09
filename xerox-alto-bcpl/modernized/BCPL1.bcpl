@@ -1,0 +1,226 @@
+// BCPL1.bcpl - BCPL Compiler -- IO routines
+// Copyright Xerox Corporation 1980
+// Use Dvec TO allocate FileNameLength -- Swinehart, 6 May 77
+
+GET "bcplx"
+GET "bcpliox"
+
+STRUCTURE [ blank bit 15; ODDBIT bit 1 ]
+
+LET Packstring(u, p) BE
+ [
+  LET n = u!0
+  LET i, j = 0, 0
+  [ p!j = u!i LSHIFT 8
+    i = i + 1; IF i gr n RETURN
+    p!j = p!j + (u!i & #377)
+    i = i + 1; IF i gr n RETURN
+    j = j + 1
+  ] REPEAT
+ ]
+
+AND Unpackstring(p, u) BE
+[
+  LET n = p!0 RSHIFT 8
+  LET i, j = 0, 0
+  [ u!i = p!j RSHIFT 8
+    i = i + 1; IF i gr n RETURN
+    u!i = p!j & #377
+    i = i + 1; IF i gr n RETURN
+    j = j + 1
+  ] REPEAT
+ ]
+
+AND Movestring(p1, p2) BE
+[
+  LET n = p1!0 RSHIFT 8
+  TEST n eq 0
+  THEN n = p1!0
+  OR   n = n/2
+  FOR i = 0 TO n DO p2!i = p1!i
+ ]
+
+AND Length(p) = p!0 RSHIFT 8
+
+AND Char(p, n) = valof
+[
+  LET i = n RSHIFT 1
+  TEST (n & 1) eq 0
+  THEN RESULTIS p!i RSHIFT 8
+  OR   RESULTIS p!i & #377
+ ]
+
+AND WriteS(s) BE
+[ LET u = VEC 256
+  Unpackstring(s, u)
+  FOR i = 1 TO u!0 DO WW(u!i)
+ ]
+
+AND WriteN(n) BE
+[ IF n ls 0 DO [ n = -n; WW($-) ]
+  LET zsw = false
+  LET k = 10000
+  FOR i = 1 TO 4 DO
+    [ LET d = n/k
+     IF zsw % (d ne 0) DO
+        [ WW(d+$0); zsw = true ]
+     n = n rem k
+     k = k/10
+    ]
+  WW(n+$0)
+ ]
+
+AND WriteO(n) BE
+[ LET zsw = true
+  FOR i = 15 TO 3 BY -3 DO
+    [ LET d = (n RSHIFT i) & #7
+     TEST zsw & (d eq 0)
+     THEN [ WW($*s) ]
+     OR   [ WW(d+$0); zsw = false ]
+    ]
+  WW((n & #7) + $0)
+ ]
+
+AND CloseInput(channel) BE closechannel(channel)  
+
+AND CloseOutput(channel) BE closechannel(channel) // will flush buffer in closechannel
+
+AND CloseTemp(channel, ch) BE closechannel(channel) // will flush buffer in closechannel
+
+AND syscallerror(call, ac, stream; numargs nargs) BE
+[ LET callac = VEC 3; FOR i = 0 TO 3 DO callac!i = ac!i
+
+  Ostream = TTOstream
+  WriteS("UNEXPECTED SYSTEM CALL ERROR ")
+  WriteO(callac!2)
+
+  [ WriteS(" ON CALL "); WriteO(call); WW($*n) ]
+  IF SWHelp DO Help("SYSTEM CALL ERROR")
+  finish
+ ]
+
+AND BadSwitch(i) BE
+[	//illegal switch detected -- abort
+  Ostream = TTOstream
+  LET n = FileNameLength/2; Dvec(BadSwitch,lv n); Packstring(filename, n)
+  WriteS(n)
+  FOR i = 1 TO sw!0 DO [ WW($/); WW(sw!i) ]
+  WriteS(" -- BAD SWITCH "); WW(sw!i); WW($*n)
+  IF SWHelp DO Help("HELP")
+  finish
+ ]
+
+AND Error(message) BE
+[	//fatal error detected -- abort
+  Ostream = TTOstream
+  WW($*n); WriteS(message); WW($*n)
+  IF SWHelp DO Help("HELP")
+  finish
+ ]
+
+AND FixFileName(Newname, ext, dev) BE
+[	
+  LET udev = FileNameLength; Dvec(FixFileName, lv udev)
+  LET devsw = false
+  LET n = 0
+  [ n = n + 1
+    IF n gr filename!0 DO
+      [	LET v = VEC 3
+	Unpackstring(ext, v)
+	FOR i = 1 TO v!0 DO filename!(n+i-1) = v!i
+	filename!0 = filename!0 + v!0
+	BREAK
+       ]
+    IF filename!n eq $. BREAK
+    IF filename!n eq $: DO devsw = true
+  ] REPEAT
+  LET uname = filename
+  TEST dev ne 0 & dev!0 ne 0 & NOT devsw THEN Unpackstring(dev, udev)
+					 OR udev!0 = 0
+  IF udev!0 ge 4 & udev!4 eq $: DO
+    [	
+	uname = filename - 4
+	uname!0 = filename!0 + 4
+	FOR i = 1 TO 4 DO uname!i = udev!i
+     ]
+  IF uname!(uname!0) eq $. DO uname!0 = uname!0 - 1
+  Packstring(uname, Newname)
+  filename!0 = n - 1
+ ]
+
+AND DecValue(name) = valof
+[	//get decimal number from unpacked string
+  LET n = 0
+  FOR i = 1 TO name!0 DO
+    [	UNLESS $0 le name!i & name!i le $9 DO
+		Error("BAD DECIMAL NUMBER")
+	n = n*10 + (name!i-$0)
+     ]
+  RESULTIS n
+ ]
+
+AND OctValue(name) = valof
+[	//get octal number from unpacked string
+  LET n = 0
+  FOR i = 1 TO name!0 DO
+    [	UNLESS $0 le name!i & name!i le $7 DO
+		Error("BAD OCTAL NUMBER")
+	n = n*8 + (name!i-$0)
+     ]
+  RESULTIS n
+ ]
+
+AND Zerovec(n) = valof
+[ LET v = Newvec(n)
+  FOR i = 0 TO n DO v!i = 0
+  RESULTIS v
+]
+AND List1(a) = valof
+[ LET v = Newvec(1-1)
+  v!0 = a
+  RESULTIS v
+]
+AND List2(a,b) = valof
+[ LET v = Newvec(2-1)
+  v!0, v!1 = a, b
+  RESULTIS v
+]
+AND List3(a,b,c) = valof
+[ LET v = Newvec(3-1)
+  v!0, v!1, v!2 = a, b, c
+  RESULTIS v
+]
+AND List4(a,b,c,d) = valof
+[ LET v = Newvec(4-1)
+  v!0, v!1, v!2, v!3 = a, b, c, d
+  RESULTIS v
+]
+AND List5(a,b,c,d,e) = valof
+[ LET v = Newvec(5-1)
+  v!0, v!1, v!2, v!3, v!4 = a, b, c, d, e
+  RESULTIS v
+]
+AND List6(a,b,c,d,e,f) = valof
+[ LET v = Newvec(6-1)
+  v!0, v!1, v!2, v!3, v!4, v!5 = a, b, c, d, e, f
+  RESULTIS v
+]
+AND List7(a,b,c,d,e,f,g) = valof
+[ LET v = Newvec(7-1)
+  v!0, v!1, v!2, v!3, v!4, v!5, v!6 = a, b, c, d, e, f, g
+  RESULTIS v
+]
+
+AND Nextparam() = valof
+[ STATIC [ nextp = 0 ]
+  nextp = nextp + 1; RESULTIS nextp
+]
+AND Nextentry() = valof
+[ STATIC [ nexte = 0 ]
+  nexte = nexte + 1; RESULTIS nexte
+]
+AND Nextstatic() = valof
+[ STATIC [ nexts = 0 ]
+  nexts = nexts + 1; RESULTIS nexts
+]
+

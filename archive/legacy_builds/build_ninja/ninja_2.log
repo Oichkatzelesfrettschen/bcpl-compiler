@@ -1,0 +1,40 @@
+[1/15] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o
+FAILED: [code=1] tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o 
+/usr/bin/clang -DBCPL_MODERNIZED=1 -DBCPL_TEST_BUILD=1 -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime -std=c17 -arch arm64 -MD -MT tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o -MF tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o.d -o tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_runtime.c:159:12: error: initializing 'uint32_t' (aka 'unsigned int') with an expression of incompatible type 'bcpl_cpu_features_t'
+  159 |   uint32_t cpu_features = bcpl_platform_get_cpu_features();
+      |            ^              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+[2/15] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o
+FAILED: [code=1] tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o 
+/usr/bin/clang -DBCPL_MODERNIZED=1 -DBCPL_TEST_BUILD=1 -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime -std=c17 -arch arm64 -MD -MT tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o -MF tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o.d -o tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:134:3: error: call to undeclared function 'bcpl_platform_remove'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  134 |   bcpl_platform_remove(test_filename);
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:219:3: error: call to undeclared function 'bcpl_platform_memcpy_optimized'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  219 |   bcpl_platform_memcpy_optimized(dst, src, test_size);
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/tests/test_platform_abstraction.c:219:3: note: did you mean 'bcpl_platform_memcpy'?
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include/universal_platform.h:277:6: note: 'bcpl_platform_memcpy' declared here
+  277 | void bcpl_platform_memcpy(void *dest, const void *src, size_t size);
+      |      ^
+2 errors generated.
+[3/15] Building C object tests/CMakeFiles/test_no_assembly.dir/test_assembly_elimination.c.o
+[4/15] Building C object src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o
+FAILED: [code=1] src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o 
+/usr/bin/clang  -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src -std=c17 -std=c2x -arch arm64 -std=c23 -Wall -Wextra -Wpedantic -DBITS=64 -DBCPL_PLATFORM_MACOS=1 -O2 -g -MD -MT src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o -MF src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o.d -o src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o -c /Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/macos.c
+In file included from /Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/macos.c:22:
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/../include/universal_platform.h:89:17: error: typedef redefinition with different types ('int64_t' (aka 'long long') vs 'uint64_t' (aka 'unsigned long long'))
+   89 | typedef int64_t bcpl_word_t;
+      |                 ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/../include/bcpl_types.h:124:18: note: previous definition is here
+  124 | typedef uint64_t bcpl_word_t;
+      |                  ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/macos.c:434:3: error: typedef redefinition with different types ('struct bcpl_cpu_features_t' vs 'struct bcpl_cpu_features_t')
+  434 | } bcpl_cpu_features_t;
+      |   ^
+/Users/eirikr/Documents/GitHub/bcpl-compiler/src/platform/../include/universal_platform.h:324:3: note: previous definition is here
+  324 | } bcpl_cpu_features_t;
+      |   ^
+2 errors generated.
+ninja: build stopped: subcommand failed.

@@ -1,0 +1,53 @@
+[1/16] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o
+[2/16] Building C object tests/CMakeFiles/test_platform_compatibility.dir/test_architecture.c.o
+[3/16] Building C object tests/CMakeFiles/test_platform_compatibility.dir/test_cross_platform.c.o
+[4/16] Building C object tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o
+[5/16] Building C object src/CMakeFiles/bcpl_runtime.dir/platform/macos.c.o
+[6/16] Linking C static library src/libbcpl_runtime.a
+[7/16] Linking C executable src/cg
+[8/16] Linking C executable src/st_tmp
+[9/16] Linking C executable tests/test_performance
+[10/16] Linking C executable src/op
+[11/16] Linking C executable tests/test_runtime_modernization
+FAILED: [code=1] tests/test_runtime_modernization 
+: && /usr/bin/clang -std=c17 -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  tests/CMakeFiles/test_runtime_modernization.dir/test_runtime.c.o tests/CMakeFiles/test_runtime_modernization.dir/test_platform_abstraction.c.o tests/CMakeFiles/test_runtime_modernization.dir/test_memory_safety.c.o -o tests/test_runtime_modernization  src/libbcpl_runtime.a && :
+Undefined symbols for architecture arm64:
+  "_bcpl_platform_aligned_alloc", referenced from:
+      _test_memory_management in test_runtime.c.o
+      _test_memory_management in test_runtime.c.o
+      _test_memory_management in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+  "_bcpl_platform_aligned_free", referenced from:
+      _test_memory_management in test_runtime.c.o
+      _test_memory_management in test_runtime.c.o
+      _test_memory_management in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+  "_bcpl_platform_get_cpu_count", referenced from:
+      _test_platform_abstraction in test_runtime.c.o
+      _bcpl_platform_get_cpu_features in libbcpl_runtime.a[10](macos.c.o)
+  "_bcpl_platform_get_last_error", referenced from:
+      _test_error_handling in test_runtime.c.o
+  "_bcpl_platform_get_page_size", referenced from:
+      _test_memory_management in test_runtime.c.o
+  "_bcpl_platform_get_timestamp", referenced from:
+      _test_platform_abstraction in test_runtime.c.o
+      _test_platform_abstraction in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+      _test_performance in test_runtime.c.o
+      _bcpl_platform_get_time_ns in libbcpl_runtime.a[10](macos.c.o)
+      ...
+  "_bcpl_platform_getenv", referenced from:
+      _test_platform_abstraction in test_runtime.c.o
+  "_bcpl_platform_print_stacktrace", referenced from:
+      _test_error_handling in test_runtime.c.o
+  "_bcpl_platform_sleep", referenced from:
+      _test_platform_abstraction in test_runtime.c.o
+      _bcpl_platform_sleep_ms in libbcpl_runtime.a[10](macos.c.o)
+ld: symbol(s) not found for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+[12/16] Linking C executable tests/test_no_assembly
+[13/16] Linking C executable tests/test_platform_compatibility
+[14/16] Compiling BCPL compiler front-end from OCODE
+ninja: build stopped: subcommand failed.

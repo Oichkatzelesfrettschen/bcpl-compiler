@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/cmake_install.cmake",
+		"/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/src/cmake_install.cmake",
+		"/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/tests/cmake_install.cmake",
+		"/Users/eirikr/Documents/GitHub/bcpl-compiler/build_test/docs/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

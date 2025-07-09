@@ -3,5 +3,8 @@
 BITS=${BITS:-64}
 CROSS_PREFIX=${CROSS_PREFIX:-}
 make -C src clean
-make -C src CC=clang CFLAGS="-std=c23 -fsanitize=address,undefined -g" BITS=$BITS CROSS_PREFIX=$CROSS_PREFIX all
+# Build with clang and enable sanitizers.  We let the Makefile append the
+# standard warning flags and the BITS-dependent configuration options.
+make -C src CC=clang CFLAGS_EXTRA="-fsanitize=address,undefined" \
+    BITS=$BITS CROSS_PREFIX=$CROSS_PREFIX all
 make -C tools BC=../src/bcplc test

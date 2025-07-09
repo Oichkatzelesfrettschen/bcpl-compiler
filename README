@@ -48,6 +48,52 @@ cross‑compilation environment and the IA‑16 toolchain.
 Building
 ========
 
+## Performance Optimization
+
+This distribution includes comprehensive optimization scripts and documentation
+for building high-performance BCPL compiler binaries using modern Clang/LLVM
+optimization techniques.
+
+### Quick Start - Optimized Builds
+
+For maximum performance on your current hardware:
+```bash
+./build_max_performance.sh
+```
+
+For high performance with binary portability:
+```bash
+./build_portable_optimized.sh
+```
+
+For Profile-Guided Optimization (highest performance for specific workloads):
+```bash
+./build_pgo.sh
+```
+
+### Optimization Documentation
+
+- **[Complete Optimization Guide](docs/BUILD_OPTIMIZATION.md)** - Comprehensive guide covering all optimization techniques
+- **[Quick Reference](docs/OPTIMIZATION_QUICK_REFERENCE.md)** - Command reference and troubleshooting
+- **[Optimization Overview](docs/README_OPTIMIZATION.md)** - Summary of all available optimization strategies
+
+### Performance Comparison
+
+To build all optimization variants and compare their performance:
+```bash
+./build_variants.sh       # Build all optimization levels
+./benchmark_variants.sh   # Run comprehensive benchmarks
+```
+
+The optimization scripts use advanced Clang/LLVM features including:
+- Link-Time Optimization (ThinLTO)
+- Profile-Guided Optimization (PGO)
+- Advanced vectorization
+- CPU-specific optimizations
+- Memory hierarchy optimization
+
+## Standard Building
+
 Before building you may install a comprehensive cross‑compilation
 environment by running ``./setup.sh`` as root.  The script configures
 package repositories for multiple architectures and installs toolchains

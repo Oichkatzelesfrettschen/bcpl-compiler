@@ -1,0 +1,312 @@
+// BCAE3.bcpl - BCPL Compiler -- Part 3 of CAE.
+// Copyright Xerox Corporation 1980
+//  Last modified on Sun 15 Oct 72 1929.16 BY  jec.
+//  Swinehart, 5-10-77: docase exp
+
+//	Rdef		Read a definition, returning the node thus produced.
+//	Rcom		Read a command.
+//	Rselect		Read a SWITCHON block.
+
+GET "bcaex"
+
+LET Rdef() = valof
+ [  LET A, B = 0, 0
+    AND Thisline = LinePtr()
+    LET N = Rnamelist()
+    LET M = 0
+    SWITCHON Symb INTO   //  What comes after the name list?
+     [  CASE RBRA:   //  A name.  It is a function OR routine definition.
+	    UNLESS (H1!N & TypeMask) eq LOCAL DO
+		[ CAEskip(15); GOTO DefErr ]
+	    H1!N = (H1!N & NameMask) + LABEL
+	    Nextsymb()
+	    IF Symb eq NAME % Symb eq NIL DO A = Rnamelist()   //  Formal params
+	    IF Symb eq SEMICOLON DO Nextsymb()
+	    IF Symb ne RKET DO
+	     [	UNLESS Symb eq NUMARGS DO
+		  [ CAEskip(15); GOTO DefErr ]
+		Nextsymb()
+		M = Rnamelist()
+		UNLESS (H1!M & TypeMask) eq LOCAL DO
+		  [ CAEskip(15); GOTO DefErr ]
+	      ]
+	    UNLESS Symb eq RKET DO
+		[ CAEskip(15); GOTO DefErr ]
+	    Nextsymb()
+	    IF Symb eq BE DO   //  It"s a routine definition.
+	     [  Nextsymb()
+		B = Rcom(Rcom)
+		A = List7(RTDEF, N, A, B, 0, 0, M)   
+		ENDCASE
+	      ]
+	    IF Symb eq ASS DO   //  It"s a function definition.
+	     [  Nextsymb()
+		B = Rexp(0)
+		A = List7(FNDEF, N, A, B, 0, 0, M)   
+		ENDCASE
+	      ]
+	    CAEskip(15)
+
+	DefErr:
+	    B = Rcom(Rcom)
+	    A = List6(RTDEF, N, A, B, 0, 0)
+	    ENDCASE
+
+	CASE ASS: 
+	    Nextsymb()
+	    A = Rexp(0)
+	    A = List4(VALDEF, N, A, 0)   //  Extra cell TO hold count in Trans.
+	    ENDCASE
+
+	DEFAULT:
+	    CAEskip(17)
+
+      ]
+
+    A = List3(LINE, Thisline, A)
+    WHILE Symb eq SEMICOLON DO Nextsymb()
+    IF Symb eq AND DO
+     [  Nextsymb()
+	IF Symb eq LET DO Nextsymb()
+	B = Rdef()
+	RESULTIS List3(AND, A, B)
+      ]
+    RESULTIS A
+  ]
+
+AND Rcom(Nextfn) = valof
+ [  LET A, B, C, Op = nil, nil, nil, nil
+    LET Thisline = LinePtr()
+
+    SWITCHON Symb INTO
+     [  DEFAULT:
+	    RESULTIS 0
+
+	CASE NAME: CASE NUMBER: CASE STRINGCONST: CASE CHARCONST:
+	CASE NOT:
+	CASE SELECTON:
+	CASE NIL: CASE TRUE: CASE FALSE:
+	CASE LV: CASE RV:
+	CASE RBRA: CASE VALOF: CASE PLUS: CASE MINUS:
+	CASE OFFSET: CASE SIZE:
+	    // these are all the symbols which can start an expression
+	    A = Rexp(0)
+	    IF Symb eq ASS DO
+	     [  Nextsymb()
+		B = Rexp(0)
+		A = List3(ASS, A, B)
+		ENDCASE
+	      ]
+	    IF Symb eq COLON DO
+	     [  UNLESS (A & NameBit) ne 0 DO CAEreport(18)
+		A = List2((A & NameMask) + LABEL, 0)
+		Nextsymb()
+		B = Nextfn(Nextfn)
+		A = List5(COLON, A, B, 0, 0)   //  Last cells hold label numbers
+		ENDCASE
+	      ]
+	    IF H1!A eq FNAP DO
+		[ H1!A = RTAP; ENDCASE ]
+	    CAEskip(19)
+	    ENDCASE
+
+	CASE GOTO:
+	CASE RESULTIS:
+	CASE DOCASE:
+	    Op = Symb
+	    Nextsymb()
+	    A = Rexp(0)
+	    A = List2(Op, A)
+	    ENDCASE
+
+	CASE IF: CASE UNLESS:
+	CASE WHILE: CASE UNTIL:
+	    Op = Symb
+	    Nextsymb()
+	    A = Rexp(0)
+	    WHILE Symb eq SEMICOLON DO Nextsymb()
+	    TEST Symb eq DO
+	    THEN Nextsymb()
+	    OR   CAEskip(20)
+	    B = Rcom(Rcom)
+	    A = List3(Op, A, B)
+	    ENDCASE
+
+	CASE TEST:
+	    Nextsymb()
+	    A = Rexp(0)
+	    WHILE Symb eq SEMICOLON DO Nextsymb()
+	    TEST Symb eq IFNOT
+	    THEN
+	     [  Nextsymb()
+		C = Rcom(Rcom)
+		WHILE Symb eq SEMICOLON DO Nextsymb()
+		TEST Symb eq IFSO 
+		THEN Nextsymb()
+		OR   CAEskip(20)
+		B = Rcom(Rcom)
+	      ]
+	    OR TEST Symb eq DO % Symb eq IFSO
+	    THEN
+	     [  Nextsymb()
+		B = Rcom(Rcom)
+		WHILE Symb eq SEMICOLON DO Nextsymb()
+		TEST Symb eq OR % Symb eq IFNOT 
+		THEN Nextsymb()
+		OR   CAEskip(20)
+		C = Rcom(Rcom)
+	      ]
+	    OR  [ CAEskip(20)
+		  A, B = 0, 0
+		]
+	    A = List4(TEST, A, B, C)
+	    ENDCASE
+
+	CASE FOR:
+	 [  Nextsymb()
+	    A, B = 0, 0
+	    LET L, U, S = 0, 0, 0
+	    UNLESS Symb eq NAME DO
+	       [ CAEskip(21); GOTO ForErr ]
+	    A = List2(V!0 + LOCAL, 0)
+	    Nextsymb()
+	    UNLESS Symb eq ASS DO
+		[ CAEskip(21); GOTO ForErr ]
+	    Nextsymb()
+	    L = Rexp(0)
+	    TEST Symb eq BY
+	    THEN
+	     [  Nextsymb()
+		S = Rexp(0)
+		UNLESS Symb eq TO DO
+		  [ CAEskip(22); GOTO ForErr ]
+		Nextsymb()
+		U = Rexp(0)
+	      ]
+	    OR
+	     [  UNLESS Symb eq TO DO
+		  [ CAEskip(22); GOTO ForErr ]
+		Nextsymb()
+		U = Rexp(0)
+		IF Symb eq BY DO [ Nextsymb(); S = Rexp(0) ]
+	      ]
+	ForErr:
+	    WHILE Symb eq SEMICOLON DO Nextsymb()
+	    TEST Symb eq DO
+	    THEN Nextsymb()
+	    OR   CAEskip(20)
+	    B = Rcom(Rcom)
+	    A = List6(FOR, A, L, U, S, B)
+	    ENDCASE
+	 ]
+
+	CASE ENDCASE:
+	CASE LOOP: CASE BREAK:
+	CASE FINISH: CASE ABORT:
+	CASE RETURN:
+	    A = List1(Symb)
+	    Nextsymb()
+	    ENDCASE
+
+	CASE SWITCHON:
+	    Op = Symb
+	    Nextsymb()
+	    A = Rexp(0)
+	    WHILE Symb eq SEMICOLON DO Nextsymb()
+	    TEST Symb eq INTO 
+	    THEN Nextsymb()
+	    OR   CAEskip(11)
+	    WHILE Symb eq SEMICOLON DO Nextsymb()
+	    UNLESS Symb eq SECTBRA DO CAEskip(12)
+	    B = Rblock()
+	    A = List3(Op, A, B)
+	    ENDCASE
+
+	CASE CASE:
+	    Nextsymb()
+	    A = Rexp(0)
+	    TEST Symb eq TO   //  CASE label with limits?
+	    THEN [ Nextsymb(); C = Rexp(0) ]
+	    OR   C = 0
+	    TEST Symb eq COLON
+	    THEN Nextsymb()
+	    OR   CAEskip(23)
+	    B = Nextfn(Nextfn)
+	    A = C eq 0 ? List4(CASE, A, B, Thisline), List5(CASETO, A, C, B, Thisline)
+	    ENDCASE
+
+	CASE DEFAULT:
+	    Nextsymb()
+	    TEST Symb eq COLON
+	    THEN Nextsymb()
+	    OR   CAEskip(23)
+	    A = Nextfn(Nextfn)
+	    A = List2(DEFAULT, A)
+	    ENDCASE
+
+	CASE SECTBRA:
+	    A = Rblock()
+	    ENDCASE
+
+	CASE DO: CASE OR:
+	CASE IFSO: CASE IFNOT:
+	CASE INTO:
+	    CAEreport(25)
+	    Nextsymb()
+	    A = Nextfn(Nextfn)
+	    ENDCASE
+      ]
+
+  L:
+    SWITCHON Symb INTO
+     [  DEFAULT: 
+	    RESULTIS List3(LINE, Thisline, A)
+
+	CASE REPEAT:
+	    Nextsymb()
+	    A = List2(REPEAT, A)
+	    GOTO L
+
+	CASE REPEATWHILE:
+	CASE REPEATUNTIL:
+	 [  Op = Symb
+	    Nextsymb()
+	    B = Rexp(0)
+	    A = List3(Op, A, B)
+	    GOTO L
+	  ]
+      ]
+  ]
+
+AND Rselect(ExpOK) = valof
+ [  LET a, b = nil, nil
+    LET ThisLine = LinePtr()
+    IF Symb eq DEFAULT DO
+     [  Nextsymb()
+	    TEST Symb eq COLON
+	    THEN Nextsymb()
+	    OR   CAEskip(23)
+	a = Rselect(true)
+	RESULTIS List3(LINE, ThisLine, List2(DEFAULT, a))
+      ]
+    IF Symb eq CASE DO
+     [  LET c = 0
+	Nextsymb()
+	a = Rexp(0)
+	IF Symb eq TO DO [ Nextsymb(); c = Rexp(0) ]   //  CASE label with limits.
+	    TEST Symb eq COLON
+	    THEN Nextsymb()
+	    OR   CAEskip(23)
+	b = Rselect(true)
+	a = c eq 0 ? List4(CASE, a, b, ThisLine), List5(CASETO, a, c, b, ThisLine)
+	RESULTIS List3(LINE, ThisLine, a)
+      ]
+    UNLESS ExpOK DO CAEreport(24)
+    a = Rexp(0)
+    a = List2(RESULTIS, a)
+    UNLESS Symb eq SEMICOLON RESULTIS List3(LINE, ThisLine, a)
+    Nextsymb()
+    b = Rselect(false)
+    a = List3(SEQ, a, b)
+    RESULTIS List3(LINE, ThisLine, a)
+  ]
