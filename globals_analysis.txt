@@ -1,0 +1,82 @@
+--- Refined Global Symbol Analysis ---
+
+=== .global directives ===
+G               /* Export the symbol G */
+G11; .equ G11,SELECTINPUT
+G12; .equ G12,SELECTOUTPUT
+G13; .equ G13,RDCH
+G14; .equ G14,WRCH
+G15; .equ G15,UNRDCH
+G16; .equ G16,INPUT
+G17; .equ G17,OUTPUT
+G30; .equ G30,STOP
+G31; .equ G31,LEVEL
+G32; .equ G32,LONGJUMP
+G35; .equ G35,REWIND
+G40; .equ G40,APTOVEC
+G41; .equ G41,FINDOUTPUT
+G42; .equ G42,FINDINPUT
+G46; .equ G46,ENDREAD
+G47; .equ G47,ENDWRITE
+G66; .equ G66,PACKSTRING
+G67; .equ G67,UNPACKSTRING
+G85; .equ G85,GETBYTE
+G86; .equ G86,PUTBYTE
+G87; .equ G87,GETVEC
+G88; .equ G88,FREEVEC
+_exit
+_exit, read, write, open, close, olseek
+_start, _stop, finish
+break
+close
+ioctl
+isatty
+oflags
+olseek
+olseek # "old lseek"
+open
+read
+rtexit
+rtinit
+sbrk
+sbrk, ioctl, isatty
+write
+
+=== .globl directives (alternative syntax) ===
+
+=== .weak directives ===
+
+=== Definitions of G (label) ===
+G:
+
+=== Other significant labels or .equ containing 'G' (illustrative) ===
+G:
+LONGJUMP:
+PACKSTRING:
+UNPACKSTRING:
+GETBYTE:
+GETVEC:
+error:  mov     %eax,G+RESULT2*4        # Set error code
+        .global G11; .equ G11,SELECTINPUT
+        .global G12; .equ G12,SELECTOUTPUT
+        .global G13; .equ G13,RDCH
+        .global G14; .equ G14,WRCH
+        .global G15; .equ G15,UNRDCH
+        .global G16; .equ G16,INPUT
+        .global G17; .equ G17,OUTPUT
+        .global G30; .equ G30,STOP
+        .global G31; .equ G31,LEVEL
+        .global G32; .equ G32,LONGJUMP
+        .global G35; .equ G35,REWIND
+        .global G40; .equ G40,APTOVEC
+        .global G41; .equ G41,FINDOUTPUT
+        .global G42; .equ G42,FINDINPUT
+        .global G46; .equ G46,ENDREAD
+        .global G47; .equ G47,ENDWRITE
+        .global G66; .equ G66,PACKSTRING
+        .global G67; .equ G67,UNPACKSTRING
+        .global G85; .equ G85,GETBYTE
+        .global G86; .equ G86,PUTBYTE
+        .global G87; .equ G87,GETVEC
+        .global G88; .equ G88,FREEVEC
+.equ SYS_GETCWD, 79    # Not in original, but good for reference

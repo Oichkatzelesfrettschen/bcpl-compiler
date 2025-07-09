@@ -1,161 +1,188 @@
-# Makefile for bcplc/src
+#==============================================================================
+#  bcplc/src  ── canonical build rules
+#------------------------------------------------------------------------------
+#  • BITS ∈ {64,32,16}  (default 64)
+#  • CROSS_PREFIX allows GNU cross-toolchains (e.g. i686-linux-gnu-)
+#  • Clang required for C23; override via CC=foo
+#  • Portable: Linux (GNU as) & macOS (clang as)                        ───────
+#==============================================================================
 
-PREFIX?=/usr/local
-# Set BITS=32 to build a 32-bit runtime, BITS=64 for a native x86-64
-# build or BITS=16 for the IA-16 target.  Additional cross-compilation
-# prefixes may be supplied via CROSS_PREFIX (e.g.
-# ``CROSS_PREFIX=i686-linux-gnu-``).
-BITS?=64
-CROSS_PREFIX?=
-# Clang is required for the C23 sources.  Use CC=foo to override.
-CC = clang
-CFLAGS += -std=c23 -Wall -Wextra -Wpedantic -g
-CFLAGS += -DBITS=$(BITS)
-# Allow callers to inject additional compiler flags via CFLAGS_EXTRA without
-# overriding the defaults above.
-CFLAGS += $(CFLAGS_EXTRA)
+# ── User-tunable front-matter ────────────────────────────────────────────────
+PREFIX        ?= /usr/local
+BITS          ?= 64                  # 64|32|16
+CROSS_PREFIX  ?=
+CC            ?= clang               # must support -std=c23
 
-# Detect OS for assembler flags
+# Extra caller-injected flags are appended here
+CFLAGS_EXTRA  ?=
+
+# ── Derived globals ─────────────────────────────────────────────────────────
+CFLAGS   := -std=c23 -Wall -Wextra -Wpedantic -g -DBITS=$(BITS) $(CFLAGS_EXTRA)
+AS       :=
+AFLAGS   :=
+LDMODE   :=
+TOTAL_G_SPACE_VAL    :=
+WORDSIZE_ALIGN_VAL_G :=
+
+# ── Per-BITS tuning ---------------------------------------------------------
+ifeq ($(BITS),64)
+  TOTAL_G_SPACE_VAL     := $(shell echo $$((400 * 8)))
+  WORDSIZE_ALIGN_VAL_G  := 8
+  BYTESPERWORD_VAL      := 8
+  BITSPERWORD_VAL       := 64
+  MAXINT_VAL            := "#X7FFFFFFFFFFFFFFF"
+  MININT_VAL            := "#X8000000000000000"
+else ifeq ($(BITS),32)
+  TOTAL_G_SPACE_VAL     := $(shell echo $$((400 * 4)))
+  WORDSIZE_ALIGN_VAL_G  := 4
+  BYTESPERWORD_VAL      := 4
+  BITSPERWORD_VAL       := 32
+  MAXINT_VAL            := "#X7FFFFFFF"
+  MININT_VAL            := "#X80000000"
+else ifeq ($(BITS),16)
+  TOTAL_G_SPACE_VAL     := $(shell echo $$((400 * 2)))
+  WORDSIZE_ALIGN_VAL_G  := 2
+  BYTESPERWORD_VAL      := 2
+  BITSPERWORD_VAL       := 16
+  MAXINT_VAL            := "#X7FFF"
+  MININT_VAL            := "#X8000"
+else
+  $(error Unsupported BITS value ‘$(BITS)’. Use 64, 32, or 16.)
+endif
+
+# ── Host OS detection for assembler selection --------------------------------
 UNAME_S := $(shell uname -s)
+
 ifeq ($(UNAME_S),Darwin)
-  # macOS uses clang as assembler
-  AS = clang
+  AS      := clang
   ifeq ($(BITS),64)
-    AFLAGS=-c -arch arm64 -DBITS=64
-    LDMODE=
+    AFLAGS := -c -arch arm64   -DBITS=64
+    LDMODE :=
   else ifeq ($(BITS),32)
-    AFLAGS=-c -arch i386 -DBITS=32
-    LDMODE=
-  else ifeq ($(BITS),16)
-    $(error 16-bit builds not supported on macOS)
+    AFLAGS := -c -arch i386    -DBITS=32
+    LDMODE :=
   else
-    $(error Unsupported BITS value: $(BITS))
+    $(error 16-bit builds are not supported on macOS.)
   endif
-else
-  # Linux/other use GNU as
-  AS = $(CROSS_PREFIX)as
+else                                # Assume GNU user-space (Linux/BSD/etc.)
+  AS := $(CROSS_PREFIX)as
   ifeq ($(BITS),64)
-    AFLAGS=--64 --defsym BITS=64
-    LDMODE=elf_x86_64
+    AFLAGS := --64 --defsym BITS=64
+    LDMODE := elf_x86_64
   else ifeq ($(BITS),32)
-    AFLAGS=--32 --defsym BITS=32
-    LDMODE=elf_i386
-  else ifeq ($(BITS),16)
-    AFLAGS=--16 --defsym BITS=16
-    LDMODE=elf_i386
+    AFLAGS := --32 --defsym BITS=32
+    LDMODE := elf_i386
   else
-    $(error Unsupported BITS value: $(BITS))
+    AFLAGS := --16 --defsym BITS=16
+    LDMODE := elf_i386
   endif
 endif
 
+# Common assembler flag suffixes
+AFLAGS += -g --defsym TOTAL_G_SPACE=$(TOTAL_G_SPACE_VAL) \
+              --defsym WORDSIZE_ALIGN_VAL=$(WORDSIZE_ALIGN_VAL_G)
+
+# ── Runtime syscall stubs per OS/BITS ---------------------------------------
+OS_UNAME := $(shell uname)
 ifeq ($(BITS),16)
-  SU_SRC=su16.s
-  SYS_SRC=sys_ia16.s
+  SU_SRC   := su16.s
+  SYS_SRC  := sys_ia16.s
 else
-  SU_SRC=su.s
-  SYS_SRC=sys.s
+  SU_SRC   := su.s
+  ifeq ($(OS_UNAME),Linux)
+    SYS_SRC := $(if $(filter 64,$(BITS)),sys_linux_x86_64.s,sys_linux.s)
+  else ifeq ($(OS_UNAME),FreeBSD)
+    SYS_SRC := sys_freebsd$(if $(filter 64,$(BITS)),_x86_64).s
+  else
+    $(error Unsupported host ‘$(OS_UNAME)’ for BITS=$(BITS).)
+  endif
 endif
 
+# ── Optional LLVM back-end ---------------------------------------------------
 LLVM_CONFIG ?= llvm-config
-HAVE_LLVM := $(shell command -v $(LLVM_CONFIG) >/dev/null 2>&1 && echo yes)
+HAVE_LLVM   := $(shell command -v $(LLVM_CONFIG) >/dev/null 2>&1 && echo yes)
+
 ifeq ($(HAVE_LLVM),yes)
-LLVM_CFLAGS := $(shell $(LLVM_CONFIG) --cflags 2>/dev/null)
-LLVM_LDFLAGS := $(shell $(LLVM_CONFIG) --ldflags --libs core bitwriter native 2>/dev/null)
-ALL_TARGETS := cg op llcg st
+  LLVM_CFLAGS  := $(shell $(LLVM_CONFIG) --cflags)
+  LLVM_LDFLAGS := $(shell $(LLVM_CONFIG) --ldflags --libs core bitwriter native)
+  ALL_TARGETS  := cg op llcg st
 else
-LLVM_CFLAGS :=
-LLVM_LDFLAGS :=
-ALL_TARGETS := cg op st
+  LLVM_CFLAGS  :=
+  LLVM_LDFLAGS :=
+  ALL_TARGETS  := cg op st
 endif
 
-all: $(ALL_TARGETS)
+# ── Automatic libhdr generation --------------------------------------------
+libhdr_local: src/LIBHDR.template Makefile
+	@echo "Generating src/libhdr for BITS=$(BITS)…"
+	@sed -e "s/@@BYTESPERWORD@@/$(BYTESPERWORD_VAL)/g" \
+	     -e "s/@@BITSPERWORD@@/$(BITSPERWORD_VAL)/g"   \
+	     -e "s/@@MAXINT@@/$(MAXINT_VAL)/g"             \
+	     -e "s/@@MININT@@/$(MININT_VAL)/g"             \
+	     $< > src/libhdr
+
+# ── Top-level targets --------------------------------------------------------
+all: libhdr_local $(ALL_TARGETS)
 
 cg: cg.o oc.o
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) -o cg cg.o oc.o
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -o $@ $^
 
-cg.o: cg.c
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c cg.c
-
-oc.o: oc.c
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c oc.c
+oc.o cg.o op.o pt.o llcg.o: %.o : %.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -c $<
 
 op: op.o pt.o
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) -o op op.o pt.o
-
-op.o: op.c
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c op.c
-
-pt.o: pt.c
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) -c pt.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) -o $@ $^
 
 ifeq ($(HAVE_LLVM),yes)
 llcg: llcg.o
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -o llcg llcg.o $(LLVM_LDFLAGS)
-
-llcg.o: llcg.c
-	$(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -c llcg.c
+	$(CROSS_PREFIX)$(CC) $(CFLAGS) $(LLVM_CFLAGS) -o $@ $< $(LLVM_LDFLAGS)
 endif
 
+# ── Assembled runtime --------------------------------------------------------
 st: su.o st.o blib.o global.o rt.o sys.o
-	$(CROSS_PREFIX)ld -m $(LDMODE) -o st su.o st.o blib.o global.o rt.o sys.o
+	$(CROSS_PREFIX)ld -m $(LDMODE) -o $@ $^
 
-su.o: $(SU_SRC)
-	$(AS) $(AFLAGS) -o su.o $(SU_SRC)
+su.o blib.o global.o rt.o sys.o st.o: %.o : %.s
+	$(AS) $(AFLAGS) -o $@ $<
 
-st.o: st.s
-	$(AS) $(AFLAGS) -o st.o st.s
+st.s: cg op st.O libhdr_local
+	./cg < st.O | ./op > $@
 
-st.s: cg op st.O
-	./cg < st.O | ./op > st.s
+blib.s: cg op blib.O libhdr_local
+	./cg < blib.O | ./op > $@
 
-blib.o: blib.s
-	$(AS) $(AFLAGS) -o blib.o blib.s
-
-blib.s: cg op blib.O
-	./cg < blib.O | ./op > blib.s
-
-global.o: global.s
-	$(AS) $(AFLAGS) -o global.o global.s
-
-rt.o: rt.s
-	$(AS) $(AFLAGS) -o rt.o rt.s
-
-sys.o: $(SYS_SRC)
-	$(AS) $(AFLAGS) -o sys.o $(SYS_SRC)
-
-check:	blib.O blib.chk st.O st.chk
+# ── Self-consistency regression checks --------------------------------------
+check: blib.O blib.chk st.O st.chk
 	cmp blib.O blib.chk
-	cmp st.O st.chk
+	cmp st.O   st.chk
 
-# Recreate reference output without executing the 32-bit interpreter
-blib.chk: blib.O
-	cp blib.O blib.chk
+blib.chk st.chk: %.chk : %.O
+	cp $< $@
 
-st.chk: st.O
-	cp st.O st.chk
-
-install: bcplc bcplc.1 st cg op $(if $(HAVE_LLVM),llcg) LIBHDR su.o blib.o global.o rt.o sys.o
-	mkdir -p $(PREFIX)/bin
-	install -c  -m 755 bcplc     $(PREFIX)/bin
-	mkdir -p $(PREFIX)/man/man1
-	install -c  -m 644 bcplc.1   $(PREFIX)/man/man1
-	mkdir -p $(PREFIX)/lib/bcplc
-	install -cs -m 555 st	     $(PREFIX)/lib/bcplc
-	install -cs -m 555 cg	     $(PREFIX)/lib/bcplc
-	install -cs -m 555 op	     $(PREFIX)/lib/bcplc
+# ── Install -----------------------------------------------------------------
+install: bcplc bcplc.1 st cg op $(if $(HAVE_LLVM),llcg) \
+         src/LIBHDR.template su.o blib.o global.o rt.o sys.o
+	@echo "→ Installing to $(PREFIX)…"
+	install -d $(PREFIX)/{bin,lib/bcplc,man/man1}
+	install -m 755 bcplc                $(PREFIX)/bin
+	install -m 644 bcplc.1              $(PREFIX)/man/man1
+	install -m 555 st cg op             $(PREFIX)/lib/bcplc
 ifneq ($(HAVE_LLVM),)
-	install -cs -m 555 llcg        $(PREFIX)/lib/bcplc
+	install -m 555 llcg                $(PREFIX)/lib/bcplc
 endif
-	install -c  -m 644 LIBHDR    $(PREFIX)/lib/bcplc
-	install -c  -m 444 su.o	     $(PREFIX)/lib/bcplc
-	install -c  -m 444 blib.o    $(PREFIX)/lib/bcplc
-	install -c  -m 444 global.o  $(PREFIX)/lib/bcplc
-	install -c  -m 444 rt.o	     $(PREFIX)/lib/bcplc
-	install -c  -m 444 sys.o     $(PREFIX)/lib/bcplc
-	rm -f $(PREFIX)/lib/bcplc/libhdr
-	ln $(PREFIX)/lib/bcplc/LIBHDR $(PREFIX)/lib/bcplc/libhdr
+	@echo "→ Generating LIBHDR for install (BITS=$(BITS))"
+	@sed -e "s/@@BYTESPERWORD@@/$(BYTESPERWORD_VAL)/g" \
+	     -e "s/@@BITSPERWORD@@/$(BITSPERWORD_VAL)/g"   \
+	     -e "s/@@MAXINT@@/$(MAXINT_VAL)/g"             \
+	     -e "s/@@MININT@@/$(MININT_VAL)/g"             \
+	     src/LIBHDR.template > $(PREFIX)/lib/bcplc/LIBHDR
+	@chmod 644 $(PREFIX)/lib/bcplc/LIBHDR
+	ln -sf LIBHDR $(PREFIX)/lib/bcplc/libhdr
+	install -m 444 su.o        $(PREFIX)/lib/bcplc/su$(BITS).o
+	install -m 444 sys.o       $(PREFIX)/lib/bcplc/sys$(BITS).o
+	install -m 444 blib.o global.o rt.o $(PREFIX)/lib/bcplc
 
+# ── Hygiene -----------------------------------------------------------------
 clean:
-	rm -f cg cg.o oc.o op op.o pt.o $(if $(HAVE_LLVM),llcg llcg.o)
-	rm -f st st.o st.s blib.o blib.s su.o global.o rt.o sys.o
-	rm -f blib.chk st.chk
+	rm -f cg oc op llcg st *.o *.s blib.chk st.chk src/libhdr
+.PHONY: all libhdr_local install clean check
