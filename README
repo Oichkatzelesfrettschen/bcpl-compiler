@@ -224,12 +224,18 @@ Recent efforts have focused on ensuring true native x86_64 compatibility, partic
 *   The BCPL compiler core (`src/st.bcpl`) is substantial (approx. 2000 NLOC).
 
 **Hypothesized Root Cause of Segfault:**
-The `st` program (compiled BCPL) appears to be using an uninitialized or corrupted variable as a file descriptor when calling `isatty`. Even with `isatty` now correctly reporting the `EBADF` error via `RESULT2`, the subsequent logic within `st` fails, leading to a memory access violation. The exact nature of this internal error in `st` requires direct debugging of `st`.
+The `st` program (compiled BCPL) appears to be using an uninitialized or corrupted variable as a file descriptor when calling `isatty`. This is strongly suspected to be due to a fundamental mismatch between BCPL code (compiled assuming 4-byte words via `LIBHDR`) and the 64-bit runtime/memory layout (expecting 8-byte words). Even with `isatty` now correctly reporting the `EBADF` error via `RESULT2`, the subsequent logic within `st` (which may be operating with incorrect data due to this mismatch) fails, leading to a memory access violation. The exact nature of this internal error in `st` requires direct debugging of `st`.
+
+**Recent Corrective Efforts (Word-Size Alignment):**
+*   Modifications to `LIBHDR` (via templating in `Makefile`), `cg.c` (for data emission), and `global.s` (for G vector allocation) have been prepared to enforce an 8-byte word size for BCPL code and data structures when `BITS=64`.
+*   **Current Blocker:** Persistent sandbox/environmental issues are causing rollbacks of these applied changes, preventing stable build and test cycles to verify if these comprehensive word-size alignment fixes resolve the segmentation fault.
 
 **Path Forward:**
-1.  **Resolve Segmentation Fault (Highest Priority):**
-    *   **Interactive `gdb` debugging of `src/st` using a generated core dump is essential.** This will show the exact instruction and state at the time of the crash.
-    *   Focus on the code path in `st` that calls `isatty` and handles its return value and `RESULT2`. Trace how the invalid FD is generated.
-2.  **Verify BCPL Runtime & ABI (rt.s, su.s):** Once `st` can be debugged, a thorough review of `rt.s` (runtime) and `su.s` (startup) for 64-bit calling conventions, stack management, and memory layout assumptions is needed to ensure they correctly support the 64-bit compiled BCPL code and interact with the syscall shims.
-3.  **Refactor C Code:** After achieving a stable x86_64 runtime, address the complexity in `src/cg.c` (especially `gencode()`).
-4.  **Continue Modernization:** Further assess other C components and the BCPL codebase.
+1.  **Achieve a Stable Test Environment:** The immediate prerequisite is an environment where the applied word-size alignment fixes can be built and tested without being rolled back.
+2.  **Resolve Segmentation Fault (Highest Priority):**
+    *   Once a stable build with word-size fixes is achieved, test basic compilation (e.g., `hello.b`).
+    *   If the segfault persists, **interactive `gdb` debugging of `src/st` using a generated core dump is essential.** This will show the exact instruction and state at the time of the crash.
+    *   Focus on the code path in `st` that calls `isatty` and how it handles `RESULT2` and the return value, and trace how the invalid FD is generated (likely due to misaligned access to the Global Vector `G`).
+3.  **Verify BCPL Runtime & ABI (rt.s, su.s):** Concurrently or after `st` is debuggable, a thorough review of `rt.s` (runtime) and `su.s` (startup) for 64-bit calling conventions, stack management, Global Vector initialization (especially standard I/O FDs), and memory layout assumptions is needed.
+4.  **Refactor C Code:** After achieving a stable x86_64 runtime, address the complexity in `src/cg.c` (especially `gencode()`).
+5.  **Continue Modernization:** Further assess other C components and the BCPL codebase.
