@@ -41,8 +41,12 @@ list(APPEND CMAKE_MODULE_PATH
 
 # Include our configuration modules in the correct order
 include(ArchitectureConfig)    # Architecture configuration and options
-include(Options)               # Build options and tooling  
+include(Options)               # Build options and tooling
 include(PlatformConfig)        # Platform-specific configuration
+
+# Ensure the bootstrap OCODE files are available. This function restores
+# `st.O` and `blib.O` from the repository history if they were cleaned.
+restore_bootstrap_files()
 
 # =============================================================================
 # COMPILER VALIDATION

@@ -14,14 +14,14 @@ function(restore_bootstrap_files)
         if(GIT_EXECUTABLE AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
             # Find commit with bootstrap files
             execute_process(
-                COMMAND ${GIT_EXECUTABLE} rev-list --all
+                COMMAND ${GIT_EXECUTABLE} rev-list --reverse --all
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 OUTPUT_VARIABLE ALL_COMMITS
                 OUTPUT_STRIP_TRAILING_WHITESPACE
             )
-            
+
             string(REPLACE "\n" ";" COMMITS_LIST "${ALL_COMMITS}")
-            
+
             foreach(COMMIT ${COMMITS_LIST})
                 execute_process(
                     COMMAND ${GIT_EXECUTABLE} ls-tree -r ${COMMIT}
@@ -29,29 +29,43 @@ function(restore_bootstrap_files)
                     OUTPUT_VARIABLE TREE_OUTPUT
                     ERROR_QUIET
                 )
-                
-                if(TREE_OUTPUT MATCHES "st\\.O")
-                    message(STATUS "Found bootstrap files in commit: ${COMMIT}")
-                    
-                    # Restore st.O
+
+                if(TREE_OUTPUT MATCHES "st\\.O" AND TREE_OUTPUT MATCHES "blib\\.O")
+                    # Only accept commits where st.O appears to be ASCII. The
+                    # legacy bootstrap files contain numeric tokens and labels
+                    # separated by whitespace. Older commits store them as
+                    # plain text, while newer revisions may contain binary
+                    # objects that cannot be parsed by the code generator.
                     execute_process(
                         COMMAND ${GIT_EXECUTABLE} show ${COMMIT}:src/st.O
+                        COMMAND head -c 1
                         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                        OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/st.O"
+                        OUTPUT_VARIABLE FIRST_CHAR
+                        OUTPUT_STRIP_TRAILING_WHITESPACE
                         ERROR_QUIET
                     )
-                    
-                    # Restore blib.O
-                    execute_process(
-                        COMMAND ${GIT_EXECUTABLE} show ${COMMIT}:src/blib.O
-                        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                        OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/blib.O"
-                        ERROR_QUIET
-                    )
-                    
-                    if(EXISTS "${CMAKE_SOURCE_DIR}/src/st.O" AND EXISTS "${CMAKE_SOURCE_DIR}/src/blib.O")
-                        message(STATUS "Bootstrap files restored successfully")
-                        break()
+
+                    if(FIRST_CHAR MATCHES "^[0-9L]")
+                        message(STATUS "Restoring bootstrap files from commit: ${COMMIT}")
+
+                        execute_process(
+                            COMMAND ${GIT_EXECUTABLE} show ${COMMIT}:src/st.O
+                            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                            OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/st.O"
+                            ERROR_QUIET
+                        )
+
+                        execute_process(
+                            COMMAND ${GIT_EXECUTABLE} show ${COMMIT}:src/blib.O
+                            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                            OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/blib.O"
+                            ERROR_QUIET
+                        )
+
+                        if(EXISTS "${CMAKE_SOURCE_DIR}/src/st.O" AND EXISTS "${CMAKE_SOURCE_DIR}/src/blib.O")
+                            message(STATUS "Bootstrap files restored successfully")
+                            break()
+                        endif()
                     endif()
                 endif()
             endforeach()

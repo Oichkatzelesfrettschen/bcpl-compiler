@@ -36,6 +36,9 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > hello.bcpl
   - Linux: build-essential
   - macOS: Xcode Command Line Tools
   - Windows: Visual Studio 2022
+  - **Note**: 32-bit builds on Linux also require `gcc-multilib` (or an
+    appropriate cross compiler) and must be configured with
+    `-DBCPL_ENABLE_X86_32=ON`.
 
 ### 🐳 Development Containers (Recommended)
 
@@ -86,6 +89,9 @@ See the [Development Container Guide](.devcontainer/README.md) for detailed setu
 ./build.sh                    # Release build for native architecture
 ```
 
+Bootstrap OCODE files `st.O` and `blib.O` are automatically restored from the
+repository history during configuration if they are not present.
+
 ### Architecture-Specific Builds
 ```bash
 ./build.sh Release x86_64     # x86_64 build
@@ -105,6 +111,15 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DBCPL_TARGET_ARCH=arm64 \
       -DCMAKE_C_COMPILER=clang \
       -DCMAKE_C_FLAGS="--target=arm64-apple-macos11" ..
+
+# Enable the experimental 64-bit OCODE implementation
+cmake -DBCPL_USE_64BIT_OCODE=ON ..
+```
+
+When this option is enabled the build system automatically converts the
+legacy `st.O` file into `st_64.O` if the latter is missing.  You can also use
+the convenient `arm64-ocode64` and `x86_64-ocode64` presets defined in
+`CMakePresets.json`.
 ```
 
 ## 📁 Project Structure

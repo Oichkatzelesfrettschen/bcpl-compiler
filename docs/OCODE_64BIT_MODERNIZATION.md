@@ -64,11 +64,16 @@ src/
 
 ### Build Integration
 
-The 64-bit OCODE system is automatically enabled for 64-bit builds:
+The legacy 32‑bit OCODE implementation remains the default because the
+bootstrap `st.O` and `blib.O` files are generated in that format.  If these
+files are missing CMake automatically restores them from the project history.
+Developers can opt in to the modern 64‑bit OCODE by toggling the
+`BCPL_USE_64BIT_OCODE` CMake option:
 
 ```cmake
-# CMakeLists.txt automatically selects implementation
-if(BCPL_ARCH_BITS EQUAL 64)
+option(BCPL_USE_64BIT_OCODE "Build with the 64-bit OCODE implementation" OFF)
+
+if(BCPL_USE_64BIT_OCODE)
     set(OCODE_SOURCES oc.c ocode_64bit.c)
     set(OCODE_DEFINES -DBCPL_USE_64BIT_OCODE=1)
 else()
@@ -76,6 +81,21 @@ else()
     set(OCODE_DEFINES -DBCPL_USE_64BIT_OCODE=0)
 endif()
 ```
+
+Convenient presets `arm64-ocode64` and `x86_64-ocode64` are provided in
+`CMakePresets.json` to configure these builds automatically.
+
+### Bootstrapping
+
+When `BCPL_USE_64BIT_OCODE` is enabled CMake will automatically convert the
+legacy `st.O` file to `st_64.O` using `scripts/convert_to_64bit_ocode.py` if the
+64‑bit file is not already present.  This means you can simply configure with:
+
+```bash
+cmake -DBCPL_USE_64BIT_OCODE=ON ..
+```
+
+and the build will create `st_64.O` on the fly.
 
 ### Compatibility Bridge
 
@@ -129,7 +149,7 @@ ocode_cleanup_context(&ctx);
 
 ### For Existing Code
 
-Existing BCPL code requires no changes. The compiler automatically uses the appropriate OCODE implementation based on the target architecture.
+Existing BCPL code requires no changes. By default the build uses the legacy 32‑bit OCODE implementation for compatibility. Pass `-DBCPL_USE_64BIT_OCODE=ON` once a matching `st.O` has been generated to enable the modern 64‑bit system.
 
 ### For Backend Developers
 
