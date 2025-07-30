@@ -45,7 +45,12 @@ function(restore_bootstrap_files)
                         ERROR_QUIET
                     )
 
-                    if(FIRST_CHAR MATCHES "^[0-9L]")
+                    # Trim leading whitespace and skip comment lines for robust bootstrap file detection
+                    string(REGEX REPLACE "^[ \t\r\n]*" "" TRIMMED_CONTENT "${FILE_CONTENT}")
+                    string(REGEX MATCH "^[^\n\r#]*" FIRST_LINE "${TRIMMED_CONTENT}")
+                    string(SUBSTRING "${FIRST_LINE}" 0 1 FIRST_NONWS_CHAR)
+                    # Assumption: Bootstrap files start with a digit or 'L' after whitespace/comments
+                    if(FIRST_NONWS_CHAR MATCHES "^[0-9L]")
                         message(STATUS "Restoring bootstrap files from commit: ${COMMIT}")
 
                         execute_process(
