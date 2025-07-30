@@ -93,6 +93,18 @@ Additional guides are available in the `docs/` directory:
 - `OPTIMIZATION_QUICK_REFERENCE.md` – quick reference for build flags
 - `MODERNIZATION.md` – overview of the C23 modernization effort
 
+## Repository Maintenance
+
+Duplicate configuration files occasionally surface during merges.  Run
+`cleanup_duplicates.py` from the repository root to automatically remove
+identical copies and archive differing `2.*` variants under
+`archive/duplicates/`.  Pass an explicit path if the repository is located
+elsewhere:
+
+```bash
+python3 cleanup_duplicates.py /path/to/bcpl-compiler
+```
+
 ## License
 
 This project retains the license terms of the original BCPL distribution.  See [LICENSE](LICENSE) for details.
