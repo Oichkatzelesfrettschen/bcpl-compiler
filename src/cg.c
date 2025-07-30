@@ -484,6 +484,7 @@ static ocode_op gencode(void) {
       return S_END;
     }
     if ((int)op < 0 || op > (ocode_op)OPMAX) {
+
       error("Bad op %d", op);
     }
     s1 = optab1(op);
