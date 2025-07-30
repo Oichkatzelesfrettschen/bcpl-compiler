@@ -279,6 +279,8 @@ BCPL_EXPORT void bcpl_endwrite(bcpl_word_t stream_idx) {
     // Flush any pending output
     if (fcb->pos > 0) {
       (void)write(fcb->fd, fcb->buffer, fcb->pos);
+      ssize_t ignored __attribute__((unused)) =
+          write(fcb->fd, fcb->buffer, fcb->pos);
     }
     close(fcb->fd);
     fcb->status = FCB_FREE;
@@ -345,6 +347,8 @@ BCPL_EXPORT void bcpl_wrch(bcpl_word_t ch, bcpl_word_t stream_idx) {
   // Flush if buffer is full or character is newline
   if ((size_t)fcb->pos >= sizeof(fcb->buffer) || ch == '\n') {
     (void)write(fcb->fd, fcb->buffer, fcb->pos);
+    ssize_t ignored __attribute__((unused)) =
+        write(fcb->fd, fcb->buffer, fcb->pos);
     fcb->pos = 0;
   }
 }

@@ -237,7 +237,7 @@ extern ocode_result_t process_ocode_stream(ocode_context_t *ctx) {
     }
 
     // Validate operation
-    if (op < 0 || op > OPMAX) {
+    if ((int)op < 0 || op > (ocode_op)OPMAX) {
       error("Invalid OCODE operation: %d", op);
       return OCODE_SYNTAX_ERROR;
     }

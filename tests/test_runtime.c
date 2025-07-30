@@ -156,11 +156,15 @@ void test_platform_abstraction(void) {
   TEST_ASSERT(init_result == 0, "Platform initialization");
 
   // Test CPU feature detection
-  bcpl_cpu_features_t cpu_features = bcpl_platform_get_cpu_features();
+
+  bcpl_cpu_features_t features = bcpl_platform_get_cpu_features();
   TEST_ASSERT(true,
               "CPU feature detection completed"); // Always passes, just logs
 
-  printf("    CPU Features detected: 0x%08X\n", cpu_features.feature_flags);
+  printf("    CPU Architecture: %s\n", features.arch_name);
+  printf("    CPU Cores: %d\n", features.core_count);
+  printf("    CPU Feature Flags: 0x%08X\n", features.feature_flags);
+  uint32_t cpu_features = features.feature_flags;
 
 #ifdef BCPL_ARCH_X86_64
   if (cpu_features.feature_flags & BCPL_CPU_FEATURE_SSE2) {

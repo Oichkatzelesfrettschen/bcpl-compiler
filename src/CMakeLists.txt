@@ -177,6 +177,17 @@ add_custom_command(
 add_custom_target(st_gen_${TARGET_ARCH}
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
 )
+# Generate architecture-specific symbol table (disabled in this build)
+# add_custom_command(
+#     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
+#     COMMAND $<TARGET_FILE:cg> -o ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH} < ${CMAKE_CURRENT_SOURCE_DIR}/st.O
+#     DEPENDS cg ${CMAKE_CURRENT_SOURCE_DIR}/st.O
+#     COMMENT "Generating symbol table for ${TARGET_ARCH} (using prebuilt OCODE)"
+# )
+#
+# add_custom_target(st_gen_${TARGET_ARCH} ALL
+#     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
+# )
 
 # =============================================================================
 # LLVM BACKEND (OPTIONAL)

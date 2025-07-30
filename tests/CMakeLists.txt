@@ -208,3 +208,4 @@ apply_tooling_flags(bcpl_tests)
 
 # Register with CTest
 add_test(NAME bcpl_tests COMMAND bcpl_tests)
+
