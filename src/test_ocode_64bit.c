@@ -26,6 +26,7 @@ static void test_context_operations(void) {
   // Test initialization
   bool init_success = ocode_init_context(&ctx, 512);
   assert(init_success && "Context initialization should succeed");
+  (void)init_success;
 
   // Test implementation info
   printf("  Implementation: %s\n", ocode_get_implementation_name());
@@ -48,9 +49,11 @@ static void test_operation_attributes(void) {
   // Test basic operations
   const ocode_attr_t *attr_true = ocode_get_attributes(OCODE_OP_TRUE);
   assert(attr_true != NULL && "TRUE operation should have attributes");
+  (void)attr_true;
 
   const ocode_attr_t *attr_plus = ocode_get_attributes(OCODE_OP_PLUS);
   assert(attr_plus != NULL && "PLUS operation should have attributes");
+  (void)attr_plus;
 
   // Test operation availability
   assert(ocode_is_operation_available(OCODE_OP_TRUE) &&
@@ -112,6 +115,7 @@ static void test_compatibility(void) {
 
     const ocode_attr_t *attr = ocode_get_attributes(legacy_ops[i]);
     assert(attr != NULL && "All legacy operations should have attributes");
+    (void)attr;
   }
 
   printf("  ✓ Compatibility test passed\n");

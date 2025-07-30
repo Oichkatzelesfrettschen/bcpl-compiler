@@ -147,8 +147,9 @@ static bool process_arithmetic_64(ocode_context_64_t *ctx, ocode_op_64_t op) {
   switch (op) {
   case OCODE_MULT64: {
     // 64-bit multiplication with overflow detection
-    __int128 product =
-        (__int128)operands[0].value * (__int128)operands[1].value;
+    __extension__ __int128 product =
+        (__int128)operands[0].value *
+        (__int128)operands[1].value;
     if (product > INT64_MAX || product < INT64_MIN) {
       // Handle overflow
       ctx->debug.error_count++;
@@ -471,7 +472,7 @@ const ocode_attr_64_t *ocode_get_op_attributes_64(enum ocode_op_64 op) {
  * @brief Check if operation is valid (bridge compatibility)
  */
 bool ocode_is_valid_operation_64(enum ocode_op_64 op) {
-  return (op >= 0 && op <= OCODE_MAX_64);
+  return op <= OCODE_MAX_64;
 }
 
 /**
