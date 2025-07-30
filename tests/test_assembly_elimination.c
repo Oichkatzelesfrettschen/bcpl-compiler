@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 // Include our modernized headers
 #ifdef BCPL_MODERNIZED
