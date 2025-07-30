@@ -19,12 +19,11 @@ infinite recursion.
 """
 from __future__ import annotations
 
+import argparse
 import filecmp
-import shutil
-import argparse
 import os
+import shutil
 from pathlib import Path
-import argparse
 
 
 def parse_args() -> argparse.Namespace:
@@ -33,66 +32,52 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--repo-root",
         type=Path,
-        default=Path(__file__).resolve().parents[0],
+        default=Path(__file__).resolve().parent,
         help="Root directory to scan (defaults to script location)",
     )
     return parser.parse_args()
 
 
-REPO_ROOT: Path
-ARCHIVE_ROOT: Path
-parser = argparse.ArgumentParser(description="Clean up '* 2.*' duplicates")
-parser.add_argument(
-    "root",
-    nargs="?",
-    default=Path(__file__).resolve().parent,
-    type=Path,
-    help="Repository root containing files to scan",
-)
-args = parser.parse_args()
 
-REPO_ROOT = args.root.resolve()
-ARCHIVE_ROOT = REPO_ROOT / "archive" / "duplicates"
-
-
-def is_within_archive(path: Path) -> bool:
-    """Return True if *path* is inside the duplicates archive."""
+def is_within_archive(path: Path, archive_root: Path) -> bool:
+    """Return ``True`` if *path* is inside the duplicates archive."""
     try:
-        path.relative_to(ARCHIVE_ROOT)
+        path.resolve().relative_to(archive_root.resolve())
         return True
     except ValueError:
         return False
 
 
-def find_duplicates() -> list[tuple[Path, Path]]:
-    """Return a list of (duplicate, original) file pairs."""
+def find_duplicates(repo_root: Path, archive_root: Path) -> list[tuple[Path, Path]]:
+    """Return a list of ``(duplicate, original)`` file pairs."""
     pairs: list[tuple[Path, Path]] = []
-    for dirpath, dirnames, filenames in os.walk(REPO_ROOT):
+    archive_duplicates = archive_root
+    for dirpath, dirnames, filenames in os.walk(repo_root):
         current = Path(dirpath)
-        if is_within_archive(current):
+        if current.resolve() == archive_duplicates.resolve():
             dirnames.clear()
+            continue
+        if is_within_archive(current, archive_root):
             continue
         for name in filenames:
             if " 2." not in name:
                 continue
-            p = current / name
-            if is_within_archive(p):
+            duplicate = current / name
+            if is_within_archive(duplicate, archive_root):
                 continue
             original = current / name.replace(" 2.", ".", 1)
-            pairs.append((p, original))
-        original = p.with_name(p.name.replace(" 2.", ".", 1))
-        pairs.append((p, original))
+            pairs.append((duplicate, original))
     return pairs
 
 
-def move_to_archive(path: Path) -> None:
+def move_to_archive(path: Path, repo_root: Path, archive_root: Path) -> None:
     """Move *path* into the archive directory preserving its relative path."""
-    target = ARCHIVE_ROOT / path.relative_to(REPO_ROOT)
+    target = archive_root / path.relative_to(repo_root)
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.move(str(path), target)
 
 
-def handle_pair(duplicate: Path, original: Path) -> None:
+def handle_pair(duplicate: Path, original: Path, repo_root: Path, archive_root: Path) -> None:
     """Process a single duplicate/original pair."""
     if original.exists() and duplicate.exists():
         if filecmp.cmp(duplicate, original, shallow=False):
@@ -100,10 +85,10 @@ def handle_pair(duplicate: Path, original: Path) -> None:
             duplicate.unlink()
         else:
             print(f"⚠ Moving differing duplicate {duplicate}")
-            move_to_archive(duplicate)
+            move_to_archive(duplicate, repo_root, archive_root)
     elif duplicate.exists():
         print(f"→ Original missing; archiving {duplicate}")
-        move_to_archive(duplicate)
+        move_to_archive(duplicate, repo_root, archive_root)
     else:
         print(f"✗ {duplicate} no longer exists")
 
@@ -111,14 +96,16 @@ def handle_pair(duplicate: Path, original: Path) -> None:
 def main() -> None:
     args = parse_args()
 
-    global REPO_ROOT, ARCHIVE_ROOT
-    REPO_ROOT = args.repo_root.resolve()
-    ARCHIVE_ROOT = REPO_ROOT / "archive" / "duplicates"
+    repo_root = args.repo_root.resolve()
+    if not repo_root.is_dir():
+        raise SystemExit(f"Repository root '{repo_root}' does not exist or is not a directory")
 
-    pairs = find_duplicates()
+    archive_root = repo_root / "archive" / "duplicates"
+
+    pairs = find_duplicates(repo_root, archive_root)
     print(f"Found {len(pairs)} duplicate files")
     for dup, orig in pairs:
-        handle_pair(dup, orig)
+        handle_pair(dup, orig, repo_root, archive_root)
 
 
 if __name__ == "__main__":
