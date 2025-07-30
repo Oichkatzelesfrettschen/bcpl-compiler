@@ -144,13 +144,24 @@ Please open issues on GitHub with your platform, architecture, compiler version,
 ## Repository Maintenance
 
 Duplicate configuration files occasionally surface during merges.  Run
-`cleanup_duplicates.py` from the repository root to automatically remove
-identical copies and archive differing `2.*` variants under
-`archive/duplicates/`.  Pass an explicit path if the repository is located
-elsewhere:
+`cleanup_duplicates.py` from anywhere inside the repository to automatically
+remove identical copies and archive differing `2.*` variants under
+`archive/duplicates/`.  The script determines the repository root via `git`
+and falls back to its own location if necessary.  An explicit path may still be
+provided for unconventional layouts:
 
 ```bash
-python3 cleanup_duplicates.py /path/to/bcpl-compiler
+python3 cleanup_duplicates.py --repo-root /path/to/bcpl-compiler
+```
+
+## Project Reorganization
+
+The `scripts/reorganize.sh` script tidies legacy files into the `archive/`
+directory and generates a summary. Like `cleanup_duplicates.py`, it detects the
+repository root with `git` so you can invoke it from any working directory:
+
+```bash
+bash scripts/reorganize.sh
 ```
 
 ## License

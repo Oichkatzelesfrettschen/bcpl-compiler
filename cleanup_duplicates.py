@@ -7,8 +7,9 @@ Usage
 python cleanup_duplicates.py [--repo-root PATH]
 ```
 
-``--repo-root`` sets the root directory to scan.  When omitted, the directory
-containing this script is used.  For each file matching ``* 2.*`` the script
+``--repo-root`` sets the root directory to scan.  When omitted, the script
+attempts to locate the repository root using ``git`` and falls back to the
+directory containing the script.  For each file matching ``* 2.*`` the script
 checks whether the original file (with the ``" 2"`` portion removed) exists.  If
 both files exist and are identical, the duplicate is removed.  If the contents
 diverge or the original is missing, the duplicate is moved to
@@ -24,6 +25,7 @@ import filecmp
 import os
 import shutil
 from pathlib import Path
+import subprocess
 
 
 def parse_args() -> argparse.Namespace:
@@ -32,10 +34,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--repo-root",
         type=Path,
-        default=Path(__file__).resolve().parent,
-        help="Root directory to scan (defaults to script location)",
+        help="Path to the repository root (auto-detected when omitted)",
     )
     return parser.parse_args()
+
+
+def detect_repo_root(script_dir: Path) -> Path:
+    """Return the repository root using ``git`` or ``script_dir`` as fallback."""
+    git_cmd = ["git", "-C", str(script_dir), "rev-parse", "--show-toplevel"]
+    try:
+        out = subprocess.run(git_cmd, check=True, capture_output=True, text=True)
+        return Path(out.stdout.strip())
+    except Exception:
+        return script_dir
 
 
 
@@ -96,9 +107,12 @@ def handle_pair(duplicate: Path, original: Path, repo_root: Path, archive_root: 
 def main() -> None:
     args = parse_args()
 
-    repo_root = args.repo_root.resolve()
+    script_dir = Path(__file__).resolve().parent
+    repo_root = (args.repo_root or detect_repo_root(script_dir)).resolve()
     if not repo_root.is_dir():
-        raise SystemExit(f"Repository root '{repo_root}' does not exist or is not a directory")
+        raise SystemExit(
+            f"Repository root '{repo_root}' does not exist or is not a directory"
+        )
 
     archive_root = repo_root / "archive" / "duplicates"
 
