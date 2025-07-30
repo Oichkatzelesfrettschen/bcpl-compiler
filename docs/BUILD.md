@@ -73,6 +73,7 @@ The project includes a unified build script that handles all configurations:
 ./build.sh Debug arm64        # Debug build for ARM64
 ./build.sh Release native     # Release build for current system
 ```
+Legacy build scripts (`build_*.sh`) are preserved in `archive/scripts_archive/` for reference.
 
 ### Method 2: Direct CMake
 

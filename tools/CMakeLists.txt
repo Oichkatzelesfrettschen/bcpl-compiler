@@ -4,8 +4,9 @@ cmake_minimum_required(VERSION 3.10)
 # We depend on the complete BCPL toolchain being built first
 
 # Ensure that we have the required tools from the src build
-if(NOT TARGET cg OR NOT TARGET op OR NOT TARGET st_executable)
-    message(FATAL_ERROR "cg, op, and st_executable targets must be built before tools")
+set(ST_TARGET "st_gen_${BCPL_RESOLVED_ARCH}")
+if(NOT TARGET cg OR NOT TARGET op OR NOT TARGET ${ST_TARGET})
+    message(FATAL_ERROR "cg, op, and symbol table must be built before tools")
 endif()
 
 # Use the bcplc script directly but set PREFIX to point to our src build directory
@@ -17,7 +18,7 @@ function(add_bcpl_program name)
     add_custom_command(
         OUTPUT ${name}
         COMMAND env PREFIX="${CMAKE_BINARY_DIR}/src" ${BCPLC_SCRIPT} ${BFLAGS} ${CMAKE_CURRENT_SOURCE_DIR}/${name}.bcpl
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${name}.bcpl cg op st_executable
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${name}.bcpl cg op ${ST_TARGET}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         VERBATIM
     )

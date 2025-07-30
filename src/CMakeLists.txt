@@ -57,6 +57,7 @@ set(BCPL_C_FLAGS
     ${BCPL_BASE_C_FLAGS}  # From main CMakeLists.txt
     ${BCPL_ARCH_FLAGS}    # From ArchitectureConfig.cmake
     -DBITS=${BCPL_ARCH_BITS}
+    -DBCPL_ARCH_BITS=${BCPL_ARCH_BITS}
     -DBCPL_PLATFORM_${BCPL_PLATFORM}=1
     -DTARGET_ARCH_${TARGET_ARCH}=1
 )
