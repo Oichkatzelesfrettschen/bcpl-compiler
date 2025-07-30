@@ -23,11 +23,15 @@ include(CompilerFlags)         # Common compiler options
 include(Options)               # Optional tooling flags
 include(PlatformConfig)        # Platform-specific helpers
 
+# Optionally build the unit tests
+option(ENABLE_TESTS "Build BCPL test suite" ON)
+
 # -----------------------------------------------------------------------------
 # Subdirectories
 # -----------------------------------------------------------------------------
 add_subdirectory(src)
-add_subdirectory(tests)
+if(ENABLE_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 add_subdirectory(docs)
-
-enable_testing()
