@@ -5,11 +5,12 @@
 
 set -e
 
+PROJECT_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
 # Determine the repository root dynamically so the script can be
 # executed from any working directory.  `git rev-parse --show-toplevel`
 # prints the absolute path to the top-level directory of the current
 # Git repository.
-PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
 cd "$PROJECT_ROOT"
 
 echo "=== BCPL Compiler Project Final Consolidation ==="
