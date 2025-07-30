@@ -1,5 +1,5 @@
 /**
- * @file cg_comparison_operations.c
+ * @file cg_compare_ops.c
  * @brief Comparison operations handler for modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025

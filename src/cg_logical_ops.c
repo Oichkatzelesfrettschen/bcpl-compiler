@@ -1,5 +1,5 @@
 /**
- * @file cg_logical_operations.c
+ * @file cg_logical_ops.c
  * @brief Logical operations handler for modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025

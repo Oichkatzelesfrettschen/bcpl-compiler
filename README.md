@@ -36,6 +36,10 @@ Ensure the following tools are installed:
 
 Running `./setup.sh` installs all dependencies along with an IA‑16 toolchain.
 
+For convenience, a `build.sh` helper script wraps the standard CMake
+configuration and build commands. It places artifacts under
+`build/<BuildType>` where *BuildType* defaults to `Release`.
+
 ## Building
 
 ### Native Build
@@ -92,6 +96,18 @@ Additional guides are available in the `docs/` directory:
 - `BUILD_OPTIMIZATION.md` – comprehensive optimization guide
 - `OPTIMIZATION_QUICK_REFERENCE.md` – quick reference for build flags
 - `MODERNIZATION.md` – overview of the C23 modernization effort
+
+## Repository Maintenance
+
+Duplicate configuration files occasionally surface during merges.  Run
+`cleanup_duplicates.py` from the repository root to automatically remove
+identical copies and archive differing `2.*` variants under
+`archive/duplicates/`.  Pass an explicit path if the repository is located
+elsewhere:
+
+```bash
+python3 cleanup_duplicates.py /path/to/bcpl-compiler
+```
 
 ## License
 
