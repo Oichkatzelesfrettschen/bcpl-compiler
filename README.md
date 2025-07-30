@@ -36,6 +36,10 @@ Ensure the following tools are installed:
 
 Running `./setup.sh` installs all dependencies along with an IA‑16 toolchain.
 
+For convenience, a `build.sh` helper script wraps the standard CMake
+configuration and build commands. It places artifacts under
+`build/<BuildType>` where *BuildType* defaults to `Release`.
+
 ## Building
 
 ### Native Build
