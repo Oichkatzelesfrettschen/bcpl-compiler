@@ -26,7 +26,10 @@ To complete the project build:
 1. **IMMEDIATE**: Create ARM64 assembly runtime files or
 2. **ALTERNATIVE**: Complete pure C23 runtime implementation to replace assembly
 
+- Remove duplicate files using `cleanup_duplicates.py`
+- Refactor high-complexity functions per CODEBASE_ANALYSIS.md
+
 The C++ LLVM backend (llcg) builds successfully and is ready for testing.
 The core compiler components (cg, op) build successfully.
 
-**STATUS**: Core modernization complete, architecture porting needed for full functionality.
+**STATUS**: Core modernization mostly complete; duplicate cleanup and function refactoring remain.

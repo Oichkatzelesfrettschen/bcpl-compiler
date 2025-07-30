@@ -266,16 +266,8 @@ This document tracks the complete modernization of the BCPL compiler from legacy
 
 ## Conclusion
 
-The BCPL compiler modernization has successfully achieved its primary goals:
 
-- ✅ **Complete C23 runtime conversion**
-- ✅ **Multi-architecture support**
-- ✅ **Cross-platform compatibility**
-- ✅ **Performance improvements**
-- ✅ **Maintainable codebase**
-
-The modernized compiler maintains 100% compatibility with original BCPL programs while providing modern development experience and significantly improved performance. The modular architecture enables easy extension for new targets and features.
-
+The modernization effort has achieved major milestones but is not yet complete. Duplicate cleanup across the repository and refactoring of large functions remain ongoing tasks. The compiler is functional and portable, but contributors should not assume all technical debt is resolved.
 ---
 
 *Last updated: June 28, 2025*
