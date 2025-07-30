@@ -123,13 +123,36 @@ apply_tooling_flags(bcpl_runtime)
 # BCPL CODE GENERATOR
 # =============================================================================
 
-# Select OCODE implementation based on architecture
-if(BCPL_ARCH_BITS EQUAL 64)
+# Allow the user to override the OCODE implementation. 64-bit OCODE is
+# recommended for 64-bit targets, but the legacy 32-bit OCODE is still
+# required for bootstrapping with the prebuilt `st.O` file. The option below
+# lets developers switch between the two implementations explicitly.
+
+# By default we build using the legacy 32‑bit OCODE implementation because
+# the prebuilt `st.O` file shipped with the sources is generated for that
+# format.  The 64‑bit OCODE implementation requires regenerating `st.O` with
+# a 64‑bit capable compiler which is not available in this environment.
+# Developers can explicitly enable the modern 64‑bit OCODE by toggling the
+# option below once a matching `st.O` has been produced.
+option(BCPL_USE_64BIT_OCODE "Build with the 64-bit OCODE implementation" OFF)
+
+if(BCPL_USE_64BIT_OCODE)
     message(STATUS "Using 64-bit OCODE implementation for ${TARGET_ARCH}")
     set(OCODE_SOURCES oc.c ocode_64bit.c)
     set(OCODE_DEFINES -DBCPL_USE_64BIT_OCODE=1)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    set(ST_64_FILE ${CMAKE_CURRENT_SOURCE_DIR}/st_64.O)
+    if(NOT EXISTS ${ST_64_FILE})
+        add_custom_command(
+            OUTPUT ${ST_64_FILE}
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/convert_to_64bit_ocode.py ${CMAKE_CURRENT_SOURCE_DIR}/st.O ${ST_64_FILE}
+            DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/st.O ${PROJECT_SOURCE_DIR}/scripts/convert_to_64bit_ocode.py
+            COMMENT "Converting st.O to 64-bit format"
+        )
+    endif()
+    add_custom_target(st64_gen DEPENDS ${ST_64_FILE})
 else()
-    message(STATUS "Using legacy OCODE implementation for ${TARGET_ARCH}")
+    message(STATUS "Using legacy 32-bit OCODE implementation for ${TARGET_ARCH}")
     set(OCODE_SOURCES oc.c)
     set(OCODE_DEFINES -DBCPL_USE_64BIT_OCODE=0)
 endif()
@@ -154,7 +177,7 @@ set_target_properties(op PROPERTIES OUTPUT_NAME "op_${TARGET_ARCH}")
 # 64-BIT OCODE TEST PROGRAM
 # =============================================================================
 
-if(BCPL_ARCH_BITS EQUAL 64)
+if(BCPL_ARCH_BITS EQUAL 64 AND BCPL_USE_64BIT_OCODE)
     add_executable(test_ocode_64bit test_ocode_64bit.c ${OCODE_SOURCES})
     target_compile_options(test_ocode_64bit PRIVATE ${BCPL_C_FLAGS} ${OCODE_DEFINES})
     target_link_libraries(test_ocode_64bit PRIVATE bcpl_runtime)
@@ -167,16 +190,25 @@ endif()
 # =============================================================================
 
 # Generate architecture-specific symbol table
+set(ST_OCODE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/st.O)
+if(BCPL_USE_64BIT_OCODE)
+    set(ST_OCODE_FILE ${ST_64_FILE})
+endif()
+
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
-    COMMAND $<TARGET_FILE:cg> -o ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH} < ${CMAKE_CURRENT_SOURCE_DIR}/st.O
-    DEPENDS cg ${CMAKE_CURRENT_SOURCE_DIR}/st.O
+    COMMAND $<TARGET_FILE:cg> -o ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH} < ${ST_OCODE_FILE}
+    DEPENDS cg ${ST_OCODE_FILE}
     COMMENT "Generating symbol table for ${TARGET_ARCH} (using prebuilt OCODE)"
 )
 
 add_custom_target(st_gen_${TARGET_ARCH} ALL
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
 )
+
+if(BCPL_USE_64BIT_OCODE)
+    add_dependencies(st_gen_${TARGET_ARCH} st64_gen)
+endif()
 
 # =============================================================================
 # LLVM BACKEND (OPTIONAL)

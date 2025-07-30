@@ -2,6 +2,8 @@
 
 # Object files and assembly
 src/*.o
+# Ignore prebuilt OCODE objects restored by CMake
+src/*.O
 src/st.s
 src/blib.s
 tools/*.o

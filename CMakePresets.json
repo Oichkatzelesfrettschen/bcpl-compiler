@@ -35,7 +35,7 @@
             "name": "arm64",
             "displayName": "ARM64 Build",
             "description": "ARM64/AArch64 specific build",
-            "generator": "Ninja", 
+            "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/arm64",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
@@ -45,15 +45,43 @@
             }
         },
         {
+            "name": "arm64-ocode64",
+            "displayName": "ARM64 64-bit OCODE",
+            "description": "ARM64 build with 64-bit OCODE enabled",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/arm64-ocode64",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "BCPL_TARGET_ARCH": "arm64",
+                "BCPL_ENABLE_ARM64": "ON",
+                "BCPL_USE_64BIT_OCODE": "ON",
+                "BCPL_OPTIMIZE_FOR_ARCH": "ON"
+            }
+        },
+        {
             "name": "x86_64",
             "displayName": "x86_64 Build",
-            "description": "x86_64/AMD64 specific build", 
+            "description": "x86_64/AMD64 specific build",
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/x86_64",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
                 "BCPL_TARGET_ARCH": "x86_64",
                 "BCPL_ENABLE_X86_64": "ON",
+                "BCPL_OPTIMIZE_FOR_ARCH": "ON"
+            }
+        },
+        {
+            "name": "x86_64-ocode64",
+            "displayName": "x86_64 64-bit OCODE",
+            "description": "x86_64 build with 64-bit OCODE enabled",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/x86_64-ocode64",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "BCPL_TARGET_ARCH": "x86_64",
+                "BCPL_ENABLE_X86_64": "ON",
+                "BCPL_USE_64BIT_OCODE": "ON",
                 "BCPL_OPTIMIZE_FOR_ARCH": "ON"
             }
         },
@@ -149,9 +177,19 @@
             "displayName": "ARM64 Build"
         },
         {
+            "name": "arm64-ocode64",
+            "configurePreset": "arm64-ocode64",
+            "displayName": "ARM64 64-bit OCODE"
+        },
+        {
             "name": "x86_64",
             "configurePreset": "x86_64",
             "displayName": "x86_64 Build"
+        },
+        {
+            "name": "x86_64-ocode64",
+            "configurePreset": "x86_64-ocode64",
+            "displayName": "x86_64 64-bit OCODE"
         },
         {
             "name": "arm32",
