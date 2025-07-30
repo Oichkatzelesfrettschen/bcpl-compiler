@@ -1,5 +1,5 @@
 /**
- * @file cg_memory_operations.c
+ * @file cg_memory_ops.c
  * @brief Memory operations handler for modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025

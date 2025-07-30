@@ -1,5 +1,5 @@
 /**
- * @file cg_meta_operations.c
+ * @file cg_meta_ops.c
  * @brief Meta operations handler for modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025
