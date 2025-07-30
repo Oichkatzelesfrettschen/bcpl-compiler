@@ -15,7 +15,7 @@ message(STATUS "Loading common compiler flags...")
 # Base warning flags and architecture definitions
 # -----------------------------------------------------------------------------
 set(BCPL_BASE_C_FLAGS
-    -Wall -Wextra -Wpedantic          # Standard warning levels
+    -Wall -Wextra -Wpedantic -Werror  # Treat warnings as errors
     -fdiagnostics-color=always        # Colorize compiler diagnostics
     -DBCPL_ARCH_BITS=${BCPL_ARCH_BITS}
     -DBCPL_WORD_SIZE=${BCPL_ARCH_WORD_SIZE}
