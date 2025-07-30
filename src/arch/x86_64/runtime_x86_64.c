@@ -61,6 +61,8 @@ void bcpl_x86_64_memcpy_sse2(void *dst, const void *src, size_t len) {
 
 // x86_64 cache management
 void bcpl_x86_64_flush_cache(void *addr, size_t len) {
+  (void)addr;
+  (void)len;
   // x86_64 has coherent caches, but we still need to serialize
   __asm__ volatile("mfence" : : : "memory");
 }

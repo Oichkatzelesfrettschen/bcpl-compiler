@@ -174,7 +174,7 @@ add_custom_command(
     COMMENT "Generating symbol table for ${TARGET_ARCH} (using prebuilt OCODE)"
 )
 
-add_custom_target(st_gen_${TARGET_ARCH} ALL
+add_custom_target(st_gen_${TARGET_ARCH}
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/st_${TARGET_ARCH}
 )
 

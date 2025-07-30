@@ -278,7 +278,7 @@ BCPL_EXPORT void bcpl_endwrite(bcpl_word_t stream_idx) {
   if (fcb->status == FCB_OUTPUT && fcb->fd > 2) {
     // Flush any pending output
     if (fcb->pos > 0) {
-      write(fcb->fd, fcb->buffer, fcb->pos);
+      (void)write(fcb->fd, fcb->buffer, fcb->pos);
     }
     close(fcb->fd);
     fcb->status = FCB_FREE;
@@ -298,7 +298,7 @@ BCPL_EXPORT bcpl_word_t bcpl_rdch(bcpl_word_t stream_idx) {
     stream_idx = STDIN_FCB; // Default to stdin
   }
 
-  if (stream_idx < 0 || stream_idx >= FCBCNT) {
+  if (stream_idx >= FCBCNT) {
     return ENDSTREAMCH;
   }
 
@@ -330,7 +330,7 @@ BCPL_EXPORT void bcpl_wrch(bcpl_word_t ch, bcpl_word_t stream_idx) {
     stream_idx = STDOUT_FCB; // Default to stdout
   }
 
-  if (stream_idx < 0 || stream_idx >= FCBCNT) {
+  if (stream_idx >= FCBCNT) {
     return;
   }
 
@@ -344,7 +344,7 @@ BCPL_EXPORT void bcpl_wrch(bcpl_word_t ch, bcpl_word_t stream_idx) {
 
   // Flush if buffer is full or character is newline
   if ((size_t)fcb->pos >= sizeof(fcb->buffer) || ch == '\n') {
-    write(fcb->fd, fcb->buffer, fcb->pos);
+    (void)write(fcb->fd, fcb->buffer, fcb->pos);
     fcb->pos = 0;
   }
 }

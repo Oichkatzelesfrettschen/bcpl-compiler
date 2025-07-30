@@ -49,5 +49,5 @@ bcpl_bool_t bcpl_vec_bounds_check(const bcpl_vector_t *vec, bcpl_word_t index) {
   }
 
   bcpl_word_t size = bcpl_vecsize(vec);
-  return (index >= 0 && index < size) ? BCPL_TRUE : BCPL_FALSE;
+  return (index < size) ? BCPL_TRUE : BCPL_FALSE;
 }

@@ -55,16 +55,27 @@ target_compile_definitions(test_runtime_modernization PRIVATE
 )
 
 # Test 2: Cross-platform compatibility
-add_executable(test_platform_compatibility
+add_executable(test_cross_platform
     test_cross_platform.c
-    test_architecture.c
 )
 
-target_include_directories(test_platform_compatibility PRIVATE
+target_include_directories(test_cross_platform PRIVATE
     ${CMAKE_SOURCE_DIR}/src/include
 )
 
-target_link_libraries(test_platform_compatibility PRIVATE
+target_link_libraries(test_cross_platform PRIVATE
+    bcpl_runtime
+)
+
+add_executable(test_architecture
+    test_architecture.c
+)
+
+target_include_directories(test_architecture PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/include
+)
+
+target_link_libraries(test_architecture PRIVATE
     bcpl_runtime
 )
 
@@ -96,7 +107,8 @@ target_link_libraries(test_no_assembly PRIVATE
 
 # Apply tooling flags to each test executable
 apply_tooling_flags(test_runtime_modernization)
-apply_tooling_flags(test_platform_compatibility)
+apply_tooling_flags(test_cross_platform)
+apply_tooling_flags(test_architecture)
 apply_tooling_flags(test_performance)
 apply_tooling_flags(test_no_assembly)
 
@@ -105,11 +117,14 @@ apply_tooling_flags(test_no_assembly)
 # ============================================================================
 
 # Register all tests with CTest
-add_test(NAME runtime_modernization 
+add_test(NAME runtime_modernization
          COMMAND test_runtime_modernization)
 
-add_test(NAME platform_compatibility 
-         COMMAND test_platform_compatibility)
+add_test(NAME cross_platform
+         COMMAND test_cross_platform)
+
+add_test(NAME architecture_validation
+         COMMAND test_architecture)
 
 add_test(NAME performance_validation 
          COMMAND test_performance)
@@ -152,8 +167,7 @@ message(STATUS "✅ Integration tests")
 message(STATUS "")
 message(STATUS "Run tests with: make test")
 message(STATUS "")
-=======
-cmake_minimum_required(VERSION 3.20)
+
 
 # Testing configuration for BCPL Compiler
 

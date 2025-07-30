@@ -156,24 +156,24 @@ void test_platform_abstraction(void) {
   TEST_ASSERT(init_result == 0, "Platform initialization");
 
   // Test CPU feature detection
-  uint32_t cpu_features = bcpl_platform_get_cpu_features();
+  bcpl_cpu_features_t cpu_features = bcpl_platform_get_cpu_features();
   TEST_ASSERT(true,
               "CPU feature detection completed"); // Always passes, just logs
 
-  printf("    CPU Features detected: 0x%08X\n", cpu_features);
+  printf("    CPU Features detected: 0x%08X\n", cpu_features.feature_flags);
 
 #ifdef BCPL_ARCH_X86_64
-  if (cpu_features & BCPL_CPU_FEATURE_SSE2) {
+  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_SSE2) {
     printf("    ✓ SSE2 support detected\n");
   }
-  if (cpu_features & BCPL_CPU_FEATURE_AVX) {
+  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_AVX) {
     printf("    ✓ AVX support detected\n");
   }
-  if (cpu_features & BCPL_CPU_FEATURE_AVX2) {
+  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_AVX2) {
     printf("    ✓ AVX2 support detected\n");
   }
 #elif defined(BCPL_ARCH_ARM64)
-  if (cpu_features & BCPL_CPU_FEATURE_NEON) {
+  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_NEON) {
     printf("    ✓ NEON support detected\n");
   }
 #endif
