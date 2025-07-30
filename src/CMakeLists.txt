@@ -185,15 +185,24 @@ add_custom_target(st_gen_${TARGET_ARCH} ALL
 find_package(LLVM QUIET CONFIG)
 if(LLVM_FOUND)
     message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION} - enabling LLVM backend")
-    
+
     include_directories(${LLVM_INCLUDE_DIRS})
     separate_arguments(LLVM_DEFINITIONS_LIST UNIX_COMMAND "${LLVM_DEFINITIONS}")
     add_definitions(${LLVM_DEFINITIONS_LIST})
-    
+
     llvm_map_components_to_libnames(LLCG_LIBS
         core bitwriter native analysis target
     )
-    
+
+    # Enable C++ support only when building the LLVM backend
+    enable_language(CXX)
+    set(BCPL_CXX_FLAGS
+        ${BCPL_BASE_C_FLAGS}
+        -std=c++17
+        -Woverloaded-virtual
+        -Wnon-virtual-dtor
+    )
+
     add_executable(llcg llcg.cpp)
     target_compile_options(llcg PRIVATE ${BCPL_CXX_FLAGS})
     target_link_libraries(llcg PRIVATE ${LLCG_LIBS} bcpl_runtime)

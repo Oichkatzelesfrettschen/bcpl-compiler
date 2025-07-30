@@ -1,5 +1,5 @@
 /**
- * @file cg_function_operations.c
+ * @file cg_func_ops.c
  * @brief Function operations handler for modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025

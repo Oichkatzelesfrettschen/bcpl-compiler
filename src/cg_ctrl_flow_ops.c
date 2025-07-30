@@ -1,5 +1,5 @@
 /**
- * @file cg_control_flow_operations.c
+ * @file cg_ctrl_flow_ops.c
  * @brief Control flow operations handler for modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025

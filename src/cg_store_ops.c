@@ -1,5 +1,5 @@
 /**
- * @file cg_store_operations.c
+ * @file cg_store_ops.c
  * @brief Store operations handler for modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025

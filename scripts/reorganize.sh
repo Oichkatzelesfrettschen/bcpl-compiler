@@ -6,6 +6,10 @@ set -e  # Exit on any error
 
 ARCHIVE_DIR="archive"
 PROJECT_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
+# Determine the repository root dynamically.  This allows the
+# reorganization script to be invoked from any location in or
+# outside the repository.
+
 
 echo "=== BCPL Compiler Project Reorganization ==="
 echo "Starting reorganization at: $(date)"
