@@ -18,10 +18,11 @@ if [ -f "README.md" ]; then
     echo "Backed up original README.md"
 fi
 
-# Replace with new consolidated README
-if [ -f "README_NEW.md" ]; then
-    mv "README_NEW.md" "README.md"
-    echo "✅ Updated README.md with consolidated content"
+# Ensure main README exists
+if [ ! -f "README.md" ]; then
+    echo "❌ README.md not found. Please add the consolidated documentation."
+else
+    echo "✅ README.md present"
 fi
 
 echo "Phase 2: Check duplicate CMakeLists files"
