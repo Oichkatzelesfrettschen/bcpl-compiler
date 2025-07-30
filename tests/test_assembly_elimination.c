@@ -27,11 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-// Include our modernized headers
-#ifdef BCPL_MODERNIZED
 #include "universal_platform.h"
-#endif
 
 // Symbol detection for assembly elimination verification
 extern char __bcpl_no_assembly_marker[];
@@ -213,8 +209,8 @@ static bool test_cross_architecture_compatibility(void) {
   arch_name = "RISC-V";
 #elif defined(__wasm__)
   arch_name = "WebAssembly";
-#endif
 
+#endif
   printf("🎯 Current architecture: %s\n", arch_name);
 
   // Test that pointer sizes are handled correctly
@@ -302,7 +298,7 @@ static bool test_performance_comparison(void) {
 // MAIN TEST RUNNER
 // ============================================================================
 
-int main(void) {
+int run_test_assembly_elimination(void) {
   printf("\n🚀 ASSEMBLY ELIMINATION VALIDATION SUITE\n");
   printf("=========================================\n");
   printf("Critical tech debt test: Complete assembly elimination\n\n");

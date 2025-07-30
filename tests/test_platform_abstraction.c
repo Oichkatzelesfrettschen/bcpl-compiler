@@ -27,12 +27,7 @@
 #include <time.h>
 
 // Include our modernized platform abstraction
-#ifdef BCPL_MODERNIZED
 #include "universal_platform.h"
-#else
-#include "platform.h"
-#endif
-
 // ============================================================================
 // PLATFORM ABSTRACTION VALIDATION TESTS
 // ============================================================================
@@ -276,7 +271,7 @@ static int test_thread_safety(void) {
 // MAIN TEST RUNNER
 // ============================================================================
 
-int main(void) {
+int run_test_platform_abstraction(void) {
   printf("\n🚀 BCPL PLATFORM ABSTRACTION VALIDATION SUITE\n");
   printf("==============================================\n");
   printf("Testing complete elimination of platform-specific tech debt...\n\n");

@@ -53,6 +53,20 @@ configuration and build commands. It places artifacts under
 ./build.sh Debug native     # Debug build
 ```
 
+### Using CMake Presets
+
+The refactored build system provides CMake presets for common
+configurations. Presets configure the build directory and appropriate
+options automatically:
+
+```bash
+cmake --preset default        # Release build using Ninja
+cmake --build --preset default
+
+cmake --preset debug          # Debug build with sanitizers
+cmake --build --preset debug
+```
+
 Set `BITS=32` (or `-DBITS=32`) for a 32‑bit runtime.  `BITS=16` enables the experimental IA‑16 backend.
 
 After installation run:
@@ -62,6 +76,19 @@ bcplc tools/cmpltest.bcpl
 ```
 
 to verify the environment; 119 tests should pass without failure.
+
+### Running Tests
+
+The refactored `gencode()` implementation is covered by a dedicated unit
+test suite. After building, run:
+
+```bash
+cd build/Release
+ctest --output-on-failure
+```
+
+The `bcpl_tests` target aggregates all unit tests including those for the
+refactored code generator.
 
 ## Multi‑Architecture Builds
 

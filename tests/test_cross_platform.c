@@ -46,7 +46,6 @@
 #define BCPL_PLATFORM_WASM 1
 #else
 #define BCPL_PLATFORM_UNKNOWN 1
-#endif
 
 // ============================================================================
 // CROSS-PLATFORM VALIDATION FUNCTIONS
@@ -107,7 +106,6 @@ static int test_platform_detection(void) {
   platform_name = "WebAssembly";
   detected = 1;
   printf("✅ WebAssembly runtime detected\n");
-#endif
 
   if (!detected) {
     printf("❌ Platform detection failed\n");
@@ -141,10 +139,8 @@ static int test_architecture_detection(void) {
   arch_name = "RISC-V 64";
 #else
   arch_name = "RISC-V 32";
-#endif
 #elif defined(__wasm__)
   arch_name = "WebAssembly";
-#endif
 
   printf("✅ Architecture: %s\n", arch_name);
   printf("✅ Word size: %d bytes\n", word_size);
@@ -186,14 +182,12 @@ static int test_compiler_compatibility(void) {
   }
 #else
   printf("⚠️  C standard version unknown\n");
-#endif
 
   // Test compiler-specific features
 #ifdef __clang__
   printf("✅ Clang compiler detected\n");
 #ifdef __apple_build_version__
   printf("✅ Apple Clang variant\n");
-#endif
 #elif defined(__GNUC__)
   printf("✅ GCC compiler detected\n");
   printf("✅ GCC version: %d.%d.%d\n", __GNUC__, __GNUC_MINOR__,
@@ -203,7 +197,6 @@ static int test_compiler_compatibility(void) {
   printf("✅ MSVC version: %d\n", _MSC_VER);
 #else
   printf("⚠️  Unknown compiler\n");
-#endif
 
   // Test that enhanced safety features work
   printf("🔄 Testing enhanced safety features...\n");
@@ -238,39 +231,33 @@ static int test_build_system_integration(void) {
 #else
   printf("❌ BCPL_MODERNIZED flag missing\n");
   return 0;
-#endif
 
 #ifdef BCPL_C23_RUNTIME
   printf("✅ BCPL_C23_RUNTIME flag set\n");
 #else
   printf("❌ BCPL_C23_RUNTIME flag missing\n");
   return 0;
-#endif
 
 #ifdef BCPL_NO_ASSEMBLY
   printf("✅ BCPL_NO_ASSEMBLY flag set\n");
 #else
   printf("❌ BCPL_NO_ASSEMBLY flag missing\n");
   return 0;
-#endif
 
 #ifdef BCPL_UNIVERSAL_PLATFORM
   printf("✅ BCPL_UNIVERSAL_PLATFORM flag set\n");
 #else
   printf("❌ BCPL_UNIVERSAL_PLATFORM flag missing\n");
   return 0;
-#endif
 
   // Test that optimization flags are working
   int optimization_level = 0;
 
 #ifdef __OPTIMIZE__
   optimization_level = 1;
-#endif
 
 #ifdef __OPTIMIZE_SIZE__
   optimization_level = 2;
-#endif
 
   printf("✅ Optimization level: %d\n", optimization_level);
 
@@ -290,7 +277,6 @@ static int test_cross_compilation_support(void) {
 #ifdef CMAKE_CROSSCOMPILING
   is_cross_compiling = 1;
   printf("✅ Cross-compilation detected\n");
-#endif
 
   if (!is_cross_compiling) {
     printf("✅ Native compilation (cross-compilation ready)\n");
@@ -309,7 +295,7 @@ static int test_cross_compilation_support(void) {
 // MAIN TEST RUNNER
 // ============================================================================
 
-int main(void) {
+int run_test_cross_platform(void) {
   printf("\n🚀 CROSS-PLATFORM BUILD SYSTEM VALIDATION\n");
   printf("==========================================\n");
   printf("Testing elimination of build system tech debt...\n\n");
