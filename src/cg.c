@@ -183,6 +183,11 @@ static int labno;          /**< Label counter for unique labels */
 static int loff;           /**< Label offset for relative addressing */
 static int ch;             /**< Last character read from input */
 
+/* Additional state used by the refactored gencode() */
+static bool ro_flag;   /**< Deferred relational jump flag */
+static int rcode_flag; /**< Deferred relational operation code */
+static int sn_value;   /**< Temporary stack slot value */
+
 /**
  * @brief Function prototypes for code generation
  *
@@ -198,6 +203,91 @@ static int ch;             /**< Last character read from input */
  * This is the main entry point for the code generation phase.
  */
 static ocode_op gencode(void);
+
+/* Dispatch table and handler declarations */
+typedef void (*op_handler_t)(ocode_op);
+static void handle_load(ocode_op op);
+static void handle_store(ocode_op op);
+static void handle_arithmetic(ocode_op op);
+static void handle_comparison(ocode_op op);
+static void handle_memory(ocode_op op);
+static void handle_control_flow(ocode_op op);
+static void handle_function(ocode_op op);
+static void handle_meta(ocode_op op);
+
+static op_handler_t dispatch_table[OPMAX + 1] = {
+    [S_LN] = handle_load,
+    [S_TRUE] = handle_load,
+    [S_FALSE] = handle_load,
+    [S_LP] = handle_load,
+    [S_LG] = handle_load,
+    [S_LL] = handle_load,
+    [S_LLP] = handle_load,
+    [S_LLG] = handle_load,
+    [S_LLL] = handle_load,
+    [S_QUERY] = handle_load,
+    [S_LSTR] = handle_load,
+
+    [S_SP] = handle_store,
+    [S_SG] = handle_store,
+    [S_SL] = handle_store,
+
+    [S_MULT] = handle_arithmetic,
+    [S_DIV] = handle_arithmetic,
+    [S_REM] = handle_arithmetic,
+    [S_PLUS] = handle_arithmetic,
+    [S_MINUS] = handle_arithmetic,
+    [S_NEG] = handle_arithmetic,
+    [S_NOT] = handle_arithmetic,
+    [S_ABS] = handle_arithmetic,
+    [S_LSHIFT] = handle_arithmetic,
+    [S_RSHIFT] = handle_arithmetic,
+    [S_LOGAND] = handle_arithmetic,
+    [S_LOGOR] = handle_arithmetic,
+    [S_EQV] = handle_arithmetic,
+    [S_NEQV] = handle_arithmetic,
+
+    [S_EQ] = handle_comparison,
+    [S_NE] = handle_comparison,
+    [S_LS] = handle_comparison,
+    [S_GR] = handle_comparison,
+    [S_LE] = handle_comparison,
+    [S_GE] = handle_comparison,
+
+    [S_RV] = handle_memory,
+    [S_GETBYTE] = handle_memory,
+    [S_PUTBYTE] = handle_memory,
+    [S_STIND] = handle_memory,
+
+    [S_GOTO] = handle_control_flow,
+    [S_JT] = handle_control_flow,
+    [S_JF] = handle_control_flow,
+    [S_JUMP] = handle_control_flow,
+    [S_SWITCHON] = handle_control_flow,
+    [S_RES] = handle_control_flow,
+    [S_RSTACK] = handle_control_flow,
+    [S_ENDFOR] = handle_control_flow,
+
+    [S_FNAP] = handle_function,
+    [S_RTAP] = handle_function,
+    [S_FNRN] = handle_function,
+    [S_RTRN] = handle_function,
+    [S_ENTRY] = handle_function,
+    [S_ENDPROC] = handle_function,
+
+    [S_BLAB] = handle_meta,
+    [S_LAB] = handle_meta,
+    [S_DATALAB] = handle_meta,
+    [S_ITEML] = handle_meta,
+    [S_ITEMN] = handle_meta,
+    [S_NEEDS] = handle_meta,
+    [S_SECTION] = handle_meta,
+    [S_GLOBAL] = handle_meta,
+    [S_SAVE] = handle_meta,
+    [S_STACK] = handle_meta,
+    [S_STORE] = handle_meta,
+    [S_FINISH] = handle_meta,
+};
 
 /**
  * @brief Load a value onto the load stack
@@ -381,12 +471,12 @@ int main(void) {
 }
 
 static ocode_op gencode(void) {
-  bool ro;
-  int rcode, s1, s2, s3, sn;
+  int s1, s2, s3;
   ocode_op op;
 
-  dt = sp = lp = rcode = 0;
-  ro = false;
+  dt = sp = lp = 0;
+  rcode_flag = 0;
+  ro_flag = false;
   emit(".text");
   for (;;) {
     op = rdop(0);
@@ -408,7 +498,37 @@ static ocode_op gencode(void) {
         loadreg(1, s3 == 4 ? 0 : s3 == 5 ? ltype[1] == X_N : 1);
       }
     }
-    switch (op) {
+
+    op_handler_t handler = dispatch_table[op];
+    if (!handler) {
+      error("Unknown op %d", op);
+    }
+    handler(op);
+
+    /* adjust stack pointer */
+    sp = s2 & 2 ? sn_value : sp - s1;
+    if (s2 & 1)
+      sp++;
+    /* adjust load stack pointer */
+    if (s3 <= 7) {
+      lp = s2 & 1;
+    } else if (s3 == 8 && lp < 2) {
+      lp++;
+    }
+
+    if (op == S_GLOBAL) {
+      return op;
+    }
+  }
+  return op;
+}
+
+/* ------------------------------------------------------------------------- */
+/* Operation handlers                                                        */
+/* ------------------------------------------------------------------------- */
+
+static void handle_load(ocode_op op) {
+  switch (op) {
     case S_LN:
       load(X_N, rdn());
       break;
@@ -450,6 +570,13 @@ static ocode_op gencode(void) {
       }
       load(X_LL, l);
     } break;
+    default:
+      error("bad load op %d", op);
+  }
+}
+
+static void handle_store(ocode_op op) {
+  switch (op) {
     case S_SP:
       save(X_P, rdn());
       break;
@@ -459,42 +586,13 @@ static ocode_op gencode(void) {
     case S_SL:
       save(X_L, rdn());
       break;
-    case S_ENTRY: {
-      int n, l, i;
-      n = rdn();
-      l = rdn();
-      printf("//\t");
-      for (i = 0; i < n; i++) {
-        putchar(rdn());
-      }
-      putchar('\n');
-      codelab(l);
-#if BITS == 64
-      emit("pop (%%rcx)");
-      emit("mov %%rbp,%d(%%rcx)", WORDSZ);
-      emit("mov %%rcx,%%rbp");
-#else
-      emit("pop (%%ecx)");
-      emit("mov %%ebp,%d(%%ecx)", WORDSZ);
-      emit("mov %%ecx,%%ebp");
-#endif
-    } break;
-    case S_ENDPROC:
-      rdn();
-      break;
-    case S_SAVE:
-    case S_STACK:
-      sn = rdn();
-      break;
-    case S_STORE:
-      break;
-    case S_RV:
-#if BITS == 64
-      emit("mov (,%%rax,%d),%%eax", WORDSZ);
-#else
-      emit("mov (,%%eax,%d),%%eax", WORDSZ);
-#endif
-      break;
+    default:
+      error("bad store op %d", op);
+  }
+}
+
+static void handle_arithmetic(ocode_op op) {
+  switch (op) {
     case S_ABS:
       emit("test %%eax,%%eax");
       emit("jns 1f");
@@ -524,24 +622,6 @@ static ocode_op gencode(void) {
     case S_MINUS:
       codex(op == S_MINUS ? X_SUB : X_ADD);
       break;
-    case S_EQ:
-    case S_NE:
-    case S_LS:
-    case S_GR:
-    case S_LE:
-    case S_GE: {
-      int o2;
-      codex(X_CMP);
-      o2 = rdop(1);
-      if (o2 == S_JT || o2 == S_JF) {
-        ro = true;
-        rcode = op;
-      } else {
-        emit("set%s %%al", relstr[op - S_EQ][1]);
-        emit("movzx %%al,%%eax");
-        emit("neg %%eax");
-      }
-    } break;
     case S_LSHIFT:
     case S_RSHIFT:
       emit("sh%cl %%cl,%%eax", op == S_RSHIFT ? 'r' : 'l');
@@ -556,6 +636,34 @@ static ocode_op gencode(void) {
         emit("xorl $-1,%%eax");
       }
       codex(X_XOR);
+      break;
+    default:
+      error("bad arithmetic op %d", op);
+  }
+}
+
+static void handle_comparison(ocode_op op) {
+  int o2;
+  codex(X_CMP);
+  o2 = rdop(1);
+  if (o2 == S_JT || o2 == S_JF) {
+    ro_flag = true;
+    rcode_flag = op;
+  } else {
+    emit("set%s %%al", relstr[op - S_EQ][1]);
+    emit("movzx %%al,%%eax");
+    emit("neg %%eax");
+  }
+}
+
+static void handle_memory(ocode_op op) {
+  switch (op) {
+    case S_RV:
+#if BITS == 64
+      emit("mov (,%%rax,%d),%%eax", WORDSZ);
+#else
+      emit("mov (,%%eax,%d),%%eax", WORDSZ);
+#endif
       break;
     case S_GETBYTE:
     case S_PUTBYTE:
@@ -584,14 +692,21 @@ static ocode_op gencode(void) {
       emit("mov %%eax,(,%%ecx,%d)", WORDSZ);
 #endif
       break;
+    default:
+      error("bad memory op %d", op);
+  }
+}
+
+static void handle_control_flow(ocode_op op) {
+  switch (op) {
     case S_GOTO:
       codex(X_JMP);
       break;
     case S_JT:
     case S_JF:
-      if (ro) {
-        emit("j%s %s", relstr[rcode - S_EQ][op == S_JT], label(rdn()));
-        ro = false;
+      if (ro_flag) {
+        emit("j%s %s", relstr[rcode_flag - S_EQ][op == S_JT], label(rdn()));
+        ro_flag = false;
       } else {
         emit("orl %%eax,%%eax");
         emit("j%s %s", op == S_JF ? "z" : "nz", label(rdn()));
@@ -641,14 +756,25 @@ static ocode_op gencode(void) {
       emit("jmp %s", label(rdn()));
       break;
     case S_RSTACK:
-      sn = rdn();
+      sn_value = rdn();
       ltype[0] = X_R;
       ldata[0] = 0;
       break;
+    case S_ENDFOR:
+      codex(X_CMP);
+      emit("jle %s", label(rdn()));
+      break;
+    default:
+      error("bad control op %d", op);
+  }
+}
+
+static void handle_function(ocode_op op) {
+  switch (op) {
     case S_FNAP:
     case S_RTAP:
-      sn = rdn();
-      code(X_LEA, X_R, 1, X_P, sn);
+      sn_value = rdn();
+      code(X_LEA, X_R, 1, X_P, sn_value);
       codex(X_CALL);
       if (op == S_FNAP) {
         ltype[0] = X_R;
@@ -669,10 +795,36 @@ static ocode_op gencode(void) {
       emit("jmp *(%%ecx)");
 #endif
       break;
-    case S_ENDFOR:
-      codex(X_CMP);
-      emit("jle %s", label(rdn()));
+    case S_ENTRY: {
+      int n, l, i;
+      n = rdn();
+      l = rdn();
+      printf("//\t");
+      for (i = 0; i < n; i++) {
+        putchar(rdn());
+      }
+      putchar('\n');
+      codelab(l);
+#if BITS == 64
+      emit("pop (%%rcx)");
+      emit("mov %%rbp,%d(%%rcx)", WORDSZ);
+      emit("mov %%rcx,%%rbp");
+#else
+      emit("pop (%%ecx)");
+      emit("mov %%ebp,%d(%%ecx)", WORDSZ);
+      emit("mov %%ecx,%%ebp");
+#endif
+    } break;
+    case S_ENDPROC:
+      rdn();
       break;
+    default:
+      error("bad function op %d", op);
+  }
+}
+
+static void handle_meta(ocode_op op) {
+  switch (op) {
     case S_BLAB:
     case S_LAB:
       codelab(rdn());
@@ -705,28 +857,19 @@ static ocode_op gencode(void) {
         emit(".global G%d", x);
         emit(".equ G%d,%s", x, label(rdn()));
       }
-      /* end of code stream: return for next phase */
-      return op;
-    }
-    /* not reached */
+    } break;
+    case S_SAVE:
+    case S_STACK:
+      sn_value = rdn();
+      break;
+    case S_STORE:
+      break;
     case S_FINISH:
       emit("jmp finish");
       break;
     default:
-      error("Unknown op %d", op);
-    }
-    /* adjust stack pointer */
-    sp = s2 & 2 ? sn : sp - s1;
-    if (s2 & 1)
-      sp++;
-    /* adjust load stack pointer */
-    if (s3 <= 7) {
-      lp = s2 & 1;
-    } else if (s3 == 8 && lp < 2) {
-      lp++;
-    }
+      error("bad meta op %d", op);
   }
-  return op;
 }
 
 static void load(int t, int d) {
