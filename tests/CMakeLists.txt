@@ -35,6 +35,11 @@ endif()
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
 include(Options)
 
+# Build the runtime library when invoked stand-alone
+if(NOT TARGET bcpl_runtime)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../src ${CMAKE_BINARY_DIR}/src)
+endif()
+
 # ============================================================================
 # MODERNIZATION VALIDATION TESTS
 # ============================================================================

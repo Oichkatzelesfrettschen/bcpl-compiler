@@ -163,9 +163,12 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > test.bcpl
 ./test
 ```
 
-### Run Test Suite
+### Build and Run Test Suite
+Configure and build with tests enabled (default), then execute them with CTest.
 ```bash
-cd build/Release
+mkdir build && cd build
+cmake .. -DBCPL_ENABLE_TESTING=ON
+cmake --build .
 ctest                          # Run all tests
 ctest -R unit                  # Run unit tests only
 ctest -R integration           # Run integration tests only
