@@ -164,20 +164,20 @@ void test_platform_abstraction(void) {
   printf("    CPU Architecture: %s\n", features.arch_name);
   printf("    CPU Cores: %d\n", features.core_count);
   printf("    CPU Feature Flags: 0x%08X\n", features.feature_flags);
-  uint32_t cpu_features = features.feature_flags;
+  uint32_t cpu_flags = features.feature_flags;
 
 #ifdef BCPL_ARCH_X86_64
-  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_SSE2) {
+  if (cpu_flags & BCPL_CPU_FEATURE_SSE2) {
     printf("    ✓ SSE2 support detected\n");
   }
-  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_AVX) {
+  if (cpu_flags & BCPL_CPU_FEATURE_AVX) {
     printf("    ✓ AVX support detected\n");
   }
-  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_AVX2) {
+  if (cpu_flags & BCPL_CPU_FEATURE_AVX2) {
     printf("    ✓ AVX2 support detected\n");
   }
 #elif defined(BCPL_ARCH_ARM64)
-  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_NEON) {
+  if (cpu_flags & BCPL_CPU_FEATURE_NEON) {
     printf("    ✓ NEON support detected\n");
   }
 #endif
@@ -259,7 +259,7 @@ void test_error_handling(void) {
   TEST_SECTION("Enhanced Error Handling");
 
   // Test error code retrieval
-  int error_code = bcpl_platform_get_last_error();
+  (void)bcpl_platform_get_last_error();
   TEST_ASSERT(true, "Error code retrieval"); // Always passes, just tests API
 
   // Test stack trace (if available)
@@ -323,7 +323,7 @@ void test_performance(void) {
 // MAIN TEST RUNNER
 // ============================================================================
 
-int main(int argc, char **argv) {
+int run_test_runtime(void) {
   printf("🚀 BCPL COMPILER MODERNIZATION - COMPREHENSIVE TEST SUITE\n");
   printf("========================================================\n");
   printf("Validating complete elimination of tech debt...\n");

@@ -46,7 +46,7 @@ int test_alignment_requirements() {
     return 0;
 }
 
-int main() {
+int run_test_architecture(void) {
     printf("Architecture Compatibility Tests\n");
     printf("===============================\n");
     

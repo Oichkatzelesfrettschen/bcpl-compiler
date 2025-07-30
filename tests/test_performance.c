@@ -73,7 +73,7 @@ int test_runtime_efficiency() {
     return 0;
 }
 
-int main() {
+int run_test_performance(void) {
     printf("Performance Benchmarks for BCPL Compiler\n");
     printf("========================================\n");
     

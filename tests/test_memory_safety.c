@@ -36,7 +36,7 @@ int test_buffer_overflow_protection() {
     return 0;
 }
 
-int main() {
+int run_test_memory_safety(void) {
     printf("Memory Safety Tests for BCPL Runtime\n");
     printf("====================================\n");
     
@@ -53,3 +53,4 @@ int main() {
     
     return result;
 }
+

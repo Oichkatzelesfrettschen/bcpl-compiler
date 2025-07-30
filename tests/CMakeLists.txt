@@ -33,104 +33,50 @@ include(Options)
 # MODERNIZATION VALIDATION TESTS
 # ============================================================================
 
-# Test 1: Runtime modernization validation
-add_executable(test_runtime_modernization
+# Consolidated test executable built from all unit test sources
+set(TEST_SOURCES
+    bcpl_tests.c
     test_runtime.c
     test_platform_abstraction.c
     test_memory_safety.c
+    test_architecture.c
+    test_performance.c
+    test_assembly_elimination.c
 )
 
-target_include_directories(test_runtime_modernization PRIVATE
+add_executable(bcpl_tests ${TEST_SOURCES})
+
+target_include_directories(bcpl_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src/include
     ${CMAKE_SOURCE_DIR}/src/runtime
 )
 
-target_link_libraries(test_runtime_modernization PRIVATE
-    bcpl_runtime
-)
+target_link_libraries(bcpl_tests PRIVATE bcpl_runtime)
 
-target_compile_definitions(test_runtime_modernization PRIVATE
+target_compile_definitions(bcpl_tests PRIVATE
     BCPL_TEST_BUILD=1
     BCPL_MODERNIZED=1
+    BCPL_C23_RUNTIME=1
+    BCPL_NO_ASSEMBLY=1
+    BCPL_UNIVERSAL_PLATFORM=1
+    BCPL_SINGLE_BINARY=1
+)
+target_compile_options(bcpl_tests PRIVATE
+    ${BCPL_BASE_C_FLAGS}
+    ${BCPL_ARCH_FLAGS}
+    -DBITS=${BCPL_ARCH_BITS}
+    -DBCPL_PLATFORM_${BCPL_PLATFORM}=1
+    -DTARGET_ARCH_${TARGET_ARCH}=1
 )
 
-# Test 2: Cross-platform compatibility
-add_executable(test_cross_platform
-    test_cross_platform.c
-)
-
-target_include_directories(test_cross_platform PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-)
-
-target_link_libraries(test_cross_platform PRIVATE
-    bcpl_runtime
-)
-
-add_executable(test_architecture
-    test_architecture.c
-)
-
-target_include_directories(test_architecture PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-)
-
-target_link_libraries(test_architecture PRIVATE
-    bcpl_runtime
-)
-
-# Test 3: Performance validation
-add_executable(test_performance
-    test_performance.c
-)
-
-target_include_directories(test_performance PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-)
-
-target_link_libraries(test_performance PRIVATE
-    bcpl_runtime
-)
-
-# Test 4: Assembly elimination validation
-add_executable(test_no_assembly
-    test_assembly_elimination.c
-)
-
-target_include_directories(test_no_assembly PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-)
-
-target_link_libraries(test_no_assembly PRIVATE
-    bcpl_runtime
-)
-
-# Apply tooling flags to each test executable
-apply_tooling_flags(test_runtime_modernization)
-apply_tooling_flags(test_cross_platform)
-apply_tooling_flags(test_architecture)
-apply_tooling_flags(test_performance)
-apply_tooling_flags(test_no_assembly)
+# Apply optional tooling flags
+apply_tooling_flags(bcpl_tests)
 
 # ============================================================================
 # TEST EXECUTION
 # ============================================================================
 
-# Register all tests with CTest
-add_test(NAME runtime_modernization
-         COMMAND test_runtime_modernization)
-
-add_test(NAME cross_platform
-         COMMAND test_cross_platform)
-
-add_test(NAME architecture_validation
-         COMMAND test_architecture)
-
-add_test(NAME performance_validation 
-         COMMAND test_performance)
-
-add_test(NAME assembly_elimination 
-         COMMAND test_no_assembly)
+add_test(NAME bcpl_tests COMMAND bcpl_tests)
 
 # ============================================================================
 # INTEGRATION TESTS
@@ -167,45 +113,4 @@ message(STATUS "✅ Integration tests")
 message(STATUS "")
 message(STATUS "Run tests with: make test")
 message(STATUS "")
-
-
-# Testing configuration for BCPL Compiler
-
-# Collect all test sources
-set(TEST_SOURCES
-    test_runtime.c
-    test_platform_abstraction.c
-    test_memory_safety.c
-    test_architecture.c
-    test_cross_platform.c
-    test_performance.c
-    test_assembly_elimination.c
-)
-
-add_executable(bcpl_tests ${TEST_SOURCES})
-
-# Tests depend on the runtime library built in src/
-# Include directories to access internal headers
-
-target_include_directories(bcpl_tests PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-    ${CMAKE_SOURCE_DIR}/src/runtime
-)
-
-target_link_libraries(bcpl_tests PRIVATE bcpl_runtime)
-
-target_compile_definitions(bcpl_tests PRIVATE BCPL_TEST_BUILD=1)
-target_compile_options(bcpl_tests PRIVATE
-    ${BCPL_BASE_C_FLAGS}
-    ${BCPL_ARCH_FLAGS}
-    -DBITS=${BCPL_ARCH_BITS}
-    -DBCPL_PLATFORM_${BCPL_PLATFORM}=1
-    -DTARGET_ARCH_${TARGET_ARCH}=1
-)
-
-# Apply optional tooling flags
-apply_tooling_flags(bcpl_tests)
-
-# Register with CTest
-add_test(NAME bcpl_tests COMMAND bcpl_tests)
 
