@@ -1,5 +1,5 @@
 /**
- * @file cg_arithmetic_operations.c
+ * @file cg_arith_ops.c
  * @brief Arithmetic operation handlers for the modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025

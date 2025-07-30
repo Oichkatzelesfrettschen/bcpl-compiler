@@ -38,6 +38,10 @@ Ensure the following tools are installed:
 
 Running `./setup.sh` installs all dependencies along with an IA‑16 toolchain.
 
+For convenience, a `build.sh` helper script wraps the standard CMake
+configuration and build commands. It places artifacts under
+`build/<BuildType>` where *BuildType* defaults to `Release`.
+
 ## Building
 
 ### Native Build
@@ -84,7 +88,7 @@ These scripts demonstrate cross‑compilation setups and size/architecture check
 
 ## Development Containers
 
-Preconfigured dev containers are provided for Ubuntu 24.04 LTS and Debian Sid.  Use `./select-devcontainer.sh <ubuntu|debian>` and open the repository in VS Code to work inside a fully provisioned environment.
+Preconfigured dev containers are provided for Ubuntu 24.04 LTS and Debian Sid. A single `.devcontainer` directory holds templates for both. Run `./select-devcontainer.sh <ubuntu|debian>` to switch the symlinks before reopening the folder in VS Code.
 
 ## Project Structure
 
@@ -137,6 +141,17 @@ Additional guides are available in the `docs/` directory:
 Please open issues on GitHub with your platform, architecture, compiler version, and a minimal reproduction case.
 
 
+## Repository Maintenance
+
+Duplicate configuration files occasionally surface during merges.  Run
+`cleanup_duplicates.py` from the repository root to automatically remove
+identical copies and archive differing `2.*` variants under
+`archive/duplicates/`.  Pass an explicit path if the repository is located
+elsewhere:
+
+```bash
+python3 cleanup_duplicates.py /path/to/bcpl-compiler
+```
 
 ## License
 

@@ -1,5 +1,5 @@
 /**
- * @file cg_load_operations.c
+ * @file cg_load_ops.c
  * @brief Load operation handlers for the modern BCPL code generator
  * @author BCPL Compiler Modernization Team
  * @date 2025

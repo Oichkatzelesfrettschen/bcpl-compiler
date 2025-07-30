@@ -196,39 +196,39 @@ extern ocode_op gencode_modern(void);
 // OPERATION HANDLER DECLARATIONS
 // =============================================================================
 
-// Load operations (cg_load_operations.c)
+// Load operations (cg_load_ops.c)
 extern ocode_result_t handle_load_operations(ocode_context_t *ctx,
                                              ocode_op op) HOT_FUNCTION;
 
-// Store operations (cg_store_operations.c)
+// Store operations (cg_store_ops.c)
 extern ocode_result_t handle_store_operations(ocode_context_t *ctx,
                                               ocode_op op);
 
-// Arithmetic operations (cg_arithmetic_operations.c)
+// Arithmetic operations (cg_arith_ops.c)
 extern ocode_result_t handle_arithmetic_operations(ocode_context_t *ctx,
                                                    ocode_op op) HOT_FUNCTION;
 
-// Logical operations (cg_logical_operations.c)
+// Logical operations (cg_logical_ops.c)
 extern ocode_result_t handle_logical_operations(ocode_context_t *ctx,
                                                 ocode_op op);
 
-// Comparison operations (cg_comparison_operations.c)
+// Comparison operations (cg_compare_ops.c)
 extern ocode_result_t handle_comparison_operations(ocode_context_t *ctx,
                                                    ocode_op op);
 
-// Control flow operations (cg_control_flow_operations.c)
+// Control flow operations (cg_ctrl_flow_ops.c)
 extern ocode_result_t handle_control_flow_operations(ocode_context_t *ctx,
                                                      ocode_op op);
 
-// Function operations (cg_function_operations.c)
+// Function operations (cg_func_ops.c)
 extern ocode_result_t handle_function_operations(ocode_context_t *ctx,
                                                  ocode_op op);
 
-// Memory operations (cg_memory_operations.c)
+// Memory operations (cg_memory_ops.c)
 extern ocode_result_t handle_memory_operations(ocode_context_t *ctx,
                                                ocode_op op);
 
-// Meta operations (cg_meta_operations.c)
+// Meta operations (cg_meta_ops.c)
 extern ocode_result_t handle_meta_operations(ocode_context_t *ctx,
                                              ocode_op op) COLD_FUNCTION;
 

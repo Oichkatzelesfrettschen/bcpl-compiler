@@ -13,8 +13,19 @@ from __future__ import annotations
 import filecmp
 import shutil
 from pathlib import Path
+import argparse
 
-REPO_ROOT = Path(__file__).resolve().parent
+parser = argparse.ArgumentParser(description="Clean up '* 2.*' duplicates")
+parser.add_argument(
+    "root",
+    nargs="?",
+    default=Path(__file__).resolve().parent,
+    type=Path,
+    help="Repository root containing files to scan",
+)
+args = parser.parse_args()
+
+REPO_ROOT = args.root.resolve()
 ARCHIVE_ROOT = REPO_ROOT / "archive" / "duplicates"
 
 
@@ -33,7 +44,7 @@ def find_duplicates() -> list[tuple[Path, Path]]:
     for p in REPO_ROOT.rglob("* 2.*"):
         if is_within_archive(p):
             continue
-        original = Path(str(p).replace(" 2.", ".", 1))
+        original = p.with_name(p.name.replace(" 2.", ".", 1))
         pairs.append((p, original))
     return pairs
 

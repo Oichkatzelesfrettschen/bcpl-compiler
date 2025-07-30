@@ -28,23 +28,40 @@ set(BCPL_BASE_C_FLAGS
 #   RelWithDebInfo : moderate optimization (O2) with debug symbols (g)
 #   Release        : optimized build (O2) without debug info
 # -----------------------------------------------------------------------------
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+# Normalize build type for single-config generators
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+    # Default to Release if build type is unspecified
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+endif()
+
+string(TOUPPER "${CMAKE_BUILD_TYPE}" _BCPL_BUILD_TYPE)
+
+if(CMAKE_CONFIGURATION_TYPES)
+    # Multi-config generator: use generator expressions
     list(APPEND BCPL_BASE_C_FLAGS
-        -g3      # Maximum debug information
-        -O0      # Disable optimization for easier debugging
-        -DDEBUG=1 -DBCPL_DEBUG=1
-    )
-elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    list(APPEND BCPL_BASE_C_FLAGS
-        -g       # Minimal debug information
-        -O2      # Balanced optimization level
-        -DNDEBUG=1
+        $<$<CONFIG:Debug>:-g3;-O0;-DDEBUG=1;-DBCPL_DEBUG=1>
+        $<$<CONFIG:RelWithDebInfo>:-g;-O2;-DNDEBUG=1>
+        $<$<CONFIG:Release>:-O2;-DNDEBUG=1>
     )
 else()
-    list(APPEND BCPL_BASE_C_FLAGS
-        -O2      # Default optimization level for production
-        -DNDEBUG=1
-    )
+    if(_BCPL_BUILD_TYPE STREQUAL "DEBUG")
+        list(APPEND BCPL_BASE_C_FLAGS
+            -g3      # Maximum debug information
+            -O0      # Disable optimization for easier debugging
+            -DDEBUG=1 -DBCPL_DEBUG=1
+        )
+    elseif(_BCPL_BUILD_TYPE STREQUAL "RELWITHDEBINFO")
+        list(APPEND BCPL_BASE_C_FLAGS
+            -g       # Minimal debug information
+            -O2      # Balanced optimization level
+            -DNDEBUG=1
+        )
+    else()
+        list(APPEND BCPL_BASE_C_FLAGS
+            -O2      # Default optimization level for production
+            -DNDEBUG=1
+        )
+    endif()
 endif()
 
 # -----------------------------------------------------------------------------

@@ -8,19 +8,7 @@
  * VALIDATES ELIMINATION OF:
  * ❌ Fragmented Makefile/CMake hybrid chaos
  * ❌ AppleClang vs Clang compatibility nightmares
- * ❌  // Run all cross-platform tests
-  if (test_cmake_ninja_integration())
-    tests_passed++;
-  if (test_architecture_detection())
-    tests_passed++;
-  if (test_architecture_compatibility())
-    tests_passed++;
-  if (test_compiler_compatibility())
-    tests_passed++;
-  if (test_build_system_integration())
-    tests_passed++;
-  if (test_cross_compilation_support())
-    tests_passed++;pecific build script proliferation
+ * ❌ Platform-specific build script proliferation
  * ❌ Cross-compilation configuration hell
  * ❌ Manual toolchain detection failures
  *
@@ -59,9 +47,6 @@
 #else
 #define BCPL_PLATFORM_UNKNOWN 1
 #endif
-
-// External test function declarations
-extern int test_architecture_compatibility(void);
 
 // ============================================================================
 // CROSS-PLATFORM VALIDATION FUNCTIONS
@@ -330,7 +315,7 @@ int main(void) {
   printf("Testing elimination of build system tech debt...\n\n");
 
   int tests_passed = 0;
-  int total_tests = 6;
+  int total_tests = 5;
 
   // Run all cross-platform tests
   if (test_platform_detection())
