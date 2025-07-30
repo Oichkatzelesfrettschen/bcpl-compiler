@@ -1,21 +1,45 @@
 #!/usr/bin/env python3
-"""Detect and clean duplicate files ending with the ' 2.*' pattern.
+"""Detect and clean duplicate files ending with the ``" 2.*"`` pattern.
 
-For each file matching ``* 2.*`` this script checks whether the original
-file (with the ``" 2"`` portion removed) exists.  If both files exist and are
-identical, the duplicate is removed.  If the contents differ or the original
-is missing, the duplicate is moved to ``archive/duplicates/`` preserving the
-relative directory structure.  Directories inside ``archive/duplicates`` are
-ignored while scanning to avoid infinite recursion.
+Usage
+-----
+```
+python cleanup_duplicates.py [--repo-root PATH]
+```
+
+``--repo-root`` sets the root directory to scan.  When omitted, the directory
+containing this script is used.  For each file matching ``* 2.*`` the script
+checks whether the original file (with the ``" 2"`` portion removed) exists.  If
+both files exist and are identical, the duplicate is removed.  If the contents
+diverge or the original is missing, the duplicate is moved to
+``archive/duplicates/`` preserving its relative directory structure.
+
+Directories inside ``archive/duplicates`` are ignored while scanning to avoid
+infinite recursion.
 """
 from __future__ import annotations
 
 import filecmp
 import shutil
+import argparse
+import os
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent
-ARCHIVE_ROOT = REPO_ROOT / "archive" / "duplicates"
+
+def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description="Remove duplicate files")
+    parser.add_argument(
+        "--repo-root",
+        type=Path,
+        default=Path(__file__).resolve().parents[0],
+        help="Root directory to scan (defaults to script location)",
+    )
+    return parser.parse_args()
+
+
+REPO_ROOT: Path
+ARCHIVE_ROOT: Path
 
 
 def is_within_archive(path: Path) -> bool:
@@ -30,11 +54,19 @@ def is_within_archive(path: Path) -> bool:
 def find_duplicates() -> list[tuple[Path, Path]]:
     """Return a list of (duplicate, original) file pairs."""
     pairs: list[tuple[Path, Path]] = []
-    for p in REPO_ROOT.rglob("* 2.*"):
-        if is_within_archive(p):
+    for dirpath, dirnames, filenames in os.walk(REPO_ROOT):
+        current = Path(dirpath)
+        if is_within_archive(current):
+            dirnames.clear()
             continue
-        original = Path(str(p).replace(" 2.", ".", 1))
-        pairs.append((p, original))
+        for name in filenames:
+            if " 2." not in name:
+                continue
+            p = current / name
+            if is_within_archive(p):
+                continue
+            original = current / name.replace(" 2.", ".", 1)
+            pairs.append((p, original))
     return pairs
 
 
@@ -62,6 +94,12 @@ def handle_pair(duplicate: Path, original: Path) -> None:
 
 
 def main() -> None:
+    args = parse_args()
+
+    global REPO_ROOT, ARCHIVE_ROOT
+    REPO_ROOT = args.repo_root.resolve()
+    ARCHIVE_ROOT = REPO_ROOT / "archive" / "duplicates"
+
     pairs = find_duplicates()
     print(f"Found {len(pairs)} duplicate files")
     for dup, orig in pairs:
