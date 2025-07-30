@@ -88,40 +88,43 @@ static int test_universal_file_operations(void) {
       "BCPL Modernization Test Data - Universal Platform Support";
 
   // Test file creation and writing
-  FILE *file = bcpl_platform_fopen(test_filename, "w");
+  bcpl_file_handle_t *file =
+      bcpl_platform_fopen(test_filename, 'w', false);
   if (!file) {
     printf("❌ Failed to create test file\n");
     return 0;
   }
 
-  size_t written = fwrite(test_data, 1, strlen(test_data), file);
+  size_t written = fwrite(test_data, 1, strlen(test_data),
+                          file->native_handle);
   if (written != strlen(test_data)) {
     printf("❌ Failed to write complete test data\n");
-    fclose(file);
+    bcpl_platform_fclose(file);
     return 0;
   }
 
-  fclose(file);
+  bcpl_platform_fclose(file);
   printf("✅ File creation and writing successful\n");
 
   // Test file reading
-  file = bcpl_platform_fopen(test_filename, "r");
+  file = bcpl_platform_fopen(test_filename, 'r', false);
   if (!file) {
     printf("❌ Failed to open test file for reading\n");
     return 0;
   }
 
   char read_buffer[256];
-  size_t read_bytes = fread(read_buffer, 1, sizeof(read_buffer) - 1, file);
+  size_t read_bytes = fread(read_buffer, 1, sizeof(read_buffer) - 1,
+                            file->native_handle);
   read_buffer[read_bytes] = '\0';
 
   if (strcmp(read_buffer, test_data) != 0) {
     printf("❌ Read data doesn't match written data\n");
-    fclose(file);
+    bcpl_platform_fclose(file);
     return 0;
   }
 
-  fclose(file);
+  bcpl_platform_fclose(file);
   printf("✅ File reading and data integrity verified\n");
 
   // Clean up
@@ -208,9 +211,9 @@ static int test_architecture_optimizations(void) {
     ((char *)src)[i] = (char)(i & 0xFF);
   }
 
-  // Test optimized copy
+  // Test memory copy via platform abstraction
   uint64_t start = bcpl_platform_get_time_ns();
-  bcpl_platform_memcpy_optimized(dst, src, test_size);
+  bcpl_platform_memcpy(dst, src, test_size);
   uint64_t end = bcpl_platform_get_time_ns();
 
   // Verify copy

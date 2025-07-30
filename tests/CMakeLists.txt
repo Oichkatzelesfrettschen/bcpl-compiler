@@ -33,89 +33,31 @@ include(Options)
 # MODERNIZATION VALIDATION TESTS
 # ============================================================================
 
-# Test 1: Runtime modernization validation
-add_executable(test_runtime_modernization
+set(TEST_SOURCES
     test_runtime.c
     test_platform_abstraction.c
     test_memory_safety.c
-)
-
-target_include_directories(test_runtime_modernization PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-    ${CMAKE_SOURCE_DIR}/src/runtime
-)
-
-target_link_libraries(test_runtime_modernization PRIVATE
-    bcpl_runtime
-)
-
-target_compile_definitions(test_runtime_modernization PRIVATE
-    BCPL_TEST_BUILD=1
-    BCPL_MODERNIZED=1
-)
-
-# Test 2: Cross-platform compatibility
-add_executable(test_platform_compatibility
     test_cross_platform.c
     test_architecture.c
-)
-
-target_include_directories(test_platform_compatibility PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-)
-
-target_link_libraries(test_platform_compatibility PRIVATE
-    bcpl_runtime
-)
-
-# Test 3: Performance validation
-add_executable(test_performance
     test_performance.c
-)
-
-target_include_directories(test_performance PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-)
-
-target_link_libraries(test_performance PRIVATE
-    bcpl_runtime
-)
-
-# Test 4: Assembly elimination validation
-add_executable(test_no_assembly
     test_assembly_elimination.c
 )
 
-target_include_directories(test_no_assembly PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/include
-)
-
-target_link_libraries(test_no_assembly PRIVATE
-    bcpl_runtime
-)
-
-# Apply tooling flags to each test executable
-apply_tooling_flags(test_runtime_modernization)
-apply_tooling_flags(test_platform_compatibility)
-apply_tooling_flags(test_performance)
-apply_tooling_flags(test_no_assembly)
-
-# ============================================================================
-# TEST EXECUTION
-# ============================================================================
-
-# Register all tests with CTest
-add_test(NAME runtime_modernization 
-         COMMAND test_runtime_modernization)
-
-add_test(NAME platform_compatibility 
-         COMMAND test_platform_compatibility)
-
-add_test(NAME performance_validation 
-         COMMAND test_performance)
-
-add_test(NAME assembly_elimination 
-         COMMAND test_no_assembly)
+foreach(src ${TEST_SOURCES})
+    get_filename_component(test_name ${src} NAME_WE)
+    add_executable(${test_name} ${src})
+    target_include_directories(${test_name} PRIVATE
+        ${CMAKE_SOURCE_DIR}/src/include
+        ${CMAKE_SOURCE_DIR}/src/runtime
+    )
+    target_compile_definitions(${test_name} PRIVATE
+        BCPL_TEST_BUILD=1
+        BCPL_MODERNIZED=1
+    )
+    target_link_libraries(${test_name} PRIVATE bcpl_runtime)
+    apply_tooling_flags(${test_name})
+    add_test(NAME ${test_name} COMMAND ${test_name})
+endforeach()
 
 # ============================================================================
 # INTEGRATION TESTS

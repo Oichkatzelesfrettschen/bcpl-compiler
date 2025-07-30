@@ -24,7 +24,7 @@ cd bcpl-compiler
 
 # Test with a simple program
 echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > hello.bcpl
-./build/Release/src/bcplc hello.bcpl
+./build/Release-native/src/bcplc hello.bcpl
 ./hello
 ```
 

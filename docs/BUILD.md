@@ -159,13 +159,13 @@ build/
 ```bash
 # Test the compiler with a simple program
 echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > test.bcpl
-./build/Release/src/bcplc test.bcpl
+./build/Release-native/src/bcplc test.bcpl
 ./test
 ```
 
 ### Run Test Suite
 ```bash
-cd build/Release
+cd build/Release-native
 ctest                          # Run all tests
 ctest -R unit                  # Run unit tests only
 ctest -R integration           # Run integration tests only
@@ -297,7 +297,7 @@ jobs:
     - name: Build
       run: ./build.sh Release ${{ matrix.arch }}
     - name: Test
-      run: cd build/Release && ctest
+      run: cd build/Release-${{ matrix.arch }} && ctest
 ```
 
 ## Custom Builds
