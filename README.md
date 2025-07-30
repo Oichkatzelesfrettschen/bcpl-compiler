@@ -44,24 +44,10 @@ configuration and build commands. It places artifacts under
 
 ## Building
 
-### Native Build
+### Example Invocations
 
 ```
-./scripts/makeall.sh        # build
-./scripts/makeall.sh install
-```
-
-Alternatively with CMake:
-
-```
-cmake -S . -B build -DCMAKE_INSTALL_PREFIX=/usr/local
-cmake --build build
-cmake --install build
-```
-
-### Architecture Specific
-
-```
+./build.sh                  # Release build for native architecture
 ./build.sh Release x86_64   # 64‑bit
 ./build.sh Release arm64    # ARM64
 ./build.sh Debug native     # Debug build
@@ -79,12 +65,7 @@ to verify the environment; 119 tests should pass without failure.
 
 ## Multi‑Architecture Builds
 
-The original Apple Silicon build experiments have been consolidated into a single workflow.  Example scripts remain under `scripts/` for reference:
-
-- `build_x86_64.sh` and `build_x86_64_safe.sh` – Rosetta based x86_64 builds
-- `verify_builds.sh` – non‑interactive validation of generated binaries
-
-These scripts demonstrate cross‑compilation setups and size/architecture checks for both ARM64 and x86_64 outputs.
+The original Apple Silicon build experiments have been consolidated into the unified `build.sh` workflow.  Legacy helper scripts remain in `archive/` for reference.
 
 ## Development Containers
 

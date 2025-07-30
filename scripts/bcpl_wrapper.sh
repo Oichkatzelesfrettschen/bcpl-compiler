@@ -50,11 +50,7 @@ EXECUTABLE="${BUILD_DIR}/${TOOL}"
 if [[ ! -f "$EXECUTABLE" ]]; then
     echo "❌ Executable not found: $EXECUTABLE"
     echo "   Run the appropriate build script first:"
-    if [[ "$ARCH" == "x86_64" ]]; then
-        echo "   ./build_x86_64.sh"
-    else
-        echo "   cd src && cmake . && make"
-    fi
+    echo "   ./build.sh Release $ARCH"
     exit 1
 fi
 

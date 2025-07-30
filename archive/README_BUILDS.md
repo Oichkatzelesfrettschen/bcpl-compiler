@@ -5,38 +5,22 @@ Successfully modernized and built the BCPL compiler for both ARM64 and x86_64 ar
 
 ## Build Status ✅
 
-### ARM64 Native Build
-- **Location**: `build_modern/`
-- **Architecture**: ARM64 (Apple Silicon native)
-- **Status**: ✅ Built successfully
-- **Executables**: 
-  - `cg`: 52K (ARM64)
-  - `op`: 51K (ARM64)
+### Example Build Outputs
+- **ARM64**: `build/Release/src/bcplc` (Mach-O arm64)
+- **x86_64**: `build/Release/src/bcplc` (Mach-O x86_64 under Rosetta)
 
-### x86_64 Rosetta Build  
-- **Location**: `build_x86_64/`
-- **Architecture**: x86_64 (Intel compatibility via Rosetta)
-- **Status**: ✅ Built successfully
-- **Executables**:
-  - `cg`: 31K (x86_64)
-  - `op`: 19K (x86_64)
+## Unified Build Script
 
-## Build Scripts
+All architectures can now be built with the single `build.sh` helper at the
+repository root:
 
-### 1. x86_64 Rosetta Build
 ```bash
-./build_x86_64.sh [Release|Debug]
+./build.sh Release arm64   # ARM64 build
+./build.sh Release x86_64  # x86_64 build (Rosetta on macOS)
 ```
-- Uses x86_64 Homebrew CMake and GNU Make
-- Builds with Rosetta emulation for Intel compatibility
-- Safe testing without hanging
 
-### 2. Safe x86_64 Build (Alternative)
-```bash
-./build_x86_64_safe.sh [Release|Debug]
-```
-- Same as above but with extra safety measures
-- No execution testing to prevent hanging
+The script wraps CMake and accepts both the build type and target architecture
+as arguments.
 
 ### 3. Verification Script
 ```bash
@@ -55,9 +39,9 @@ The BCPL compiler executables (`cg` and `op`) expect specific input formats and 
 - Provide size and permission information instead
 
 ### Safe Testing Methods
-1. **Architecture verification**: `file build_x86_64/cg build_x86_64/op`
-2. **Size check**: `ls -la build_x86_64/`
-3. **Lipo info**: `lipo -info build_x86_64/cg`
+1. **Architecture verification**: `file build/Release/src/bcplc`
+2. **Size check**: `du -sh build/Release`
+3. **Lipo info** (macOS): `lipo -info build/Release/src/bcplc`
 4. **Comprehensive check**: `./verify_builds.sh`
 
 ## Tools Setup
@@ -90,11 +74,11 @@ The BCPL compiler executables (`cg` and `op`) expect specific input formats and 
 
 ## Usage Examples
 
-### Building for x86_64
+### Example Usage
 ```bash
-# Clean build
-rm -rf build_x86_64
-./build_x86_64.sh Release
+# Clean build directory
+rm -rf build/Release
+./build.sh Release x86_64
 
 # Verify
 ./verify_builds.sh
@@ -102,30 +86,27 @@ rm -rf build_x86_64
 
 ### Architecture Comparison
 ```bash
-# Check both builds
-file build_modern/cg build_x86_64/cg
-# Output:
-# build_modern/cg: Mach-O 64-bit executable arm64
-# build_x86_64/cg: Mach-O 64-bit executable x86_64
+# Compare architectures
+file build/Release/src/bcplc
+# Output example:
+# build/Release/src/bcplc: Mach-O 64-bit executable x86_64
 ```
 
-### Running with Specific Architecture
+### Running
 ```bash
-# ARM64 native
-./build_modern/cg < input.bcpl
+# Native execution
+./build/Release/src/bcplc < input.bcpl
 
-# x86_64 via Rosetta  
-arch -x86_64 ./build_x86_64/cg < input.bcpl
+# Rosetta on macOS
+arch -x86_64 ./build/Release/src/bcplc < input.bcpl
 ```
 
 ## File Structure
 ```
 bcpl-compiler/
-├── build_modern/          # ARM64 native build
-├── build_x86_64/          # x86_64 Rosetta build
-├── src/                   # Source code with C23 runtime
-├── build_x86_64.sh       # x86_64 build script
-├── build_x86_64_safe.sh  # Safe x86_64 build script
+├── build/Release/        # Build output
+├── src/                  # Source code with C23 runtime
+├── build.sh              # Unified build script
 ├── verify_builds.sh      # Non-hanging verification
 ├── test_bcpl.sh          # BCPL test suite (WIP)
 └── README_BUILDS.md      # This file
