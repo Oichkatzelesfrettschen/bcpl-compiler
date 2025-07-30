@@ -86,7 +86,7 @@ These scripts demonstrate cross‑compilation setups and size/architecture check
 
 ## Development Containers
 
-Preconfigured dev containers are provided for Ubuntu 24.04 LTS and Debian Sid.  Use `./select-devcontainer.sh <ubuntu|debian>` and open the repository in VS Code to work inside a fully provisioned environment.
+Preconfigured dev containers are provided for Ubuntu 24.04 LTS and Debian Sid. A single `.devcontainer` directory holds templates for both. Run `./select-devcontainer.sh <ubuntu|debian>` to switch the symlinks before reopening the folder in VS Code.
 
 ## Documentation
 

@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-# Run the main setup script so the dev container has all dependencies
-cd "$(dirname "$0")/../.."
-./setup.sh

@@ -57,13 +57,8 @@ This directory contains the **bleeding-edge** development container configuratio
 ## Getting Started
 
 ### Option 1: Use as Primary Container
-1. **Rename directories**: 
-   ```bash
-   mv .devcontainer .devcontainer-ubuntu
-   mv .devcontainer-debian .devcontainer
-   ```
-2. **Open in VS Code**: Use "Reopen in Container"
-3. **Wait for setup**: Container will install all packages
+Use `../select-devcontainer.sh debian` from the repository root to activate this
+configuration, then reopen the folder in VS Code.
 
 ### Option 2: Use as Secondary Container
 1. **Open specific container**: Use Command Palette → "Dev Containers: Reopen in Container"
@@ -72,8 +67,8 @@ This directory contains the **bleeding-edge** development container configuratio
 
 ### Option 3: Manual Build
 ```bash
-cd .devcontainer-debian
-docker build -t bcpl-debian-sid .
+cd .devcontainer
+docker build -f Dockerfile.debian -t bcpl-debian-sid .
 docker run -it --mount type=bind,source="$(pwd)/..",target=/workspace bcpl-debian-sid
 ```
 
