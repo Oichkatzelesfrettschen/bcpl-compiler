@@ -5,7 +5,7 @@
 set -e  # Exit on any error
 
 ARCHIVE_DIR="archive"
-PROJECT_ROOT="/Users/eirikr/Documents/GitHub/bcpl-compiler"
+PROJECT_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
 
 echo "=== BCPL Compiler Project Reorganization ==="
 echo "Starting reorganization at: $(date)"

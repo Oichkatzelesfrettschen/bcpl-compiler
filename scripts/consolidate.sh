@@ -5,7 +5,7 @@
 
 set -e
 
-PROJECT_ROOT="/Users/eirikr/Documents/GitHub/bcpl-compiler"
+PROJECT_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
 cd "$PROJECT_ROOT"
 
 echo "=== BCPL Compiler Project Final Consolidation ==="
