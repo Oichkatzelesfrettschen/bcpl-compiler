@@ -9,6 +9,8 @@ This repository contains a modernized distribution of the classic **BCPL** compi
 - **C23 Runtime**: memory-safe and thread-friendly implementation.
 - **Optimization Scripts**: advanced Clang/LLVM optimizations including ThinLTO and PGO.
 - **Legacy Compatibility**: supports historic BCPL sources out of the box.
+- **Performance Optimized**: modern compile-time and runtime performance enhancements.
+- **Standards Compliant**: adheres to the official BCPL language specification.
 
 ## Quick Start
 
@@ -88,6 +90,22 @@ These scripts demonstrate cross‑compilation setups and size/architecture check
 
 Preconfigured dev containers are provided for Ubuntu 24.04 LTS and Debian Sid. A single `.devcontainer` directory holds templates for both. Run `./select-devcontainer.sh <ubuntu|debian>` to switch the symlinks before reopening the folder in VS Code.
 
+## Project Structure
+
+```
+bcpl-compiler/
+├── CMakeLists.txt        # Build configuration
+├── build.sh             # Unified build script
+├── src/                 # Source code
+│   ├── compiler/        # Compiler components
+│   ├── runtime/         # C23 runtime system
+│   ├── arch/            # Architecture-specific code
+│   └── include/         # Header files
+├── tests/               # Test suite
+├── docs/                # Documentation
+└── archive/             # Archived historical files
+```
+
 ## Documentation
 
 Additional guides are available in the `docs/` directory:
@@ -96,6 +114,32 @@ Additional guides are available in the `docs/` directory:
 - `BUILD_OPTIMIZATION.md` – comprehensive optimization guide
 - `OPTIMIZATION_QUICK_REFERENCE.md` – quick reference for build flags
 - `MODERNIZATION.md` – overview of the C23 modernization effort
+
+## Contributing
+
+1. Fork the repository and create a feature branch.
+2. Make your changes and test thoroughly.
+3. Commit with clear messages and open a Pull Request.
+
+### Development Guidelines
+
+- Follow C23 standards.
+- Maintain compatibility with the original BCPL sources.
+- Add tests for new features and update documentation.
+- Use consistent formatting via `clang-format`.
+## Roadmap
+
+- [x] C23 runtime modernization
+- [x] Multi-architecture support
+- [x] Cross-platform builds
+- [ ] IDE integration (LSP server)
+- [ ] WebAssembly target
+- [ ] Enhanced debugging support
+
+## Bug Reports
+
+Please open issues on GitHub with your platform, architecture, compiler version, and a minimal reproduction case.
+
 
 ## Repository Maintenance
 
