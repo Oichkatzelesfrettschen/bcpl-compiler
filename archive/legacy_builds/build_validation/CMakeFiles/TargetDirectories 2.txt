@@ -1,5 +1,0 @@
-/Users/eirikr/Documents/GitHub/bcpl-compiler/build_validation/CMakeFiles/bcpl_modern_cg.dir
-/Users/eirikr/Documents/GitHub/bcpl-compiler/build_validation/CMakeFiles/test_bcpl_modern.dir
-/Users/eirikr/Documents/GitHub/bcpl-compiler/build_validation/CMakeFiles/test.dir
-/Users/eirikr/Documents/GitHub/bcpl-compiler/build_validation/CMakeFiles/edit_cache.dir
-/Users/eirikr/Documents/GitHub/bcpl-compiler/build_validation/CMakeFiles/rebuild_cache.dir
