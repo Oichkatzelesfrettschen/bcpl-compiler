@@ -24,6 +24,7 @@ import shutil
 import argparse
 import os
 from pathlib import Path
+import argparse
 
 
 def parse_args() -> argparse.Namespace:
@@ -40,6 +41,18 @@ def parse_args() -> argparse.Namespace:
 
 REPO_ROOT: Path
 ARCHIVE_ROOT: Path
+parser = argparse.ArgumentParser(description="Clean up '* 2.*' duplicates")
+parser.add_argument(
+    "root",
+    nargs="?",
+    default=Path(__file__).resolve().parent,
+    type=Path,
+    help="Repository root containing files to scan",
+)
+args = parser.parse_args()
+
+REPO_ROOT = args.root.resolve()
+ARCHIVE_ROOT = REPO_ROOT / "archive" / "duplicates"
 
 
 def is_within_archive(path: Path) -> bool:
@@ -67,6 +80,8 @@ def find_duplicates() -> list[tuple[Path, Path]]:
                 continue
             original = current / name.replace(" 2.", ".", 1)
             pairs.append((p, original))
+        original = p.with_name(p.name.replace(" 2.", ".", 1))
+        pairs.append((p, original))
     return pairs
 
 

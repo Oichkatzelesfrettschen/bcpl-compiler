@@ -29,7 +29,7 @@
 ## Final Structure
 
 ```
-/Users/eirikr/Documents/GitHub/bcpl-compiler
+<PROJECT_ROOT>
 ├── CHANGES
 ├── CMakeLists.txt
 ├── CMakePresets.json
