@@ -2,6 +2,8 @@
 
 This directory contains the development container configuration for the BCPL Compiler project, providing a consistent Ubuntu 24.04 development environment.
 
+Use `../select-devcontainer.sh ubuntu` from the repository root to ensure the Ubuntu configuration is active.
+
 ## What's Included
 
 ### Development Tools
