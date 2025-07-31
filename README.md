@@ -28,6 +28,18 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > hello.bcpl
 ./hello
 ```
 
+### Standalone Driver
+
+The repository includes a minimal `bcplc_driver` utility used for
+demonstrations. It defaults to finding the compiler components under
+`build_c23/src`. Use the `-b` option or set the `BCPLC_BUILD_DIR`
+environment variable to override this directory:
+
+```bash
+BCPLC_BUILD_DIR=build/Debug/src ./bcplc_driver -b build/Release/src hello.bcpl
+```
+
+
 ## Build Requirements
 
 Ensure the following tools are installed:
