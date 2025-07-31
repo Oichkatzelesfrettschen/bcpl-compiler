@@ -10,8 +10,10 @@ tools/*.o
 src/st
 src/cg
 src/op
-tools/*
-!tools/CMakeLists.txt
+# Ignore generated binaries in tools/
+tools/cmpltest
+tools/xref
+tools/gpm
 build/
 
 # Misc temporary files
