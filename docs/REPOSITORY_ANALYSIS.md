@@ -72,3 +72,14 @@ The complete report is available in `/tmp/lizard_report.txt`.
 ## Checksum Manifest
 
 A SHA-256 checksum manifest of all files was generated and saved to `/tmp/sha256sums.txt`.
+
+## Duplicate Cleanup
+
+The `cleanup_duplicates.py` script reported no issues, but manual inspection revealed leftover files ending in `2` from previous build runs. The following items were removed:
+
+- `util/Makefile 2`
+- `build_test/Makefile 2`
+- `build_test/CMakeFiles/Progress/* 2`
+- `builds/build_test 2`
+
+These duplicates were either identical to existing files or generated during temporary build processes, so deleting them leaves one clear canonical version.
