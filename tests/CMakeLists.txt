@@ -39,6 +39,7 @@ set(TEST_SOURCES
     test_runtime.c
     test_platform_abstraction.c
     test_memory_safety.c
+    test_memory.c
     test_architecture.c
     test_performance.c
     test_assembly_elimination.c
@@ -89,12 +90,12 @@ add_test(NAME compiler_integration
                  --target all)
 
 # Test BCPL compilation with modernized runtime
-if(EXISTS ${CMAKE_SOURCE_DIR}/test_hello.bcpl)
+if(EXISTS ${CMAKE_SOURCE_DIR}/test_hello.bcpl AND EXISTS ${CMAKE_BINARY_DIR}/src/bcplc)
     add_test(NAME bcpl_compilation
-             COMMAND ${CMAKE_BINARY_DIR}/src/bcplc 
+             COMMAND ${CMAKE_BINARY_DIR}/src/bcplc
                      ${CMAKE_SOURCE_DIR}/test_hello.bcpl
              WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-    
+
     set_tests_properties(bcpl_compilation PROPERTIES
         DEPENDS compiler_integration)
 endif()
