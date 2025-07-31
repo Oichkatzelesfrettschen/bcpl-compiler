@@ -47,6 +47,8 @@ Ensure the following tools are installed:
 - `clang` and `cmake`
 - `make` or `ninja`
 - `binutils`, `gcc-multilib`, and `qemu` for cross builds
+- Python 3 with `pip`; install dependencies with
+  `pip install -r requirements.txt`
 
 Running `./setup.sh` installs all dependencies along with an IA‑16 toolchain.
 
@@ -155,6 +157,16 @@ Additional guides are available in the `docs/` directory:
 - [ ] IDE integration (LSP server)
 - [ ] WebAssembly target
 - [ ] Enhanced debugging support
+
+## Python Utilities
+
+Several helper scripts, including `cleanup_duplicates.py` and `download_xerox_bcpl.py`,
+require a few Python packages. Install them once per checkout before running any
+Python utilities:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Bug Reports
 
