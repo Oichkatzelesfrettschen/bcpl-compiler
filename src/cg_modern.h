@@ -1,20 +1,7 @@
 /**
  * @file cg_modern.h
  * @brief Modern C23 BCPL code generator architecture definitions
- * @author BCPL Compiler Modernizatio  // Stack management (for load operations)
-  struct {
-    int pointer;           ///< Current stack pointer
-    int evaluation_depth;  ///< Evaluation stack depth
-    int stack_pointer;     ///< Runtime stack pointer
-    int data_table_ptr;    ///< Data table pointer
-  } stack;
-
-  // Operation state
-  struct {
-    bool readonly_mode; ///< Read-only operation flag
-    int return_code;    ///< Current return code
-    int operands[3];    ///< Cached operand values
-  } operation;m
+ * @author BCPL Compiler Modernization Team
  * @date 2025
  * @copyright Copyright (c) 2025 BCPL Compiler Team. All rights reserved.
  *
@@ -23,7 +10,7 @@
  * that embodies the Lions philosophy of beautiful, readable systems code.
  *
  * "The best programs are written not just for computers to execute,
- * but for humans to read and understand." - John Lions
+ *  but for humans to read and understand." - John Lions
  */
 
 #pragma once
