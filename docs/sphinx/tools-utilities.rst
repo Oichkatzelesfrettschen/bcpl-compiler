@@ -231,11 +231,11 @@ Usage Examples
 **Development Workflow**
    .. code-block:: bash
    
-      # Set up development environment
-      ./setup.sh
+       # Set up development environment
+       ./scripts/setup.sh
       
-      # Build everything
-      ./makeall.sh
+       # Build everything
+       ./scripts/makeall.sh
       
       # Run tests
       bcpl cmpltest.bcpl

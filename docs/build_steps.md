@@ -7,7 +7,7 @@ all required packages (compilers, emulators, analysis tools such as `valgrind`,
 
 1. **Run the setup script**
    ```sh
-   sudo ./setup.sh
+   sudo ./scripts/setup.sh
    ```
    The script enables additional package repositories, installs a wide array of
    developer tools and instrumentations, then configures multi‑architecture

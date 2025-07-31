@@ -50,7 +50,7 @@ Ensure the following tools are installed:
 - Python 3 with `pip`; install dependencies with
   `pip install -r requirements.txt`
 
-Running `./setup.sh` installs all dependencies along with an IA‑16 toolchain.
+Running `scripts/setup.sh` installs all dependencies along with an IA‑16 toolchain.
 
 For convenience, a `build.sh` helper script wraps the standard CMake
 configuration and build commands. It places artifacts under
