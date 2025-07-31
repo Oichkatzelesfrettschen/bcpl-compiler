@@ -1,81 +1,126 @@
 #!/usr/bin/env python3
-"""
-Script to remove duplicate files with " 2" pattern and restore proper multi-arch structure
-"""
+"""Detect and clean duplicate files ending with the ``" 2.*"`` pattern.
 
+Usage
+-----
+```
+python cleanup_duplicates.py [--repo-root PATH]
+```
+
+``--repo-root`` sets the root directory to scan.  When omitted, the script
+attempts to locate the repository root using ``git`` and falls back to the
+directory containing the script.  For each file matching ``* 2.*`` the script
+checks whether the original file (with the ``" 2"`` portion removed) exists.  If
+both files exist and are identical, the duplicate is removed.  If the contents
+diverge or the original is missing, the duplicate is moved to
+``archive/duplicates/`` preserving its relative directory structure.
+
+Directories inside ``archive/duplicates`` are ignored while scanning to avoid
+infinite recursion.
+"""
+from __future__ import annotations
+
+import argparse
+import filecmp
 import os
-import sys
 import shutil
-import difflib
+from pathlib import Path
+import subprocess
 
-def main():
-    repo_root = "/Users/eirikr/Documents/GitHub/bcpl-compiler"
-    
-    # Find all files with " 2" pattern
-    duplicates = []
-    for root, dirs, files in os.walk(repo_root):
-        for file in files:
-            if " 2." in file:
-                full_path = os.path.join(root, file)
-                # Get the original file path
-                original_file = file.replace(" 2.", ".")
-                original_path = os.path.join(root, original_file)
-                duplicates.append((full_path, original_path))
-    
-    print(f"Found {len(duplicates)} duplicate files")
-    
-    for duplicate_path, original_path in duplicates:
-        print(f"\nProcessing: {duplicate_path}")
-        
-        # Check if both files exist
-        if os.path.exists(original_path) and os.path.exists(duplicate_path):
-            # Compare files
-            try:
-                with open(original_path, 'r', encoding='utf-8', errors='ignore') as f1:
-                    original_content = f1.read()
-                with open(duplicate_path, 'r', encoding='utf-8', errors='ignore') as f2:
-                    duplicate_content = f2.read()
-                
-                if original_content == duplicate_content:
-                    print(f"  ✓ Identical content - removing duplicate: {os.path.basename(duplicate_path)}")
-                    os.remove(duplicate_path)
-                else:
-                    print(f"  ⚠ Different content - manual review needed")
-                    print(f"    Original: {original_path}")
-                    print(f"    Duplicate: {duplicate_path}")
-                    
-                    # Show diff for small files
-                    if len(original_content) < 10000:
-                        diff = list(difflib.unified_diff(
-                            original_content.splitlines(keepends=True),
-                            duplicate_content.splitlines(keepends=True),
-                            fromfile=os.path.basename(original_path),
-                            tofile=os.path.basename(duplicate_path),
-                            n=3
-                        ))
-                        if diff:
-                            print("    Differences:")
-                            for line in diff[:20]:  # Show first 20 lines of diff
-                                print(f"    {line.rstrip()}")
-                            if len(diff) > 20:
-                                print(f"    ... ({len(diff) - 20} more lines)")
-                    
-                    # For now, remove the duplicate and keep original
-                    print(f"  → Keeping original, removing duplicate")
-                    os.remove(duplicate_path)
-                    
-            except Exception as e:
-                print(f"  ✗ Error comparing files: {e}")
-                # Remove duplicate anyway to clean up
-                os.remove(duplicate_path)
-        
-        elif os.path.exists(duplicate_path):
-            # Only duplicate exists, rename it to original
-            print(f"  → Moving duplicate to original location")
-            shutil.move(duplicate_path, original_path)
-        
+
+def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description="Remove duplicate files")
+    parser.add_argument(
+        "--repo-root",
+        type=Path,
+        help="Path to the repository root (auto-detected when omitted)",
+    )
+    return parser.parse_args()
+
+
+def detect_repo_root(script_dir: Path) -> Path:
+    """Return the repository root using ``git`` or ``script_dir`` as fallback."""
+    git_cmd = ["git", "-C", str(script_dir), "rev-parse", "--show-toplevel"]
+    try:
+        out = subprocess.run(git_cmd, check=True, capture_output=True, text=True)
+        return Path(out.stdout.strip())
+    except Exception:
+        return script_dir
+
+
+
+def is_within_archive(path: Path, archive_root: Path) -> bool:
+    """Return ``True`` if *path* is inside the duplicates archive."""
+    try:
+        path.resolve().relative_to(archive_root.resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def find_duplicates(repo_root: Path, archive_root: Path) -> list[tuple[Path, Path]]:
+    """Return a list of ``(duplicate, original)`` file pairs."""
+    pairs: list[tuple[Path, Path]] = []
+    archive_duplicates = archive_root
+    for dirpath, dirnames, filenames in os.walk(repo_root):
+        current = Path(dirpath)
+        if current.resolve() == archive_duplicates.resolve():
+            dirnames.clear()
+            continue
+        if is_within_archive(current, archive_root):
+            continue
+        for name in filenames:
+            if " 2." not in name:
+                continue
+            duplicate = current / name
+            if is_within_archive(duplicate, archive_root):
+                continue
+            original = current / name.replace(" 2.", ".", 1)
+            pairs.append((duplicate, original))
+    return pairs
+
+
+def move_to_archive(path: Path, repo_root: Path, archive_root: Path) -> None:
+    """Move *path* into the archive directory preserving its relative path."""
+    target = archive_root / path.relative_to(repo_root)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.move(str(path), target)
+
+
+def handle_pair(duplicate: Path, original: Path, repo_root: Path, archive_root: Path) -> None:
+    """Process a single duplicate/original pair."""
+    if original.exists() and duplicate.exists():
+        if filecmp.cmp(duplicate, original, shallow=False):
+            print(f"✓ Removing identical duplicate {duplicate}")
+            duplicate.unlink()
         else:
-            print(f"  ✗ Neither file exists anymore")
+            print(f"⚠ Moving differing duplicate {duplicate}")
+            move_to_archive(duplicate, repo_root, archive_root)
+    elif duplicate.exists():
+        print(f"→ Original missing; archiving {duplicate}")
+        move_to_archive(duplicate, repo_root, archive_root)
+    else:
+        print(f"✗ {duplicate} no longer exists")
+
+
+def main() -> None:
+    args = parse_args()
+
+    script_dir = Path(__file__).resolve().parent
+    repo_root = (args.repo_root or detect_repo_root(script_dir)).resolve()
+    if not repo_root.is_dir():
+        raise SystemExit(
+            f"Repository root '{repo_root}' does not exist or is not a directory"
+        )
+
+    archive_root = repo_root / "archive" / "duplicates"
+
+    pairs = find_duplicates(repo_root, archive_root)
+    print(f"Found {len(pairs)} duplicate files")
+    for dup, orig in pairs:
+        handle_pair(dup, orig, repo_root, archive_root)
+
 
 if __name__ == "__main__":
     main()

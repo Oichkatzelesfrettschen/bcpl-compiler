@@ -1,42 +1,33 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.20)
 
-# Ensure docs use the same architecture as the main build
-if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
-    set(CMAKE_OSX_ARCHITECTURES "x86_64")
-endif()
+# Documentation build configuration
 
-# Include centralized options
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
-include(Options)
-
-# Only generate docs if enabled
 if(NOT ENABLE_DOCS)
+    message(STATUS "Documentation generation disabled")
     return()
 endif()
 
-# Doxygen
 find_package(Doxygen REQUIRED)
-if(DOXYGEN_FOUND)
-    message(STATUS "Generating Doxygen documentation...")
-    set(DOXYFILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile)
-    set(DOXYFILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-    configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT} @ONLY)
-    add_custom_target(doxygen
-        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "Doxygen API docs"
-    )
-endif()
+find_package(Sphinx REQUIRED)
 
-# Sphinx
-find_program(SPHINX_EXECUTABLE NAMES sphinx-build)
-if(SPHINX_EXECUTABLE)
-    message(STATUS "Generating Sphinx HTML documentation...")
-    add_custom_target(sphinx-docs
-        COMMAND ${SPHINX_EXECUTABLE} -b html ${CMAKE_CURRENT_SOURCE_DIR}/sphinx ${CMAKE_CURRENT_BINARY_DIR}/sphinx_html
-        COMMENT "Sphinx docs"
-    )
-endif()
+# Doxygen configuration
+set(DOXYGEN_IN ${CMAKE_SOURCE_DIR}/Doxyfile)
+set(DOXYGEN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/doxygen)
 
-# Install docs
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION share/doc/BCPL)
+add_custom_target(doc_doxygen
+    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_IN}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Generating API documentation with Doxygen"
+)
+
+# Sphinx configuration
+set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/sphinx)
+set(SPHINX_BUILD  ${CMAKE_CURRENT_BINARY_DIR}/sphinx)
+
+add_custom_target(doc_sphinx
+    COMMAND ${SPHINX_EXECUTABLE} -b html ${SPHINX_SOURCE} ${SPHINX_BUILD}/html
+    DEPENDS doc_doxygen
+    COMMENT "Generating developer documentation with Sphinx"
+)
+
+add_custom_target(doc ALL DEPENDS doc_doxygen doc_sphinx)

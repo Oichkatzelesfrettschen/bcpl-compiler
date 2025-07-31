@@ -3,6 +3,7 @@
 ## Project Overview
 Modern BCPL compiler with C23 runtime and multi-architecture support.
 
+The modernization effort is ongoing. Major components build, but duplicate files and complex functions still need cleanup and refactoring.
 ## Current Structure Status
 
 ### ✅ Core Components
@@ -121,4 +122,4 @@ The following files have been moved to `archive/` to reduce duplication:
 - **Build System**: Simple, unified build process
 - **Testing**: Automated validation across platforms
 
-This project has successfully modernized from a legacy assembly-based BCPL compiler to a state-of-the-art C23 implementation while maintaining 100% compatibility with original BCPL programs.
+While the modernization is well underway, duplicate cleanup and function refactoring remain before final completion.

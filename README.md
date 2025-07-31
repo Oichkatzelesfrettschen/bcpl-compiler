@@ -1,15 +1,25 @@
 # BCPL Compiler
 
-A modernized BCPL (Basic Combined Programming Language) compiler with multi-architecture support and C23 runtime.
+This repository contains a modernized distribution of the classic **BCPL** compiler with multi-architecture support and a fully portable C23 runtime.  The project builds on the original work of Martin Richards and includes additional tooling and documentation for contemporary development environments.
 
-## 🚀 Quick Start
+## Features
+
+- **Multi-Architecture**: build for `x86_64`, `arm64`, and experimental `x86_16` targets.
+- **Cross‑Platform**: Linux, macOS, Windows, and FreeBSD.
+- **C23 Runtime**: memory-safe and thread-friendly implementation.
+- **Optimization Scripts**: advanced Clang/LLVM optimizations including ThinLTO and PGO.
+- **Legacy Compatibility**: supports historic BCPL sources out of the box.
+- **Performance Optimized**: modern compile-time and runtime performance enhancements.
+- **Standards Compliant**: adheres to the official BCPL language specification.
+
+## Quick Start
 
 ```bash
-# Clone the repository
+# Clone
 git clone https://github.com/eirikr/bcpl-compiler.git
 cd bcpl-compiler
 
-# Build the compiler
+# Build the compiler (native release)
 ./build.sh
 
 # Test with a simple program
@@ -18,226 +28,180 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > hello.bcpl
 ./hello
 ```
 
-## 📋 Features
+### Standalone Driver
 
-- **Multi-Architecture Support**: x86_64, ARM64, x86_32, ARM32, x86_16
-- **Cross-Platform**: Linux, macOS, FreeBSD, Windows
-- **Modern C23 Runtime**: Memory-safe, thread-safe runtime system
-- **Legacy Compatibility**: Supports original BCPL programs
-- **Performance Optimized**: Advanced code generation and optimization
-- **Standards Compliant**: Follows BCPL language specification
+The repository includes a minimal `bcplc_driver` utility used for
+demonstrations. It defaults to finding the compiler components under
+`build_c23/src`. Use the `-b` option or set the `BCPLC_BUILD_DIR`
+environment variable to override this directory:
 
-## 🏗️ Build Requirements
-
-### Local Development
-- **CMake** 3.20 or later
-- **Clang** with C23 support (recommended) or GCC 9+
-- **Platform-specific tools**:
-  - Linux: build-essential
-  - macOS: Xcode Command Line Tools
-  - Windows: Visual Studio 2022
-
-### 🐳 Development Containers (Recommended)
-
-For the best development experience, use the provided dev containers:
-
-#### 🛡️ Ubuntu 24.04 LTS (Stable) - Recommended
 ```bash
-# Select Ubuntu container
-./select-devcontainer.sh ubuntu
-
-# Open in VS Code
-code .  # Then "Reopen in Container"
+BCPLC_BUILD_DIR=build/Debug/src ./bcplc_driver -b build/Release/src hello.bcpl
 ```
 
-- **Stability**: High reliability for production development
-- **C23 Support**: Good support with GCC/Clang
-- **Team Development**: Consistent environment across teams
-- **Tools**: GCC, Clang, CMake, Ninja, debugging tools
 
-#### 🧪 Debian Sid (Bleeding Edge) - For Advanced Users
-```bash
-# Select Debian Sid container
-./select-devcontainer.sh debian
+## Build Requirements
 
-# Open in VS Code
-code .  # Then "Reopen in Container"
+Ensure the following tools are installed:
+
+- `clang` and `cmake`
+- `make` or `ninja`
+- `binutils`, `gcc-multilib`, and `qemu` for cross builds
+- Python 3 with `pip`; install dependencies with
+  `pip install -r requirements.txt`
+
+Running `scripts/setup.sh` installs all dependencies along with an IA‑16 toolchain.
+
+For convenience, a `build.sh` helper script wraps the standard CMake
+configuration and build commands. It places artifacts under
+`build/<BuildType>` where *BuildType* defaults to `Release`.
+
+## Building
+
+### Example Invocations
+
+```
+./build.sh                  # Release build for native architecture
+./build.sh Release x86_64   # 64‑bit
+./build.sh Release arm64    # ARM64
+./build.sh Debug native     # Debug build
 ```
 
-- **Latest Packages**: GCC 14, latest Clang, cutting-edge tools
-- **Full C23/C++23**: Complete support for modern standards
-- **Experimental Features**: Access to bleeding-edge development tools
-- **Multiple Compilers**: Test with various toolchains
+### Using CMake Presets
 
-#### Container Features
-Both containers include:
-- **Complete toolchain**: Compilers, debuggers, analyzers
-- **Cross-compilation**: ARM, AARCH64, RISC-V support
-- **Package managers**: Conan 2.x, vcpkg
-- **VS Code integration**: Full debugging and IntelliSense
-- **Useful aliases**: `bcpl-build`, `cmake-configure`, `project_info`
+The refactored build system provides CMake presets for common
+configurations. Presets configure the build directory and appropriate
+options automatically:
 
-See the [Development Container Guide](.devcontainer/README.md) for detailed setup instructions.
-
-## 🔧 Building
-
-### Default Build
 ```bash
-./build.sh                    # Release build for native architecture
+cmake --preset default        # Release build using Ninja
+cmake --build --preset default
+
+cmake --preset debug          # Debug build with sanitizers
+cmake --build --preset debug
 ```
 
-### Architecture-Specific Builds
-```bash
-./build.sh Release x86_64     # x86_64 build
-./build.sh Release arm64      # ARM64 build
-./build.sh Debug native       # Debug build
+Set `BITS=32` (or `-DBITS=32`) for a 32‑bit runtime.  `BITS=16` enables the experimental IA‑16 backend.
+
+After installation run:
+
+```
+bcplc tools/cmpltest.bcpl
 ```
 
-### Advanced Build Options
-```bash
-# Custom build directory
-mkdir build-custom && cd build-custom
-cmake -DCMAKE_BUILD_TYPE=Release -DBCPL_TARGET_ARCH=x86_64 ..
-cmake --build . --parallel
+to verify the environment; 119 tests should pass without failure.
 
-# Cross-compilation (example for ARM64 on x86_64)
-cmake -DCMAKE_BUILD_TYPE=Release \
-      -DBCPL_TARGET_ARCH=arm64 \
-      -DCMAKE_C_COMPILER=clang \
-      -DCMAKE_C_FLAGS="--target=arm64-apple-macos11" ..
+### Running Tests
+
+The refactored `gencode()` implementation is covered by a dedicated unit
+test suite. After building, run:
+
+```bash
+cd build/Release
+ctest --output-on-failure
 ```
 
-## 📁 Project Structure
+The `bcpl_tests` target aggregates all unit tests including those for the
+refactored code generator.
+
+## Multi‑Architecture Builds
+
+The original Apple Silicon build experiments have been consolidated into the unified `build.sh` workflow.  Legacy helper scripts remain in `archive/` for reference.
+
+## Development Containers
+
+Preconfigured dev containers are provided for Ubuntu 24.04 LTS and Debian Sid. A single `.devcontainer` directory holds templates for both. Run `./select-devcontainer.sh <ubuntu|debian>` to switch the symlinks before reopening the folder in VS Code.
+
+## Project Structure
 
 ```
 bcpl-compiler/
-├── CMakeLists.txt              # Main build configuration
-├── build.sh                   # Unified build script
-├── src/                       # Source code
-│   ├── compiler/              # Compiler components
-│   │   ├── cg*.c             # Code generation (modular)
-│   │   ├── oc.c              # OCODE operations
-│   │   └── op.c              # Peephole optimizer
-│   ├── runtime/               # C23 runtime system
-│   │   ├── startup.c         # Program startup
-│   │   ├── memory.c          # Memory management
-│   │   ├── io.c              # I/O operations
-│   │   └── platform/         # Platform-specific code
-│   ├── arch/                  # Architecture-specific code
-│   │   ├── x86_64/           # x86_64 support
-│   │   ├── arm64/            # ARM64 support
-│   │   └── ...               # Other architectures
-│   └── include/               # Header files
-├── tests/                     # Test suite
-├── docs/                      # Documentation
-├── examples/                  # Example BCPL programs
-└── archive/                   # Archived duplicate files
+├── CMakeLists.txt        # Build configuration
+├── build.sh             # Unified build script
+├── src/                 # Source code
+│   ├── compiler/        # Compiler components
+│   ├── runtime/         # C23 runtime system
+│   ├── arch/            # Architecture-specific code
+│   └── include/         # Header files
+├── tests/               # Test suite
+├── docs/                # Documentation
+└── archive/             # Archived historical files
 ```
 
-## 🎯 Compiler Usage
+## Documentation
 
-### Basic Compilation
-```bash
-bcplc program.bcpl             # Compile to executable
-bcplc -c program.bcpl          # Compile to object file
-bcplc -S program.bcpl          # Generate assembly
-```
+Additional guides are available in the `docs/` directory:
 
-### Options
-- `-O`: Enable optimization
-- `-g`: Include debug information
-- `-m32/-m64`: Target 32-bit or 64-bit
-- `-v`: Verbose output
-- `--target=ARCH`: Cross-compile for architecture
+- `BUILD.md` – detailed build instructions
+- `BUILD_OPTIMIZATION.md` – comprehensive optimization guide
+- `OPTIMIZATION_QUICK_REFERENCE.md` – quick reference for build flags
+- `MODERNIZATION.md` – overview of the C23 modernization effort
 
-## 🧪 Testing
+## Contributing
 
-```bash
-# Run all tests
-cd build/Release && ctest
-
-# Run specific test categories
-ctest -R unit          # Unit tests
-ctest -R integration   # Integration tests
-ctest -R performance   # Performance tests
-```
-
-## 📚 Documentation
-
-- [Build Instructions](docs/BUILD.md) - Detailed build guide
-- [Modernization Guide](docs/MODERNIZATION.md) - C23 modernization details
-- [64-bit OCODE Modernization](docs/OCODE_64BIT_MODERNIZATION.md) - Modern OCODE system
-- [API Reference](docs/API.md) - Runtime API documentation
-- [Architecture Guide](docs/ARCHITECTURE.md) - Compiler architecture
-- [BCPL Language Reference](docs/LANGUAGE.md) - BCPL language specification
-
-## 🏛️ Architecture Support
-
-| Architecture | Status | Platforms | Notes |
-|--------------|--------|-----------|-------|
-| x86_64 | ✅ Full | Linux, macOS, Windows, FreeBSD | Primary target |
-| ARM64 | ✅ Full | Linux, macOS, Windows | Apple Silicon optimized |
-| x86_32 | ✅ Good | Linux, Windows, FreeBSD | Legacy support |
-| ARM32 | 🔄 Beta | Linux | Embedded systems |
-| x86_16 | 🔄 Beta | DOS/MASM | Historical interest |
-| RISC-V | 🚧 Planned | Linux | Future support |
-
-## 🚀 Performance
-
-The modernized compiler includes several performance improvements:
-
-- **40% faster compilation** compared to original
-- **Memory-safe runtime** with minimal overhead
-- **Advanced optimization** passes
-- **Parallel compilation** support
-- **Cross-platform consistency**
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and test thoroughly
-4. Commit with clear messages: `git commit -m "Add feature X"`
-5. Push and create a Pull Request
+1. Fork the repository and create a feature branch.
+2. Make your changes and test thoroughly.
+3. Commit with clear messages and open a Pull Request.
 
 ### Development Guidelines
 
-- Follow C23 standards
-- Maintain compatibility with original BCPL
-- Add tests for new features
-- Update documentation
-- Use consistent formatting (run `clang-format`)
-
-## 📜 License
-
-This project is licensed under the same terms as the original BCPL compiler.
-See [LICENSE](LICENSE) for details.
-
-## 🏆 Credits
-
-- **Original BCPL**: Martin Richards, University of Cambridge
-- **This Implementation**: Robert Nordier
-- **Modernization**: BCPL Compiler Team (2025)
-
-## 🐛 Bug Reports
-
-Please report issues on [GitHub Issues](https://github.com/eirikr/bcpl-compiler/issues) with:
-- Platform and architecture
-- Compiler version
-- Minimal reproduction case
-- Expected vs actual behavior
-
-## 📈 Roadmap
+- Follow C23 standards.
+- Maintain compatibility with the original BCPL sources.
+- Add tests for new features and update documentation.
+- Use consistent formatting via `clang-format`.
+## Roadmap
 
 - [x] C23 runtime modernization
 - [x] Multi-architecture support
 - [x] Cross-platform builds
-- [x] 64-bit OCODE modernization
 - [ ] IDE integration (LSP server)
 - [ ] WebAssembly target
-- [ ] Package manager integration
 - [ ] Enhanced debugging support
 
----
+## Python Utilities
 
-*"BCPL is the language that spawned C, which spawned the modern computing world. This modernization honors that legacy while embracing the future."*
+Several helper scripts, including `cleanup_duplicates.py` and `download_xerox_bcpl.py`,
+require a few Python packages. Install them once per checkout before running any
+Python utilities:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Bug Reports
+
+Please open issues on GitHub with your platform, architecture, compiler version, and a minimal reproduction case.
+
+
+## Repository Maintenance
+
+Duplicate configuration files occasionally surface during merges.  Run
+`cleanup_duplicates.py` from anywhere inside the repository to automatically
+remove identical copies and archive differing `2.*` variants under
+`archive/duplicates/`.  The script determines the repository root via `git`
+and falls back to its own location if necessary.  An explicit path may still be
+provided for unconventional layouts:
+
+```bash
+python3 cleanup_duplicates.py --repo-root /path/to/bcpl-compiler
+```
+
+## Project Reorganization
+
+The `scripts/reorganize.sh` script tidies legacy files into the `archive/`
+directory and generates a summary. Like `cleanup_duplicates.py`, it detects the
+repository root with `git` so you can invoke it from any working directory:
+
+```bash
+bash scripts/reorganize.sh
+```
+
+## License
+
+This project retains the license terms of the original BCPL distribution.  See [LICENSE](LICENSE) for details.
+
+## Credits
+
+- **Original BCPL** – Martin Richards, University of Cambridge
+- **Port and Modernization** – Robert Nordier and contributors
+

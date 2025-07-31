@@ -33,9 +33,9 @@ For automated installation on supported platforms:
     git clone https://github.com/example/bcpl-compiler.git
     cd bcpl-compiler
 
-    # Automated build and install
-    ./scripts/makeall.sh
-    sudo ./scripts/makeall.sh install
+    # Build and install using the unified script
+    ./build.sh
+    sudo cmake --install build/Release
 
 Manual Build Process
 -------------------

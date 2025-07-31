@@ -1,5 +1,6 @@
 {
   "files.associations": {
     "ios": "cpp"
-  }
+  },
+  "cmake.sourceDirectory": "C:/Users/ericj/OneDrive/Documents/GitHub/bcpl-compiler/docs"
 }

@@ -27,12 +27,7 @@
 #include <time.h>
 
 // Include our modernized platform abstraction
-#ifdef BCPL_MODERNIZED
 #include "universal_platform.h"
-#else
-#include "platform.h"
-#endif
-
 // ============================================================================
 // PLATFORM ABSTRACTION VALIDATION TESTS
 // ============================================================================
@@ -94,13 +89,11 @@ static int test_universal_file_operations(void) {
     return 0;
   }
 
-  // Write test data character by character
-  for (size_t i = 0; i < strlen(test_data); i++) {
-    if (bcpl_platform_fputc(test_data[i], file) < 0) {
-      printf("❌ Failed to write test data\n");
-      bcpl_platform_fclose(file);
-      return 0;
-    }
+  size_t written = fwrite(test_data, 1, strlen(test_data), file->native_handle);
+  if (written != strlen(test_data)) {
+    printf("❌ Failed to write complete test data\n");
+    bcpl_platform_fclose(file);
+    return 0;
   }
 
   bcpl_platform_fclose(file);
@@ -114,21 +107,16 @@ static int test_universal_file_operations(void) {
   }
 
   char read_buffer[256];
-  size_t read_bytes = 0;
-  int ch;
-  while ((ch = bcpl_platform_fgetc(file)) >= 0 &&
-         read_bytes < sizeof(read_buffer) - 1) {
-    read_buffer[read_bytes++] = (char)ch;
-  }
+  size_t read_bytes = fread(read_buffer, 1, sizeof(read_buffer) - 1, file->native_handle);
   read_buffer[read_bytes] = '\0';
 
-  if (strcmp(read_buffer, test_data) != 0) {
-    printf("❌ Read data doesn't match written data\n");
-    bcpl_platform_fclose(file);
-    return 0;
-  }
+    if (strcmp(read_buffer, test_data) != 0) {
+      printf("❌ Read data doesn't match written data\n");
+      bcpl_platform_fclose(file);
+      return 0;
+    }
 
-  bcpl_platform_fclose(file);
+    bcpl_platform_fclose(file);
   printf("✅ File reading and data integrity verified\n");
 
   // Clean up
@@ -283,7 +271,7 @@ static int test_thread_safety(void) {
 // MAIN TEST RUNNER
 // ============================================================================
 
-int test_platform_abstraction_suite(void) {
+int run_test_platform_abstraction(void) {
   printf("\n🚀 BCPL PLATFORM ABSTRACTION VALIDATION SUITE\n");
   printf("==============================================\n");
   printf("Testing complete elimination of platform-specific tech debt...\n\n");

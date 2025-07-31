@@ -13,6 +13,11 @@ src/op
 # tools/* # Commented out to avoid ignoring essential tool source files if any; specific executables should be listed
 !tools/CMakeLists.txt # Keep this
 # build/ # This is too general if there are legitimate 'build' named source dirs. Specific build output dirs are better.
+# Ignore generated binaries in tools/
+tools/cmpltest
+tools/xref
+tools/gpm
+build/
 
 # Misc temporary files
 *~

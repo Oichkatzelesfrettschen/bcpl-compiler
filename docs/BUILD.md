@@ -74,7 +74,23 @@ The project includes a unified build script that handles all configurations:
 ./build.sh Release native     # Release build for current system
 ```
 
-### Method 2: Direct CMake
+### Method 2: CMake Presets
+
+The new build system provides CMake presets that encapsulate
+common configurations. Presets create their own build directories
+and enable the appropriate options automatically.
+
+```bash
+# Configure and build using the default preset
+cmake --preset default
+cmake --build --preset default
+
+# Debug build with sanitizers
+cmake --preset debug
+cmake --build --preset debug
+```
+
+### Method 3: Direct CMake
 
 For more control over the build process:
 
@@ -91,7 +107,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
 cmake --build . --parallel
 ```
 
-### Method 3: Cross-Compilation
+### Method 4: Cross-Compilation
 
 Example cross-compilation for different architectures:
 
@@ -164,12 +180,13 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > test.bcpl
 ```
 
 ### Run Test Suite
+The `gencode()` refactor introduced a consolidated unit-test driver
+named `bcpl_tests`.
+Run the suite from your build directory:
+
 ```bash
 cd build/Release
-ctest                          # Run all tests
-ctest -R unit                  # Run unit tests only
-ctest -R integration           # Run integration tests only
-ctest --verbose                # Verbose output
+ctest --output-on-failure       # Execute all unit and integration tests
 ```
 
 ## Performance Optimization

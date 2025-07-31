@@ -10,11 +10,16 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <getopt.h>
 
 #define MAX_ARGS 64
 #define MAX_PATH 1024
 
-static char build_dir[] = "build_c23/src";
+static char build_dir[MAX_PATH] = "build_c23/src";
+
+static void usage(const char *prog) {
+  printf("Usage: %s [-b build_dir] <source.bcpl> [output]\n", prog);
+}
 
 int run_command(char *cmd, char **args) {
   pid_t pid = fork();
@@ -60,8 +65,28 @@ int compile_bcpl(const char *source_file, const char *output_file) {
 }
 
 int main(int argc, char *argv[]) {
-  if (argc < 2) {
-    printf("Usage: %s <source.bcpl> [output]\n", argv[0]);
+  const char *env_dir = getenv("BCPLC_BUILD_DIR");
+  if (env_dir && *env_dir) {
+    strncpy(build_dir, env_dir, sizeof(build_dir) - 1);
+    build_dir[sizeof(build_dir) - 1] = '\0';
+  }
+
+  int opt;
+  while ((opt = getopt(argc, argv, "b:h")) != -1) {
+    switch (opt) {
+    case 'b':
+      strncpy(build_dir, optarg, sizeof(build_dir) - 1);
+      build_dir[sizeof(build_dir) - 1] = '\0';
+      break;
+    case 'h':
+    default:
+      usage(argv[0]);
+      return 1;
+    }
+  }
+
+  if (optind >= argc) {
+    usage(argv[0]);
     printf("\nBCPL Compiler Components Built:\n");
     printf("  Code Generator (cg): Converts OCODE to assembly\n");
     printf("  Optimizer (op): Optimizes assembly code\n");
@@ -70,8 +95,8 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  const char *source = argv[1];
-  const char *output = argc > 2 ? argv[2] : NULL;
+  const char *source = argv[optind];
+  const char *output = optind + 1 < argc ? argv[optind + 1] : NULL;
 
   return compile_bcpl(source, output);
 }

@@ -131,9 +131,9 @@ int main(void) {
   bool eof;
   int lz, ln, i, j, k;
 
-  for (eof = false, lz = ln = 0;; lz = lz + j & (LN - 1), ln -= j) {
+  for (eof = false, lz = ln = 0;; lz = (lz + j) & (LN - 1), ln -= j) {
     while (ln < LN && !eof) {
-      if (!(eof = fgets(buf[lz + ln & (LN - 1)], SZ, stdin) == NULL))
+      if (!(eof = fgets(buf[(lz + ln) & (LN - 1)], SZ, stdin) == NULL))
         ln++;
     }
     if (ln == 0) {
@@ -158,7 +158,7 @@ int main(void) {
       }
     }
     for (i = 0; i < k; i++) {
-      fputs(buf[lz + i & (LN - 1)], stdout);
+      fputs(buf[(lz + i) & (LN - 1)], stdout);
     }
   }
 }

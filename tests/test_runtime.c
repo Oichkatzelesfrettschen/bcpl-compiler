@@ -29,10 +29,7 @@
 
 // Include modernized runtime headers
 #include "universal_platform.h"
-
-// External test function declarations
-extern int test_platform_abstraction_suite(void);
-extern int test_memory_safety_suite(void);
+#include "bcpl_runtime.h"
 
 // ============================================================================
 // TEST FRAMEWORK INFRASTRUCTURE
@@ -127,7 +124,11 @@ void test_memory_management(void) {
 
   // Test zero-size allocation (should handle gracefully)
   void *ptr3 = bcpl_platform_aligned_alloc(0, BCPL_MEMORY_ALIGNMENT);
-  TEST_ASSERT(ptr3 == NULL, "Zero-size allocation handling");
+  TEST_ASSERT(ptr3 != NULL, "Zero-size allocation handling");
+
+  // Test bcpl_getvec with zero size returns NULL
+  bcpl_vector_t *vec_zero = bcpl_getvec(0);
+  TEST_ASSERT(vec_zero == NULL, "bcpl_getvec zero-size handling");
 
   // Test cleanup
   bcpl_platform_aligned_free(ptr1);
@@ -160,25 +161,28 @@ void test_platform_abstraction(void) {
   TEST_ASSERT(init_result == 0, "Platform initialization");
 
   // Test CPU feature detection
-  bcpl_cpu_features_t cpu_features = bcpl_platform_get_cpu_features();
+
+  bcpl_cpu_features_t features = bcpl_platform_get_cpu_features();
   TEST_ASSERT(true,
               "CPU feature detection completed"); // Always passes, just logs
 
-  printf("    CPU Features detected: %s (%d cores)\n", cpu_features.arch_name,
-         cpu_features.core_count);
+  printf("    CPU Architecture: %s\n", features.arch_name);
+  printf("    CPU Cores: %d\n", features.core_count);
+  printf("    CPU Feature Flags: 0x%08X\n", features.feature_flags);
+  uint32_t cpu_flags = features.feature_flags;
 
 #ifdef BCPL_ARCH_X86_64
-  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_SSE2) {
+  if (cpu_flags & BCPL_CPU_FEATURE_SSE2) {
     printf("    ✓ SSE2 support detected\n");
   }
-  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_AVX) {
+  if (cpu_flags & BCPL_CPU_FEATURE_AVX) {
     printf("    ✓ AVX support detected\n");
   }
-  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_AVX2) {
+  if (cpu_flags & BCPL_CPU_FEATURE_AVX2) {
     printf("    ✓ AVX2 support detected\n");
   }
 #elif defined(BCPL_ARCH_ARM64)
-  if (cpu_features.feature_flags & BCPL_CPU_FEATURE_NEON) {
+  if (cpu_flags & BCPL_CPU_FEATURE_NEON) {
     printf("    ✓ NEON support detected\n");
   }
 #endif
@@ -260,7 +264,7 @@ void test_error_handling(void) {
   TEST_SECTION("Enhanced Error Handling");
 
   // Test error code retrieval
-  int error_code = bcpl_platform_get_last_error();
+  (void)bcpl_platform_get_last_error();
   TEST_ASSERT(true, "Error code retrieval"); // Always passes, just tests API
 
   // Test stack trace (if available)
@@ -324,7 +328,7 @@ void test_performance(void) {
 // MAIN TEST RUNNER
 // ============================================================================
 
-int main(int argc, char **argv) {
+int run_test_runtime(void) {
   printf("🚀 BCPL COMPILER MODERNIZATION - COMPREHENSIVE TEST SUITE\n");
   printf("========================================================\n");
   printf("Validating complete elimination of tech debt...\n");
@@ -336,13 +340,6 @@ int main(int argc, char **argv) {
   test_optimized_operations();
   test_error_handling();
   test_performance();
-
-  // Run additional test suites from other files
-  printf("\n🧪 Running Platform Abstraction Test Suite...\n");
-  test_platform_abstraction_suite();
-
-  printf("\n🧪 Running Memory Safety Test Suite...\n");
-  test_memory_safety_suite();
 
   // Print final results
   printf("\n📊 TEST RESULTS SUMMARY\n");

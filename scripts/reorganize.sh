@@ -5,13 +5,18 @@
 set -e  # Exit on any error
 
 ARCHIVE_DIR="archive"
-PROJECT_ROOT="/Users/eirikr/Documents/GitHub/bcpl-compiler"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || echo "$SCRIPT_DIR")"
+# Determine the repository root dynamically.  This allows the
+# reorganization script to be invoked from any location in or
+# outside the repository, even if Git is unavailable.
+
 
 echo "=== BCPL Compiler Project Reorganization ==="
 echo "Starting reorganization at: $(date)"
-echo "Project root: $PROJECT_ROOT"
+echo "Project root: $REPO_ROOT"
 
-cd "$PROJECT_ROOT"
+cd "$REPO_ROOT"
 
 # Create archive directories
 mkdir -p "$ARCHIVE_DIR"/{duplicate_cmake,duplicate_docs,duplicate_scripts,legacy_source,build_artifacts}
