@@ -107,14 +107,29 @@ const char* bcpl_get_env(const char* name) {
 }
 
 // Windows-specific startup/shutdown
-void bcpl_platform_init(void) {
-    // Set console to UTF-8 if available
+/*
+ * Initialize Windows-specific subsystems.
+ *
+ * This mirrors the interface defined in platform.h where the function
+ * returns an integer status code.  Historically this implementation
+ * returned void which led to a signature mismatch and warnings when
+ * linking against the runtime.  The function now returns `int` and
+ * always indicates success with a zero result to align with the other
+ * platform implementations.
+ */
+int bcpl_platform_init(void) {
+    /* Set console to UTF-8 if available.  This allows UTF-8 encoded
+       text to be displayed correctly on supported terminals. */
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
-    
-    // Initialize high-resolution timer
+
+    /* Initialize the high-resolution timer so that subsequent calls to
+       QueryPerformanceCounter use the cached frequency. */
     LARGE_INTEGER freq;
     QueryPerformanceFrequency(&freq);
+
+    /* Nothing can reasonably fail here so report success. */
+    return 0;
 }
 
 void bcpl_platform_cleanup(void) {
