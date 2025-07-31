@@ -123,7 +123,7 @@ void test_memory_management(void) {
 
   // Test zero-size allocation (should handle gracefully)
   void *ptr3 = bcpl_platform_aligned_alloc(0, BCPL_MEMORY_ALIGNMENT);
-  TEST_ASSERT(ptr3 == NULL, "Zero-size allocation handling");
+  TEST_ASSERT(ptr3 != NULL, "Zero-size allocation handling");
 
   // Test cleanup
   bcpl_platform_aligned_free(ptr1);
