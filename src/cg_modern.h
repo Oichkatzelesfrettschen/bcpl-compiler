@@ -424,13 +424,6 @@ void force(int stack_level);
 void loadreg(int reg, int condition);
 
 /**
- * @brief Report error and exit
- * @param format Printf-style format string
- * @param ... Arguments for format string
- */
-void error(const char *format, ...);
-
-/**
  * @brief Read operation from OCODE stream
  * @param dummy Unused parameter for compatibility
  * @return Operation code
