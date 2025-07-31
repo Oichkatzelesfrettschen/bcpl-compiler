@@ -67,19 +67,21 @@ Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc 
 ------------------------------------------------------------------------------------------
       7930      10.8     3.2       62.3      561            6      0.01    0.06
 
-The complete report is available in `/tmp/lizard_report.txt`.
+The complete report is available in `docs/analysis/lizard_report.txt`.
 
 ## Checksum Manifest
 
-A SHA-256 checksum manifest of all files was generated and saved to `/tmp/sha256sums.txt`.
+A SHA-256 checksum manifest of all files was generated and saved to `docs/analysis/sha256sums.txt`.
 
-## Duplicate Cleanup
+Both files are tracked in the repository for convenience. If they are missing or
+out of date, regenerate them from the repository root:
 
-The `cleanup_duplicates.py` script reported no issues, but manual inspection revealed leftover files ending in `2` from previous build runs. The following items were removed:
+```bash
+mkdir -p docs/analysis
+cloc --json . > docs/analysis/cloc.json
+lizard -Ecpp src > docs/analysis/lizard_report.txt
+sha256sum $(git ls-files) > docs/analysis/sha256sums.txt
+```
 
-- `util/Makefile 2`
-- `build_test/Makefile 2`
-- `build_test/CMakeFiles/Progress/* 2`
-- `builds/build_test 2`
-
-These duplicates were either identical to existing files or generated during temporary build processes, so deleting them leaves one clear canonical version.
+Storing reports under `docs/analysis/` keeps the tree tidy and avoids absolute
+paths that can become stale across machines.

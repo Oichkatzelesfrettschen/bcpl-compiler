@@ -61,6 +61,18 @@ set(BCPL_C_FLAGS
     -DTARGET_ARCH_${TARGET_ARCH}=1
 )
 
+# Define assembler preprocessor definitions based on architecture bitness for use in global.S
+set(BCPL_ASM_DEFINITION_LIST "") # Initialize as a list
+if(BCPL_ARCH_BITS EQUAL 64)
+    list(APPEND BCPL_ASM_DEFINITION_LIST "__64BIT__=1")
+elseif(BCPL_ARCH_BITS EQUAL 32)
+    list(APPEND BCPL_ASM_DEFINITION_LIST "__32BIT__=1")
+elseif(BCPL_ARCH_BITS EQUAL 16)
+    list(APPEND BCPL_ASM_DEFINITION_LIST "__16BIT__=1")
+else()
+    message(FATAL_ERROR "Unsupported BCPL_ARCH_BITS for assembler preprocessor: ${BCPL_ARCH_BITS}")
+endif()
+
 # Add platform-specific flags
 if(APPLE)
     list(APPEND BCPL_C_FLAGS -D_DARWIN_C_SOURCE)
@@ -102,9 +114,28 @@ add_library(bcpl_runtime STATIC
     runtime/vectors.c
     runtime/startup.c
     runtime/rt.c
+    global.S  # Use .S for C preprocessing
 )
 
 target_compile_options(bcpl_runtime PRIVATE ${BCPL_C_FLAGS})
+
+# Apply assembler definitions to the target if it has assembly files
+# This ensures __xBIT__ flags are defined when global.S is preprocessed
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.18")
+    target_compile_definitions(bcpl_runtime PRIVATE
+        $<$<COMPILE_LANGUAGE:ASM>:${BCPL_ASM_DEFINITION_LIST}> # Pass the list
+    )
+else()
+    # For older CMake, need to construct the -D flags string for COMPILE_FLAGS
+    set(BCPL_ASM_DEFINES_STR "")
+    foreach(DEF ${BCPL_ASM_DEFINITION_LIST})
+        # Note: This loop might create a leading space if BCPL_ASM_DEFINES_STR is initially empty.
+        # However, COMPILE_FLAGS usually tolerate leading/trailing spaces.
+        set(BCPL_ASM_DEFINES_STR "${BCPL_ASM_DEFINES_STR} -D${DEF}")
+    endforeach()
+    set_property(TARGET bcpl_runtime APPEND_STRING PROPERTY COMPILE_FLAGS "${BCPL_ASM_DEFINES_STR}")
+endif()
+
 target_include_directories(bcpl_runtime PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/arch/${TARGET_ARCH}

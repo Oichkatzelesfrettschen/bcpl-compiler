@@ -28,6 +28,18 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > hello.bcpl
 ./hello
 ```
 
+### Standalone Driver
+
+The repository includes a minimal `bcplc_driver` utility used for
+demonstrations. It defaults to finding the compiler components under
+`build_c23/src`. Use the `-b` option or set the `BCPLC_BUILD_DIR`
+environment variable to override this directory:
+
+```bash
+BCPLC_BUILD_DIR=build/Debug/src ./bcplc_driver -b build/Release/src hello.bcpl
+```
+
+
 ## Build Requirements
 
 Ensure the following tools are installed:
@@ -35,8 +47,10 @@ Ensure the following tools are installed:
 - `clang` and `cmake`
 - `make` or `ninja`
 - `binutils`, `gcc-multilib`, and `qemu` for cross builds
+- Python 3 with `pip`; install dependencies with
+  `pip install -r requirements.txt`
 
-Running `./setup.sh` installs all dependencies along with an IA‑16 toolchain.
+Running `scripts/setup.sh` installs all dependencies along with an IA‑16 toolchain.
 
 For convenience, a `build.sh` helper script wraps the standard CMake
 configuration and build commands. It places artifacts under
@@ -143,6 +157,16 @@ Additional guides are available in the `docs/` directory:
 - [ ] IDE integration (LSP server)
 - [ ] WebAssembly target
 - [ ] Enhanced debugging support
+
+## Python Utilities
+
+Several helper scripts, including `cleanup_duplicates.py` and `download_xerox_bcpl.py`,
+require a few Python packages. Install them once per checkout before running any
+Python utilities:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Bug Reports
 

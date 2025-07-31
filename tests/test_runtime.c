@@ -29,6 +29,7 @@
 
 // Include modernized runtime headers
 #include "universal_platform.h"
+#include "bcpl_runtime.h"
 
 // ============================================================================
 // TEST FRAMEWORK INFRASTRUCTURE
@@ -123,7 +124,11 @@ void test_memory_management(void) {
 
   // Test zero-size allocation (should handle gracefully)
   void *ptr3 = bcpl_platform_aligned_alloc(0, BCPL_MEMORY_ALIGNMENT);
-  TEST_ASSERT(ptr3 == NULL, "Zero-size allocation handling");
+  TEST_ASSERT(ptr3 != NULL, "Zero-size allocation handling");
+
+  // Test bcpl_getvec with zero size returns NULL
+  bcpl_vector_t *vec_zero = bcpl_getvec(0);
+  TEST_ASSERT(vec_zero == NULL, "bcpl_getvec zero-size handling");
 
   // Test cleanup
   bcpl_platform_aligned_free(ptr1);

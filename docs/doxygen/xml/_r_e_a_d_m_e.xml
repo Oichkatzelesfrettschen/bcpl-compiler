@@ -51,14 +51,14 @@
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>gcc-multilib</highlight></codeline>
 <codeline><highlight class="normal"><sp/><sp/><sp/><sp/>qemu</highlight></codeline>
 <codeline></codeline>
-<codeline><highlight class="normal">Running<sp/>``./setup.sh``<sp/>installs<sp/>all<sp/>of<sp/>the<sp/>above<sp/>along<sp/>with<sp/>a<sp/>full</highlight></codeline>
+<codeline><highlight class="normal">Running<sp/>``scripts/setup.sh``<sp/>installs<sp/>all<sp/>of<sp/>the<sp/>above<sp/>along<sp/>with<sp/>a<sp/>full</highlight></codeline>
 <codeline><highlight class="normal">cross‑compilation<sp/>environment<sp/>and<sp/>the<sp/>IA‑16<sp/>toolchain.</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">Building</highlight></codeline>
 <codeline><highlight class="normal">========</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">Before<sp/>building<sp/>you<sp/>may<sp/>install<sp/>a<sp/>comprehensive<sp/>cross‑compilation</highlight></codeline>
-<codeline><highlight class="normal">environment<sp/>by<sp/>running<sp/>``./setup.sh``<sp/>as<sp/>root.<sp/><sp/>The<sp/>script<sp/>configures</highlight></codeline>
+<codeline><highlight class="normal">environment<sp/>by<sp/>running<sp/>``scripts/setup.sh``<sp/>as<sp/>root.<sp/><sp/>The<sp/>script<sp/>configures</highlight></codeline>
 <codeline><highlight class="normal">package<sp/>repositories<sp/>for<sp/>multiple<sp/>architectures<sp/>and<sp/>installs<sp/>toolchains</highlight></codeline>
 <codeline><highlight class="normal">and<sp/>emulators<sp/>such<sp/>as<sp/>``qemu``<sp/>to<sp/>enable<sp/>execution<sp/>of<sp/>foreign<sp/>binaries,</highlight></codeline>
 <codeline><highlight class="normal">including<sp/>16‑bit<sp/>and<sp/>32‑bit<sp/>x86<sp/>programs.<sp/><sp/>This<sp/>is<sp/>optional<sp/>for<sp/>a</highlight></codeline>
