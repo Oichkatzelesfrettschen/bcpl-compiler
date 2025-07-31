@@ -453,6 +453,10 @@ void bcpl_platform_sleep_ms(uint32_t milliseconds) {
  */
 void *bcpl_platform_aligned_alloc(size_t size, size_t alignment) {
   // Use posix_memalign for aligned allocation
+  if (size == 0) {
+    return NULL;
+  }
+
   void *ptr = NULL;
   if (posix_memalign(&ptr, alignment, size) == 0) {
     return ptr;

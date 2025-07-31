@@ -17,11 +17,9 @@ bcpl_vector_t *bcpl_newvec(bcpl_word_t size, bcpl_word_t init_val) {
     return NULL;
   }
 
-  bcpl_word_t *data = (bcpl_word_t *)vec;
-
   // Initialize all elements
   for (bcpl_word_t i = 0; i < size; i++) {
-    data[i] = init_val;
+    vec->data[i] = init_val;
   }
 
   return vec;
@@ -31,23 +29,20 @@ bcpl_vector_t *bcpl_newvec(bcpl_word_t size, bcpl_word_t init_val) {
  * @brief Get the size of a vector
  */
 bcpl_word_t bcpl_vecsize(const bcpl_vector_t *vec) {
-  if (!vec) {
+  if (!vec || vec->magic != BCPL_VECTOR_MAGIC) {
     return 0;
   }
 
-  const bcpl_word_t *data = (const bcpl_word_t *)vec;
-  // Size is stored at data[-1]
-  return data[-1];
+  return vec->size;
 }
 
 /**
  * @brief Check if vector index is valid
  */
 bcpl_bool_t bcpl_vec_bounds_check(const bcpl_vector_t *vec, bcpl_word_t index) {
-  if (!vec) {
+  if (!vec || vec->magic != BCPL_VECTOR_MAGIC) {
     return BCPL_FALSE;
   }
 
-  bcpl_word_t size = bcpl_vecsize(vec);
-  return (index < size) ? BCPL_TRUE : BCPL_FALSE;
+  return (index < vec->size) ? BCPL_TRUE : BCPL_FALSE;
 }

@@ -399,6 +399,18 @@ BCPL_EXPORT void bcpl_freevec(bcpl_vector_t *vec) {
   }
 }
 
+/**
+ * @brief Increase reference count of a vector
+ * @param vec Vector to reference
+ * @return The same vector pointer for convenience
+ */
+BCPL_EXPORT bcpl_vector_t *bcpl_addref(bcpl_vector_t *vec) {
+  if (vec && vec->magic == BCPL_VECTOR_MAGIC) {
+    vec->refcount++;
+  }
+  return vec;
+}
+
 // =============================================================================
 // STRING OPERATIONS
 // =============================================================================
