@@ -854,10 +854,18 @@ static void code(int xi, ...) {
       break;
     case X_G:
     case X_LG:
+      // Accessing global variable or pointer to global.
+      // It is a critical convention of this BCPL compiler's runtime environment
+      // that the %rdi (for 64-bit targets) or %edi (for 32-bit targets) register
+      // holds the base address of the BCPL Global Vector (G).
+      // This register must be set up correctly by the program's startup code
+      // (e.g., in rt.s or platform-specific startup) and its value preserved
+      // across function calls that might use globals. Incorrect setup will lead
+      // to misaddressing global variables.
 #if BITS == 64
-      buf_append(&s, &rem, "%d(%%rdi)", d * WORDSZ);
+      buf_append(&s, &rem, "%d(%%rdi)", d * WORDSZ); // d is the global slot number, WORDSZ is 8
 #else
-      buf_append(&s, &rem, "%d(%%edi)", d * WORDSZ);
+      buf_append(&s, &rem, "%d(%%edi)", d * WORDSZ); // d is the global slot number, WORDSZ is 4 or 2
 #endif
       break;
     case X_L:
@@ -885,7 +893,10 @@ static void defdata(int k, int v) {
 static void outdata(int k, int n) {
   switch (k) {
   case S_DATALAB:
-    emit(".align 4");
+    // Align data labels to the word size of the target architecture.
+    // WORD_SHIFT is log2(WORDSZ), e.g., 3 for 64-bit (8 bytes), 2 for 32-bit (4 bytes).
+    // .p2align N aligns to 2^N bytes.
+    emit(".p2align %d", WORD_SHIFT);
     codelab(n);
     return;
   case S_ITEMN:

@@ -10,11 +10,124 @@ tools/*.o
 src/st
 src/cg
 src/op
-tools/*
-!tools/CMakeLists.txt
-build/
+# tools/* # Commented out to avoid ignoring essential tool source files if any; specific executables should be listed
+!tools/CMakeLists.txt # Keep this
+# build/ # This is too general if there are legitimate 'build' named source dirs. Specific build output dirs are better.
 
 # Misc temporary files
 *~
 *.tmp
 .DS_Store
+
+# CMake build files and directories
+**/CMakeCache.txt
+**/CMakeFiles/
+**/cmake_install.cmake
+**/CTestTestfile.cmake
+**/compile_commands.json
+**/Makefile
+**/.ninja_deps
+**/.ninja_log
+**/build.ninja
+*.o
+*.obj
+*.lo
+*.a
+*.la
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+*.ipch/
+*.aps
+*.suo
+*.user
+*.ncb
+*.sdf
+*.tlog/
+*.ilk
+*.pdb
+*.gch
+*.pch
+
+# Build output directories (common patterns)
+[Bb]uild/
+[Bb]uild-*/
+build*/
+**/build/
+**/build-*/
+[Dd]ebug/
+[Rr]elease/
+[Cc]make[Bb]uild/
+[Cc]make-[Bb]uild/
+out/
+bin/
+lib/
+
+# Test outputs
+**/Testing/
+*.gcno
+*.gcda
+*.gcov
+coverage/
+lcov_out/
+
+# Doxygen
+docs/doxygen/html/
+docs/doxygen/xml/
+
+# Other common ignores
+*.log
+cscope.*
+tags
+.tags
+.ccls-cache/
+.vscode/ipch/
+.metals/
+.bloop/
+.bsp/
+.ensime_cache/
+.idea/
+*.iml
+*.ipr
+*.iws
+atlassian-ide-plugin.xml
+*.swp
+*.swo
+*.*.swp
+*.*.swo
+profile_output/
+callgrind.out.*
+gmon.out
+valgrind_logs/
+.cache/
+.cxx/
+.gradle/
+.metals.sbt/
+.project
+.classpath
+.settings/
+target/
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+hs_err_pid*
+# Specific to this project if known
+src/st_gen_* # Generated symbol tables
+src/st.s # If always generated
+src/blib.s # If always generated
+src/cg_* # If specific cg executables are generated in src
+src/op_* # If specific op executables are generated in src
+src/test_ocode_64bit # Executable
+src/test_ocode_64bit_* # Executable
+src/libbcpl_runtime_*.a # Generated library
+
+# Keep specific executables if they are tracked and not in a build output dir
+# !src/cg # Example if cg in src is a source file not an output
+# !src/op # Example
