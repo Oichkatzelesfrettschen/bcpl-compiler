@@ -1,22 +1,39 @@
 # Ignore build artifacts and temporary files
 
-# Object files and assembly
-src/*.o
+# General build outputs
+/build/
+/build_*
+/builds/
+/archive/legacy_builds/
+/install_test/
+
+# Generated documentation
+/docs/doxygen/
+/docs/sphinx/_build/
+
+# Binaries
+/bcplc
+*.exe
+/src/bcplc
+/src/cg.exe
+/src/op.exe
+
+# Object files and libraries
+*.o
+*.a
 src/st.s
 src/blib.s
-tools/*.o
 
-# Build directories and executables
-src/st
-src/cg
-src/op
-# Ignore generated binaries in tools/
-tools/cmpltest
-tools/xref
-tools/gpm
-build/
-
-# Misc temporary files
+# IDE and temporary files
+.DS_Store
 *~
 *.tmp
-.DS_Store
+compile_commands.json
+
+# Specific executables that might be built
+/src/st
+/src/cg
+/src/op
+/tools/cmpltest
+/tools/xref
+/tools/gpm
