@@ -12,7 +12,18 @@ src/cg
 src/op
 tools/*
 !tools/CMakeLists.txt
-build/
+/build/
+/build_*/
+/builds/
+docs/doxygen/
+docs/sphinx/_build/
+
+# Temporary log files
+*.log
+
+# Executable outputs
+*.exe
+*/bcplc
 
 # Misc temporary files
 *~
