@@ -36,7 +36,7 @@ Ensure the following tools are installed:
 - `make` or `ninja`
 - `binutils`, `gcc-multilib`, and `qemu` for cross builds
 
-Running `./setup.sh` installs all dependencies along with an IA‑16 toolchain.
+Running `scripts/setup.sh` installs all dependencies along with an IA‑16 toolchain.
 
 For convenience, a `build.sh` helper script wraps the standard CMake
 configuration and build commands. It places artifacts under
