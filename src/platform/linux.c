@@ -228,6 +228,9 @@ uint64_t bcpl_nano_time(void) {
 // =============================================================================
 
 void *bcpl_platform_aligned_alloc(size_t size, size_t alignment) {
+  if (size == 0)
+    return NULL;
+
   void *ptr = NULL;
   if (posix_memalign(&ptr, alignment, size) == 0)
     return ptr;
