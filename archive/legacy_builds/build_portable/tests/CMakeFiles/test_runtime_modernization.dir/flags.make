@@ -6,7 +6,7 @@ C_DEFINES = -DBCPL_MODERNIZED=1 -DBCPL_TEST_BUILD=1
 
 C_INCLUDES = -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/include -I/Users/eirikr/Documents/GitHub/bcpl-compiler/src/runtime
 
-C_FLAGSarm64 = -std=c17 -O3 -DNDEBUG -arch arm64
+C_FLAGSx86_64 = -std=c17 -target x86_64-apple-macos11 -g -arch x86_64
 
-C_FLAGS = -std=c17 -O3 -DNDEBUG -arch arm64
+C_FLAGS = -std=c17 -target x86_64-apple-macos11 -g -arch x86_64
 
