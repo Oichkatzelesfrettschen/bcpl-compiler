@@ -28,6 +28,17 @@ src/blib.s
 src/st
 src/cg
 src/op
+!tools/CMakeLists.txt
+/builds/
+docs/doxygen/
+docs/sphinx/_build/
+
+# Temporary log files
+*.log
+
+# Executable outputs
+*.exe
+*/bcplc
 # tools/* # Commented out to avoid ignoring essential tool source files if any; specific executables should be listed
 !tools/CMakeLists.txt # Keep this
 # build/ # This is too general if there are legitimate 'build' named source dirs. Specific build output dirs are better.
