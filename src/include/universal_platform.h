@@ -153,9 +153,14 @@ int bcpl_platform_fputc(int ch, bcpl_file_handle_t *handle);
 
 /**
  * @brief Allocate aligned memory
- * @param size Size in bytes
- * @param alignment Alignment requirement
- * @return Aligned memory pointer or NULL
+ *
+ * Allocates an aligned block of memory using the underlying platform. Unlike
+ * the standard library, a request of size zero returns a minimal non-NULL
+ * pointer to mirror historical BCPL semantics and simplify callers.
+ *
+ * @param size Size in bytes (zero yields a one-byte allocation)
+ * @param alignment Alignment requirement (power of two)
+ * @return Aligned memory pointer or NULL on failure
  */
 void *bcpl_platform_aligned_alloc(size_t size, size_t alignment);
 
@@ -177,6 +182,19 @@ size_t bcpl_platform_get_page_size(void);
  * @return Memory pointer or NULL on failure
  */
 void *bcpl_platform_alloc(size_t size);
+
+/**
+ * @brief Resize an existing allocation
+ *
+ * Acts like standard realloc but guarantees a minimal non-NULL block when
+ * `size` is zero.  If `ptr` is NULL the call behaves like
+ * bcpl_platform_alloc().
+ *
+ * @param ptr Existing allocation (may be NULL)
+ * @param size New requested size (zero yields a one-byte allocation)
+ * @return Reallocated block or NULL on failure
+ */
+void *bcpl_platform_realloc(void *ptr, size_t size);
 
 /**
  * @brief Free memory allocated by bcpl_platform_alloc

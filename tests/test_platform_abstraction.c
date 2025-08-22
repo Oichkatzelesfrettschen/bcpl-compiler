@@ -68,6 +68,25 @@ static int test_universal_memory_allocation(void) {
            test_sizes[i]);
   }
 
+  // Verify aligned allocation semantics
+  void *aligned = bcpl_platform_aligned_alloc(256, BCPL_MEMORY_ALIGNMENT);
+  if (!aligned || ((uintptr_t)aligned % BCPL_MEMORY_ALIGNMENT) != 0) {
+    printf("❌ Aligned allocation failed\n");
+    if (aligned)
+      bcpl_platform_aligned_free(aligned);
+    return 0;
+  }
+  bcpl_platform_aligned_free(aligned);
+  printf("✅ Aligned allocation test passed\n");
+
+  void *zero = bcpl_platform_aligned_alloc(0, BCPL_MEMORY_ALIGNMENT);
+  if (!zero) {
+    printf("❌ Zero-size aligned allocation failed\n");
+    return 0;
+  }
+  bcpl_platform_aligned_free(zero);
+  printf("✅ Zero-size aligned allocation handled\n");
+
   return 1;
 }
 
@@ -107,20 +126,24 @@ static int test_universal_file_operations(void) {
   }
 
   char read_buffer[256];
-  size_t read_bytes = fread(read_buffer, 1, sizeof(read_buffer) - 1, file->native_handle);
+  size_t read_bytes =
+      fread(read_buffer, 1, sizeof(read_buffer) - 1, file->native_handle);
   read_buffer[read_bytes] = '\0';
 
-    if (strcmp(read_buffer, test_data) != 0) {
-      printf("❌ Read data doesn't match written data\n");
-      bcpl_platform_fclose(file);
-      return 0;
-    }
-
+  if (strcmp(read_buffer, test_data) != 0) {
+    printf("❌ Read data doesn't match written data\n");
     bcpl_platform_fclose(file);
+    return 0;
+  }
+
+  bcpl_platform_fclose(file);
   printf("✅ File reading and data integrity verified\n");
 
   // Clean up
-  bcpl_platform_remove(test_filename);
+  if (bcpl_platform_remove(test_filename) != 0) {
+    printf("❌ Failed to remove test file\n");
+    return 0;
+  }
 
   return 1;
 }

@@ -370,46 +370,6 @@ void bcpl_platform_sleep(uint64_t nanoseconds) {
  * @param size Size in bytes
  * @return Allocated memory pointer or NULL on failure
  */
-void *bcpl_platform_alloc(size_t size) { return malloc(size); }
-
-/**
- * @brief Free memory allocated by bcpl_platform_alloc
- * @param ptr Memory pointer to free
- */
-void bcpl_platform_free(void *ptr) {
-  if (ptr) {
-    free(ptr);
-  }
-}
-
-/**
- * @brief Allocate page-aligned memory
- * @param size Size in bytes (will be rounded up to page boundary)
- * @return Allocated memory pointer or NULL on failure
- */
-void *bcpl_platform_alloc_pages(size_t size) {
-  size_t page_size = getpagesize();
-  size_t aligned_size = ((size + page_size - 1) / page_size) * page_size;
-
-  void *ptr = mmap(NULL, aligned_size, PROT_READ | PROT_WRITE,
-                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-  return (ptr == MAP_FAILED) ? NULL : ptr;
-}
-
-/**
- * @brief Free page-aligned memory
- * @param ptr Memory pointer
- * @param size Size that was originally requested
- */
-void bcpl_platform_free_pages(void *ptr, size_t size) {
-  if (ptr) {
-    size_t page_size = getpagesize();
-    size_t aligned_size = ((size + page_size - 1) / page_size) * page_size;
-    munmap(ptr, aligned_size);
-  }
-}
-
 /**
  * @brief Memory comparison function
  * @param ptr1 First memory block
@@ -420,13 +380,6 @@ void bcpl_platform_free_pages(void *ptr, size_t size) {
 int bcpl_platform_memcmp(const void *ptr1, const void *ptr2, size_t size) {
   return memcmp(ptr1, ptr2, size);
 }
-
-/**
- * @brief Remove/delete a file
- * @param filename Path to file to remove
- * @return 0 on success, -1 on failure
- */
-int bcpl_platform_remove(const char *filename) { return unlink(filename); }
 
 /**
  * @brief Get high-resolution time in nanoseconds
@@ -451,34 +404,6 @@ void bcpl_platform_sleep_ms(uint32_t milliseconds) {
  * @param alignment Alignment requirement
  * @return Aligned memory pointer or NULL
  */
-void *bcpl_platform_aligned_alloc(size_t size, size_t alignment) {
-  if (size == 0)
-    return NULL;
-
-  // Use posix_memalign for aligned allocation
-  void *ptr = NULL;
-  if (posix_memalign(&ptr, alignment, size) == 0) {
-    return ptr;
-  }
-  return NULL;
-}
-
-/**
- * @brief Free aligned memory
- * @param ptr Memory to free
- */
-void bcpl_platform_aligned_free(void *ptr) {
-  if (ptr) {
-    free(ptr);
-  }
-}
-
-/**
- * @brief Get page size for the platform
- * @return Page size in bytes
- */
-size_t bcpl_platform_get_page_size(void) { return (size_t)getpagesize(); }
-
 /**
  * @brief Get number of CPU cores
  * @return Number of logical CPU cores
@@ -547,103 +472,6 @@ bcpl_cpu_features_t bcpl_platform_get_cpu_features(void) {
 /**
  * @brief Open file with BCPL semantics
  * @param filename Path to file
- * @param mode Access mode ('r', 'w', 'a')
- * @param binary True for binary mode
- * @return File handle or NULL on failure
- */
-bcpl_file_handle_t *bcpl_platform_fopen(const char *filename, char mode,
-                                        bool binary) {
-  bcpl_file_handle_t *handle = malloc(sizeof(bcpl_file_handle_t));
-  if (!handle) {
-    return NULL;
-  }
-
-  const char *fmode;
-  switch (mode) {
-  case 'r':
-    fmode = binary ? "rb" : "r";
-    break;
-  case 'w':
-    fmode = binary ? "wb" : "w";
-    break;
-  case 'a':
-    fmode = binary ? "ab" : "a";
-    break;
-  default:
-    free(handle);
-    return NULL;
-  }
-
-  handle->native_handle = fopen(filename, fmode);
-  if (!handle->native_handle) {
-    free(handle);
-    return NULL;
-  }
-
-  handle->is_binary = binary;
-  handle->flags = 0;
-  handle->buffer = NULL;
-  handle->buffer_size = 0;
-
-  return handle;
-}
-
-/**
- * @brief Close file handle
- * @param handle File handle to close
- * @return 0 on success, -1 on failure
- */
-int bcpl_platform_fclose(bcpl_file_handle_t *handle) {
-  if (!handle) {
-    return -1;
-  }
-
-  int result = 0;
-  if (handle->native_handle) {
-    result = fclose(handle->native_handle);
-  }
-
-  if (handle->buffer) {
-    free(handle->buffer);
-  }
-
-  free(handle);
-  return result;
-}
-
-/**
- * @brief Read character from file
- * @param handle File handle
- * @return Character read or -1 on EOF/error
- */
-int bcpl_platform_fgetc(bcpl_file_handle_t *handle) {
-  if (!handle || !handle->native_handle) {
-    return -1;
-  }
-
-  return fgetc(handle->native_handle);
-}
-
-/**
- * @brief Write character to file
- * @param ch Character to write
- * @param handle File handle
- * @return Character written or -1 on error
- */
-int bcpl_platform_fputc(int ch, bcpl_file_handle_t *handle) {
-  if (!handle || !handle->native_handle) {
-    return -1;
-  }
-
-  return fputc(ch, handle->native_handle);
-}
-
-/**
- * @brief Fast memory copy optimized for platform
- * @param dest Destination buffer
- * @param src Source buffer
- * @param size Number of bytes
- */
 void bcpl_platform_memcpy(void *dest, const void *src, size_t size) {
   memcpy(dest, src, size);
 }

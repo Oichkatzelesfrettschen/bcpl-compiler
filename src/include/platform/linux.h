@@ -22,7 +22,6 @@ int bcpl_chdir(const char *path);
 int bcpl_platform_init(void);
 void bcpl_platform_cleanup(void);
 int bcpl_cpu_count(void);
-size_t bcpl_page_size(void);
 uint64_t bcpl_nano_time(void);
 
 #ifdef __cplusplus
