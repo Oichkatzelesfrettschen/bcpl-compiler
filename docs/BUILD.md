@@ -40,6 +40,25 @@ pkg install cmake clang
 - CMake 3.20+
 - Clang (optional, but recommended)
 
+### Python Dependencies
+The auxiliary tooling and tests rely on a small set of Python packages.
+Install them once per checkout:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Quick Start (Linux)
+
+```bash
+sudo apt-get update
+sudo apt-get install build-essential cmake clang
+pip install -r requirements.txt
+cmake -S . -B build
+cmake --build build
+cd build && ctest --output-on-failure
+```
+
 ## Build Methods
 
 ### Method 1: Unified Build Script (Recommended)
@@ -168,6 +187,15 @@ build/
 ├── tests/                     # Test executables
 └── docs/                      # Generated documentation (if enabled)
 ```
+
+## Runtime Memory Semantics
+
+The modernized runtime centralizes all heap management in
+`src/platform/common_memory.c`.  The platform layer now guarantees that
+zero-byte allocations and re-allocations return a minimal, aligned block
+instead of `NULL`, mirroring historical BCPL behaviour.  Use
+`bcpl_platform_realloc` to resize allocations while preserving this
+contract across operating systems.
 
 ## Validation
 

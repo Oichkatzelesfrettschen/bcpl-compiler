@@ -11,9 +11,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "../include/bcpl_types.h"
@@ -178,18 +180,6 @@ int bcpl_cpu_count(void) {
 }
 
 /*
- * Get system page size
- */
-size_t bcpl_page_size(void) {
-#ifdef _SC_PAGESIZE
-  long page_size = sysconf(_SC_PAGESIZE);
-  return (page_size > 0) ? (size_t)page_size : 4096;
-#else
-  return 4096; // Common default
-#endif
-}
-
-/*
  * High-resolution timer (nanoseconds since epoch)
  */
 uint64_t bcpl_nano_time(void) {
@@ -209,6 +199,60 @@ uint64_t bcpl_nano_time(void) {
 #endif
 
   return 0; // Last resort
+}
+
+// =============================================================================
+// UNIVERSAL PLATFORM INTERFACE IMPLEMENTATION
+// =============================================================================
+
+uint64_t bcpl_platform_get_timestamp(void) { return bcpl_nano_time(); }
+
+void bcpl_platform_sleep(uint64_t nanoseconds) {
+  struct timespec ts;
+  ts.tv_sec = nanoseconds / 1000000000ULL;
+  ts.tv_nsec = nanoseconds % 1000000000ULL;
+  nanosleep(&ts, NULL);
+}
+
+uint64_t bcpl_platform_get_time_ns(void) { return bcpl_nano_time(); }
+
+void bcpl_platform_sleep_ms(uint32_t milliseconds) {
+  bcpl_platform_sleep((uint64_t)milliseconds * 1000000ULL);
+}
+
+int bcpl_platform_get_cpu_count(void) { return bcpl_cpu_count(); }
+
+int bcpl_platform_get_last_error(void) { return errno; }
+
+const char *bcpl_platform_getenv(const char *name) { return getenv(name); }
+
+void bcpl_platform_print_stacktrace(FILE *file) {
+  (void)file;
+  fprintf(stderr, "Stack trace not available on this platform\n");
+}
+
+void bcpl_platform_memcpy(void *dest, const void *src, size_t size) {
+  memcpy(dest, src, size);
+}
+
+void bcpl_platform_memset(void *dest, int value, size_t size) {
+  memset(dest, value, size);
+}
+
+int bcpl_platform_memcmp(const void *ptr1, const void *ptr2, size_t size) {
+  return memcmp(ptr1, ptr2, size);
+}
+
+_Noreturn void bcpl_platform_exit(int code) { exit(code); }
+
+bcpl_cpu_features_t bcpl_platform_get_cpu_features(void) {
+  bcpl_cpu_features_t features = {0};
+  strncpy(features.arch_name, "generic", sizeof(features.arch_name) - 1);
+  features.core_count = bcpl_cpu_count();
+  features.has_simd = false;
+  features.has_aes = false;
+  features.feature_flags = 0;
+  return features;
 }
 
 #endif /* BCPL_PLATFORM_GENERIC */

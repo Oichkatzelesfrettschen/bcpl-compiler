@@ -100,6 +100,8 @@ endif()
 if(BCPL_PLATFORM_SOURCES AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${BCPL_PLATFORM_SOURCES}")
     list(APPEND RUNTIME_SOURCES ${BCPL_PLATFORM_SOURCES})
 endif()
+list(APPEND RUNTIME_SOURCES platform/common_io.c)
+list(APPEND RUNTIME_SOURCES platform/common_memory.c)
 
 # =============================================================================
 # BCPL RUNTIME LIBRARY

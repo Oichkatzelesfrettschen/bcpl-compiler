@@ -28,8 +28,8 @@
 #include <time.h>
 
 // Include modernized runtime headers
-#include "universal_platform.h"
 #include "bcpl_runtime.h"
+#include "universal_platform.h"
 
 // ============================================================================
 // TEST FRAMEWORK INFRASTRUCTURE
@@ -125,6 +125,8 @@ void test_memory_management(void) {
   // Test zero-size allocation (should handle gracefully)
   void *ptr3 = bcpl_platform_aligned_alloc(0, BCPL_MEMORY_ALIGNMENT);
   TEST_ASSERT(ptr3 != NULL, "Zero-size allocation handling");
+  TEST_ASSERT(((uintptr_t)ptr3 % BCPL_MEMORY_ALIGNMENT) == 0,
+              "Zero-size allocation alignment");
 
   // Test bcpl_getvec with zero size returns NULL
   bcpl_vector_t *vec_zero = bcpl_getvec(0);
@@ -147,6 +149,19 @@ void test_memory_management(void) {
 
   bcpl_platform_free_pages(pages, page_size * 2);
   TEST_ASSERT(true, "Page deallocation");
+
+  // Test reallocation semantics
+  char *re = (char *)bcpl_platform_alloc(16);
+  TEST_ASSERT(re != NULL, "Initial allocation for realloc");
+  memset(re, 0xCD, 16);
+  char *re2 = (char *)bcpl_platform_realloc(re, 32);
+  TEST_ASSERT(re2 != NULL, "Reallocation to larger size");
+  TEST_ASSERT(re2[0] == (char)0xCD, "Content preserved after realloc");
+  bcpl_platform_free(re2);
+
+  void *re3 = bcpl_platform_realloc(NULL, 0);
+  TEST_ASSERT(re3 != NULL, "Zero-size realloc yields pointer");
+  bcpl_platform_free(re3);
 }
 
 // ============================================================================
