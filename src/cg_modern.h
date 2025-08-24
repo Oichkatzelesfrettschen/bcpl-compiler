@@ -500,7 +500,6 @@ static const int xitab[] = {0x03, 0x03, 0x01, 0x01, 0x02, 0x02, 0x02,
 
 // Forward declarations for legacy functions
 extern void emit(const char *format, ...);
-extern void error(const char *format, ...);
 extern int rdn(void);
 extern void codelab(int label);
 extern const char *label(int n);
