@@ -1,7 +1,7 @@
 # Build Instructions for bcpl-compiler
 
 This document summarizes the recommended steps for setting up a development environment and building
-`bcpl-compiler` from source.  The repository includes a `setup.sh` script that installs
+`bcpl-compiler` from source.  The repository includes a `scripts/setup.sh` script that installs
 all required packages (compilers, emulators, analysis tools such as `valgrind`,
 `trace-cmd`, `strace`, etc.).
 
