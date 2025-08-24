@@ -1,16 +1,18 @@
 /**
  * @file cg_modern.h
- * @brief Modern C23 BCPL code generator architecture definitions
+ * @brief Core declarations for the modern C23 BCPL code generator.
+ *
+ * This header defines the data structures, constants, and utility macros
+ * used by the refactored BCPL code generator. The original monolithic
+ * `gencode()` routine is replaced with a modular architecture engineered
+ * for clarity, maintainability, and efficient experimentation.
+ *
+ * "The best programs are written not just for computers to execute,
+ *  but for humans to read and understand." – John Lions
+ *
  * @author BCPL Compiler Modernization Team
  * @date 2025
  * @copyright Copyright (c) 2025 BCPL Compiler Team. All rights reserved.
- *
- * This header defines the modern architecture for the BCPL code generator,
- * replacing the monolithic gencode() function with a clean, modular design
- * that embodies the Lions philosophy of beautiful, readable systems code.
- *
- * "The best programs are written not just for computers to execute,
- *  but for humans to read and understand." - John Lions
  */
 
 #pragma once

@@ -27,11 +27,19 @@ static int test_reference_counting(void) {
   return 0;
 }
 
+static int test_zero_allocation(void) {
+  bcpl_vector_t *vec = bcpl_getvec(0);
+  TEST_ASSERT(vec == NULL, "Zero-sized allocation returns NULL");
+  return 0;
+}
+
 int run_test_memory(void) {
   printf("Memory Management Tests\n");
   printf("======================\n");
 
-  int result = test_reference_counting();
+  int result = 0;
+  result |= test_reference_counting();
+  result |= test_zero_allocation();
   if (result == 0) {
     printf("All memory tests PASSED\n");
   } else {
@@ -39,3 +47,4 @@ int run_test_memory(void) {
   }
   return result;
 }
+
