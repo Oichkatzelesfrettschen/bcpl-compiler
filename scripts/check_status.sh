@@ -113,7 +113,6 @@ echo ""
 echo "Runtime Library Files:"
 runtime_files=(
     "src/runtime/bcpl_runtime.c"
-    "src/runtime/memory.c"
     "src/runtime/io.c"
     "src/runtime/strings.c"
     "src/runtime/vectors.c"

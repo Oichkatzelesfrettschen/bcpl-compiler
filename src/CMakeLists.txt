@@ -110,7 +110,6 @@ list(APPEND RUNTIME_SOURCES platform/common_memory.c)
 add_library(bcpl_runtime STATIC
     ${RUNTIME_SOURCES}
     runtime/bcpl_runtime.c
-    runtime/memory.c
     runtime/io.c
     runtime/strings.c
     runtime/vectors.c
