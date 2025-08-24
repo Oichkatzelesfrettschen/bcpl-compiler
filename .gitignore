@@ -28,7 +28,6 @@ src/blib.s
 src/st
 src/cg
 src/op
-!tools/CMakeLists.txt
 /builds/
 docs/doxygen/
 docs/sphinx/_build/
@@ -39,14 +38,14 @@ docs/sphinx/_build/
 # Executable outputs
 *.exe
 */bcplc
-# tools/* # Commented out to avoid ignoring essential tool source files if any; specific executables should be listed
-!tools/CMakeLists.txt # Keep this
-# build/ # This is too general if there are legitimate 'build' named source dirs. Specific build output dirs are better.
-# Ignore generated binaries in tools/
-tools/cmpltest
-tools/xref
-tools/gpm
-build/
+
+# Tools: track source files but ignore compiled binaries
+/tools/*
+!/tools/*.bcpl
+!/tools/Makefile*
+!/tools/CMakeLists.txt
+
+/build/
 
 # IDE and temporary files
 .DS_Store
@@ -58,9 +57,6 @@ compile_commands.json
 /src/st
 /src/cg
 /src/op
-/tools/cmpltest
-/tools/xref
-/tools/gpm
 .DS_Store
 
 # CMake build files and directories
