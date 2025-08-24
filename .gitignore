@@ -120,8 +120,6 @@ hs_err_pid*
 *.pdb
 *.gch
 *.pch
-.DS_Store
-*~
 *.swp
 *.swo
 *.*.swp
