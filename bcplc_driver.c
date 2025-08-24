@@ -5,20 +5,44 @@
  * @date 2025
  */
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <getopt.h>
 
 #define MAX_ARGS 64
 #define MAX_PATH 1024
 
-static char build_dir[MAX_PATH] = "build_c23/src";
+/** Default location of compiled BCPL tooling. */
+static const char *DEFAULT_BUILD_DIR = "build_c23/src";
+/** Environment variable used to select an alternate build directory. */
+static const char *BUILD_DIR_ENV = "BCPLC_BUILD_DIR";
 
+/** Resolved path to the directory holding the compiler components. */
+static char build_dir[MAX_PATH];
+
+/**
+ * @brief Print command line usage information.
+ *
+ * The driver honours the @c BCPLC_BUILD_DIR environment variable and the
+ * @c -b/--build-dir option.  Command line options take precedence over the
+ * environment.
+ */
 static void usage(const char *prog) {
-  printf("Usage: %s [-b build_dir] <source.bcpl> [output]\n", prog);
+  printf("Usage: %s [-b path|--build-dir path] <source.bcpl> [output]\n", prog);
+  printf("       Environment variable %s provides a default.\n", BUILD_DIR_ENV);
+}
+
+/**
+ * @brief Initialise the build directory from the environment or defaults.
+ */
+static void init_build_dir(void) {
+  const char *env_dir = getenv(BUILD_DIR_ENV);
+  strncpy(build_dir, env_dir ? env_dir : DEFAULT_BUILD_DIR,
+          sizeof(build_dir) - 1);
+  build_dir[sizeof(build_dir) - 1] = '\0';
 }
 
 int run_command(char *cmd, char **args) {
@@ -65,14 +89,15 @@ int compile_bcpl(const char *source_file, const char *output_file) {
 }
 
 int main(int argc, char *argv[]) {
-  const char *env_dir = getenv("BCPLC_BUILD_DIR");
-  if (env_dir && *env_dir) {
-    strncpy(build_dir, env_dir, sizeof(build_dir) - 1);
-    build_dir[sizeof(build_dir) - 1] = '\0';
-  }
+  init_build_dir();
 
   int opt;
-  while ((opt = getopt(argc, argv, "b:h")) != -1) {
+  static struct option long_opts[] = {
+      {"build-dir", required_argument, NULL, 'b'},
+      {"help", no_argument, NULL, 'h'},
+      {NULL, 0, NULL, 0}};
+
+  while ((opt = getopt_long(argc, argv, "b:h", long_opts, NULL)) != -1) {
     switch (opt) {
     case 'b':
       strncpy(build_dir, optarg, sizeof(build_dir) - 1);
