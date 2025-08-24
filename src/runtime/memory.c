@@ -14,6 +14,8 @@
  */
 bcpl_vector_t *bcpl_getvec(bcpl_word_t size) {
   if (size == 0) {
+    // Zero-length allocations are unsupported by the BCPL runtime.
+    // Returning NULL communicates allocation failure to callers.
     return NULL;
   }
 
