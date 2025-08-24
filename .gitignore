@@ -1,64 +1,72 @@
 # Ignore build artifacts and temporary files
 
-# General build outputs
+# ─────────────────────────────────────────────────────────────────────────────
+# General build outputs (directories)
+# ─────────────────────────────────────────────────────────────────────────────
 /build/
-/build_*
+/build-*/
 /builds/
 /archive/legacy_builds/
 /install_test/
-
-# Generated documentation
 /docs/doxygen/
 /docs/sphinx/_build/
-
-# Binaries
-/bcplc
-/src/bcplc
-/src/cg.exe
-/src/op.exe
-
-# Object files and libraries
-*.o
-*.a
-src/st.s
-src/blib.s
-
-# Build directories and executables
+/docs/doxygen/
+/docs/sphinx/_build/
+[Bb]uild/
+[Bb]uild-*/
+[Dd]ebug/
+[Rr]elease/
+[Cc]make[Bb]uild/
+[Cc]make-[Bb]uild/
+out/
+bin/
+lib/
 src/st
 src/cg
 src/op
-!tools/CMakeLists.txt
+**/build/
+**/build-*/
+**/builds/
 
-# Temporary log files
-*.log
-
-# Executable outputs
-*.exe
-*/bcplc
-# tools/* # Commented out to avoid ignoring essential tool source files if any; specific executables should be listed
-!tools/CMakeLists.txt # Keep this
-# build/ # This is too general if there are legitimate 'build' named source dirs. Specific build output dirs are better.
-# Ignore generated binaries in tools/
-tools/cmpltest
-tools/xref
-tools/gpm
-
-# IDE and temporary files
-.DS_Store
-*~
-*.tmp
-compile_commands.json
-
-# Specific executables that might be built
+# ─────────────────────────────────────────────────────────────────────────────
+# Binaries and executables
+# ─────────────────────────────────────────────────────────────────────────────
+/src/bcplc
+/src/cg.exe
+/src/op.exe
 /src/st
 /src/cg
 /src/op
-/tools/cmpltest
-/tools/xref
-/tools/gpm
-.DS_Store
+src/test_ocode_64bit
+src/test_ocode_64bit_*
+*.exe
+*.out
+*.elf
+*.app
+*.bin
+*.so
+*.so.*
+*.dylib
+*.dll
+/bcplc
 
-# CMake build files and directories
+# ─────────────────────────────────────────────────────────────────────────────
+# Object files and archives
+# ─────────────────────────────────────────────────────────────────────────────
+*.o
+*.obj
+*.lo
+*.a
+*.la
+*.suo
+*.user
+src/st.s
+src/blib.s
+src/libbcpl_runtime_*.a
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Build system files
+# ─────────────────────────────────────────────────────────────────────────────
 **/CMakeCache.txt
 **/CMakeFiles/
 **/cmake_install.cmake
@@ -68,17 +76,39 @@ compile_commands.json
 **/.ninja_deps
 **/.ninja_log
 **/build.ninja
-*.o
-*.obj
-*.lo
-*.a
-*.la
-*.so
-*.so.*
-*.dylib
-*.dll
-*.out
-*.app
+.cxx/
+.gradle/
+.metals.sbt/
+.project
+.classpath
+.settings/
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Tools-specific rules
+# ─────────────────────────────────────────────────────────────────────────────
+# Keep source files in tools/ but ignore compiled outputs
+/tools/*
+!/tools/*.bcpl
+!/tools/Makefile*
+!/tools/CMakeLists.txt
+/tools/cmpltest
+/tools/xref
+/tools/gpm
+
+# ─────────────────────────────────────────────────────────────────────────────
+# IDE, temporary, and common ignores
+# ─────────────────────────────────────────────────────────────────────────────
+.DS_Store
+*.tmp
+*.log
+*~
+ehthumbs.db
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+hs_err_pid*
 *.ipch/
 *.aps
 *.suo
@@ -90,81 +120,47 @@ compile_commands.json
 *.pdb
 *.gch
 *.pch
-
-# Build output directories (common patterns)
-[Bb]uild/
-[Bb]uild-*/
-build*/
-**/build/
-**/build-*/
-[Dd]ebug/
-[Rr]elease/
-[Cc]make[Bb]uild/
-[Cc]make-[Bb]uild/
-out/
-bin/
-lib/
-
-# Test outputs
-**/Testing/
-*.gcno
-*.gcda
-*.gcov
-coverage/
-lcov_out/
-
-# Doxygen
-docs/doxygen/html/
-docs/doxygen/xml/
-
-# Other common ignores
-cscope.*
-tags
-.tags
-.ccls-cache/
+.DS_Store
+*~
+*.swp
+*.swo
+*.*.swp
+*.*.swo
+.cache/
 .vscode/ipch/
 .metals/
 .bloop/
 .bsp/
 .ensime_cache/
 .idea/
-*.iml
-*.ipr
-*.iws
-atlassian-ide-plugin.xml
-*.swp
-*.swo
-*.*.swp
-*.*.swo
-profile_output/
-callgrind.out.*
-gmon.out
-valgrind_logs/
-.cache/
-.cxx/
-.gradle/
 .metals.sbt/
 .project
 .classpath
 .settings/
 target/
 .DS_Store
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-*.stackdump
-hs_err_pid*
-# Specific to this project if known
-src/st_gen_* # Generated symbol tables
-src/st.s # If always generated
-src/blib.s # If always generated
-src/cg_* # If specific cg executables are generated in src
-src/op_* # If specific op executables are generated in src
-src/test_ocode_64bit # Executable
-src/test_ocode_64bit_* # Executable
-src/libbcpl_runtime_*.a # Generated library
 
-# Keep specific executables if they are tracked and not in a build output dir
-# !src/cg # Example if cg in src is a source file not an output
-# !src/op # Example
+# ─────────────────────────────────────────────────────────────────────────────
+# Analysis and test outputs
+# ─────────────────────────────────────────────────────────────────────────────
+analysis_*.txt
+analysis_*_fresh.txt
+perf.csv
+output.txt
+*_output.txt
+*.txt
+*_summary.json
+coverage/
+lcov_out/
+valgrind_logs/
+gmon.out
+callgrind.out.*
+profile_output/
+**/Testing/
+*.gcno
+*.gcda
+*.gcov
+cscope.*
+tags
+.tags
+.ccls-cache/
