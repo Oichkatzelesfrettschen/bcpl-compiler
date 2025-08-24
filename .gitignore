@@ -13,7 +13,6 @@
 
 # Binaries
 /bcplc
-*.exe
 /src/bcplc
 /src/cg.exe
 /src/op.exe
@@ -29,9 +28,6 @@ src/st
 src/cg
 src/op
 !tools/CMakeLists.txt
-/builds/
-docs/doxygen/
-docs/sphinx/_build/
 
 # Temporary log files
 *.log
@@ -46,7 +42,6 @@ docs/sphinx/_build/
 tools/cmpltest
 tools/xref
 tools/gpm
-build/
 
 # IDE and temporary files
 .DS_Store
@@ -82,7 +77,6 @@ compile_commands.json
 *.so.*
 *.dylib
 *.dll
-*.exe
 *.out
 *.app
 *.ipch/
@@ -124,7 +118,6 @@ docs/doxygen/html/
 docs/doxygen/xml/
 
 # Other common ignores
-*.log
 cscope.*
 tags
 .tags
