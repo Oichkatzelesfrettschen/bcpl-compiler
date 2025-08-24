@@ -2,8 +2,15 @@
 
 This document summarizes automated analysis results for the BCPL compiler repository.
 
+All of the raw reports that underpin this summary are stored within the
+repository under `docs/analysis/`. Keeping artifacts in a project-relative
+directory makes the results reproducible and avoids references to machine
+specific temporary locations.
+
 
 ## File Statistics
+
+The following language statistics were extracted from `docs/analysis/cloc.json`:
 
 {"header" : {
   "cloc_url"           : "github.com/AlDanial/cloc",
