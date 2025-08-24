@@ -19,6 +19,9 @@ This repository contains a modernized distribution of the classic **BCPL** compi
 git clone https://github.com/eirikr/bcpl-compiler.git
 cd bcpl-compiler
 
+# Install dependencies
+./scripts/setup.sh
+
 # Build the compiler (native release)
 ./build.sh
 
@@ -32,11 +35,13 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > hello.bcpl
 
 The repository includes a minimal `bcplc_driver` utility used for
 demonstrations. It defaults to finding the compiler components under
-`build_c23/src`. Use the `-b` option or set the `BCPLC_BUILD_DIR`
-environment variable to override this directory:
+`build_c23/src`. Either set the `BCPLC_BUILD_DIR` environment variable or
+pass `-b/--build-dir` to override this location; the command-line option
+takes precedence when both are supplied:
 
 ```bash
-BCPLC_BUILD_DIR=build/Debug/src ./bcplc_driver -b build/Release/src hello.bcpl
+BCPLC_BUILD_DIR=build/Debug/src \
+  ./bcplc_driver --build-dir build/Release/src hello.bcpl
 ```
 
 
@@ -50,7 +55,7 @@ Ensure the following tools are installed:
 - Python 3 with `pip`; install dependencies with
   `pip install -r requirements.txt`
 
-Running `scripts/setup.sh` installs all dependencies along with an IA‑16 toolchain.
+Running `./scripts/setup.sh` installs all dependencies along with an IA‑16 toolchain.
 
 For convenience, a `build.sh` helper script wraps the standard CMake
 configuration and build commands. It places artifacts under

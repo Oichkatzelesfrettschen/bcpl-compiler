@@ -97,7 +97,7 @@ const char *bcpl_get_env(const char *name) {
  * always indicates success with a zero result to align with the other
  * platform implementations.
  */
-int bcpl_platform_init(void) {
+BCPL_EXPORT int bcpl_platform_init(void) {
   /* Set console to UTF-8 if available.  This allows UTF-8 encoded
      text to be displayed correctly on supported terminals. */
   SetConsoleOutputCP(CP_UTF8);

@@ -105,7 +105,7 @@ Development Scripts
    * Generates documentation
    * Creates distribution packages
 
-**setup.sh**
+**scripts/setup.sh**
    Development environment setup:
    
    * Configures build environment
