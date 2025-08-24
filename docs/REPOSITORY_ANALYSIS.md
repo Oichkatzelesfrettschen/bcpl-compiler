@@ -85,3 +85,9 @@ sha256sum $(git ls-files) > docs/analysis/sha256sums.txt
 
 Storing reports under `docs/analysis/` keeps the tree tidy and avoids absolute
 paths that can become stale across machines.
+## Duplicate File Cleanup
+
+The `cleanup_duplicates.py` utility was executed to remove redundant files with a trailing `2` in their names.
+A total of 292 duplicate artifacts were deleted from legacy build archives and tools directories, while five differing copies
+were preserved under `archive/duplicates/` with canonical filenames. Subsequent verification confirmed no remaining files
+match the duplicate pattern.
