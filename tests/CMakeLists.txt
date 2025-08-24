@@ -36,13 +36,13 @@ include(Options)
 # Consolidated test executable built from all unit test sources
 set(TEST_SOURCES
     bcpl_tests.c
-    test_runtime.c
-    test_platform_abstraction.c
-    test_memory_safety.c
-    test_memory.c
     test_architecture.c
-    test_performance.c
     test_assembly_elimination.c
+    test_memory.c          # Vector allocation and refcount tests
+    test_memory_safety.c
+    test_performance.c
+    test_platform_abstraction.c
+    test_runtime.c
 )
 
 add_executable(bcpl_tests ${TEST_SOURCES})
