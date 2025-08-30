@@ -128,6 +128,37 @@ BCPL_ALWAYS_INLINE bcpl_word_t bcpl_vector_size(bcpl_vector_t *vec) {
   return vec ? vec->size : 0;
 }
 
+/**
+ * @brief Create a new vector with initialization
+ * @param size Vector size in words
+ * @param init_val Initial value for all elements
+ * @return Pointer to allocated vector, or NULL on failure
+ */
+BCPL_EXPORT bcpl_vector_t *bcpl_newvec(bcpl_word_t size, bcpl_word_t init_val);
+
+/**
+ * @brief Get the size of a vector (legacy compatible)
+ * @param vec Vector
+ * @return Vector size in words, or 0 if vec is NULL
+ */
+BCPL_EXPORT bcpl_word_t bcpl_vecsize(const bcpl_vector_t *vec);
+
+/**
+ * @brief Check if vector index is valid
+ * @param vec Vector to check
+ * @param index Index to validate
+ * @return BCPL_TRUE if index is valid, BCPL_FALSE otherwise
+ */
+BCPL_EXPORT bcpl_bool_t bcpl_vec_bounds_check(const bcpl_vector_t *vec, bcpl_word_t index);
+
+/**
+ * @brief Copy memory between BCPL vectors or buffers
+ * @param dest Destination buffer
+ * @param src Source buffer
+ * @param count Number of words to copy
+ */
+BCPL_EXPORT void bcpl_movmem(bcpl_word_t *dest, const bcpl_word_t *src, bcpl_word_t count);
+
 // =============================================================================
 // STRING OPERATIONS
 // =============================================================================

@@ -17,11 +17,9 @@ bcpl_vector_t *bcpl_newvec(bcpl_word_t size, bcpl_word_t init_val) {
     return NULL;
   }
 
-  bcpl_word_t *data = (bcpl_word_t *)vec;
-
-  // Initialize all elements
+  // Initialize all elements to the specified value
   for (bcpl_word_t i = 0; i < size; i++) {
-    data[i] = init_val;
+    vec->data[i] = init_val;
   }
 
   return vec;
@@ -35,8 +33,13 @@ bcpl_word_t bcpl_vecsize(const bcpl_vector_t *vec) {
     return 0;
   }
 
+  // Check if it's a modern vector with magic number
+  if (vec->magic == BCPL_VECTOR_MAGIC) {
+    return vec->size;
+  }
+
+  // Legacy vector format - size is stored at data[-1]
   const bcpl_word_t *data = (const bcpl_word_t *)vec;
-  // Size is stored at data[-1]
   return data[-1];
 }
 
