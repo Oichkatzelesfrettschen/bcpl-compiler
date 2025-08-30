@@ -111,7 +111,7 @@ void bcpl_wrch(int32_t ch) { putchar(ch); }
  * Replaces rt.s memory functions
  */
 BCPL_EXPORT bcpl_vector_t *bcpl_getvec(bcpl_word_t size) {
-  if (size <= 0) {
+  if (size == 0) {
     return NULL;
   }
 
