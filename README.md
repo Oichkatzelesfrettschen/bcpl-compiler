@@ -32,11 +32,13 @@ echo 'GET "LIBHDR"; LET START() BE WRITES("Hello, BCPL!")' > hello.bcpl
 
 The repository includes a minimal `bcplc_driver` utility used for
 demonstrations. It defaults to finding the compiler components under
-`build_c23/src`. Use the `-b` option or set the `BCPLC_BUILD_DIR`
-environment variable to override this directory:
+`build_c23/src`. Either set the `BCPLC_BUILD_DIR` environment variable or
+pass `-b/--build-dir` to override this location; the command-line option
+takes precedence when both are supplied:
 
 ```bash
-BCPLC_BUILD_DIR=build/Debug/src ./bcplc_driver -b build/Release/src hello.bcpl
+BCPLC_BUILD_DIR=build/Debug/src \
+  ./bcplc_driver --build-dir build/Release/src hello.bcpl
 ```
 
 

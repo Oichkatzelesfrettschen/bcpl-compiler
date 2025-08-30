@@ -229,10 +229,10 @@ enum bcpl_error {
  * memory management.
  */
 typedef struct bcpl_vector {
-  bcpl_word_t magic;    ///< Magic number for validation
-  bcpl_word_t size;     ///< Vector size in words
-  bcpl_word_t refcount; ///< Reference count
-  bcpl_word_t data[];   ///< Vector data
+  bcpl_word_t magic;               ///< Magic number for validation
+  bcpl_word_t size;                ///< Vector size in words
+  _Atomic bcpl_word_t refcount;    ///< Reference count (atomic for thread safety)
+  bcpl_word_t data[];              ///< Vector data
 } bcpl_vector_t;
 
 /**

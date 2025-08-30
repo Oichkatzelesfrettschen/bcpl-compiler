@@ -11,6 +11,7 @@ The repository was cluttered with build artifacts, generated documentation, and 
 -   **.gitignore updated:** The `.gitignore` file was updated with a comprehensive set of rules to ignore build outputs, generated documentation, and other temporary files.
 -   **Binaries removed:** Standalone binary executables were removed from the repository.
 -   **Build artifacts removed:** Some build artifacts (`*.a`, `compile_commands.json`) were removed.
+-   **Tool binaries ignored selectively:** The `tools/` directory now ignores only compiler-generated executables while keeping source `.bcpl` files and makefiles under version control. This ensures that essential tool sources remain transparent and reproducible without polluting the repository with build products.
 
 ### Limitations
 

@@ -374,8 +374,8 @@ BCPL_EXPORT bcpl_vector_t *bcpl_getvec(bcpl_word_t size) {
 
   // Initialize vector header
   vec->size = size;
-  vec->refcount = 1;
   vec->magic = BCPL_VECTOR_MAGIC;
+  atomic_init(&vec->refcount, 1);
 
   // Initialize data area to zero
   memset(vec->data, 0, size * sizeof(bcpl_word_t));
@@ -387,13 +387,20 @@ BCPL_EXPORT bcpl_vector_t *bcpl_getvec(bcpl_word_t size) {
  * @brief BCPL FREEVEC - Free vector
  * @param vec Vector to free
  */
+BCPL_EXPORT bcpl_vector_t *bcpl_addref(bcpl_vector_t *vec) {
+  if (vec && vec->magic == BCPL_VECTOR_MAGIC) {
+    atomic_fetch_add(&vec->refcount, 1);
+  }
+  return vec;
+}
+
 BCPL_EXPORT void bcpl_freevec(bcpl_vector_t *vec) {
   if (!vec || vec->magic != BCPL_VECTOR_MAGIC) {
     return;
   }
 
   // Decrement reference count
-  if (--vec->refcount <= 0) {
+  if (atomic_fetch_sub(&vec->refcount, 1) == 1) {
     vec->magic = 0; // Invalidate magic number
     free(vec);
   }

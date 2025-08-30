@@ -10,6 +10,7 @@
  * alternatives for all major platforms.
  */
 
+#include "bcpl_types.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,9 +110,42 @@ void bcpl_wrch(int32_t ch) { putchar(ch); }
  * @brief BCPL memory management
  * Replaces rt.s memory functions
  */
-int32_t *bcpl_getvec(int32_t size) { return malloc(size * sizeof(int32_t)); }
+BCPL_EXPORT bcpl_vector_t *bcpl_getvec(bcpl_word_t size) {
+  if (size <= 0) {
+    return NULL;
+  }
 
-void bcpl_freevec(int32_t *ptr) { free(ptr); }
+  size_t total_size = sizeof(bcpl_vector_t) + (size * sizeof(bcpl_word_t));
+  bcpl_vector_t *vec = malloc(total_size);
+  if (!vec) {
+    return NULL;
+  }
+
+  vec->magic = BCPL_VECTOR_MAGIC;
+  vec->size = size;
+  atomic_init(&vec->refcount, 1);
+  memset(vec->data, 0, size * sizeof(bcpl_word_t));
+
+  return vec;
+}
+
+BCPL_EXPORT bcpl_vector_t *bcpl_addref(bcpl_vector_t *vec) {
+  if (vec && vec->magic == BCPL_VECTOR_MAGIC) {
+    atomic_fetch_add(&vec->refcount, 1);
+  }
+  return vec;
+}
+
+BCPL_EXPORT void bcpl_freevec(bcpl_vector_t *vec) {
+  if (!vec || vec->magic != BCPL_VECTOR_MAGIC) {
+    return;
+  }
+
+  if (atomic_fetch_sub(&vec->refcount, 1) == 1) {
+    vec->magic = 0;
+    free(vec);
+  }
+}
 
 /**
  * @brief Get global vector pointer
